@@ -1,56 +1,116 @@
 ---
 /*
- * Section — bloc vertical aéré avec variantes de fond.
+ * Section — V2 avec variants immersifs (refonte systémique 2026-04-23).
  *
- * Variantes :
+ * 4 variants visuels × 4 rythmes d'espacement canoniques.
+ * Règle dure : les pages ne doivent PLUS écrire `py-XX md:py-YY` en dur.
+ *
+ * Variants :
  *   cream        : fond cream, texte forest (default)
- *   forest       : fond forest sombre, texte cream (CTA, hero dark)
- *   cream-accent : cream + ruban discret
+ *   forest       : fond forest sombre, texte cream, data-theme="dark" auto
+ *   cream-accent : cream avec ruban décoratif discret
+ *   immersive    : forest + image de fond optionnelle + voile + data-theme="dark"
+ *
+ * Espacement (space prop) :
+ *   compact      : sections secondaires (manifeste court, transitions)
+ *   default      : sections classiques (majorité)
+ *   spacious     : sections pilier (process, 3 piliers)
+ *   hero         : hero de page pilier (min-height 90svh + padding généreux)
  *
  * Options :
  *   topDivider    : filet fin en haut
- *   tight         : padding vertical réduit
  *   size          : relayé à Container enfant (default/wide/narrow)
  *   labelledBy    : id de l'H2 pour aria-labelledby
+ *   image         : ImageMetadata en fond (variant immersive seulement)
+ *   imageOverlay  : opacité du voile forest sur l'image (défaut 88)
  */
 
 import Container from './Container.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 interface Props {
-  variant?: 'cream' | 'forest' | 'cream-accent';
-  topDivider?: boolean;
+  variant?: 'cream' | 'forest' | 'cream-accent' | 'immersive';
+  space?: 'compact' | 'default' | 'spacious' | 'hero';
+  /** @deprecated utiliser `space="compact"` */
   tight?: boolean;
+  topDivider?: boolean;
   size?: 'default' | 'wide' | 'narrow';
   labelledBy?: string;
   id?: string;
   class?: string;
+  image?: ImageMetadata;
+  imageOverlay?: number;
+  /** Si défini, annote la section avec data-theme=dark|light pour le theme observer. */
+  theme?: 'dark' | 'light';
 }
 
 const {
   variant = 'cream',
-  topDivider = false,
+  space,
   tight = false,
+  topDivider = false,
   size = 'default',
   labelledBy,
   id,
   class: className = '',
-} = Astro.props;
+  image,
+  imageOverlay = 88,
+  theme,
+} = Astro.props as Props;
+
+// Migration progressive : tight → space="compact"
+const effectiveSpace = space ?? (tight ? 'compact' : 'default');
 
 const bgClass = {
   cream: 'bg-[var(--color-cream)] text-[var(--color-forest)]',
   forest: 'bg-[var(--color-forest)] text-[var(--color-cream)]',
   'cream-accent': 'bg-[var(--color-cream)] text-[var(--color-forest)]',
+  immersive: 'bg-[var(--color-forest)] text-[var(--color-cream)] relative isolate overflow-hidden',
 }[variant];
 
+// Espacement vertical via token canonique — pas de py-XX en dur
+const spaceVar = {
+  compact: 'var(--section-space-compact)',
+  default: 'var(--section-space-default)',
+  spacious: 'var(--section-space-spacious)',
+  hero: 'var(--section-space-hero)',
+}[effectiveSpace];
+
+const isDark = variant === 'forest' || variant === 'immersive';
+const effectiveTheme = theme ?? (isDark ? 'dark' : 'light');
+
 const dividerClass = topDivider ? 'border-t border-current/10' : '';
-const padding = tight ? 'py-20 md:py-24' : 'py-28 md:py-40';
 ---
 
 <section
-  class:list={[bgClass, dividerClass, padding, className]}
+  class:list={[bgClass, dividerClass, className]}
+  style={`padding-top: ${spaceVar}; padding-bottom: ${spaceVar};`}
   id={id}
   aria-labelledby={labelledBy}
+  data-theme={effectiveTheme}
 >
+  {
+    variant === 'immersive' && image && (
+      <div class="absolute inset-0 -z-10">
+        <Image
+          src={image}
+          alt=""
+          widths={[960, 1440, 1920, 2560]}
+          sizes="100vw"
+          quality={75}
+          format="webp"
+          class="h-full w-full object-cover object-center"
+          loading="lazy"
+        />
+        <div
+          class="absolute inset-0"
+          style={`background-color: color-mix(in oklab, var(--color-forest) ${imageOverlay}%, transparent);`}
+          aria-hidden="true"
+        />
+      </div>
+    )
+  }
   <Container size={size}>
     <slot />
   </Container>

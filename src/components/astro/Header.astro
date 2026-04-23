@@ -250,14 +250,42 @@ const { darkHero = false } = Astro.props;
 </style>
 
 <script>
+  /**
+   * Header wire — idempotent via flag module (évite empilage de listeners sur
+   * navigation par view transitions).
+   * Expose aussi la hauteur du Header en CSS custom property
+   * `--header-height` sur `<html>` pour que les pages puissent dériver leur
+   * offset hero / scroll-margin-top sans tâtonnement.
+   */
+  let headerWired = false;
+  let scrollListener: (() => void) | null = null;
+  let resizeObserver: ResizeObserver | null = null;
+
   function wireHeaderScroll() {
     const header = document.querySelector<HTMLElement>('[data-header]');
     if (!header) return;
-    const check = () => {
+
+    // Expose la hauteur du Header via ResizeObserver (topbar cachée sur mobile,
+    // logo scale selon breakpoint → height change dynamiquement).
+    if (resizeObserver) resizeObserver.disconnect();
+    resizeObserver = new ResizeObserver(() => {
+      const h = header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--header-height', `${h}px`);
+    });
+    resizeObserver.observe(header);
+    // Set initial sync
+    document.documentElement.style.setProperty(
+      '--header-height',
+      `${header.getBoundingClientRect().height}px`,
+    );
+
+    if (headerWired) return;
+    headerWired = true;
+    scrollListener = () => {
       header.classList.toggle('is-scrolled', window.scrollY > 80);
     };
-    check();
-    window.addEventListener('scroll', check, { passive: true });
+    scrollListener();
+    window.addEventListener('scroll', scrollListener, { passive: true });
   }
 
   wireHeaderScroll();

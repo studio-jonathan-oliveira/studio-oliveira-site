@@ -72,6 +72,20 @@
   --duration-fast: 200ms;
   --duration-base: 400ms;
   --duration-slow: 700ms;
+
+  /* ─── Letter-spacing canoniques (2 valeurs seulement pour mono eyebrows) ───
+   * Avant ça : 6 valeurs différentes (0.2/0.22/0.24/0.26/0.28/0.3em) pour
+   * exactement le même rôle sémantique. Migration → utility `.eyebrow`. */
+  --tracking-eyebrow: 0.24em;
+  --tracking-meta: 0.18em;
+
+  /* ─── Espacement vertical canonique (4 valeurs seulement) ───
+   * Avant ça : 7+ valeurs (py-20/24/28/32/36/40/48) mixées arbitrairement.
+   * Utilisé par le composant Section via les nouvelles variantes. */
+  --section-space-compact: clamp(3rem, 4vw + 1.5rem, 5rem);
+  --section-space-default: clamp(5rem, 5vw + 2rem, 8rem);
+  --section-space-spacious: clamp(6rem, 6vw + 3rem, 10rem);
+  --section-space-hero: clamp(8rem, 10vw + 4rem, 14rem);
 }
 
 /*
@@ -149,6 +163,19 @@ header.intro-revealing {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Fallback si Header pas encore mesuré (JS load). Override par JS sur mount. */
+    --header-height: 80px;
+  }
+
+  /*
+   * Scroll-margin-top global : quand on clique une ancre #section, le
+   * navigateur laisse la place pour le Header fixed. Fin des titres cachés
+   * derrière le Header sur les pages [slug].
+   */
+  :target,
+  section[id],
+  [id][data-section-label] {
+    scroll-margin-top: calc(var(--header-height, 80px) + 1rem);
   }
 
   /*
@@ -219,4 +246,46 @@ header.intro-revealing {
 
   /* Reduce-motion global block retiré volontairement (bypass Morgan 2026-04-22).
      À réintégrer au Phase 6 audit accessibilité. */
+}
+
+/*
+ * ───── Utility classes canoniques ─────
+ * Eyebrow mono — rôle sémantique unique, DEUX tailles seulement.
+ * Avant ça : 6 couples (taille × tracking) différents éparpillés dans les pages.
+ *
+ * Usage : <p class="eyebrow">…</p>  ou  <p class="eyebrow-accent">…</p>
+ *   .eyebrow         — mono 11px, tracking canonique, couleur moss
+ *   .eyebrow-accent  — idem mais couleur laterite (signature premium)
+ *   .eyebrow-dark    — sur fond forest, cursor crème
+ *   .meta            — meta 10px (numéros décoratifs, petits labels)
+ */
+@layer components {
+  .eyebrow,
+  .eyebrow-accent {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .eyebrow {
+    color: var(--color-moss);
+  }
+  .eyebrow-accent {
+    color: var(--color-laterite);
+  }
+  .meta {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Sur section sombre, les eyebrow moss restent lisibles, accent garde latérite */
+  [data-theme='dark'] .eyebrow {
+    color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+  }
 }

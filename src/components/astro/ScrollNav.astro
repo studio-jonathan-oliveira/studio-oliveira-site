@@ -457,12 +457,8 @@
       if (mobileIndex) mobileIndex.textContent = pad(activeIndex + 1);
       if (mobileLabel) mobileLabel.textContent = label;
 
-      // Auto-invert colorimétrie si section sombre
-      const dark =
-        section.classList.contains('hero-immersive') ||
-        /bg-\[var\(--color-forest\)\]/.test(section.className) ||
-        section.hasAttribute('data-dark-section');
-      document.body.classList.toggle('is-dark-section', dark);
+      // La détection dark-section est maintenant faite par le theme-observer
+      // unique (src/scripts/theme-observer.ts) via data-theme="dark".
     };
 
     const observer = new IntersectionObserver(
