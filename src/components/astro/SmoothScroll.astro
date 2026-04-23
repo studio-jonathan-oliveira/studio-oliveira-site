@@ -27,10 +27,11 @@
       window.__lenis.destroy();
     }
 
-    // Duration 0.9s (était 1.2s) — feedback 2026-04-24 : « le scroll lag ».
-    // Au-delà de 1s, l'inertie devient une latence perçue. Easing conservé.
+    // Duration 0.7s (1.2s -> 0.9s -> 0.7s) — feedback 2026-04-24 :
+    // « le scrolling lag un peu ». 0.7s garde un léger smooth éditorial
+    // sans que la latence soit perçue comme un lag.
     const lenis = new Lenis({
-      duration: 0.9,
+      duration: 0.7,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       wheelMultiplier: 1,
       touchMultiplier: 1,

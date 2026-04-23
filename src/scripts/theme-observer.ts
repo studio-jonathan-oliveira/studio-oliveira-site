@@ -55,9 +55,7 @@ export function initThemeObserver() {
 
   // Recompute global : cherche la section [data-theme] qui intersecte le
   // milieu du viewport. Si aucune, fallback light (sinon on restait bloqué
-  // sur dark quand on scrollait dans le footer — bug 2026-04-24 : « curseur
-  // disparaît en bas »). Appelé par observer ET par scroll listener pour
-  // couvrir les zones entre sections (footer, hero top).
+  // sur dark quand on scrollait dans le footer — bug 2026-04-24).
   const recompute = () => {
     const mid = window.innerHeight / 2;
     const active = sections.find((s) => {
@@ -74,8 +72,19 @@ export function initThemeObserver() {
   });
 
   sections.forEach((s) => observer!.observe(s));
-  // Scroll fallback (passive) — catch les zones sans section annotée
-  window.addEventListener('scroll', recompute, {
+  // Scroll fallback throttlé via rAF — sinon recompute fire à chaque event
+  // et les getBoundingClientRect N×par-scroll font laguer (feedback
+  // 2026-04-24 : « le scrolling lag un peu »).
+  let rafPending = false;
+  const onScroll = () => {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => {
+      rafPending = false;
+      recompute();
+    });
+  };
+  window.addEventListener('scroll', onScroll, {
     passive: true,
     signal: scrollController.signal,
   });

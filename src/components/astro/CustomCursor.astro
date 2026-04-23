@@ -69,7 +69,11 @@
       left: -18px;
       width: 36px;
       height: 36px;
-      border: 1.5px solid var(--cursor-color);
+      /* Rempli en blanc — combiné à mix-blend-mode: difference sur le parent,
+         ça donne le « trou d'inversion » qui négative le fond traversé
+         (feedback Morgan 2026-04-24 : « l'intérieur du curseur avant c'était
+         bien, ça affichait la couleur inversée de la surface »). */
+      background-color: var(--cursor-color);
       border-radius: 50%;
       transition:
         width 0.35s var(--ease-out-editorial),
@@ -77,7 +81,6 @@
         top 0.35s var(--ease-out-editorial),
         left 0.35s var(--ease-out-editorial),
         background-color 0.3s ease,
-        border-color 0.4s ease,
         opacity 0.2s ease;
     }
 
