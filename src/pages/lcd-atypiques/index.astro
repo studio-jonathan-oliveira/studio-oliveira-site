@@ -11,11 +11,18 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
-import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+import { jsonLdGraph, organization, localBusiness, breadcrumbs, service } from '@/lib/schema-org';
 
 const schema = jsonLdGraph([
   organization(),
   localBusiness(),
+  service({
+    name: 'Décoration végétale pour airbnb atypique',
+    slug: 'lcd-atypiques',
+    path: '/lcd-atypiques',
+    description:
+      'Décors végétalisés immersifs pour locations courte durée atypiques — Jungle Rooms, airbnb de caractère, logements à forte identité. Plantes naturelles et artificielles, conception et installation.',
+  }),
   breadcrumbs([
     { name: 'Accueil', item: '/' },
     { name: 'LCD atypiques', item: '/lcd-atypiques' },
@@ -47,6 +54,17 @@ const schema = jsonLdGraph([
       >
         [À FOURNIR — intro LCD atypiques, 60-80 mots. Positionnement "Jungle Rooms", décors
         immersifs, ambiances expérientielles pour propriétaires d'airbnb à forte identité.]
+      </p>
+      <p class="mt-6 max-w-2xl text-sm leading-relaxed text-[var(--color-forest)]/60">
+        Segment distinct du studio, à la croisée du <a
+          href="/pros"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          >design pour professionnels</a
+        > et des projets <a
+          href="/realisations"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          >réalisés</a
+        > à forte signature narrative.
       </p>
     </div>
   </Section>

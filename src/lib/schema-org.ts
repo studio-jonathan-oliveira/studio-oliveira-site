@@ -58,6 +58,12 @@ export interface ArticleSeoInput {
 export interface ServiceSeoInput {
   name: string;
   slug: string;
+  /**
+   * Path dédié au service, utilisé pour construire l'URL absolue.
+   * Défaut : `/architecture-paysagere/[slug]` pour rétro-compat typologies.
+   * Exemples : `/lcd-atypiques`, `/pros`, `/amenagement-vegetal-interieur/hotellerie`.
+   */
+  path?: string;
   description?: string;
   priceRangeMin?: number;
   priceRangeMax?: number;
@@ -182,10 +188,11 @@ export function faqPage(items: FaqItem[]): Thing {
 }
 
 export function service(input: ServiceSeoInput): Thing {
+  const path = input.path ?? `/architecture-paysagere/${input.slug}`;
   const thing: Thing = {
     '@type': 'Service',
     name: input.name,
-    url: `${SITE_URL}/architecture-paysagere/${input.slug}`,
+    url: `${SITE_URL}${path}`,
     provider: { '@id': LOCAL_BUSINESS_ID },
     areaServed: (input.areaServed ?? SITE.zones.map((z) => z.ville)).map((city) => ({
       '@type': 'City',
