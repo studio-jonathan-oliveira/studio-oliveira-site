@@ -1,181 +1,456 @@
 ---
-/**
- * ScrollNav — nav latérale verticale, indexée sur les sections via IntersectionObserver.
- * Apparaît fixe à droite après le premier scroll hors du hero. Chaque section
- * [id][data-section-label] devient une entrée cliquable.
+/*
+ * ScrollNav — menu latéral éditorial persistant qui évolue au scroll.
+ * Spec Jonathan PDF l.740 : « menu déroulé latéral qui évolue avec le scroll = LE MUST ».
  *
- * Référence Jonathan : "Menu déroulé latéral qui évolue avec le scroll : LE MUST".
+ * Structure :
+ *   - Fixe à gauche sur desktop (≥1024px), masqué mobile (indicateur haut à la place)
+ *   - Chaque section [id][data-section-label] devient un item indexé 01, 02...
+ *   - Item actif : titre italique serif apparaît à droite, ligne s'épaissit
+ *   - Curseur vertical glissant qui pointe sur l'item actif (transition spring)
+ *   - Compteur chiffré en bas (02/06)
+ *   - Auto-invert colorimétrie sur sections sombres (body.is-dark-section)
  *
- * Cible DOM : ce composant lit les sections au runtime (client-side) pour rester
- * générique. Aucune config côté props — il s'auto-alimente.
+ * Auto-alimenté au runtime — aucun props.
  */
 ---
 
-<nav id="scroll-nav" class="scroll-nav" aria-label="Sections de la page">
-  <ul id="scroll-nav-list" class="scroll-nav-list"></ul>
+<nav id="scroll-nav" class="scroll-nav" aria-label="Navigation des sections">
+  <ol id="scroll-nav-list" class="scroll-nav-list" role="list"></ol>
+  <span id="scroll-nav-cursor" class="scroll-nav-cursor" aria-hidden="true"></span>
+  <p id="scroll-nav-counter" class="scroll-nav-counter" aria-hidden="true">
+    <span data-counter-current>01</span>
+    <span class="scroll-nav-counter-sep">/</span>
+    <span data-counter-total>—</span>
+  </p>
 </nav>
 
+<!-- Indicateur mobile discret (remplace le menu latéral sous 1024px) -->
+<div id="scroll-nav-mobile" class="scroll-nav-mobile" aria-hidden="true">
+  <span class="scroll-nav-mobile-index" data-mobile-index>01</span>
+  <span class="scroll-nav-mobile-label" data-mobile-label>Accueil</span>
+  <span class="scroll-nav-mobile-bar">
+    <span class="scroll-nav-mobile-fill" data-mobile-fill></span>
+  </span>
+</div>
+
 <style>
+  /* ─────────── Menu latéral desktop ─────────── */
   .scroll-nav {
     position: fixed;
-    right: 1.5rem;
+    left: 1.75rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 40;
     opacity: 0;
     pointer-events: none;
-    transition:
-      opacity 0.6s var(--ease-out-editorial),
-      transform 0.6s var(--ease-out-editorial);
+    transition: opacity 0.8s var(--ease-out-editorial);
+    color: var(--color-forest);
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .scroll-nav {
+      display: block;
+    }
   }
   .scroll-nav.is-visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(-50%);
   }
 
   .scroll-nav-list {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1.4rem;
     margin: 0;
     padding: 0;
     list-style: none;
+    position: relative;
   }
 
   .scroll-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    justify-content: flex-end;
+    display: block;
+    position: relative;
   }
 
-  .scroll-nav-label {
+  .scroll-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .scroll-nav-index {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.28em;
-    color: var(--color-forest);
-    opacity: 0;
-    transform: translateX(12px);
+    letter-spacing: 0.22em;
+    color: currentColor;
+    opacity: 0.35;
+    min-width: 20px;
+    transition: opacity 0.4s var(--ease-out-editorial);
+  }
+
+  .scroll-nav-track {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.3;
     transition:
-      opacity 0.4s var(--ease-out-editorial),
-      transform 0.4s var(--ease-out-editorial);
+      width 0.45s var(--ease-out-editorial),
+      opacity 0.4s ease;
+  }
+
+  .scroll-nav-title {
+    font-family: var(--font-heading), serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1;
     white-space: nowrap;
+    color: currentColor;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.5s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
     pointer-events: none;
   }
 
-  .scroll-nav-dot {
-    position: relative;
-    width: 28px;
-    height: 1px;
-    background-color: var(--color-forest);
-    opacity: 0.35;
-    transition:
-      width 0.4s var(--ease-out-editorial),
-      background-color 0.3s ease,
-      opacity 0.3s ease;
+  /* États */
+  .scroll-nav-item:hover .scroll-nav-track,
+  .scroll-nav-item:focus-within .scroll-nav-track {
+    width: 38px;
+    opacity: 0.7;
+  }
+  .scroll-nav-item:hover .scroll-nav-title,
+  .scroll-nav-item:focus-within .scroll-nav-title {
+    opacity: 0.65;
+    transform: translateX(0);
+  }
+  .scroll-nav-item:hover .scroll-nav-index,
+  .scroll-nav-item:focus-within .scroll-nav-index {
+    opacity: 0.75;
   }
 
-  .scroll-nav-item.is-active .scroll-nav-dot {
+  .scroll-nav-item.is-active .scroll-nav-index {
+    opacity: 1;
+    color: var(--color-moss);
+  }
+  .scroll-nav-item.is-active .scroll-nav-track {
     width: 56px;
     opacity: 1;
     background-color: var(--color-moss);
   }
-  .scroll-nav-item.is-active .scroll-nav-label {
+  .scroll-nav-item.is-active .scroll-nav-title {
     opacity: 1;
     transform: translateX(0);
+    color: var(--color-forest);
   }
 
-  .scroll-nav-item:hover .scroll-nav-label {
-    opacity: 1;
-    transform: translateX(0);
+  .scroll-nav-item.is-passed .scroll-nav-index {
+    opacity: 0.5;
   }
-  .scroll-nav-item:hover .scroll-nav-dot {
-    width: 48px;
+  .scroll-nav-item.is-passed .scroll-nav-track {
+    opacity: 0.45;
+  }
+
+  /* Curseur vertical glissant — aligné à la position X du track */
+  .scroll-nav-cursor {
+    position: absolute;
+    left: 32px; /* aligné avec le track horizontal */
+    width: 2px;
+    height: 26px;
+    background-color: var(--color-gold);
+    top: 0;
+    transform: translateY(0);
+    transition: transform 0.7s var(--ease-out-editorial);
+    opacity: 0;
+    will-change: transform;
+  }
+  .scroll-nav.is-visible .scroll-nav-cursor {
     opacity: 1;
   }
 
-  /* Sur hero sombre, inverser la colorimétrie */
-  :global(body.is-dark-section) .scroll-nav-label {
+  /* Compteur bas */
+  .scroll-nav-counter {
+    margin-top: 2.2rem;
+    padding-left: 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    opacity: 0.45;
+    display: flex;
+    gap: 0.4rem;
+    align-items: baseline;
+  }
+  .scroll-nav-counter [data-counter-current] {
+    color: var(--color-moss);
+    opacity: 1;
+  }
+  .scroll-nav-counter-sep {
+    opacity: 0.4;
+  }
+
+  /* Auto-invert sur sections sombres (hero, typologies, CTA) */
+  :global(body.is-dark-section) .scroll-nav {
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .scroll-nav-dot {
-    background-color: var(--color-cream);
+  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-index,
+  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-track {
+    color: var(--color-gold);
+    background-color: var(--color-gold);
   }
-  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-dot {
+  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-title {
+    color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .scroll-nav-cursor {
+    background-color: var(--color-gold);
+  }
+  :global(body.is-dark-section) .scroll-nav-counter [data-counter-current] {
+    color: var(--color-gold);
+  }
+
+  /* ─────────── Indicateur mobile (≤1023px) ─────────── */
+  .scroll-nav-mobile {
+    position: fixed;
+    top: 72px; /* sous le header */
+    left: 0;
+    right: 0;
+    z-index: 35;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-forest) 10%, transparent);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+      opacity 0.5s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
+    color: var(--color-forest);
+  }
+  @media (min-width: 1024px) {
+    .scroll-nav-mobile {
+      display: none;
+    }
+  }
+  .scroll-nav-mobile.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .scroll-nav-mobile-index {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--color-moss);
+    flex-shrink: 0;
+  }
+  .scroll-nav-mobile-label {
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1;
+    color: var(--color-forest);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .scroll-nav-mobile-bar {
+    flex-shrink: 0;
+    width: 80px;
+    height: 1px;
+    background-color: color-mix(in srgb, var(--color-forest) 15%, transparent);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-nav-mobile-fill {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: var(--color-moss);
+    width: 0;
+    transition: width 0.3s linear;
+  }
+  :global(body.is-dark-section) .scroll-nav-mobile {
+    background-color: color-mix(in srgb, var(--color-forest) 85%, transparent);
+    color: var(--color-cream);
+    border-bottom-color: color-mix(in srgb, var(--color-cream) 10%, transparent);
+  }
+  :global(body.is-dark-section) .scroll-nav-mobile-index {
+    color: var(--color-gold);
+  }
+  :global(body.is-dark-section) .scroll-nav-mobile-label {
+    color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .scroll-nav-mobile-fill {
     background-color: var(--color-gold);
   }
 
-  /* Mobile : masqué */
-  @media (max-width: 767px) {
-    .scroll-nav {
-      display: none;
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-nav,
+    .scroll-nav-mobile,
+    .scroll-nav-cursor,
+    .scroll-nav-title,
+    .scroll-nav-track {
+      transition: none !important;
     }
   }
 </style>
 
 <script>
+  type NavItemRefs = {
+    li: HTMLLIElement;
+    link: HTMLAnchorElement;
+  };
+
+  function pad(n: number): string {
+    return n < 10 ? `0${n}` : String(n);
+  }
+
   function initScrollNav() {
     const nav = document.getElementById('scroll-nav');
     const list = document.getElementById('scroll-nav-list');
+    const cursor = document.getElementById('scroll-nav-cursor');
+    const counterCurrent = document.querySelector<HTMLElement>('[data-counter-current]');
+    const counterTotal = document.querySelector<HTMLElement>('[data-counter-total]');
+    const mobile = document.getElementById('scroll-nav-mobile');
+    const mobileIndex = document.querySelector<HTMLElement>('[data-mobile-index]');
+    const mobileLabel = document.querySelector<HTMLElement>('[data-mobile-label]');
+    const mobileFill = document.querySelector<HTMLElement>('[data-mobile-fill]');
+
     if (!nav || !list) return;
 
     const sections = Array.from(
-      document.querySelectorAll<HTMLElement>('section[id][data-section-label]')
+      document.querySelectorAll<HTMLElement>('section[id][data-section-label]'),
     );
-    if (sections.length === 0) return;
+    if (sections.length === 0) {
+      nav.style.display = 'none';
+      if (mobile) mobile.style.display = 'none';
+      return;
+    }
 
-    // Construction des items
+    // Construction items desktop
     list.innerHTML = '';
-    const items: Record<string, HTMLElement> = {};
-    sections.forEach((section) => {
+    const items: Record<string, NavItemRefs> = {};
+    sections.forEach((section, i) => {
       const id = section.id;
       const label = section.dataset.sectionLabel || id;
+      const index = pad(i + 1);
+
       const li = document.createElement('li');
       li.className = 'scroll-nav-item';
       li.dataset.target = id;
-      li.innerHTML = `
-        <a href="#${id}" class="scroll-nav-link" aria-label="${label}">
-          <span class="scroll-nav-label">${label}</span>
-          <span class="scroll-nav-dot" aria-hidden="true"></span>
-        </a>
+      li.dataset.index = String(i);
+
+      const link = document.createElement('a');
+      link.href = `#${id}`;
+      link.className = 'scroll-nav-link';
+      link.setAttribute('aria-label', `Aller à la section ${label}`);
+      link.innerHTML = `
+        <span class="scroll-nav-index" aria-hidden="true">${index}</span>
+        <span class="scroll-nav-track" aria-hidden="true"></span>
+        <span class="scroll-nav-title">${label}</span>
       `;
-      items[id] = li;
+      li.appendChild(link);
+      items[id] = { li, link };
       list.appendChild(li);
     });
 
-    // Visibilité de la nav : apparaît après 80% du premier viewport
+    if (counterTotal) counterTotal.textContent = pad(sections.length);
+
+    // Smooth scroll au clic
+    Object.entries(items).forEach(([id, { link }]) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(id);
+        if (!target) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${id}`);
+      });
+    });
+
+    // Visibilité : apparaît après 50% du premier viewport
     const onScroll = () => {
-      const show = window.scrollY > window.innerHeight * 0.6;
+      const show = window.scrollY > window.innerHeight * 0.4;
       nav.classList.toggle('is-visible', show);
+      if (mobile) mobile.classList.toggle('is-visible', show);
+
+      // Progress mobile bar : scroll total de la page
+      if (mobileFill) {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
+        mobileFill.style.width = `${pct}%`;
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Observer sections actives
+    // Positionne le curseur vertical sur l'item actif
+    const positionCursor = (activeIndex: number) => {
+      if (!cursor) return;
+      const targetLi = list.children[activeIndex] as HTMLElement | undefined;
+      if (!targetLi) return;
+      const liCenter = targetLi.offsetTop + targetLi.offsetHeight / 2;
+      const cursorHeight = cursor.offsetHeight || 26;
+      cursor.style.transform = `translateY(${liCenter - cursorHeight / 2}px)`;
+    };
+
+    // IntersectionObserver pour section active
+    let activeId: string | null = null;
+    const setActive = (id: string) => {
+      if (activeId === id) return;
+      activeId = id;
+      const activeIndex = sections.findIndex((s) => s.id === id);
+      if (activeIndex < 0) return;
+
+      Object.entries(items).forEach(([itemId, { li }], i) => {
+        li.classList.toggle('is-active', itemId === id);
+        li.classList.toggle('is-passed', i < activeIndex);
+      });
+
+      positionCursor(activeIndex);
+
+      if (counterCurrent) counterCurrent.textContent = pad(activeIndex + 1);
+
+      // Mobile
+      const section = sections[activeIndex];
+      if (!section) return;
+      const label = section.dataset.sectionLabel || section.id;
+      if (mobileIndex) mobileIndex.textContent = pad(activeIndex + 1);
+      if (mobileLabel) mobileLabel.textContent = label;
+
+      // Auto-invert colorimétrie si section sombre
+      const dark =
+        section.classList.contains('hero-immersive') ||
+        /bg-\[var\(--color-forest\)\]/.test(section.className) ||
+        section.hasAttribute('data-dark-section');
+      document.body.classList.toggle('is-dark-section', dark);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          const id = (entry.target as HTMLElement).id;
-          const item = items[id];
-          if (!item) return;
-          if (entry.isIntersecting) {
-            // Désactive les autres
-            Object.values(items).forEach((i) => i.classList.remove('is-active'));
-            item.classList.add('is-active');
-
-            // Marque le body si section sombre (hero + CTA)
-            const section = entry.target as HTMLElement;
-            const dark = section.classList.contains('hero-immersive') ||
-              /bg-\[var\(--color-forest\)\]/.test(section.className);
-            document.body.classList.toggle('is-dark-section', dark);
-          }
-        });
+        // Sélection : section la plus visible au milieu du viewport
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0 && visible[0]) {
+          setActive((visible[0].target as HTMLElement).id);
+        }
       },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+      { rootMargin: '-40% 0px -40% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
     sections.forEach((s) => observer.observe(s));
+
+    // Initialisation curseur sur la première section
+    requestAnimationFrame(() => positionCursor(0));
   }
 
   if (document.readyState === 'loading') {

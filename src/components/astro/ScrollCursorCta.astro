@@ -1,0 +1,171 @@
+---
+/*
+ * ScrollCursorCta — CTA suiveur souris actif durant le scroll de la page.
+ * Spec Jonathan PDF l.801-804 + mp4 référence `_brief/client-assets/exemple defilement souris call to action.mp4`.
+ *
+ * Comportement :
+ *   - Disque gold + label qui suit le curseur avec lerp smooth (effet premium)
+ *   - Apparaît après 30% du 1er viewport de scroll (pas sur hero)
+ *   - Se masque automatiquement à l'entrée d'une zone [data-cta-hide] (éviter doublon avec CTA final)
+ *   - Clic → navigation vers `href`
+ *   - Masqué : mobile (pas de souris), prefers-reduced-motion
+ *
+ * Props :
+ *   - href : URL destination (défaut /contact)
+ *   - label : texte court dans le disque (défaut "Démarrer\nun projet →")
+ */
+interface Props {
+  href?: string;
+  label?: string;
+}
+
+const { href = '/contact', label = 'Démarrer\nun projet' } = Astro.props as Props;
+---
+
+<a
+  id="scroll-cursor-cta"
+  class="scroll-cursor-cta"
+  href={href}
+  aria-label="Démarrer un projet"
+  data-cta-href={href}
+>
+  <span class="scroll-cursor-cta-inner" set:html={label.replace('\n', '<br />') + ' →'} />
+</a>
+
+<style>
+  .scroll-cursor-cta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+    margin-left: -60px;
+    border-radius: 50%;
+    background-color: var(--color-gold);
+    color: var(--color-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    z-index: 45;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 0.45s var(--ease-out-editorial),
+      transform 0.55s var(--ease-out-editorial);
+    will-change: transform, opacity, translate;
+  }
+  .scroll-cursor-cta.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .scroll-cursor-cta.is-hidden-zone {
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+  }
+  .scroll-cursor-cta-inner {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1.55;
+    color: var(--color-forest);
+    padding: 0 10px;
+  }
+
+  /* Mobile + touch : désactivé (pas de souris pertinente) */
+  @media (max-width: 1023px), (hover: none) {
+    .scroll-cursor-cta {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cursor-cta {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initScrollCursorCta() {
+    const cta = document.getElementById('scroll-cursor-cta') as HTMLAnchorElement | null;
+    if (!cta) return;
+
+    // Guard desktop + hover + motion
+    if (
+      window.matchMedia('(max-width: 1023px)').matches ||
+      window.matchMedia('(hover: none)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
+    // Cible (position souris) + actuel (position rendue avec lerp)
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let rafId = 0;
+    let visible = false;
+
+    const hideZones = Array.from(document.querySelectorAll<HTMLElement>('[data-cta-hide]'));
+
+    const animate = () => {
+      const lerp = 0.18;
+      currentX += (targetX - currentX) * lerp;
+      currentY += (targetY - currentY) * lerp;
+      cta.style.translate = `${currentX}px ${currentY}px`;
+
+      // Reprogramme tant que la différence est perceptible
+      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+        rafId = window.requestAnimationFrame(animate);
+      } else {
+        rafId = 0;
+      }
+    };
+
+    const onMove = (e: PointerEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!rafId) rafId = window.requestAnimationFrame(animate);
+    };
+
+    const onScroll = () => {
+      // Apparait après 30% du premier viewport
+      const shouldShow = window.scrollY > window.innerHeight * 0.3;
+      if (shouldShow !== visible) {
+        visible = shouldShow;
+        cta.classList.toggle('is-visible', shouldShow);
+      }
+
+      // Masque si on survole une zone [data-cta-hide]
+      let inHideZone = false;
+      const viewportMid = window.innerHeight / 2;
+      for (const zone of hideZones) {
+        const rect = zone.getBoundingClientRect();
+        if (rect.top < viewportMid && rect.bottom > viewportMid) {
+          inHideZone = true;
+          break;
+        }
+      }
+      cta.classList.toggle('is-hidden-zone', inHideZone);
+    };
+
+    document.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollCursorCta, { once: true });
+  } else {
+    initScrollCursorCta();
+  }
+  document.addEventListener('astro:page-load', initScrollCursorCta);
+</script>

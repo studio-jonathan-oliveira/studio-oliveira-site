@@ -77,11 +77,11 @@ function setupReveal(el: HTMLElement, variant: RevealVariant, delay = 0) {
         () => {
           el.style.willChange = 'auto';
         },
-        (spec.duration + delay) * 1000 + 50
+        (spec.duration + delay) * 1000 + 50,
       );
       return undefined;
     },
-    { margin: '0px 0px -12% 0px' }
+    { margin: '0px 0px -12% 0px' },
   );
 }
 
@@ -149,7 +149,7 @@ function setupParallax(root: ParentNode) {
         const offset = (progress - 0.5) * factor * 120;
         el.style.transform = `translate3d(0, ${offset}px, 0)`;
       },
-      { target: el }
+      { target: el },
     );
   });
 }
@@ -180,7 +180,7 @@ function setupMaskReveals(root: ParentNode) {
         animate(
           line,
           { y: ['110%', '0%'] },
-          { duration: dur, delay: baseDelay + i * step, ease: EASE_EDITORIAL }
+          { duration: dur, delay: baseDelay + i * step, ease: EASE_EDITORIAL },
         );
       });
     };
@@ -229,11 +229,7 @@ function setupHeroSequence(root: ParentNode) {
   const play = () => {
     if (eyebrow) appear(eyebrow, 0.2, 0.9);
     maskLines.forEach((line, i) => {
-      animate(
-        line,
-        { y: ['110%', '0%'] },
-        { duration: 1.3, delay: 0.45 + i * 0.18, ease }
-      );
+      animate(line, { y: ['110%', '0%'] }, { duration: 1.3, delay: 0.45 + i * 0.18, ease });
     });
     if (manifesto) appear(manifesto, 1.0, 1.1);
     if (cta) appear(cta, 1.25, 1);
@@ -251,7 +247,7 @@ function setupHeroSequence(root: ParentNode) {
         window.clearTimeout(timeoutId);
         play();
       },
-      { once: true }
+      { once: true },
     );
   } else {
     play();
@@ -278,7 +274,7 @@ function setupHeroZoom(root: ParentNode) {
         el.style.transform = `translate3d(0, ${translate}px, 0) scale(${scale})`;
         el.style.filter = `brightness(${brightness}) blur(${blur}px)`;
       },
-      { target: container, offset: ['start start', 'end start'] as never }
+      { target: container, offset: ['start start', 'end start'] as never },
     );
   });
 }
@@ -311,11 +307,11 @@ function setupClipReveals(root: ParentNode) {
         animate(
           el,
           { clipPath: [fromClip, 'inset(0 0 0 0)'] },
-          { duration: dur, delay, ease: EASE_EDITORIAL }
+          { duration: dur, delay, ease: EASE_EDITORIAL },
         );
         return undefined;
       },
-      { margin: '0px 0px -10% 0px' }
+      { margin: '0px 0px -10% 0px' },
     );
   });
 }
@@ -330,9 +326,7 @@ function setupQuoteScroll(root: ParentNode) {
   quotes.forEach((container) => {
     if (container.dataset.quoteDone) return;
     container.dataset.quoteDone = 'true';
-    const words = Array.from(
-      container.querySelectorAll<HTMLElement>('[data-quote-word]')
-    );
+    const words = Array.from(container.querySelectorAll<HTMLElement>('[data-quote-word]'));
     if (words.length === 0) return;
 
     words.forEach((w) => (w.style.opacity = '0.15'));
@@ -347,7 +341,7 @@ function setupQuoteScroll(root: ParentNode) {
           w.style.opacity = String(0.15 + local * 0.85);
         });
       },
-      { target: container, offset: ['start end', 'end start'] as never }
+      { target: container, offset: ['start end', 'end start'] as never },
     );
   });
 }
@@ -363,12 +357,8 @@ function setupScrollytelling(root: ParentNode) {
   sections.forEach((section) => {
     if (section.dataset.scrollyDone) return;
     section.dataset.scrollyDone = 'true';
-    const slides = Array.from(
-      section.querySelectorAll<HTMLElement>('[data-scrolly-slide]')
-    );
-    const chapters = Array.from(
-      section.querySelectorAll<HTMLElement>('[data-scrolly-chapter]')
-    );
+    const slides = Array.from(section.querySelectorAll<HTMLElement>('[data-scrolly-slide]'));
+    const chapters = Array.from(section.querySelectorAll<HTMLElement>('[data-scrolly-chapter]'));
     const ticks = Array.from(section.querySelectorAll<HTMLElement>('.scrolly-tick'));
     const n = slides.length;
     if (n === 0) return;
@@ -431,8 +421,74 @@ function setupScrollytelling(root: ParentNode) {
           }
         });
       },
-      { target: section, offset: ['start start', 'end end'] as never }
+      { target: section, offset: ['start start', 'end end'] as never },
     );
+  });
+}
+
+/**
+ * Typologies horizontal scroll — section pin + rail translateX mappé sur scroll
+ * vertical. Signature demandée dans le PDF Jonathan l.750.
+ * Greffé : CTA suiveur souris par panneau (pattern mp4 référence client).
+ *
+ * Desktop (≥1024px + hover) uniquement. En dessous, CSS prend le relai :
+ * - tablet/mobile : scroll-snap horizontal natif (swipe)
+ * - reduce-motion : stack vertical classique
+ */
+function setupHorizontalTypologies(root: ParentNode) {
+  const sections = root.querySelectorAll<HTMLElement>('[data-hscroll-typologies]');
+  sections.forEach((section) => {
+    if (section.dataset.hscrollDone) return;
+    section.dataset.hscrollDone = 'true';
+
+    const rail = section.querySelector<HTMLElement>('[data-hscroll-rail]');
+    if (!rail) return;
+    const panels = Array.from(rail.querySelectorAll<HTMLElement>('[data-hscroll-panel]'));
+    const ticks = Array.from(section.querySelectorAll<HTMLElement>('.htypo-tick'));
+    const n = panels.length;
+    if (n === 0) return;
+
+    // Guard : desktop + pointer fine uniquement, sinon CSS gère (snap / stack)
+    const mq = window.matchMedia('(min-width: 1024px) and (hover: hover)');
+    if (!mq.matches) return;
+
+    scroll(
+      (progress: number) => {
+        const railWidth = rail.scrollWidth;
+        const viewportW = window.innerWidth;
+        const travel = Math.max(0, railWidth - viewportW);
+        const x = -progress * travel;
+        rail.style.transform = `translate3d(${x}px, 0, 0)`;
+
+        const activeIndex = Math.min(n - 1, Math.floor(progress * n + 0.0001));
+        ticks.forEach((tick, i) => {
+          tick.classList.toggle('is-active', i === activeIndex);
+          tick.classList.toggle('is-passed', i < activeIndex);
+        });
+      },
+      { target: section, offset: ['start start', 'end end'] as never },
+    );
+
+    // CTA suiveur souris — une frame ajustée par pointermove + reset au leave
+    panels.forEach((panel) => {
+      const cta = panel.querySelector<HTMLElement>('[data-cursor-cta]');
+      if (!cta) return;
+      let rafId = 0;
+      let pendingX = 0;
+      let pendingY = 0;
+
+      const flush = () => {
+        rafId = 0;
+        cta.style.translate = `${pendingX}px ${pendingY}px`;
+      };
+
+      panel.addEventListener('pointermove', (e) => {
+        const rect = panel.getBoundingClientRect();
+        pendingX = e.clientX - rect.left;
+        pendingY = e.clientY - rect.top;
+        if (!rafId) rafId = window.requestAnimationFrame(flush);
+      });
+    });
   });
 }
 
@@ -444,6 +500,7 @@ function enhance(root: ParentNode = document) {
   setupClipReveals(root);
   setupQuoteScroll(root);
   setupScrollytelling(root);
+  setupHorizontalTypologies(root);
   setupMagnetic(root);
   setupParallax(root);
   setupHeroZoom(root);
