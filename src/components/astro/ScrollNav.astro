@@ -71,14 +71,14 @@
   }
 
   /* Rail vertical continu (ligne fine 1px)
-     Opacity 35% (était 20%) — feedback 2026-04-24 : rail invisible sur cream. */
+     Opacity 55% + 1.5px sur cream pour vraiment se lire (feedback 2026-04-24). */
   .scroll-nav-rail {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 1px;
-    background-color: color-mix(in oklab, var(--color-forest) 35%, transparent);
+    width: 1.5px;
+    background-color: color-mix(in oklab, var(--color-forest) 55%, transparent);
   }
 
   /* Thumb : segment coloré qui glisse sur le rail */
@@ -124,14 +124,15 @@
     padding: 0.2rem 0;
   }
 
-  /* Numéro mono — signature discrète
-     Opacity 0.7 (était 0.45) — lisibilité sur cream. */
+  /* Numéro mono — signature visible
+     Opacity pleine (était 0.45 puis 0.70) — feedback 2026-04-24 : encore
+     invisible sur cream. Les non-actifs vont à 0.85 par `.is-passed`. */
   .scroll-nav-index {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
     letter-spacing: 0.24em;
     color: currentColor;
-    opacity: 0.7;
+    opacity: 0.85;
     min-width: 22px;
     transition:
       opacity 0.4s var(--ease-out-editorial),

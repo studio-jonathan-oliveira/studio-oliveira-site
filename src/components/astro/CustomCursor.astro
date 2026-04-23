@@ -26,17 +26,12 @@
       pointer-events: none;
       z-index: 9999;
       display: block;
-      /* Pas de mix-blend-mode : la couleur du cursor change selon la
-         section active (body.is-dark-section piloté par ScrollNav). */
-      --cursor-color: var(--color-forest);
-    }
-
-    /* Sur section sombre (forest), cursor crème pour contraste.
-       Source unique : html[data-theme="dark"] (fallback body.is-dark-section
-       pour compat transitoire). */
-    :global(html[data-theme='dark']) .custom-cursor,
-    :global(body.is-dark-section) .custom-cursor {
-      --cursor-color: var(--color-cream);
+      /* mix-blend-mode: difference — le cursor s'inverse automatiquement
+         sur tout fond (cream, forest, image). Couleur base = blanc, la
+         différence donne le négatif visuel (feedback Morgan 2026-04-24 :
+         « avant ça faisait une couleur inversée de la surface c'était cool »). */
+      --cursor-color: #ffffff;
+      mix-blend-mode: difference;
     }
 
     /* Masque le curseur natif uniquement en fine pointer. */
@@ -86,19 +81,18 @@
         opacity 0.2s ease;
     }
 
-    /* État hover : ring se gonfle, border latérite pour signal accent
-       (fond transparent — feedback Morgan 2026-04-24 : « rempli rouge
-       latérite tout le temps »). */
+    /* État hover : ring se gonfle. Pas de changement de couleur —
+       en mix-blend-mode: difference, le ring garde sa magie d'inversion.
+       L'accent latérite se lit déjà sur les CTA eux-mêmes. */
     .custom-cursor.is-hover .cursor-ring {
       width: 56px;
       height: 56px;
       top: -28px;
       left: -28px;
-      border-color: var(--color-laterite);
       border-width: 1.5px;
     }
     .custom-cursor.is-hover .cursor-dot {
-      background-color: var(--color-laterite);
+      opacity: 0;
     }
 
     /* État pressed */
