@@ -26,7 +26,14 @@
       pointer-events: none;
       z-index: 9999;
       display: block;
-      mix-blend-mode: difference;
+      /* Pas de mix-blend-mode : la couleur du cursor change selon la
+         section active (body.is-dark-section piloté par ScrollNav). */
+      --cursor-color: var(--color-forest);
+    }
+
+    /* Sur section sombre (forest), cursor crème pour contraste */
+    :global(body.is-dark-section) .custom-cursor {
+      --cursor-color: var(--color-cream);
     }
 
     /* Masque le curseur natif uniquement en fine pointer. */
@@ -51,10 +58,11 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background-color: var(--color-cream);
+      background-color: var(--cursor-color);
       transition:
         transform 0.18s var(--ease-out-editorial),
-        opacity 0.2s ease;
+        opacity 0.2s ease,
+        background-color 0.4s ease;
     }
 
     .cursor-ring {
@@ -63,7 +71,7 @@
       left: -18px;
       width: 36px;
       height: 36px;
-      border: 1px solid var(--color-cream);
+      border: 1.5px solid var(--cursor-color);
       border-radius: 50%;
       transition:
         width 0.35s var(--ease-out-editorial),
@@ -71,19 +79,18 @@
         top 0.35s var(--ease-out-editorial),
         left 0.35s var(--ease-out-editorial),
         background-color 0.3s ease,
-        border-color 0.3s ease,
+        border-color 0.4s ease,
         opacity 0.2s ease;
     }
 
-    /* État hover : ring se gonfle et se remplit */
+    /* État hover : ring se gonfle, latérite pour signal accent */
     .custom-cursor.is-hover .cursor-ring {
-      width: 72px;
-      height: 72px;
-      top: -36px;
-      left: -36px;
-      background-color: var(--color-cream);
-      border-color: var(--color-cream);
-      mix-blend-mode: normal;
+      width: 64px;
+      height: 64px;
+      top: -32px;
+      left: -32px;
+      background-color: var(--color-laterite);
+      border-color: var(--color-laterite);
     }
     .custom-cursor.is-hover .cursor-dot {
       opacity: 0;

@@ -1,10 +1,20 @@
 ---
+/*
+ * /studio — page Jonathan Oliveira, portrait + parcours + méthode.
+ * Refonte 2026-04-23 : hero split avec portrait Jonathan + section démarche
+ * texturée + méthode forest sombre immersif (feedback Morgan : « plus sexy,
+ * texture, couleur, photos de Jonathan »).
+ * Photos du dossier client : _brief/client-assets/logo-identite/DSC079*, DSC08003.
+ */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import SectionHeader from '@/components/astro/SectionHeader.astro';
-import Prose from '@/components/astro/Prose.astro';
+import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
+
+import portrait01 from '@/assets/jonathan/portrait-01.webp';
+import portrait02 from '@/assets/jonathan/portrait-02.webp';
+import textureVegetale from '@/assets/home/hero-biophilie.png';
 
 const schema = jsonLdGraph([
   organization(),
@@ -16,7 +26,7 @@ const schema = jsonLdGraph([
   ]),
 ]);
 
-// Faits documentés dans le process PDF — pas du contenu inventé.
+// Parcours factuel sourcé PDF PROCESS ETUDES STUDIO 2026
 const parcours = [
   { annee: 'BAC ES', detail: 'Diplômé avec mention' },
   { annee: 'Bac Pro Travaux paysagers', detail: '1 an, mention' },
@@ -47,7 +57,6 @@ const piliers = [
   },
 ];
 
-// Mots de Jonathan, extraits du PDF "PROCESS ETUDES STUDIO 2026".
 const etapesMethode = [
   {
     num: '01',
@@ -77,93 +86,199 @@ const etapesMethode = [
   title="Jonathan Oliveira — Designer biophilique à Brive-la-Gaillarde"
   description="Jonathan Oliveira, designer végétal indépendant fondateur du Studio de design biophilique à Brive-la-Gaillarde. Démarche scientifique et sensible, formation en architecture d'intérieur et ingénierie paysagère."
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-        Le studio · Depuis {SITE.foundedYear}
-      </p>
-      <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-      >
-        Jonathan Oliveira<br />
-        — <em class="italic">Designer biophilique</em>.
-      </h1>
-      <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
-      >
-        Le Studio J Oliveira est un studio de design spatial spécialisé dans l'aménagement
-        environnemental immersif et expérientiel — <a
-          href="/architecture-paysagere"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >architecture paysagère</a
-        > et <a
-          href="/amenagement-vegetal-interieur"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >aménagement végétalisé d'intérieur</a
-        >. J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
-        l'humain — voir les <a
-          href="/conceptions"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >projets en conception</a
-        >.
-      </p>
-    </div>
-  </Section>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
 
-  <Section variant="cream" topDivider aria-labelledby="demarche-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20" data-reveal="up">
-      <SectionHeader
-        eyebrow="Démarche"
-        title="Trois piliers, un même écosystème."
-        id="demarche-title"
-      />
-      <Prose>
-        <p>
-          La conception biophilique est un art de conception architecturale directement inspiré des
-          environnements naturels et de leurs effets sur l'humain. C'est une démarche scientifique
-          couplée à la technicité architecturale — étudier la nature à l'état primitif, comprendre
-          ses interactions vivantes et non-vivantes, puis reproduire ses bienfaits dans les espaces
-          que nous habitons.
+  {/* ───── HERO SPLIT : portrait Jonathan + texte éditorial ───── */}
+  <section
+    id="hero"
+    data-section-label="Studio"
+    class="studio-hero relative bg-[var(--color-cream)]"
+  >
+    <div class="mx-auto grid max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12">
+      <div
+        class="px-6 pt-8 pb-16 md:px-12 md:pt-16 md:pb-24 lg:col-span-7 lg:col-start-1"
+        data-reveal="up"
+      >
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="studio-dot" aria-hidden="true"></span>
+          Le studio · Depuis {SITE.foundedYear}
         </p>
-        <p>
-          Trois écosystèmes cohabitent dans chaque projet : le bâti, l'environnement, l'humain.
-          C'est cet équilibre que je cherche — une conception juste, logique avec les besoins du
-          client, en considération de l'environnement dans lequel elle s'implante.
+        <h1
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
+        >
+          <span data-mask-line class="block pb-[0.05em]">Jonathan</span>
+          <span data-mask-line class="block pb-[0.05em] text-[var(--color-forest)]">Oliveira —</span
+          >
+          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+            Designer biophilique.
+          </span>
+        </h1>
+        <p
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        >
+          Le Studio J Oliveira est un studio de design spatial spécialisé dans l'aménagement
+          environnemental immersif et expérientiel —
+          <a
+            href="/architecture-paysagere"
+            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            >architecture paysagère</a
+          > et <a
+            href="/amenagement-vegetal-interieur"
+            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            >aménagement végétalisé d'intérieur</a
+          >. J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
+          l'humain.
         </p>
-        <p>
-          Le design biophilique reste aujourd'hui abstrait pour la plupart des prospects. Mon
-          travail n'est pas de l'expliquer : il est de le faire sentir — dans chaque espace conçu,
-          dans l'expérience qu'il produit.
-        </p>
-        <div class="not-prose mt-10 grid gap-6 sm:grid-cols-3">
-          {
-            piliers.map((p) => (
-              <div class="border-t border-[var(--color-forest)]/20 pt-4">
-                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-                  {p.titre}
-                </p>
-                <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/80">
-                  {p.description}
-                </p>
-              </div>
-            ))
-          }
+      </div>
+
+      <div class="relative lg:col-span-5 lg:col-start-8" data-reveal="up" data-reveal-delay="0.2">
+        <div class="studio-portrait relative overflow-hidden">
+          <Image
+            src={portrait01}
+            alt="Jonathan Oliveira, fondateur du Studio"
+            widths={[480, 720, 960, 1200]}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            quality={84}
+            format="webp"
+            class="h-full w-full object-cover"
+            loading="eager"
+          />
+          <span class="studio-portrait-caption" aria-hidden="true">
+            <em class="italic">Jonathan Oliveira</em>
+            <span>Fondateur</span>
+          </span>
         </div>
-      </Prose>
+      </div>
     </div>
-  </Section>
+  </section>
 
-  <Section variant="cream" topDivider aria-labelledby="parcours-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20" data-reveal="up">
-      <SectionHeader eyebrow="Parcours" title="Formation et trajectoire." id="parcours-title" />
-      <ol class="space-y-6" data-reveal-stagger="0.1">
+  {/* ───── 01 · DÉMARCHE — avec texture végétale en fond + piliers ───── */}
+  <section
+    class="studio-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-dark-section
+    aria-labelledby="demarche-title"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={textureVegetale}
+        alt=""
+        widths={[960, 1440, 1920]}
+        sizes="100vw"
+        quality={60}
+        format="webp"
+        class="h-full w-full object-cover object-center"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-[var(--color-forest)]/92" aria-hidden="true"></div>
+      <div class="studio-demarche-halo" aria-hidden="true"></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
+      <div class="grid gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
+        <div data-reveal="up">
+          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+            <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
+          </p>
+          <h2
+            id="demarche-title"
+            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+          >
+            Trois piliers,<br />
+            un même <em class="text-[var(--color-laterite)] italic">écosystème</em>.
+          </h2>
+        </div>
+
+        <div
+          class="space-y-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
+          data-reveal="up"
+          data-reveal-delay="0.15"
+        >
+          <p>
+            La conception biophilique est un art de conception architecturale directement inspiré
+            des environnements naturels et de leurs effets sur l'humain. Une démarche
+            <em class="text-[var(--color-moss)] italic">scientifique</em> couplée à la technicité architecturale
+            — étudier la nature à l'état primitif, comprendre ses interactions, puis reproduire ses bienfaits
+            dans les espaces que nous habitons.
+          </p>
+          <p>
+            Trois écosystèmes cohabitent dans chaque projet : le bâti, l'environnement, l'humain.
+            C'est cet <em class="text-[var(--color-laterite)] italic">équilibre</em> que je cherche —
+            une conception juste, logique avec les besoins du client, en considération de l'environnement
+            dans lequel elle s'implante.
+          </p>
+        </div>
+      </div>
+
+      <ul
+        class="mt-16 grid grid-cols-1 gap-px bg-[var(--color-cream)]/10 sm:grid-cols-3"
+        data-reveal-stagger="0.12"
+        data-reveal="up"
+      >
         {
-          parcours.map((p) => (
-            <li class="grid grid-cols-[auto_1fr] gap-6 border-l border-[var(--color-forest)]/20 pl-6">
-              <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight">
-                {p.annee}
+          piliers.map((p, i) => (
+            <li class="bg-[var(--color-forest)]/80 p-8 backdrop-blur-sm md:p-10">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                Pilier {String(i + 1).padStart(2, '0')}
               </p>
-              <p class="text-sm leading-relaxed text-[var(--color-forest)]/70">{p.detail}</p>
+              <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
+                <em class="italic">{p.titre}</em>
+              </h3>
+              <p class="mt-4 text-sm leading-relaxed text-[var(--color-cream)]/75">
+                {p.description}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ───── 02 · PARCOURS avec photo + timeline ───── */}
+  <Section variant="cream" aria-labelledby="parcours-title">
+    <div class="grid gap-16 md:grid-cols-[1fr_1.4fr] md:gap-20">
+      <div data-reveal="up">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+          <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Parcours
+        </p>
+        <h2
+          id="parcours-title"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+        >
+          <em class="italic">Formation</em><br />
+          et trajectoire.
+        </h2>
+
+        <div class="mt-10 overflow-hidden">
+          <Image
+            src={portrait02}
+            alt="Jonathan Oliveira, portrait éditorial"
+            widths={[480, 720]}
+            sizes="(min-width: 768px) 35vw, 80vw"
+            quality={82}
+            format="webp"
+            class="h-auto w-full max-w-sm object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <ol class="relative space-y-0" data-reveal-stagger="0.1" data-reveal="up">
+        {
+          parcours.map((p, i) => (
+            <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                {String(i + 1).padStart(2, '0')}
+              </p>
+              <div>
+                <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-forest)]">
+                  <em class="italic">{p.annee}</em>
+                </p>
+                <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/70">{p.detail}</p>
+              </div>
             </li>
           ))
         }
@@ -171,70 +286,102 @@ const etapesMethode = [
     </div>
   </Section>
 
-  <Section variant="cream" topDivider aria-labelledby="methode-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20" data-reveal="up">
-      <SectionHeader eyebrow="Méthode" title="Je ne vends pas une étude." id="methode-title" />
-      <Prose size="lg">
-        <blockquote>
-          Je ne vends pas une étude — je vends une vision, une méthode, une expérience, une sécurité
-          de résultat. Le client ne doit jamais avoir l'impression d'être vendu, mais plutôt :
-          choisir, co-construire, s'élever vers un projet plus juste et plus qualitatif.
-        </blockquote>
-        <p class="mt-8">
-          Le parcours est simple et volontairement lent — trois temps, pour créer la relation,
-          comprendre le lieu, et positionner la valeur avant de chiffrer.
+  {/* ───── 03 · MÉTHODE forest immersif avec blockquote géant ───── */}
+  <section
+    class="studio-methode relative bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-dark-section
+    aria-labelledby="methode-title"
+  >
+    <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
+      <div class="mb-16 md:mb-20" data-reveal="up">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Méthode
         </p>
-        <ol class="not-prose mt-10 space-y-8" data-reveal-stagger="0.12">
-          {
-            etapesMethode.map((etape) => (
-              <li class="grid grid-cols-[auto_1fr] gap-6 border-t border-[var(--color-forest)]/15 pt-6">
-                <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)]">
-                  {etape.num}
-                </p>
-                <div>
-                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
-                    {etape.label}
-                    <span class="ml-3 font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
-                      {etape.duree}
-                    </span>
-                  </p>
-                  <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/75">
-                    {etape.detail}
-                  </p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </Prose>
-    </div>
-  </Section>
+        <h2
+          id="methode-title"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+        >
+          Je ne vends pas<br />
+          une <em class="text-[var(--color-laterite)] italic">étude</em>.
+        </h2>
+      </div>
 
-  <Section variant="forest" topDivider>
+      <blockquote
+        class="studio-quote mx-auto max-w-4xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] italic md:text-[length:var(--text-4xl)]"
+        data-reveal="up"
+      >
+        Je vends une <em class="text-[var(--color-laterite)] not-italic">vision</em>, une
+        <em class="text-[var(--color-moss)] not-italic">méthode</em>, une
+        <em class="text-[var(--color-moss)] not-italic">expérience</em>, une
+        <em class="text-[var(--color-laterite)] not-italic">sécurité de résultat</em>. Le client ne
+        doit jamais avoir l'impression d'être vendu, mais plutôt : choisir, co-construire, s'élever
+        vers un projet plus juste et plus qualitatif.
+      </blockquote>
+
+      <p
+        class="mx-auto mt-12 max-w-2xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
+        data-reveal="up"
+        data-reveal-delay="0.2"
+      >
+        Le parcours est simple et volontairement lent — trois temps, pour créer la relation,
+        comprendre le lieu, et positionner la valeur avant de chiffrer.
+      </p>
+
+      <ol class="mt-16 space-y-0 md:mt-20" data-reveal-stagger="0.12" data-reveal="up">
+        {
+          etapesMethode.map((etape) => (
+            <li class="studio-methode-item grid grid-cols-[auto_1fr] items-baseline gap-6 border-t border-[var(--color-cream)]/12 py-8 md:gap-16 md:py-10">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                {etape.num}
+              </p>
+              <div>
+                <div class="flex flex-wrap items-baseline gap-4">
+                  <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight md:text-[length:var(--text-3xl)]">
+                    <em class="italic">{etape.label}</em>
+                  </h3>
+                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                    {etape.duree}
+                  </span>
+                </div>
+                <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-cream)]/75">
+                  {etape.detail}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* ───── CTA final cream ───── */}
+  <Section variant="cream" topDivider>
     <div class="text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
         Étape suivante
       </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-forest)]"
       >
-        Engager la <em class="text-[var(--color-gold)] italic">conversation</em>.
+        Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.
       </h2>
-      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
+      <p
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70"
+      >
         Premier échange téléphonique de 15 à 25 minutes pour qualifier le projet.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <a
           href="/contact"
           data-magnetic="0.3"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+          class="inline-flex items-center gap-3 rounded-full border border-[var(--color-forest)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-forest)] transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
         >
           Prendre contact
           <span aria-hidden="true">→</span>
         </a>
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm text-[var(--color-forest)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -242,7 +389,123 @@ const etapesMethode = [
     </div>
   </Section>
 
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={schema} />
-  </Fragment>
+  <style>
+    /* Dot pulsant (signature) */
+    .studio-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 0.4rem;
+      border-radius: 50%;
+      background-color: var(--color-laterite);
+      vertical-align: middle;
+      animation: studio-pulse 2.6s ease-in-out infinite;
+    }
+    @keyframes studio-pulse {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    /* Portrait Jonathan */
+    .studio-portrait {
+      aspect-ratio: 4 / 5;
+      background-color: var(--color-forest);
+      position: relative;
+    }
+    @media (min-width: 1024px) {
+      .studio-portrait {
+        aspect-ratio: 4 / 6;
+      }
+    }
+    .studio-portrait-caption {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      padding: 0.5rem 0.75rem;
+      background-color: color-mix(in oklab, var(--color-forest) 85%, transparent);
+      backdrop-filter: blur(4px);
+    }
+    .studio-portrait-caption em {
+      font-family: var(--font-heading), serif;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--color-cream);
+      font-variation-settings:
+        'opsz' 144,
+        'SOFT' 70;
+    }
+
+    /* Halo latérite dans la section Démarche forest */
+    .studio-demarche-halo {
+      position: absolute;
+      top: -25%;
+      right: -20%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(
+        circle at center,
+        color-mix(in oklab, var(--color-laterite) 32%, transparent) 0%,
+        transparent 65%
+      );
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    /* Parcours timeline hover */
+    .studio-parcours-item {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
+      transition:
+        background-color 0.3s ease,
+        padding-left 0.4s var(--ease-out-editorial);
+    }
+    .studio-parcours-item:first-child {
+      border-top: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
+    }
+    .studio-parcours-item:hover {
+      background-color: color-mix(in oklab, var(--color-laterite) 4%, transparent);
+      padding-left: 0.5rem;
+    }
+
+    /* Blockquote de méthode */
+    .studio-quote {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .studio-quote::before {
+      content: '“';
+      position: absolute;
+      left: -0.5rem;
+      top: -0.6em;
+      font-family: var(--font-heading), serif;
+      font-size: 6rem;
+      line-height: 1;
+      color: var(--color-laterite);
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    /* Étapes méthode hover */
+    .studio-methode-item {
+      transition: padding-left 0.4s var(--ease-out-editorial);
+    }
+    .studio-methode-item:hover {
+      padding-left: 0.5rem;
+    }
+  </style>
 </BaseLayout>

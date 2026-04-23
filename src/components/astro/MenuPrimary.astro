@@ -214,7 +214,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     background: transparent;
     color: var(--color-forest);
     z-index: 100;
-    overflow: hidden;
+    /* Scroll molette : le dialog lui-même est scrollable → les events
+       wheel sur la zone vide à gauche OU sur l'inner se propagent bien.
+       L'inner gère son propre overflow via max-height + overflow-y:auto. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .primary-menu::backdrop {
     background: color-mix(in oklab, var(--color-forest) 60%, transparent);
@@ -222,15 +226,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* Curseur dans le menu : rétabli le curseur système natif
-     (le custom cursor en mix-blend-mode difference est derrière le top-layer
-     du dialog, donc inaccessible — feedback Morgan 2026-04-23). */
+  /* Curseur dans le menu : on garde le custom cursor visible en le
+     déplaçant dans le dialog à l'ouverture (voir script plus bas). */
   .primary-menu,
   .primary-menu * {
+    cursor: none;
+  }
+  /* Fallback : si le JS n'a pas déplacé le cursor (reduced motion, etc.),
+     on rétablit le système natif dans le menu */
+  .primary-menu:not(.has-cursor),
+  .primary-menu:not(.has-cursor) * {
     cursor: auto;
   }
-  .primary-menu a,
-  .primary-menu button {
+  .primary-menu:not(.has-cursor) a,
+  .primary-menu:not(.has-cursor) button {
     cursor: pointer;
   }
 
@@ -817,16 +826,27 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     if (trigger.dataset.wired === 'true') return;
     trigger.dataset.wired = 'true';
 
+    // Déplace le custom cursor dans le dialog à l'ouverture (sinon il est
+    // derrière le top-layer du <dialog> et invisible).
+    const moveCursorInto = (target: ParentNode) => {
+      const cursor = document.getElementById('cursor');
+      if (cursor) target.appendChild(cursor);
+    };
+
     const open = () => {
       dialog.classList.remove('is-closing');
       dialog.showModal();
+      dialog.classList.add('has-cursor');
+      moveCursorInto(dialog);
       trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     };
 
     const close = () => {
-      // Animation out, puis close() natif
       dialog.classList.add('is-closing');
+      // On remet le cursor dans body dès le début de l'animation out
+      moveCursorInto(document.body);
+      dialog.classList.remove('has-cursor');
       window.setTimeout(() => {
         dialog.close();
         dialog.classList.remove('is-closing');
@@ -857,6 +877,22 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) close();
     });
+
+    // Forward wheel event de la zone vide vers l'inner scrollable
+    // (fix scroll molette 2026-04-23 Morgan).
+    const inner = dialog.querySelector<HTMLElement>('.primary-menu__inner');
+    dialog.addEventListener(
+      'wheel',
+      (e) => {
+        if (!inner) return;
+        // Si le wheel est sur le dialog lui-même (vide à gauche), on forward
+        if (e.target === dialog) {
+          e.preventDefault();
+          inner.scrollTop += e.deltaY;
+        }
+      },
+      { passive: false },
+    );
   }
 
   wirePrimaryMenu();

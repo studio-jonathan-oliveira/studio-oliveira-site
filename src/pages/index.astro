@@ -965,12 +965,12 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       overflow: hidden;
     }
 
-    /* Header en surimpression haut — décalé pour laisser la place à la
-     * ScrollNav sidebar sur desktop large (feedback Morgan 2026-04-23 :
-     * « titre quatre manières d'habiter coupé par la sidebar »). */
+    /* Header en surimpression — décalé sous le Header site (fixed ~100px)
+     * et à droite de la ScrollNav sidebar (fix 2026-04-23 : titre caché
+     * derrière le Header). */
     .htypo-header {
       position: absolute;
-      top: 2.5rem;
+      top: 7rem;
       left: 2.5rem;
       right: 2.5rem;
       z-index: 3;
@@ -978,7 +978,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     }
     @media (min-width: 768px) {
       .htypo-header {
-        top: 3rem;
+        top: 8rem;
         left: 4rem;
       }
     }
