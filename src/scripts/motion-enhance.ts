@@ -331,17 +331,27 @@ function setupQuoteScroll(root: ParentNode) {
 
     words.forEach((w) => (w.style.opacity = '0.15'));
 
+    // Target la section parent (pas le blockquote, qui est sticky donc
+    // son bounding rect ne bouge pas pendant le scroll → progress cassé).
+    // Fallback : le container lui-même si pas de section trouvée.
+    const section = (container.closest('section') as HTMLElement | null) ?? container;
+
     scroll(
       (progress: number) => {
-        // Compression : la phrase se compose entre 15% et 75% du scroll de la section.
-        const eased = Math.max(0, Math.min(1, (progress - 0.15) / 0.6));
+        // Section 120vh + sticky 100vh → période sticky : progress 0.45 à 0.55
+        // seulement. On élargit la fenêtre de coloration (0.30 → 0.65) pour
+        // que les mots se colorient pendant tout le trajet lecture sans
+        // attendre la fin du sticky — plus fluide (feedback Morgan 2026-04-23).
+        const START = 0.3;
+        const END = 0.65;
+        const eased = Math.max(0, Math.min(1, (progress - START) / (END - START)));
         const active = eased * words.length;
         words.forEach((w, i) => {
           const local = Math.max(0, Math.min(1, active - i));
           w.style.opacity = String(0.15 + local * 0.85);
         });
       },
-      { target: container, offset: ['start end', 'end start'] as never },
+      { target: section, offset: ['start end', 'end start'] as never },
     );
   });
 }
@@ -452,15 +462,27 @@ function setupHorizontalTypologies(root: ParentNode) {
     const mq = window.matchMedia('(min-width: 1024px) and (hover: hover)');
     if (!mq.matches) return;
 
+    // Dwell : le rail reste figé pendant une portion au début et à la fin
+    // du scroll de la section — on admire le 1er et le dernier panel sans
+    // translation immédiate (bug 2026-04-23 Morgan : « on a pas le temps
+    // de voir le 1er typo »).
+    const DWELL_START = 0.25;
+    const DWELL_END = 0.24;
+    const activeRange = 1 - DWELL_START - DWELL_END;
+
     scroll(
       (progress: number) => {
+        // Remap : 0 → reste sur panel 1 ; DWELL_START → commence à translater ;
+        // 1 - DWELL_END → atteint le dernier panel ; 1 → reste dessus.
+        const eased = Math.max(0, Math.min(1, (progress - DWELL_START) / activeRange));
+
         const railWidth = rail.scrollWidth;
         const viewportW = window.innerWidth;
         const travel = Math.max(0, railWidth - viewportW);
-        const x = -progress * travel;
+        const x = -eased * travel;
         rail.style.transform = `translate3d(${x}px, 0, 0)`;
 
-        const activeIndex = Math.min(n - 1, Math.floor(progress * n + 0.0001));
+        const activeIndex = Math.min(n - 1, Math.floor(eased * n + 0.0001));
         ticks.forEach((tick, i) => {
           tick.classList.toggle('is-active', i === activeIndex);
           tick.classList.toggle('is-passed', i < activeIndex);

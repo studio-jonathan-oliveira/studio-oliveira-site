@@ -37,8 +37,9 @@ const typologies = [
     // Source : PDF ligne 99-113
     phrase: "L'espace extérieur devient une pièce à part entière de l'habitation.",
     image: typoMicroUrbain,
-    imageNote:
-      '[À FOURNIR — image définitive typologie Micro-urbain, actuellement fallback évocateur]',
+    // object-position : centrer l'intérêt visuel (moitié basse pour terrasse)
+    imagePosition: 'center 65%',
+    imageNote: '[À FOURNIR — image définitive Micro-urbain, placeholder actuel évocateur]',
   },
   {
     slug: 'coeur-urbain',
@@ -52,6 +53,7 @@ const typologies = [
     // Source : PDF ligne 135
     phrase: 'Très technique, très risquée, très précieuse et très stratégique.',
     image: typoCoeurUrbain,
+    imagePosition: 'center 55%',
   },
   {
     slug: 'frange-urbaine',
@@ -65,6 +67,7 @@ const typologies = [
     // Source : PDF ligne 137-159 (reformulation synthétique)
     phrase: 'Un territoire instable entre la ville et la nature.',
     image: typoFrangeUrbaine,
+    imagePosition: 'center 50%',
   },
   {
     slug: 'domaine-caractere',
@@ -79,6 +82,7 @@ const typologies = [
     phrase:
       'Un dialogue entre une architecture ancienne, un sol fatigué, un paysage réel et une mémoire invisible.',
     image: typoDomaine,
+    imagePosition: 'center 40%',
   },
 ];
 
@@ -156,12 +160,12 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         </p>
 
         <h1
-          class="hero-title mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.95] tracking-tight text-[var(--color-cream)]"
+          class="hero-title mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.05] tracking-tight text-[var(--color-cream)]"
         >
-          <span data-hero-mask class="hero-mask block leading-[0.95]">
+          <span data-hero-mask class="hero-mask block pb-[0.05em] leading-[1.05]">
             <span data-mask-line class="hero-line block">Designer</span>
           </span>
-          <span data-hero-mask class="hero-mask block leading-[0.95]">
+          <span data-hero-mask class="hero-mask block pb-[0.12em] leading-[1.08]">
             <span data-mask-line class="hero-line block text-[var(--color-laterite)] italic"
               >végétal</span
             >
@@ -234,21 +238,22 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       </header>
 
       <div class="bifurcation-grid grid gap-0 md:grid-cols-2">
-        <!-- Particuliers -->
+        <!-- Particuliers — carte cream, accent moss (signature botanique) -->
         <a
           href="#typologies"
           class="bifurcation-card bifurcation-card--a group"
           aria-label="Offre pour les particuliers — quatre typologies de jardin"
         >
-          <span class="bifurcation-num" aria-hidden="true">01</span>
+          <span class="bifurcation-num bifurcation-num--moss" aria-hidden="true">01</span>
           <div class="bifurcation-meta">
-            <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            <p class="bifurcation-eyebrow">
+              <span class="bifurcation-dot bifurcation-dot--moss" aria-hidden="true"></span>
               Particuliers
             </p>
             <h3
-              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.02] md:text-[length:var(--text-4xl)]"
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
             >
-              Architecture <em class="italic">paysagère</em>.
+              Architecture <em class="text-[var(--color-moss)] italic">paysagère</em>.
             </h3>
             <p
               class="mt-5 max-w-sm text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
@@ -263,30 +268,31 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
           </span>
         </a>
 
-        <!-- Professionnels -->
+        <!-- Professionnels — carte forest sombre, accent latérite (contraste chaud) -->
         <a
           href="/pros"
           class="bifurcation-card bifurcation-card--b group"
           aria-label="Offre pour les professionnels — hôtellerie, restauration, bureaux, commerces"
         >
-          <span class="bifurcation-num" aria-hidden="true">02</span>
+          <span class="bifurcation-num bifurcation-num--laterite" aria-hidden="true">02</span>
           <div class="bifurcation-meta">
-            <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            <p class="bifurcation-eyebrow bifurcation-eyebrow--dark">
+              <span class="bifurcation-dot bifurcation-dot--laterite" aria-hidden="true"></span>
               Professionnels
             </p>
             <h3
-              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.02] md:text-[length:var(--text-4xl)]"
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
             >
-              Décors <em class="italic">végétalisés</em>.
+              Décors <em class="text-[var(--color-laterite)] italic">végétalisés</em>.
             </h3>
             <p
-              class="mt-5 max-w-sm text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+              class="mt-5 max-w-sm text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
             >
               Hôtellerie, restauration, bureaux, commerces, locations atypiques. Design biophilique
               au service de l'expérience client.
             </p>
           </div>
-          <span class="bifurcation-cta">
+          <span class="bifurcation-cta bifurcation-cta--dark">
             <span>Découvrir l'univers pro</span>
             <span class="bifurcation-arrow" aria-hidden="true">→</span>
           </span>
@@ -302,7 +308,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     class="bg-[var(--color-cream)]"
     aria-labelledby="studio-lead-title"
   >
-    <div class="mx-auto max-w-7xl px-6 py-32 md:grid md:grid-cols-12 md:gap-16 md:px-10 md:py-48">
+    <div class="mx-auto max-w-7xl px-6 py-28 md:grid md:grid-cols-12 md:gap-16 md:px-10 md:py-40">
       <div class="md:col-span-7" data-reveal="up">
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
           <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Studio biophilique
@@ -311,34 +317,50 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
           id="studio-lead-title"
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.08] text-[var(--color-forest)]"
+          class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-forest)] md:text-[length:var(--text-hero)]"
         >
-          <span data-mask-line class="block">
-            Design végétal en <em class="italic">Aquitaine</em>,
+          <span data-mask-line class="block pb-[0.05em]">
+            Design <em class="text-[var(--color-moss)] italic">végétal</em> en
           </span>
-          <span data-mask-line class="block">Limousin et Toulouse.</span>
+          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+            Aquitaine, Limousin, Toulouse.
+          </span>
         </h2>
         <p
-          class="mt-8 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
         >
           Art de conception architecturale inspiré des environnements naturels et de leurs effets
-          sur les humains. Une démarche scientifique couplée à la technicité architecturale, pour
+          sur les humains. Une démarche <em class="text-[var(--color-moss)] italic">scientifique</em
+          >
+          couplée à la <em class="text-[var(--color-moss)] italic">technicité</em> architecturale, pour
           des espaces à vivre proches de ce que l'on ressent dans un lieu à l'état naturel.
         </p>
       </div>
 
-      <aside class="mt-16 md:col-span-5 md:mt-0" data-reveal="up" data-reveal-delay="0.15">
-        <p class="font-mono text-[11px] tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <aside
+        class="studio-zones mt-16 md:col-span-5 md:mt-0"
+        data-reveal="up"
+        data-reveal-delay="0.15"
+      >
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="studio-zones-dot" aria-hidden="true"></span>
           Zones d'intervention
         </p>
-        <ul class="mt-6 space-y-3 border-t border-[var(--color-forest)]/10 pt-6">
+        <ul
+          class="mt-8 divide-y divide-[var(--color-moss)]/15 border-t border-b border-[var(--color-moss)]/15"
+        >
           {
-            zones.map((zone) => (
-              <li class="flex items-baseline justify-between border-b border-[var(--color-forest)]/10 pb-3">
-                <span class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]">
-                  {zone}
+            zones.map((zone, i) => (
+              <li class="studio-zone group flex items-baseline justify-between gap-4 py-5">
+                <span class="flex items-baseline gap-4">
+                  <span class="w-6 font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span class="font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-none text-[var(--color-forest)] transition-colors group-hover:text-[var(--color-laterite)]">
+                    <em class="italic">{zone}</em>
+                  </span>
                 </span>
-                <span class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-forest)]/50 uppercase">
+                <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/40 transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
                   →
                 </span>
               </li>
@@ -347,7 +369,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         </ul>
         <a
           href="/studio"
-          class="mt-8 inline-flex items-center gap-3 border-b border-[var(--color-forest)]/30 pb-1 text-sm tracking-wide text-[var(--color-forest)] transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
+          class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-moss)]/40 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase transition-colors hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
         >
           Lire le manifeste complet
           <span aria-hidden="true">→</span>
@@ -399,6 +421,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
                   format="webp"
                   loading={i === 0 ? 'eager' : 'lazy'}
                   class="htypo-img"
+                  style={`object-position: ${t.imagePosition ?? 'center'}`}
                 />
                 <div class="htypo-veil" aria-hidden="true" />
                 <span class="htypo-index-xl" aria-hidden="true">
@@ -408,11 +431,14 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
 
               <div class="htypo-copy">
                 <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
-                  {t.index} · {t.nom}
+                  {t.index} &nbsp;·&nbsp; Typologie
                 </p>
-                <h3 class="htypo-phrase mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.08] italic md:text-[length:var(--text-4xl)]">
-                  {t.phrase}
+                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] md:text-[length:var(--text-hero)]">
+                  <em class="italic">{t.nom}</em>
                 </h3>
+                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.15] text-[var(--color-cream)]/80 italic md:text-[length:var(--text-3xl)]">
+                  {t.phrase}
+                </p>
 
                 <dl class="htypo-meta mt-8 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/70 uppercase">
                   <div>
@@ -457,20 +483,36 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     class="bg-[var(--color-cream)]"
     aria-labelledby="methode-title"
   >
-    <div class="mx-auto max-w-7xl px-6 py-32 md:px-10 md:py-48">
-      <div class="mb-20 max-w-2xl" data-reveal="up">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-          <span class="text-[var(--color-forest)]/40">04</span> &nbsp;·&nbsp; Parcours
-        </p>
-        <h2
-          id="methode-title"
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.08] text-[var(--color-forest)]"
-        >
-          <span data-mask-line class="block">Trois temps</span>
-          <span data-mask-line class="block italic">avant l'étude.</span>
-        </h2>
+    <div class="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-36">
+      <!-- Header en 2 colonnes : eyebrow/titre gauche · tagline droite -->
+      <div class="mb-16 grid gap-10 md:mb-24 md:grid-cols-12 md:gap-16" data-reveal="up">
+        <div class="md:col-span-7">
+          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            <span class="text-[var(--color-forest)]/40">04</span> &nbsp;·&nbsp; Avant de commencer
+          </p>
+          <h2
+            id="methode-title"
+            data-mask-reveal
+            data-mask-stagger="0.14"
+            class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-forest)] md:text-[length:var(--text-hero)]"
+          >
+            <span data-mask-line class="block pb-[0.05em]">Trois temps</span>
+            <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+              de qualification.
+            </span>
+          </h2>
+        </div>
+        <div class="md:col-span-5 md:self-end">
+          <p
+            class="max-w-md text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/75"
+            data-reveal="up"
+            data-reveal-delay="0.15"
+          >
+            Avant toute étude, le studio vous engage dans un parcours en trois étapes — découvrir le
+            projet, lire le lieu, cadrer les attentes. Pensé pour écouter avant de proposer,
+            qualifier avant de chiffrer.
+          </p>
+        </div>
       </div>
 
       <ol
@@ -481,10 +523,10 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         {
           methode.map((step) => (
             <li class="bg-[var(--color-cream)] p-10 md:p-14">
-              <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-none text-[var(--color-forest)]/20">
+              <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.85] text-[var(--color-laterite)]/15 italic">
                 {step.num}
               </p>
-              <p class="mt-8 font-mono text-[10px] tracking-[0.28em] text-[var(--color-moss)] uppercase">
+              <p class="mt-8 font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                 {step.duree}
               </p>
               <h3 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
@@ -511,7 +553,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       <div class="mx-auto flex min-h-[100vh] max-w-5xl items-center px-6 py-24 md:px-10">
         <blockquote
           data-quote-scroll
-          class="font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-5xl)]"
+          class="relative font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-5xl)]"
         >
           <p
             class="mb-8 font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase"
@@ -602,15 +644,25 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
   </section>
 
   <style>
+    /* Dot pulsant sur eyebrow Zones d'intervention (signature botanique) */
+    .studio-zones-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 0.4rem;
+      border-radius: 50%;
+      background-color: var(--color-laterite);
+      animation: bifurc-pulse 2.6s ease-in-out infinite;
+      vertical-align: middle;
+    }
+
     /*
-     * Bifurcation — deux cards éditoriales "Particuliers / Professionnels"
-     * Grande asymétrie, numéro décoratif Fraunces en background, filet fin
-     * de séparation entre les 2 cards. Pas de box shadow, pas de card
-     * arrondie : rester dans le vocabulaire magazine.
+     * Bifurcation — split cream/forest éditorial, axe botanique moss/latérite.
+     * Carte A = cream + accents moss (signature végétale).
+     * Carte B = forest sombre + accents latérite (contraste chaud).
      */
     .bifurcation-grid {
-      border-top: 1px solid var(--color-forest, #1a2b1f);
-      border-top-color: color-mix(in srgb, var(--color-forest) 15%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--color-forest) 15%, transparent);
     }
     .bifurcation-card {
       position: relative;
@@ -623,13 +675,15 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       color: inherit;
       border-bottom: 1px solid color-mix(in srgb, var(--color-forest) 15%, transparent);
       overflow: hidden;
-      transition: background-color 0.5s var(--ease-out-editorial);
+      transition:
+        background-color 0.5s var(--ease-out-editorial),
+        filter 0.5s var(--ease-out-editorial);
       isolation: isolate;
     }
     @media (min-width: 768px) {
       .bifurcation-card {
         padding: 5rem 4rem 4.5rem;
-        min-height: 480px;
+        min-height: 520px;
       }
       .bifurcation-card--a {
         border-right: 1px solid color-mix(in srgb, var(--color-forest) 15%, transparent);
@@ -638,33 +692,90 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         border-right: none;
       }
     }
-    .bifurcation-card:hover,
-    .bifurcation-card:focus-visible {
-      background-color: color-mix(in srgb, var(--color-moss) 4%, transparent);
+
+    /* Carte A — cream avec fond subtle moss au hover (rester botanique, végétal) */
+    .bifurcation-card--a {
+      background-color: var(--color-cream);
+      color: var(--color-forest);
+    }
+    .bifurcation-card--a:hover,
+    .bifurcation-card--a:focus-visible {
+      background-color: color-mix(in srgb, var(--color-moss) 7%, var(--color-cream));
     }
 
-    /* Numéro décoratif en background, très grand, caractère Fraunces */
+    /* Carte B — forest sombre avec halo végétal */
+    .bifurcation-card--b {
+      background-color: var(--color-forest);
+      color: var(--color-cream);
+    }
+    .bifurcation-card--b::before {
+      /* Halo radial latérite en bas à gauche (contraste chaud) */
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -20%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(
+        circle at center,
+        color-mix(in oklab, var(--color-laterite) 25%, transparent) 0%,
+        transparent 60%
+      );
+      z-index: -1;
+      opacity: 0.9;
+      transition: opacity 0.6s var(--ease-out-editorial);
+      pointer-events: none;
+    }
+    .bifurcation-card--b::after {
+      /* Grain subtil sur fond forest */
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+      opacity: 0.08;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+    .bifurcation-card--b:hover::before,
+    .bifurcation-card--b:focus-visible::before {
+      opacity: 1;
+    }
+
+    /* Numéros décoratifs en background (Fraunces italique) */
     .bifurcation-num {
       position: absolute;
-      top: -0.15em;
+      top: -0.18em;
       right: 1.5rem;
       font-family: var(--font-heading), serif;
       font-style: italic;
       font-size: clamp(8rem, 14vw, 16rem);
       line-height: 1;
-      color: var(--color-forest);
-      opacity: 0.05;
+      opacity: 0.12;
       font-variation-settings:
         'opsz' 144,
         'SOFT' 100;
       pointer-events: none;
       user-select: none;
-      transition: opacity 0.6s var(--ease-out-editorial);
+      transition:
+        opacity 0.6s var(--ease-out-editorial),
+        transform 0.6s var(--ease-out-editorial);
+    }
+    .bifurcation-num--moss {
+      color: var(--color-moss);
+    }
+    .bifurcation-num--laterite {
+      color: var(--color-laterite);
+      opacity: 0.2;
     }
     .bifurcation-card:hover .bifurcation-num,
     .bifurcation-card:focus-visible .bifurcation-num {
-      opacity: 0.1;
-      color: var(--color-laterite);
+      opacity: 0.25;
+      transform: translateY(-6px);
+    }
+    .bifurcation-card--b:hover .bifurcation-num,
+    .bifurcation-card--b:focus-visible .bifurcation-num {
+      opacity: 0.4;
     }
 
     .bifurcation-meta {
@@ -672,6 +783,47 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       z-index: 1;
     }
 
+    /* Eyebrow avec dot coloré pulsant */
+    .bifurcation-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--color-moss);
+      margin: 0;
+    }
+    .bifurcation-eyebrow--dark {
+      color: var(--color-laterite);
+    }
+    .bifurcation-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      animation: bifurc-pulse 2.6s ease-in-out infinite;
+    }
+    .bifurcation-dot--moss {
+      background-color: var(--color-moss);
+    }
+    .bifurcation-dot--laterite {
+      background-color: var(--color-laterite);
+    }
+    @keyframes bifurc-pulse {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+
+    /* CTA bas de card */
     .bifurcation-cta {
       position: relative;
       z-index: 1;
@@ -691,8 +843,17 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         color 0.3s ease,
         border-color 0.3s ease;
     }
-    .bifurcation-card:hover .bifurcation-cta,
-    .bifurcation-card:focus-visible .bifurcation-cta {
+    .bifurcation-cta--dark {
+      color: var(--color-cream);
+      border-bottom-color: color-mix(in srgb, var(--color-cream) 30%, transparent);
+    }
+    .bifurcation-card--a:hover .bifurcation-cta,
+    .bifurcation-card--a:focus-visible .bifurcation-cta {
+      color: var(--color-moss);
+      border-color: var(--color-moss);
+    }
+    .bifurcation-card--b:hover .bifurcation-cta,
+    .bifurcation-card--b:focus-visible .bifurcation-cta {
       color: var(--color-laterite);
       border-color: var(--color-laterite);
     }
@@ -728,9 +889,11 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       }
     }
 
-    /* Pull-quote scroll-pin — raccourci à 160vh (reco audit DA : quiet luxury) */
+    /* Pull-quote scroll-pin — 120vh pour fluidité (feedback Morgan 2026-04-23 :
+     * « très sticky, faudrait davantage de fluidité »). 120vh = 20vh de sticky
+     * actif, assez pour voir la coloration, pas assez pour se sentir collé. */
     .pull-quote-section {
-      min-height: 160vh;
+      min-height: 120vh;
       position: relative;
     }
     .pull-quote-sticky {
@@ -1028,39 +1191,13 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       }
     }
 
-    /* Reduce-motion : stack vertical complet */
+    /* Reduce-motion : retiré (bypass Motion demande Morgan 2026-04-22).
+     * À réintégrer Phase 6 audit accessibilité — pour l'instant on garde le
+     * scroll horizontal pinned même si l'OS demande reduce-motion, pour ne
+     * pas stacker par erreur (bug 2026-04-23 Morgan : typologies empilées). */
     @media (prefers-reduced-motion: reduce) {
-      .htypo-section {
-        height: auto;
-      }
-      .htypo-sticky {
-        position: static;
-        height: auto;
-        overflow: visible;
-      }
-      .htypo-header {
-        position: static;
-        padding: 3rem 2rem 0;
-      }
-      .htypo-rail {
-        width: 100%;
-        flex-direction: column;
-        overflow: visible;
-        transform: none !important;
-      }
-      .htypo-panel {
-        width: 100%;
-        height: auto;
-        min-height: 80vh;
-      }
-      .htypo-img {
-        transform: none;
-      }
       .htypo-cursor-cta {
         display: none !important;
-      }
-      .htypo-progress {
-        display: none;
       }
     }
   </style>

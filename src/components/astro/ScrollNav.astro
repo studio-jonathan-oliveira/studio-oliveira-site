@@ -1,31 +1,37 @@
 ---
 /*
- * ScrollNav — menu latéral éditorial persistant qui évolue au scroll.
- * Spec Jonathan PDF l.740 : « menu déroulé latéral qui évolue avec le scroll = LE MUST ».
+ * ScrollNav — mini-sommaire éditorial latéral qui évolue au scroll.
+ * Refonte 2026-04-23 (feedback Morgan : « pas assez joli, barre mal placée »).
  *
- * Structure :
- *   - Fixe à gauche sur desktop (≥1024px), masqué mobile (indicateur haut à la place)
- *   - Chaque section [id][data-section-label] devient un item indexé 01, 02...
- *   - Item actif : titre italique serif apparaît à droite, ligne s'épaissit
- *   - Curseur vertical glissant qui pointe sur l'item actif (transition spring)
- *   - Compteur chiffré en bas (02/06)
- *   - Auto-invert colorimétrie sur sections sombres (body.is-dark-section)
+ * Structure visuelle :
+ *   - Ligne verticale fine continue à gauche (rail unifié, pas de bars séparées)
+ *   - Thumb (segment coloré) qui se déplace fluidement le long du rail pour
+ *     indiquer la section active — la barre ne « saute » plus d'un item à l'autre
+ *   - Items : numéro mono + titre italique serif qui s'étend au hover/actif
+ *   - Compteur stylé en bas (02 / 06, italique serif)
+ *   - Auto-invert sur sections sombres, mobile = indicateur top
  *
- * Auto-alimenté au runtime — aucun props.
+ * Auto-alimenté via sections[id][data-section-label] au runtime.
  */
 ---
 
 <nav id="scroll-nav" class="scroll-nav" aria-label="Navigation des sections">
+  <!-- Rail vertical continu -->
+  <span class="scroll-nav-rail" aria-hidden="true"></span>
+  <!-- Thumb mobile qui glisse -->
+  <span class="scroll-nav-thumb" id="scroll-nav-thumb" aria-hidden="true"></span>
+
   <ol id="scroll-nav-list" class="scroll-nav-list" role="list"></ol>
-  <span id="scroll-nav-cursor" class="scroll-nav-cursor" aria-hidden="true"></span>
+
+  <!-- Compteur éditorial -->
   <p id="scroll-nav-counter" class="scroll-nav-counter" aria-hidden="true">
-    <span data-counter-current>01</span>
+    <span data-counter-current class="scroll-nav-counter-current">01</span>
     <span class="scroll-nav-counter-sep">/</span>
     <span data-counter-total>—</span>
   </p>
 </nav>
 
-<!-- Indicateur mobile discret (remplace le menu latéral sous 1024px) -->
+<!-- Indicateur mobile discret (≤1023px) -->
 <div id="scroll-nav-mobile" class="scroll-nav-mobile" aria-hidden="true">
   <span class="scroll-nav-mobile-index" data-mobile-index>01</span>
   <span class="scroll-nav-mobile-label" data-mobile-label>Accueil</span>
@@ -35,10 +41,10 @@
 </div>
 
 <style>
-  /* ─────────── Menu latéral desktop ─────────── */
+  /* ─────────── Sidebar desktop ─────────── */
   .scroll-nav {
     position: fixed;
-    left: 1.75rem;
+    left: 2rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 40;
@@ -47,6 +53,7 @@
     transition: opacity 0.8s var(--ease-out-editorial);
     color: var(--color-forest);
     display: none;
+    padding: 0.5rem 0 0.5rem 1.5rem; /* décalage pour le rail à gauche */
   }
   @media (min-width: 1024px) {
     .scroll-nav {
@@ -58,14 +65,42 @@
     pointer-events: auto;
   }
 
+  /* Rail vertical continu (ligne fine 1px) */
+  .scroll-nav-rail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: color-mix(in oklab, var(--color-forest) 20%, transparent);
+  }
+
+  /* Thumb : segment coloré qui glisse sur le rail */
+  .scroll-nav-thumb {
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 3px;
+    height: 36px;
+    background-color: var(--color-laterite);
+    transform: translateY(0);
+    transition: transform 0.8s var(--ease-out-editorial);
+    will-change: transform;
+    opacity: 0;
+  }
+  .scroll-nav.is-visible .scroll-nav-thumb {
+    opacity: 1;
+  }
+
+  /* Liste items */
   .scroll-nav-list {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
+    gap: 1.3rem;
     margin: 0;
     padding: 0;
     list-style: none;
-    position: relative;
   }
 
   .scroll-nav-item {
@@ -75,147 +110,132 @@
 
   .scroll-nav-link {
     display: flex;
-    align-items: center;
-    gap: 1.1rem;
+    align-items: baseline;
+    gap: 0.9rem;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+    padding: 0.2rem 0;
   }
 
+  /* Numéro mono — signature discrète */
   .scroll-nav-index {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     color: currentColor;
-    opacity: 0.35;
-    min-width: 20px;
-    transition: opacity 0.4s var(--ease-out-editorial);
-  }
-
-  .scroll-nav-track {
-    display: block;
-    width: 22px;
-    height: 1px;
-    background-color: currentColor;
-    opacity: 0.3;
+    opacity: 0.45;
+    min-width: 22px;
     transition:
-      width 0.45s var(--ease-out-editorial),
-      opacity 0.4s ease;
+      opacity 0.4s var(--ease-out-editorial),
+      color 0.4s ease;
   }
 
+  /* Titre italique serif qui apparait/s'étend */
   .scroll-nav-title {
     font-family: var(--font-heading), serif;
     font-size: 14px;
     font-style: italic;
+    font-weight: 400;
     line-height: 1;
     white-space: nowrap;
     color: currentColor;
     opacity: 0;
-    transform: translateX(-6px);
+    max-width: 0;
+    overflow: hidden;
+    transform: translateX(-4px);
     transition:
       opacity 0.5s var(--ease-out-editorial),
-      transform 0.5s var(--ease-out-editorial);
+      max-width 0.7s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial),
+      color 0.4s ease;
     pointer-events: none;
+    font-variation-settings:
+      'opsz' 144,
+      'SOFT' 80;
   }
 
-  /* États */
-  .scroll-nav-item:hover .scroll-nav-track,
-  .scroll-nav-item:focus-within .scroll-nav-track {
-    width: 38px;
-    opacity: 0.7;
+  /* États hover */
+  .scroll-nav-item:hover .scroll-nav-index,
+  .scroll-nav-item:focus-within .scroll-nav-index {
+    opacity: 0.85;
   }
   .scroll-nav-item:hover .scroll-nav-title,
   .scroll-nav-item:focus-within .scroll-nav-title {
-    opacity: 0.65;
+    opacity: 0.7;
+    max-width: 220px;
     transform: translateX(0);
   }
-  .scroll-nav-item:hover .scroll-nav-index,
-  .scroll-nav-item:focus-within .scroll-nav-index {
-    opacity: 0.75;
-  }
 
+  /* État actif */
   .scroll-nav-item.is-active .scroll-nav-index {
     opacity: 1;
-    color: var(--color-moss);
-  }
-  .scroll-nav-item.is-active .scroll-nav-track {
-    width: 56px;
-    opacity: 1;
-    background-color: var(--color-moss);
+    color: var(--color-laterite);
   }
   .scroll-nav-item.is-active .scroll-nav-title {
     opacity: 1;
+    max-width: 220px;
     transform: translateX(0);
     color: var(--color-forest);
   }
 
+  /* Sections passées : opacité intermédiaire */
   .scroll-nav-item.is-passed .scroll-nav-index {
-    opacity: 0.5;
-  }
-  .scroll-nav-item.is-passed .scroll-nav-track {
-    opacity: 0.45;
-  }
-
-  /* Curseur vertical glissant — aligné à la position X du track */
-  .scroll-nav-cursor {
-    position: absolute;
-    left: 32px; /* aligné avec le track horizontal */
-    width: 2px;
-    height: 26px;
-    background-color: var(--color-gold);
-    top: 0;
-    transform: translateY(0);
-    transition: transform 0.7s var(--ease-out-editorial);
-    opacity: 0;
-    will-change: transform;
-  }
-  .scroll-nav.is-visible .scroll-nav-cursor {
-    opacity: 1;
+    opacity: 0.55;
   }
 
   /* Compteur bas */
   .scroll-nav-counter {
-    margin-top: 2.2rem;
-    padding-left: 0;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    opacity: 0.45;
+    margin: 2.5rem 0 0 0;
     display: flex;
-    gap: 0.4rem;
     align-items: baseline;
+    gap: 0.35rem;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    color: color-mix(in oklab, var(--color-forest) 55%, transparent);
+    line-height: 1;
   }
-  .scroll-nav-counter [data-counter-current] {
-    color: var(--color-moss);
-    opacity: 1;
+  .scroll-nav-counter-current {
+    font-size: 22px;
+    color: var(--color-laterite);
+    font-variation-settings:
+      'opsz' 144,
+      'SOFT' 70;
   }
   .scroll-nav-counter-sep {
-    opacity: 0.4;
+    font-size: 14px;
+    opacity: 0.5;
+    font-style: normal;
+  }
+  [data-counter-total] {
+    font-size: 13px;
+    font-style: normal;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    letter-spacing: 0.18em;
+    color: color-mix(in oklab, var(--color-forest) 50%, transparent);
   }
 
-  /* Auto-invert sur sections sombres (hero, typologies, CTA) */
+  /* Auto-invert sur sections sombres */
   :global(body.is-dark-section) .scroll-nav {
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-index,
-  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-track {
-    color: var(--color-gold);
-    background-color: var(--color-gold);
+  :global(body.is-dark-section) .scroll-nav-rail {
+    background-color: color-mix(in oklab, var(--color-cream) 22%, transparent);
   }
   :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-title {
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .scroll-nav-cursor {
-    background-color: var(--color-gold);
+  :global(body.is-dark-section) .scroll-nav-counter {
+    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
   }
-  :global(body.is-dark-section) .scroll-nav-counter [data-counter-current] {
-    color: var(--color-gold);
+  :global(body.is-dark-section) [data-counter-total] {
+    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
   }
 
   /* ─────────── Indicateur mobile (≤1023px) ─────────── */
   .scroll-nav-mobile {
     position: fixed;
-    top: 72px; /* sous le header */
+    top: 72px;
     left: 0;
     right: 0;
     z-index: 35;
@@ -247,7 +267,7 @@
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
     letter-spacing: 0.28em;
-    color: var(--color-moss);
+    color: var(--color-laterite);
     flex-shrink: 0;
   }
   .scroll-nav-mobile-label {
@@ -275,7 +295,7 @@
     left: 0;
     top: 0;
     height: 100%;
-    background-color: var(--color-moss);
+    background-color: var(--color-laterite);
     width: 0;
     transition: width 0.3s linear;
   }
@@ -284,22 +304,12 @@
     color: var(--color-cream);
     border-bottom-color: color-mix(in srgb, var(--color-cream) 10%, transparent);
   }
-  :global(body.is-dark-section) .scroll-nav-mobile-index {
-    color: var(--color-gold);
-  }
-  :global(body.is-dark-section) .scroll-nav-mobile-label {
-    color: var(--color-cream);
-  }
-  :global(body.is-dark-section) .scroll-nav-mobile-fill {
-    background-color: var(--color-gold);
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .scroll-nav,
     .scroll-nav-mobile,
-    .scroll-nav-cursor,
-    .scroll-nav-title,
-    .scroll-nav-track {
+    .scroll-nav-thumb,
+    .scroll-nav-title {
       transition: none !important;
     }
   }
@@ -318,7 +328,7 @@
   function initScrollNav() {
     const nav = document.getElementById('scroll-nav');
     const list = document.getElementById('scroll-nav-list');
-    const cursor = document.getElementById('scroll-nav-cursor');
+    const thumb = document.getElementById('scroll-nav-thumb');
     const counterCurrent = document.querySelector<HTMLElement>('[data-counter-current]');
     const counterTotal = document.querySelector<HTMLElement>('[data-counter-total]');
     const mobile = document.getElementById('scroll-nav-mobile');
@@ -327,6 +337,8 @@
     const mobileFill = document.querySelector<HTMLElement>('[data-mobile-fill]');
 
     if (!nav || !list) return;
+    if (nav.dataset.wired === 'true') return;
+    nav.dataset.wired = 'true';
 
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('section[id][data-section-label]'),
@@ -337,7 +349,7 @@
       return;
     }
 
-    // Construction items desktop
+    // Construction items
     list.innerHTML = '';
     const items: Record<string, NavItemRefs> = {};
     sections.forEach((section, i) => {
@@ -356,7 +368,6 @@
       link.setAttribute('aria-label', `Aller à la section ${label}`);
       link.innerHTML = `
         <span class="scroll-nav-index" aria-hidden="true">${index}</span>
-        <span class="scroll-nav-track" aria-hidden="true"></span>
         <span class="scroll-nav-title">${label}</span>
       `;
       li.appendChild(link);
@@ -377,13 +388,13 @@
       });
     });
 
-    // Visibilité : apparaît après 50% du premier viewport
+    // Visibilité : apparait après 40% du 1er viewport
     const onScroll = () => {
       const show = window.scrollY > window.innerHeight * 0.4;
       nav.classList.toggle('is-visible', show);
       if (mobile) mobile.classList.toggle('is-visible', show);
 
-      // Progress mobile bar : scroll total de la page
+      // Progress mobile bar
       if (mobileFill) {
         const total = document.documentElement.scrollHeight - window.innerHeight;
         const pct = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
@@ -393,17 +404,18 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Positionne le curseur vertical sur l'item actif
-    const positionCursor = (activeIndex: number) => {
-      if (!cursor) return;
+    // Positionne le thumb sur l'item actif — le thumb prend la hauteur de l'item
+    // et translate vers son offsetTop (aligné pile en face du texte).
+    const positionThumb = (activeIndex: number) => {
+      if (!thumb) return;
       const targetLi = list.children[activeIndex] as HTMLElement | undefined;
       if (!targetLi) return;
-      const liCenter = targetLi.offsetTop + targetLi.offsetHeight / 2;
-      const cursorHeight = cursor.offsetHeight || 26;
-      cursor.style.transform = `translateY(${liCenter - cursorHeight / 2}px)`;
+      const thumbHeight = targetLi.offsetHeight;
+      thumb.style.height = `${thumbHeight}px`;
+      thumb.style.transform = `translateY(${targetLi.offsetTop}px)`;
     };
 
-    // IntersectionObserver pour section active
+    // IntersectionObserver pour section active (sélection = section la plus centrée)
     let activeId: string | null = null;
     const setActive = (id: string) => {
       if (activeId === id) return;
@@ -416,7 +428,7 @@
         li.classList.toggle('is-passed', i < activeIndex);
       });
 
-      positionCursor(activeIndex);
+      positionThumb(activeIndex);
 
       if (counterCurrent) counterCurrent.textContent = pad(activeIndex + 1);
 
@@ -437,7 +449,6 @@
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Sélection : section la plus visible au milieu du viewport
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
@@ -449,8 +460,12 @@
     );
     sections.forEach((s) => observer.observe(s));
 
-    // Initialisation curseur sur la première section
-    requestAnimationFrame(() => positionCursor(0));
+    // Initialisation thumb sur la première section + recalc au resize
+    requestAnimationFrame(() => positionThumb(0));
+    window.addEventListener('resize', () => {
+      const i = sections.findIndex((s) => s.id === activeId);
+      if (i >= 0) positionThumb(i);
+    });
   }
 
   if (document.readyState === 'loading') {

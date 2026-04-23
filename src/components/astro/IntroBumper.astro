@@ -43,24 +43,39 @@
 </div>
 
 <script>
-  const BUMPER_KEY = 'oliveira_intro_seen_v1';
-  const bumper = document.getElementById('intro-bumper') as HTMLDivElement | null;
-  const video = document.getElementById('intro-video') as HTMLVideoElement | null;
-  const skip = document.querySelector<HTMLButtonElement>('[data-intro-skip]');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const LOCAL_KEY = 'oliveira_intro_seen_v1';
+  const SESSION_KEY = 'oliveira_intro_session_v1';
 
-  // En dev, on ignore le flag localStorage pour pouvoir rejouer l'intro à chaque refresh.
-  const devBypass = import.meta.env.DEV;
+  function initIntro() {
+    const bumper = document.getElementById('intro-bumper') as HTMLDivElement | null;
+    if (!bumper) return;
 
-  if (!bumper) {
-    // rien à faire
-  } else if ((localStorage.getItem(BUMPER_KEY) && !devBypass) || reduceMotion) {
-    bumper.remove();
-  } else {
+    // Guard anti-double-wire (appelé DOMContentLoaded + astro:page-load).
+    if (bumper.dataset.wired === 'true') return;
+    bumper.dataset.wired = 'true';
+
+    const video = bumper.querySelector<HTMLVideoElement>('#intro-video');
+    const skip = bumper.querySelector<HTMLButtonElement>('[data-intro-skip]');
+
+    const devBypass = import.meta.env.DEV;
+    // localStorage = long terme (déjà vue une fois → plus jamais).
+    // sessionStorage = scope session (view transition retour sur home = skip).
+    //   → en dev on bypass localStorage mais PAS sessionStorage pour éviter
+    //   que l'intro se re-lance quand on navigue en view transition
+    //   (bug 2026-04-23 Morgan : « revenir au home par le logo bloque sur l'intro »).
+    const alreadySeenLong = !devBypass && !!localStorage.getItem(LOCAL_KEY);
+    const alreadySeenSession = !!sessionStorage.getItem(SESSION_KEY);
+
+    if (alreadySeenLong || alreadySeenSession) {
+      bumper.remove();
+      window.requestAnimationFrame(() => {
+        document.dispatchEvent(new CustomEvent('intro:done'));
+      });
+      return;
+    }
+
     document.documentElement.style.overflow = 'hidden';
 
-    // La page (main) est pré-cachée en scale+blur, elle va "reculer" en se révélant
-    // pendant que le logo accélère vers nous → effet caméra-traversante.
     const main = document.getElementById('main');
     const header = document.querySelector('header');
     main?.classList.add('intro-hidden');
@@ -69,19 +84,18 @@
     const dismiss = () => {
       if (!bumper.isConnected) return;
       bumper.classList.add('is-closing');
-      // Bascule main/header en mode "revealing" pour jouer l'anim zoom-back.
       main?.classList.remove('intro-hidden');
       header?.classList.remove('intro-hidden');
       main?.classList.add('intro-revealing');
       header?.classList.add('intro-revealing');
-      // Notifie la hero sequence qu'elle peut démarrer pendant la traversée.
       document.dispatchEvent(new CustomEvent('intro:done'));
-      setTimeout(() => {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      window.setTimeout(() => {
         bumper.remove();
         document.documentElement.style.overflow = '';
         main?.classList.remove('intro-revealing');
         header?.classList.remove('intro-revealing');
-        localStorage.setItem(BUMPER_KEY, '1');
+        localStorage.setItem(LOCAL_KEY, '1');
       }, 900);
     };
 
@@ -98,9 +112,6 @@
       if (video.ended) {
         dismiss();
       } else {
-        // Force l'autoplay explicitement : si la Play Promise est rejetée
-        // (autoplay policy, tab inactif), on dismiss immédiatement plutôt
-        // que d'attendre 6s.
         const playPromise = video.play();
         if (playPromise && typeof playPromise.then === 'function') {
           playPromise.catch(() => dismiss());
@@ -108,11 +119,20 @@
       }
     }
 
-    // Fallback de sécurité (autoplay bloqué, vidéo corrompue, etc.) — réduit
-    // à 3.5s : si après ce délai rien ne s'est passé, on dégage le bumper pour
-    // ne pas pénaliser l'INP/LCP perçu (cf. audit UX 2026-04-23).
-    setTimeout(dismiss, 3500);
+    // Fallback de sécurité (autoplay bloqué, vidéo corrompue, etc.) réduit
+    // à 3.5s pour ne pas pénaliser l'INP/LCP perçu.
+    window.setTimeout(dismiss, 3500);
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initIntro, { once: true });
+  } else {
+    initIntro();
+  }
+  // Astro ClientRouter re-rend le <IntroBumper> sur view transition, mais ne
+  // réévalue pas le script. On wire init à chaque page-load — le guard
+  // dataset.wired + sessionStorage évitent de rejouer l'intro.
+  document.addEventListener('astro:page-load', initIntro);
 </script>
 
 <style>
@@ -319,9 +339,7 @@
       opacity: 1;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .intro-bumper {
-      display: none;
-    }
-  }
+  /* Reduce-motion : retiré (bypass Morgan 2026-04-22). Le JS décide d'afficher
+   * ou non l'intro via skipIntro — le CSS ne doit pas la cacher en plus,
+   * sinon bug 2026-04-23 : intro jamais visible sur OS reduce-motion. */
 </style>
