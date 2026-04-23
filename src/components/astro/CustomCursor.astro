@@ -86,17 +86,19 @@
         opacity 0.2s ease;
     }
 
-    /* État hover : ring se gonfle, latérite pour signal accent */
+    /* État hover : ring se gonfle, border latérite pour signal accent
+       (fond transparent — feedback Morgan 2026-04-24 : « rempli rouge
+       latérite tout le temps »). */
     .custom-cursor.is-hover .cursor-ring {
-      width: 64px;
-      height: 64px;
-      top: -32px;
-      left: -32px;
-      background-color: var(--color-laterite);
+      width: 56px;
+      height: 56px;
+      top: -28px;
+      left: -28px;
       border-color: var(--color-laterite);
+      border-width: 1.5px;
     }
     .custom-cursor.is-hover .cursor-dot {
-      opacity: 0;
+      background-color: var(--color-laterite);
     }
 
     /* État pressed */
@@ -155,9 +157,11 @@
       if (!e.relatedTarget) cursor.classList.add('is-hidden');
     });
 
-    // Détection hover sur cibles interactives via event delegation
-    const hoverSelectors =
-      'a, button, [role="button"], [data-magnetic], input, textarea, select, label';
+    // Détection hover sur cibles interactives via event delegation.
+    // On restreint aux vrais CTA pour ne pas déclencher le hover latérite
+    // sur chaque label/input traversé (feedback 2026-04-24 : cursor rouge
+    // « quasiment tout le temps »).
+    const hoverSelectors = 'a[href], button:not([disabled]), [data-magnetic]';
     document.addEventListener(
       'pointerover',
       (e) => {
