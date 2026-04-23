@@ -1,16 +1,19 @@
 ---
 /*
  * /projets — Hub unifié "Projets" (PDF l. 727).
- * Agrège les deux portefeuilles : réalisations (photos réelles) + conceptions (rendus Twinmotion scroll-scrub).
- *
- * Source PDF Jonathan : ligne 727 — "Projets" est un des 6 onglets du menu déroulé.
- * Ce hub sert à orienter le visiteur vers :
- *   - /realisations        — projets livrés avec photos réelles
- *   - /conceptions         — projets en conception avec rendus immersifs
+ * Refonte 2026-04-23 : hero immersif + cards avec images de fond pour sortir
+ * du fade texte-only (feedback Morgan).
+ * Images = placeholders projets existants en attendant inventaire Jonathan.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+
+// Placeholders visuels — à remplacer par images dédiées Jonathan
+import heroProjets from '@/assets/typologies/domaine-caractere.webp';
+import imgRealisations from '@/assets/projets/airbnb/airbnb-01.jpeg';
+import imgConceptions from '@/assets/typologies/coeur-urbain.webp';
 
 const schema = jsonLdGraph([
   organization(),
@@ -25,130 +28,303 @@ const schema = jsonLdGraph([
 <BaseLayout
   title="Projets — Studio J Oliveira"
   description="Portefeuille du Studio J Oliveira. Projets réalisés (photos) et conceptions immersives (rendus Twinmotion). Jardins, intérieurs, LCD atypiques."
+  darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </Fragment>
 
-  <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-        Portefeuille
-      </p>
-      <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+  {/* ───── HERO immersif ───── */}
+  <section
+    id="hero"
+    data-section-label="Projets"
+    class="projets-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={heroProjets}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={78}
+        format="webp"
+        class="projets-hero-img h-full w-full object-cover object-center"
+        loading="eager"
+        data-hero-zoom
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/50 to-transparent"
+        aria-hidden="true"
       >
-        Projets — <em class="italic">réalisations</em> et <em class="italic">conceptions</em>.
-      </h1>
+      </div>
+    </div>
+
+    <div class="relative flex min-h-[80svh] flex-col justify-end">
+      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-20 md:px-10 md:pt-48 md:pb-28">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/50">Portefeuille</span>
+          &nbsp;·&nbsp; Projets
+        </p>
+        <h1
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight"
+        >
+          <span data-mask-line class="block pb-[0.05em]">Réalisations</span>
+          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+            & conceptions.
+          </span>
+        </h1>
+        <p
+          data-reveal="up"
+          data-reveal-delay="0.4"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+        >
+          Deux portefeuilles parallèles. D'un côté les projets livrés, photographiés dans leur
+          contexte réel. De l'autre les études en cours, parcourues en rendu photoréaliste.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───── 2 CARDS avec images de fond full-bleed ───── */}
+  <section
+    class="projets-split relative bg-[var(--color-cream)]"
+    aria-labelledby="portefeuille-title"
+  >
+    <h2 id="portefeuille-title" class="sr-only">Portefeuille</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <a href="/realisations" class="projets-card group" data-reveal="up">
+        <div class="projets-card-visual">
+          <Image
+            src={imgRealisations}
+            alt=""
+            widths={[720, 1080, 1440]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            quality={80}
+            format="webp"
+            class="projets-card-img"
+            loading="lazy"
+          />
+          <div class="projets-card-veil" aria-hidden="true"></div>
+          <span class="projets-card-num" aria-hidden="true">01</span>
+        </div>
+        <div class="projets-card-body">
+          <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+            01 &nbsp;·&nbsp; Portefeuille
+          </p>
+          <h3
+            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
+          >
+            <em class="italic">Réalisations</em>.
+          </h3>
+          <p
+            class="mt-6 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80"
+          >
+            Projets menés à terme, photographiés dans leur contexte réel. Jardins, intérieurs
+            végétalisés, LCD atypiques.
+          </p>
+          <span class="projets-card-cta">
+            <span>Parcourir les réalisations</span>
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
+
+      <a href="/conceptions" class="projets-card group" data-reveal="up" data-reveal-delay="0.15">
+        <div class="projets-card-visual">
+          <Image
+            src={imgConceptions}
+            alt=""
+            widths={[720, 1080, 1440]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            quality={80}
+            format="webp"
+            class="projets-card-img"
+            loading="lazy"
+          />
+          <div class="projets-card-veil" aria-hidden="true"></div>
+          <span class="projets-card-num" aria-hidden="true">02</span>
+        </div>
+        <div class="projets-card-body">
+          <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+            02 &nbsp;·&nbsp; Portefeuille
+          </p>
+          <h3
+            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
+          >
+            <em class="italic">Conceptions</em>.
+          </h3>
+          <p
+            class="mt-6 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80"
+          >
+            Études en cours, parcourues au scroll en rendu Twinmotion photoréaliste. Expériences
+            immersives, signature cinématographique.
+          </p>
+          <span class="projets-card-cta">
+            <span>Parcourir les conceptions</span>
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  {/* ───── Passerelle vers les 2 branches de services ───── */}
+  <Section variant="cream" topDivider>
+    <div class="mx-auto max-w-3xl text-center" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        Les deux branches du studio
+      </p>
       <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.25] text-[var(--color-forest)]/85 md:text-[length:var(--text-3xl)]"
       >
-        Deux portefeuilles parallèles. D'un côté les <a
-          href="/realisations"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >réalisations</a
-        > — projets livrés, photographiés. De l'autre les <a
-          href="/conceptions"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >conceptions</a
-        > — études approfondies, parcourues en rendu photoréaliste.
-      </p>
-      <p class="mt-6 max-w-2xl text-sm leading-relaxed text-[var(--color-forest)]/60">
-        Issus des deux branches du studio : <a
+        Tous ces projets sont issus des deux branches du studio —<br />
+        <a
           href="/architecture-paysagere"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
           >architecture paysagère</a
         > et <a
           href="/amenagement-vegetal-interieur"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
           >aménagement végétalisé d'intérieur</a
         >.
       </p>
     </div>
   </Section>
 
-  <Section variant="cream" topDivider>
-    <ul
-      data-reveal-stagger="0.14"
-      data-reveal="up"
-      class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
-    >
-      <li class="bg-[var(--color-cream)]">
-        <a
-          href="/realisations"
-          class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
-        >
-          <div>
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-              01 · Réalisations
-            </p>
-            <h2
-              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]"
-            >
-              Projets livrés.
-            </h2>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
-              Photographies des projets menés à terme. Jardins, intérieurs végétalisés, LCD
-              atypiques. [À ENRICHIR — inventaire projets Jonathan.]
-            </p>
-          </div>
-          <span
-            class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1"
-          >
-            Parcourir les réalisations
-            <span aria-hidden="true">→</span>
-          </span>
-        </a>
-      </li>
-
-      <li class="bg-[var(--color-cream)]">
-        <a
-          href="/conceptions"
-          class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
-        >
-          <div>
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-              02 · Conceptions
-            </p>
-            <h2
-              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]"
-            >
-              Études immersives.
-            </h2>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
-              Rendus photoréalistes parcourus au scroll. Jonathan livre les parcours caméra
-              Twinmotion, le site les transforme en expériences immersives scroll-scrub.
-            </p>
-          </div>
-          <span
-            class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1"
-          >
-            Parcourir les conceptions
-            <span aria-hidden="true">→</span>
-          </span>
-        </a>
-      </li>
-    </ul>
-  </Section>
-
+  {/* ───── CTA final ───── */}
   <Section variant="forest" topDivider>
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
-        Engager la conversation
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
       >
-        Un projet à <em class="text-[var(--color-gold)] italic">étudier</em> ?
+        Un projet à <em class="text-[var(--color-laterite)] italic">étudier</em> ?
       </h2>
       <a
         href="/contact"
         data-magnetic="0.3"
-        class="mt-12 inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        class="mt-12 inline-flex items-center gap-3 rounded-full border border-current px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
       >
         Démarrer un projet
         <span aria-hidden="true">→</span>
       </a>
     </div>
   </Section>
+
+  <style>
+    .projets-hero-img {
+      transform: scale(1.06);
+      transform-origin: center;
+      will-change: transform, filter;
+    }
+
+    /* Cards avec images de fond full-bleed */
+    .projets-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--color-cream);
+      background: var(--color-forest);
+      min-height: 560px;
+      isolation: isolate;
+    }
+    @media (min-width: 768px) {
+      .projets-card {
+        min-height: 680px;
+      }
+    }
+    .projets-card-visual {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+    .projets-card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.05);
+      transition: transform 1.2s var(--ease-out-editorial);
+    }
+    .projets-card:hover .projets-card-img,
+    .projets-card:focus-visible .projets-card-img {
+      transform: scale(1.12);
+    }
+    .projets-card-veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        color-mix(in oklab, var(--color-forest) 92%, transparent) 0%,
+        color-mix(in oklab, var(--color-forest) 60%, transparent) 45%,
+        color-mix(in oklab, var(--color-forest) 30%, transparent) 100%
+      );
+      transition: opacity 0.5s var(--ease-out-editorial);
+    }
+    .projets-card:hover .projets-card-veil,
+    .projets-card:focus-visible .projets-card-veil {
+      opacity: 0.85;
+    }
+    .projets-card-num {
+      position: absolute;
+      top: 1.75rem;
+      right: 2rem;
+      font-family: var(--font-heading), serif;
+      font-style: italic;
+      font-size: clamp(6rem, 10vw, 10rem);
+      line-height: 0.85;
+      color: var(--color-cream);
+      opacity: 0.15;
+      pointer-events: none;
+      user-select: none;
+      font-variation-settings:
+        'opsz' 144,
+        'SOFT' 80;
+    }
+
+    .projets-card-body {
+      margin-top: auto;
+      padding: 3rem 2rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    @media (min-width: 768px) {
+      .projets-card-body {
+        padding: 4rem 4rem 4rem;
+      }
+    }
+    .projets-card-cta {
+      margin-top: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding-bottom: 0.25rem;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 30%, transparent);
+      width: fit-content;
+      transition:
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.4s var(--ease-out-editorial);
+    }
+    .projets-card:hover .projets-card-cta,
+    .projets-card:focus-visible .projets-card-cta {
+      color: var(--color-laterite);
+      border-color: var(--color-laterite);
+      transform: translateX(4px);
+    }
+  </style>
 </BaseLayout>

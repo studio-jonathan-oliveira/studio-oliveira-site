@@ -1,8 +1,14 @@
 ---
+/*
+ * /amenagement-vegetal-interieur — branche B du studio (décors intérieurs).
+ * Refonte 2026-04-23 : hero immersif + images dans les cards verticales
+ * pour sortir du fade texte-only (feedback Morgan).
+ * Images = placeholders projets existants (airbnb/jungle-room) en attendant
+ * inventaire Jonathan (loggé dans _brief/contenus-manquants.md).
+ */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import SectionHeader from '@/components/astro/SectionHeader.astro';
-import Prose from '@/components/astro/Prose.astro';
+import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -11,6 +17,22 @@ import {
   organization,
   service as serviceSchema,
 } from '@/lib/schema-org';
+
+// Placeholders visuels — à remplacer par des images dédiées Jonathan
+import heroInterieur from '@/assets/projets/jungle-room-entree.png';
+import imgHotel from '@/assets/projets/jungle-room-mezzanine.png';
+import imgResto from '@/assets/projets/airbnb/airbnb-01.jpeg';
+import imgBureaux from '@/assets/projets/jungle-room-espaces.png';
+import imgCommerces from '@/assets/projets/airbnb/airbnb-02.jpeg';
+import imgAirbnb from '@/assets/projets/airbnb/airbnb-03.jpeg';
+
+const verticaleImages: Record<string, ImageMetadata> = {
+  hotellerie: imgHotel,
+  restauration: imgResto,
+  bureaux: imgBureaux,
+  commerces: imgCommerces,
+  'airbnb-locations-atypiques': imgAirbnb,
+};
 
 const verticales = SITE.verticalesInterieur;
 
@@ -33,57 +55,141 @@ const schema = jsonLdGraph([
 <BaseLayout
   title="Aménagement végétalisé d’intérieur sur mesure"
   description="Décors végétalisés premium pour hôtels, restaurants, bureaux, commerces et locations atypiques. Plantes naturelles et artificielles, conception et réalisation."
+  darkHero
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-        Aménagement intérieur · {SITE.name}
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  {/* ───── HERO immersif forest ───── */}
+  <section
+    id="hero"
+    data-section-label="Aménagement intérieur"
+    class="avi-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={heroInterieur}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={78}
+        format="webp"
+        class="avi-hero-img h-full w-full object-cover object-center"
+        loading="eager"
+        data-hero-zoom
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/45 to-transparent"
+        aria-hidden="true"
+      >
+      </div>
+    </div>
+
+    <div class="relative flex min-h-[88svh] flex-col justify-end">
+      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/50">Branche B</span>
+          &nbsp;·&nbsp; Intérieur
+        </p>
+        <h1
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight"
+        >
+          <span data-mask-line class="block pb-[0.05em]">Aménagement végétalisé</span>
+          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+            d'intérieur.
+          </span>
+        </h1>
+        <p
+          data-reveal="up"
+          data-reveal-delay="0.4"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+        >
+          Décors végétalisés premium pour espaces habités et travaillés. Plantes naturelles choisies
+          pour les conditions réelles du lieu, ou artificielles haut de gamme quand le naturel n'est
+          pas possible — jamais de stabilisé, jamais d'effet de catalogue.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───── MANIFESTE court ───── */}
+  <Section variant="cream" tight>
+    <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">01</span> &nbsp;·&nbsp; Démarche
       </p>
-      <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-      >
-        Aménagement végétalisé<br />
-        <em class="italic">d'intérieur</em>.
-      </h1>
       <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-4xl)]"
       >
-        [À FOURNIR PAR JONATHAN : 80-120 mots présentant le service secondaire du studio — décors
-        végétalisés premium, plantes naturelles et artificielles (pas de stabilisé), cibles pros et
-        particuliers LCD atypique.]
+        Chaque lieu raconte une marque, chaque marque appelle un
+        <em class="text-[var(--color-laterite)] italic">décor</em> qui lui ressemble. Le studio traduit
+        l'identité de l'espace en
+        <em class="text-[var(--color-moss)] italic">écriture végétale</em>.
       </p>
     </div>
   </Section>
 
+  {/* ───── 5 VERTICALES — cards avec images ───── */}
   <Section variant="cream" topDivider aria-labelledby="verticales-title">
-    <SectionHeader
-      eyebrow="Cinq verticales"
-      title="Chaque contexte, son décor."
-      intro="Hôtel boutique, restaurant gastronomique, bureau corporate, boutique concept, location atypique — chacun demande une écriture végétale différente."
-      id="verticales-title"
-    />
+    <div class="mb-16 max-w-3xl" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Cinq verticales
+      </p>
+      <h2
+        id="verticales-title"
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+      >
+        Chaque contexte, son <em class="text-[var(--color-laterite)] italic">décor</em>.
+      </h2>
+      <p
+        class="mt-6 max-w-2xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+      >
+        Hôtel boutique, restaurant gastronomique, bureau corporate, boutique concept, location
+        atypique — chacun demande une écriture végétale différente.
+      </p>
+    </div>
 
-    <ul class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+    <ul
+      data-reveal-stagger="0.1"
+      data-reveal="up"
+      class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2 lg:grid-cols-3"
+    >
       {
-        verticales.map((v) => (
-          <li class="bg-[var(--color-cream)]">
-            <a
-              href={`/amenagement-vegetal-interieur/${v.slug}`}
-              class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-moss)]/5 md:p-12"
-            >
-              <div>
-                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-                  Verticale
-                </p>
-                <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
-                  {v.label}
-                </h3>
-                <p class="mt-3 text-sm text-[var(--color-forest)]/60">{v.h1Seo}</p>
+        verticales.map((v, i) => (
+          <li class="avi-card group bg-[var(--color-cream)]">
+            <a href={`/amenagement-vegetal-interieur/${v.slug}`} class="flex h-full flex-col">
+              {verticaleImages[v.slug] && (
+                <div class="avi-card-visual overflow-hidden">
+                  <Image
+                    src={verticaleImages[v.slug]!}
+                    alt=""
+                    widths={[480, 720, 960]}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"
+                    quality={78}
+                    format="webp"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    class="avi-card-img h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <div class="flex flex-1 flex-col justify-between p-8 md:p-10">
+                <div>
+                  <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+                    {String(i + 1).padStart(2, '0')} &nbsp;·&nbsp; Verticale
+                  </p>
+                  <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                    <em class="italic">{v.label}</em>
+                  </h3>
+                  <p class="mt-3 text-sm text-[var(--color-forest)]/65">{v.h1Seo}</p>
+                </div>
+                <span class="mt-8 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                  Voir la verticale
+                  <span aria-hidden="true">→</span>
+                </span>
               </div>
-              <span class="mt-8 inline-flex items-center gap-2 text-sm transition-transform group-hover:translate-x-1">
-                Voir la verticale
-                <span aria-hidden="true">→</span>
-              </span>
             </a>
           </li>
         ))
@@ -91,60 +197,112 @@ const schema = jsonLdGraph([
     </ul>
   </Section>
 
-  <Section variant="cream" topDivider aria-labelledby="process-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-      <SectionHeader eyebrow="Process" title="Conception et réalisation." id="process-title" />
-      <Prose>
-        <p>
-          [À FOURNIR PAR JONATHAN : 400-600 mots sur le process spécifique à l'intérieur — lecture
-          du lieu et de la marque, sélection des plantes (naturelles vs artificielles selon
-          contraintes : lumière, circulation, entretien), scénographie, mise en place, option
-          entretien régulier.]
+  {/* ───── PROCESS 3 PILIERS avec image full-bleed ───── */}
+  <section
+    data-section-label="Process"
+    class="avi-process relative bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-dark-section
+    aria-labelledby="process-title"
+  >
+    <div
+      class="mx-auto grid max-w-7xl gap-12 px-6 py-28 md:grid-cols-[1fr_1.3fr] md:gap-20 md:px-10 md:py-40"
+    >
+      <div data-reveal="up">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Process
         </p>
-        <h3>Plantes naturelles</h3>
-        <p>
-          Sélection adaptée aux conditions réelles du lieu (lumière, hygrométrie, circulation).
-          Contrat d'entretien mensuel ou trimestriel possible.
+        <h2
+          id="process-title"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+        >
+          Conception<br />et <em class="text-[var(--color-laterite)] italic">réalisation</em>.
+        </h2>
+        <p
+          class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
+        >
+          Lecture du lieu et de la marque, sélection des plantes selon les contraintes réelles
+          (lumière, circulation, entretien), scénographie, mise en place, option entretien régulier.
         </p>
-        <h3>Plantes artificielles haut de gamme</h3>
-        <p>
-          Pour les contextes où le naturel n'est pas possible — forte circulation, faible
-          luminosité, absence d'entretien. Rendu indiscernable du naturel sur les gammes premium que
-          je sélectionne.
-        </p>
-        <h3>Murs végétaux et suspensions</h3>
-        <p>
-          Support technique dimensionné, arrosage intégré (naturel) ou structure apparente
-          (artificiel), maintenance prévue dès la conception.
-        </p>
-      </Prose>
-    </div>
-  </Section>
+      </div>
 
-  <Section variant="forest" topDivider>
-    <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">Devis</p>
+      <ol class="space-y-10" data-reveal-stagger="0.1" data-reveal="up">
+        <li class="border-l border-[var(--color-cream)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            Pilier 1
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)]"
+          >
+            <em class="italic">Plantes naturelles</em>
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-cream)]/75">
+            Sélection adaptée aux conditions réelles du lieu (lumière, hygrométrie, circulation).
+            Contrat d'entretien mensuel ou trimestriel possible.
+          </p>
+        </li>
+        <li class="border-l border-[var(--color-cream)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            Pilier 2
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)]"
+          >
+            <em class="italic">Artificielles haut de gamme</em>
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-cream)]/75">
+            Pour les contextes où le naturel n'est pas possible — forte circulation, faible
+            luminosité, absence d'entretien. Rendu indiscernable du naturel sur les gammes premium
+            sélectionnées.
+          </p>
+        </li>
+        <li class="border-l border-[var(--color-cream)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+            Pilier 3
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)]"
+          >
+            <em class="italic">Murs végétaux & suspensions</em>
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-cream)]/75">
+            Support technique dimensionné, arrosage intégré (naturel) ou structure apparente
+            (artificiel), maintenance prévue dès la conception.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  {/* ───── CTA final cream avec lien vers /pros ───── */}
+  <Section variant="cream" topDivider>
+    <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">04</span> &nbsp;·&nbsp; Devis
+      </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-forest)]"
       >
-        Votre <em class="text-[var(--color-gold)] italic">lieu</em>,<br />
+        Votre <em class="text-[var(--color-laterite)] italic">lieu</em>,<br />
         scénarisé en végétal.
       </h2>
-      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
-        Décrivez votre établissement, sa marque, ses contraintes — je vous propose une écriture
-        végétale alignée.
+      <p
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+      >
+        Décrivez votre établissement, sa marque, ses contraintes — je propose une écriture végétale
+        alignée.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <a
           href="/contact"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+          data-magnetic="0.3"
+          class="inline-flex items-center gap-3 rounded-full border border-[var(--color-forest)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-forest)] transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
         >
           Demander un devis
           <span aria-hidden="true">→</span>
         </a>
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm text-[var(--color-forest)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -152,7 +310,23 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={schema} />
-  </Fragment>
+  <style>
+    .avi-hero-img {
+      transform: scale(1.06);
+      transform-origin: center;
+      will-change: transform, filter;
+    }
+    .avi-card-visual {
+      aspect-ratio: 4 / 5;
+      background-color: var(--color-forest);
+    }
+    .avi-card-img {
+      transform: scale(1.04);
+      transition: transform 1.2s var(--ease-out-editorial);
+    }
+    .avi-card:hover .avi-card-img,
+    .avi-card:focus-within .avi-card-img {
+      transform: scale(1.1);
+    }
+  </style>
 </BaseLayout>
