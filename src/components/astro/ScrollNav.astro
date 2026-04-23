@@ -55,7 +55,11 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.8s var(--ease-out-editorial);
-    color: var(--color-forest);
+    /* mix-blend-mode: difference — même principe que le cursor. La sidebar
+       s'inverse automatiquement selon le fond (cream -> sombre, forest ->
+       clair, images -> négatif). Couleur blanche = référence de différence. */
+    color: #ffffff;
+    mix-blend-mode: difference;
     display: none;
     padding: 0.5rem 0 0.5rem 1rem;
   }
