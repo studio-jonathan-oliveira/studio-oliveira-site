@@ -1,0 +1,701 @@
+---
+/*
+ * MenuPrimary — navigation primaire fullscreen overlay, déclenchée par le
+ * bouton Menu du Header. Pattern « LE MUST » Jonathan (PDF l.740).
+ *
+ * Architecture :
+ *   - <dialog> natif pour a11y gratuite (focus trap, Escape close, backdrop)
+ *   - Slide-in from right + fade backdrop
+ *   - 6 onglets Fraunces italique XL, chacun avec sous-sections découvrables
+ *     (typologies / verticales / variants)
+ *   - Panneau droit : NAP + tel + email + social + statut dispo
+ *   - Numérotation 01-06 décorative en Fraunces swash
+ *
+ * Contrôlé par [data-menu-trigger] dans Header.astro via aria-controls.
+ *
+ * Inspirations visuelles : Acne Studios / Polestar / Maison Kitsuné.
+ */
+
+import { SITE } from '@/lib/site-config';
+
+// Structure hiérarchique : chaque onglet peut avoir des sous-liens pour
+// améliorer la discoverability (audit UX 2026-04-23 §2).
+const sections = [
+  {
+    num: '01',
+    href: '/architecture-paysagere',
+    label: 'Architecture paysagère',
+    tagline: 'Conception de jardin pour particuliers.',
+    sub: [
+      { href: '/architecture-paysagere/micro-urbain', label: 'Micro-urbain' },
+      { href: '/architecture-paysagere/coeur-urbain', label: 'Cœur urbain' },
+      { href: '/architecture-paysagere/frange-urbaine', label: 'Frange urbaine' },
+      { href: '/architecture-paysagere/domaine-caractere', label: 'Domaines & Caractère' },
+    ],
+  },
+  {
+    num: '02',
+    href: '/amenagement-vegetal-interieur',
+    label: "Aménagement végétalisé d'intérieur",
+    tagline: 'Décors végétaux pour espaces habités.',
+    sub: [
+      { href: '/amenagement-vegetal-interieur/hotellerie', label: 'Hôtellerie' },
+      { href: '/amenagement-vegetal-interieur/restauration', label: 'Restauration' },
+      { href: '/amenagement-vegetal-interieur/bureaux', label: 'Bureaux' },
+      { href: '/amenagement-vegetal-interieur/commerces', label: 'Commerces' },
+    ],
+  },
+  {
+    num: '03',
+    href: '/projets',
+    label: 'Projets',
+    tagline: 'Réalisations et conceptions.',
+    sub: [
+      { href: '/realisations', label: 'Réalisations' },
+      { href: '/conceptions', label: 'Conceptions' },
+    ],
+  },
+  {
+    num: '04',
+    href: '/lcd-atypiques',
+    label: 'LCD atypiques',
+    tagline: 'Airbnb signature, Jungle Rooms.',
+    sub: [],
+  },
+  {
+    num: '05',
+    href: '/pros',
+    label: 'Pros',
+    tagline: 'Offre dédiée aux professionnels.',
+    sub: [],
+  },
+  {
+    num: '06',
+    href: '/contact',
+    label: 'Contact',
+    tagline: 'Engager la conversation.',
+    sub: [],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath === href || currentPath.startsWith(href + '/');
+---
+
+<dialog id="primary-menu" class="primary-menu" aria-label="Menu principal">
+  <div class="primary-menu__inner">
+    <!-- En-tête du menu : logo + close -->
+    <header class="primary-menu__header">
+      <a href="/" class="primary-menu__logo" aria-label="Accueil">
+        <img src="/brand/wordmark-moss.png?v=3" alt="Studio J Oliveira" width="1200" height="288" />
+      </a>
+      <button type="button" class="primary-menu__close" aria-label="Fermer le menu" data-menu-close>
+        <span>Fermer</span>
+        <span class="primary-menu__close-x" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- Corps : nav primaire + panneau droit (NAP / contact) -->
+    <div class="primary-menu__body">
+      <!-- Nav primaire -->
+      <nav aria-label="Navigation principale" class="primary-menu__nav">
+        <ol>
+          {
+            sections.map((section) => (
+              <li class:list={['primary-menu__item', isActive(section.href) && 'is-active']}>
+                <a href={section.href} class="primary-menu__link" data-menu-link>
+                  <span class="primary-menu__num" aria-hidden="true">
+                    {section.num}
+                  </span>
+                  <span class="primary-menu__label">
+                    <span class="primary-menu__label-main">{section.label}</span>
+                    <span class="primary-menu__tagline">{section.tagline}</span>
+                  </span>
+                  <span class="primary-menu__arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+
+                {section.sub.length > 0 && (
+                  <ul class="primary-menu__sub">
+                    {section.sub.map((s) => (
+                      <li>
+                        <a href={s.href} data-menu-link>
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <!-- Panneau latéral droit : NAP + contact + réseaux -->
+      <aside class="primary-menu__aside" aria-label="Coordonnées">
+        <div class="primary-menu__aside-block">
+          <p class="primary-menu__aside-eyebrow">Studio</p>
+          <p class="primary-menu__aside-address">
+            {SITE.address.street}<br />
+            {SITE.address.postalCode}
+            {SITE.address.city}<br />
+            <span class="opacity-60">{SITE.address.region}</span>
+          </p>
+        </div>
+
+        <div class="primary-menu__aside-block">
+          <p class="primary-menu__aside-eyebrow">Contact</p>
+          <p class="primary-menu__aside-contact">
+            <a href={`tel:${SITE.contact.phoneInternational}`} data-menu-link>
+              {SITE.contact.phoneDisplay}
+            </a>
+          </p>
+          <p class="primary-menu__aside-contact">
+            <a href={`mailto:${SITE.contact.email}`} data-menu-link>
+              {SITE.contact.email}
+            </a>
+          </p>
+        </div>
+
+        <div class="primary-menu__aside-block">
+          <p class="primary-menu__aside-eyebrow">Zones d'intervention</p>
+          <ul class="primary-menu__zones">
+            {SITE.zones.map((zone) => <li>{zone.ville}</li>)}
+          </ul>
+        </div>
+
+        {
+          SITE.social.instagram && (
+            <div class="primary-menu__aside-block">
+              <p class="primary-menu__aside-eyebrow">Suivre</p>
+              <a
+                href={SITE.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="primary-menu__social"
+                data-menu-link
+              >
+                Instagram
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          )
+        }
+
+        <div class="primary-menu__aside-footer">
+          <span class="primary-menu__status-dot" aria-hidden="true"></span>
+          Disponible pour projets 2026
+        </div>
+      </aside>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* ───────── Dialog natif — reset + setup ───────── */
+  .primary-menu {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-cream);
+    color: var(--color-forest);
+    z-index: 100;
+    overflow: hidden;
+  }
+  .primary-menu::backdrop {
+    background: color-mix(in oklab, var(--color-forest) 65%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Animation entrée : slide from right */
+  .primary-menu[open] {
+    animation: primary-menu-enter 0.55s var(--ease-out-editorial);
+  }
+  .primary-menu[open]::backdrop {
+    animation: primary-menu-backdrop 0.4s var(--ease-out-editorial);
+  }
+  @keyframes primary-menu-enter {
+    from {
+      transform: translateX(8%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes primary-menu-backdrop {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .primary-menu.is-closing {
+    animation: primary-menu-exit 0.35s var(--ease-out-editorial) forwards;
+  }
+  @keyframes primary-menu-exit {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(6%);
+      opacity: 0;
+    }
+  }
+
+  .primary-menu__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* ───────── En-tête menu ───────── */
+  .primary-menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 10%, transparent);
+    flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .primary-menu__header {
+      padding: 1.75rem 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .primary-menu__header {
+      padding: 2rem 3rem;
+    }
+  }
+  .primary-menu__logo img {
+    height: 36px;
+    width: auto;
+  }
+  @media (min-width: 768px) {
+    .primary-menu__logo img {
+      height: 44px;
+    }
+  }
+
+  .primary-menu__close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: transparent;
+    border: 1px solid color-mix(in oklab, var(--color-forest) 25%, transparent);
+    border-radius: 999px;
+    padding: 0.5rem 1.15rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .primary-menu__close:hover,
+  .primary-menu__close:focus-visible {
+    color: var(--color-laterite);
+    border-color: var(--color-laterite);
+  }
+  .primary-menu__close-x {
+    position: relative;
+    width: 12px;
+    height: 12px;
+  }
+  .primary-menu__close-x > span {
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 1px;
+    background: currentColor;
+    transform-origin: center;
+  }
+  .primary-menu__close-x > span:first-child {
+    transform: rotate(45deg);
+  }
+  .primary-menu__close-x > span:last-child {
+    transform: rotate(-45deg);
+  }
+
+  /* ───────── Body : grid nav + aside ───────── */
+  .primary-menu__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    flex: 1;
+    min-height: 0;
+  }
+  @media (min-width: 1024px) {
+    .primary-menu__body {
+      grid-template-columns: 1fr 360px;
+    }
+  }
+
+  /* ───────── Nav primaire ───────── */
+  .primary-menu__nav {
+    padding: 2rem 1.5rem 3rem;
+  }
+  @media (min-width: 768px) {
+    .primary-menu__nav {
+      padding: 3rem 2.5rem 4rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .primary-menu__nav {
+      padding: 3rem 3rem 4rem 4rem;
+      border-right: 1px solid color-mix(in oklab, var(--color-forest) 10%, transparent);
+    }
+  }
+  .primary-menu__nav ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .primary-menu__item {
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 8%, transparent);
+  }
+  .primary-menu__item:last-child {
+    border-bottom: none;
+  }
+
+  .primary-menu__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 1.75rem;
+    padding: 1.4rem 0;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.35s ease;
+  }
+  @media (min-width: 768px) {
+    .primary-menu__link {
+      gap: 2.5rem;
+      padding: 1.75rem 0;
+    }
+  }
+
+  .primary-menu__num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    opacity: 0.5;
+    margin-top: 0.6em;
+    transition: opacity 0.35s ease;
+  }
+
+  .primary-menu__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+  .primary-menu__label-main {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(1.75rem, 4vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    font-variation-settings:
+      'opsz' 144,
+      'SOFT' 50;
+    transition: color 0.4s var(--ease-out-editorial);
+  }
+  .primary-menu__tagline {
+    font-family: var(--font-body), sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: color-mix(in oklab, var(--color-forest) 55%, transparent);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.4s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
+  }
+  @media (max-width: 767px) {
+    .primary-menu__tagline {
+      opacity: 0.65;
+      transform: none;
+    }
+  }
+
+  .primary-menu__arrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition:
+      opacity 0.4s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
+    margin-top: 0.3em;
+  }
+
+  /* Hover / active */
+  @media (hover: hover) and (min-width: 768px) {
+    .primary-menu__link:hover .primary-menu__label-main,
+    .primary-menu__link:focus-visible .primary-menu__label-main {
+      font-style: italic;
+      color: var(--color-laterite);
+    }
+    .primary-menu__link:hover .primary-menu__tagline,
+    .primary-menu__link:focus-visible .primary-menu__tagline {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .primary-menu__link:hover .primary-menu__arrow,
+    .primary-menu__link:focus-visible .primary-menu__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .primary-menu__link:hover .primary-menu__num,
+    .primary-menu__link:focus-visible .primary-menu__num {
+      opacity: 0.9;
+      color: var(--color-laterite);
+    }
+  }
+
+  .primary-menu__item.is-active .primary-menu__label-main {
+    font-style: italic;
+    color: var(--color-laterite);
+  }
+  .primary-menu__item.is-active .primary-menu__num {
+    opacity: 1;
+    color: var(--color-laterite);
+  }
+  .primary-menu__item.is-active .primary-menu__tagline {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Sous-liens */
+  .primary-menu__sub {
+    list-style: none;
+    margin: 0 0 1.2rem 0;
+    padding: 0 0 0 calc(11px + 1.75rem + 11px); /* aligné sur le label */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+  }
+  @media (min-width: 768px) {
+    .primary-menu__sub {
+      padding-left: calc(11px + 2.5rem + 11px);
+      gap: 0.6rem 2rem;
+    }
+  }
+  .primary-menu__sub a {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-forest) 55%, transparent);
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .primary-menu__sub a:hover,
+  .primary-menu__sub a:focus-visible {
+    color: var(--color-laterite);
+    border-color: var(--color-laterite);
+  }
+
+  /* ───────── Aside ───────── */
+  .primary-menu__aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1.5rem 3rem;
+    background-color: color-mix(in oklab, var(--color-forest) 3%, var(--color-cream));
+  }
+  @media (min-width: 768px) {
+    .primary-menu__aside {
+      padding: 3rem 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .primary-menu__aside {
+      padding: 3rem;
+      gap: 2.5rem;
+    }
+  }
+
+  .primary-menu__aside-eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-forest) 50%, transparent);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .primary-menu__aside-address,
+  .primary-menu__aside-contact {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  .primary-menu__aside-contact a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 25%, transparent);
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .primary-menu__aside-contact a:hover,
+  .primary-menu__aside-contact a:focus-visible {
+    color: var(--color-laterite);
+    border-color: var(--color-laterite);
+  }
+
+  .primary-menu__zones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: 17px;
+    color: color-mix(in oklab, var(--color-forest) 80%, transparent);
+  }
+
+  .primary-menu__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 25%, transparent);
+    padding-bottom: 2px;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .primary-menu__social:hover,
+  .primary-menu__social:focus-visible {
+    color: var(--color-laterite);
+    border-color: var(--color-laterite);
+  }
+
+  .primary-menu__aside-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-forest) 60%, transparent);
+  }
+  .primary-menu__status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-laterite);
+    animation: status-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .primary-menu[open],
+    .primary-menu[open]::backdrop,
+    .primary-menu.is-closing,
+    .primary-menu__status-dot,
+    .primary-menu__label-main,
+    .primary-menu__tagline,
+    .primary-menu__arrow {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function wirePrimaryMenu() {
+    const dialog = document.getElementById('primary-menu') as HTMLDialogElement | null;
+    const trigger = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+    const closeBtn = dialog?.querySelector<HTMLButtonElement>('[data-menu-close]');
+    const links = dialog?.querySelectorAll<HTMLAnchorElement>('[data-menu-link]');
+
+    if (!dialog || !trigger) return;
+
+    const open = () => {
+      dialog.classList.remove('is-closing');
+      dialog.showModal();
+      trigger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      // Animation out, puis close() natif
+      dialog.classList.add('is-closing');
+      window.setTimeout(() => {
+        dialog.close();
+        dialog.classList.remove('is-closing');
+        trigger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }, 300);
+    };
+
+    trigger.addEventListener('click', () => {
+      if (dialog.open) close();
+      else open();
+    });
+    closeBtn?.addEventListener('click', close);
+    links?.forEach((link) =>
+      link.addEventListener('click', () => {
+        // Même-page anchors : ferme sans navigation blocante
+        window.setTimeout(close, 100);
+      }),
+    );
+    // Escape natif du <dialog> : on intercepte pour jouer l'animation out
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      close();
+    });
+  }
+
+  wirePrimaryMenu();
+  document.addEventListener('astro:page-load', wirePrimaryMenu);
+</script>

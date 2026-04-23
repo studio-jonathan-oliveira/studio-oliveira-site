@@ -1,8 +1,19 @@
 ---
+/*
+ * /architecture-paysagere — page pilier business (PDF l.708-709 PRIORITÉ ABSOLUE).
+ *
+ * Refonte style Polestar (PDF l.775-777 + audit DA 2026-04-23) :
+ *   Hero immersif → manifeste court → 5 chapitres thématiques scroll-zoom
+ *   (Végétal, Matières, Textures, Luminaires, Modèles biophiliques) →
+ *   grille 4 typologies → process 3 étapes → FAQ étoffée → CTA final.
+ *
+ * Voix éditoriale §2 cahier : retenue, zéro pub, zéro « aucun engagement ».
+ * Contenu sourcé PDF Jonathan. Images thèmes = [À FOURNIR PAR JONATHAN],
+ * placeholders visuels avec assets existants typologies.
+ */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import SectionHeader from '@/components/astro/SectionHeader.astro';
-import Prose from '@/components/astro/Prose.astro';
+import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -13,8 +24,72 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
+// Assets existants — placeholders visuels en attendant images dédiées Jonathan
+import visuelVegetal from '@/assets/typologies/frange-urbaine.webp';
+import visuelMatieres from '@/assets/typologies/domaine-caractere.webp';
+import visuelTextures from '@/assets/typologies/coeur-urbain.webp';
+import visuelLuminaires from '@/assets/typologies/micro-urbain.webp';
+import visuelBiophilie from '@/assets/home/hero-biophilie.png';
+
 const typologies = SITE.typologies;
 
+// 5 chapitres thématiques — titres et copy issus de la démarche Jonathan
+// (cahier §2, PDF « démarche biophilique »).
+const chapitres = [
+  {
+    num: '01',
+    titre: 'Végétal',
+    accroche: 'Le vivant comme matériau premier.',
+    phrase:
+      "Chaque essence est choisie pour son comportement dans le lieu — exposition, sol, climat, biodiversité locale. Pas de catalogue, pas d'essence importée pour l'effet.",
+    image: visuelVegetal,
+    imageNote:
+      '[À FOURNIR PAR JONATHAN : image macro végétal — feuillage détail, port d\'une plante, texture de feuille. Placeholder actuel = typologie "frange-urbaine".]',
+  },
+  {
+    num: '02',
+    titre: 'Matières',
+    accroche: 'Ce qui dure, ce qui patine.',
+    phrase:
+      "Pierre locale, bois non-traité, métal brut. Le jardin vieillit bien parce qu'il est fait de matériaux qui prennent le temps avec grâce.",
+    image: visuelMatieres,
+    imageNote:
+      '[À FOURNIR PAR JONATHAN : image macro matière — pierre taillée, bois brut, acier corten, gravier. Placeholder actuel = typologie "domaine-caractere".]',
+  },
+  {
+    num: '03',
+    titre: 'Textures',
+    accroche: 'La peau du lieu.',
+    phrase:
+      'Mousse sur la pierre, herbe rase entre les pas japonais, corten rouillé, bois érodé. Les textures racontent le passage du temps et ancrent le jardin dans son territoire.',
+    image: visuelTextures,
+    imageNote:
+      '[À FOURNIR PAR JONATHAN : image macro texture — détails tactiles, proximité sensorielle. Placeholder = typologie "coeur-urbain".]',
+  },
+  {
+    num: '04',
+    titre: 'Luminaires',
+    accroche: 'La nuit révèle le dessin.',
+    phrase:
+      "L'éclairage architectural n'est pas un add-on. Il prolonge l'usage, sculpte les volumes, met les essences en valeur à la tombée du jour. Étudié avec le dessin, pas après.",
+    image: visuelLuminaires,
+    imageNote:
+      '[À FOURNIR PAR JONATHAN : image nocturne — jardin ou terrasse éclairée, luminaire détail. Placeholder = typologie "micro-urbain".]',
+  },
+  {
+    num: '05',
+    titre: 'Modèles biophiliques',
+    accroche: 'Les 14 principes Browning, Ryan, Clancy.',
+    phrase:
+      "Le design biophilique s'appuie sur 14 principes scientifiques documentés — connexion sensorielle, refuges, prospect, mystère, transitoire. Chaque projet active ceux qui servent le lieu.",
+    image: visuelBiophilie,
+    imageNote:
+      '[À FOURNIR PAR JONATHAN : visuel conceptuel sur les 14 principes ou liste animée. Placeholder = image hero biophilie.]',
+  },
+];
+
+// FAQ étoffée — questions existantes (sourcées PDF) + questions d'objection
+// (audit UX 2026-04-23 §4) en placeholder copie Jonathan.
 const pageFaq = [
   {
     question: "Qu'est-ce qu'une typologie de jardin ?",
@@ -35,6 +110,27 @@ const pageFaq = [
     question: "Quel est le délai moyen d'une étude complète ?",
     answer:
       'De 2,5 jours-homme pour un micro-urbain à 12 jours pour un domaine — soit 6 à 14 semaines calendaires selon la complexité et la disponibilité des intervenants.',
+  },
+  {
+    question: 'Quelle est la différence entre designer végétal et paysagiste ?',
+    answer:
+      "[À FOURNIR PAR JONATHAN : 120-180 mots. Angle suggéré : positionnement studio de design (concepteur) vs artisan exécutant, rôle d'architecte coordinateur, priorité à la vision biophilique avant le catalogue végétal.]",
+  },
+  {
+    question: "Le design biophilique, c'est du greenwashing ?",
+    answer:
+      '[À FOURNIR PAR JONATHAN : 100-150 mots. Angle suggéré : référence aux 14 principes Browning-Ryan-Clancy, littérature scientifique, distinction avec la simple décoration végétale.]',
+  },
+  {
+    question:
+      'Vous êtes basé à Brive mais vous intervenez à Bordeaux, Limoges, Toulouse — comment ça marche ?',
+    answer:
+      '[À FOURNIR PAR JONATHAN : 80-120 mots. Angle suggéré : modalités de déplacement, fréquence des visites sur site, outils collaboratifs à distance, planification pour optimiser les allers-retours.]',
+  },
+  {
+    question: 'Peut-on voir un projet réalisé avant de commencer ?',
+    answer:
+      '[À FOURNIR PAR JONATHAN : 80-120 mots. Angle suggéré : visite de projets livrés sur demande qualifiée, portfolio Twinmotion accessible, études de cas en journal.]',
   },
 ];
 
@@ -60,37 +156,141 @@ const schema = jsonLdGraph([
 <BaseLayout
   title="Architecture paysagère sur mesure"
   description="Studio de design biophilique. Quatre typologies de jardin — micro-urbain, cœur urbain, frange péri-urbaine, domaine. Étude préliminaire, conception, DCE, suivi de chantier."
+  darkHero
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-        Architecture paysagère · {SITE.name}
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  {/* ───── HERO IMMERSIF FOREST — pleine page éditoriale ───── */}
+  <section
+    id="hero"
+    data-section-label="Architecture paysagère"
+    class="ap-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={visuelBiophilie}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={80}
+        format="webp"
+        class="ap-hero-image h-full w-full object-cover object-center"
+        loading="eager"
+        data-hero-zoom
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/40 to-transparent"
+        aria-hidden="true"
+      >
+      </div>
+    </div>
+
+    <div class="relative flex min-h-[92svh] flex-col justify-end">
+      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
+          <span class="text-[var(--color-cream)]/40">Studio</span>
+          &nbsp;·&nbsp; Architecture paysagère
+        </p>
+        <h1
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.94] tracking-tight"
+        >
+          <span data-mask-line class="block">Architecture paysagère</span>
+          <span data-mask-line class="block text-[var(--color-laterite)] italic">
+            sur mesure.
+          </span>
+        </h1>
+        <p
+          data-reveal="up"
+          data-reveal-delay="0.4"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+        >
+          Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
+          le chantier — sans jamais être juge et partie.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───── MANIFESTE — court, éditorial, en cream ───── */}
+  <Section variant="cream" tight>
+    <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">01</span> &nbsp;·&nbsp; Démarche
       </p>
-      <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-      >
-        Architecture paysagère <em class="italic">sur mesure</em>,<br />
-        pensée comme une architecture.
-      </h1>
       <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-4xl)]"
       >
-        Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
-        le chantier — sans jamais être juge et partie. La structuration par typologie de jardin et
-        de propriété permet une lecture juste du contexte : chaque lieu a son territoire, ses
-        contraintes réglementaires, son niveau d'étude. De la terrasse urbaine au domaine de
-        caractère, la méthode reste la même — biophilique, rigoureuse, sensible.
+        Chaque lieu a son <em class="text-[var(--color-laterite)] italic">territoire</em>, ses
+        contraintes, son niveau d'étude. La méthode, elle, reste la même —
+        <em class="italic">biophilique, rigoureuse, sensible</em>.
       </p>
     </div>
   </Section>
 
-  <Section variant="cream" topDivider aria-labelledby="typologies-title">
-    <SectionHeader
-      eyebrow="Les quatre typologies"
-      title="Chaque jardin a son territoire."
-      intro="Avant de dessiner, on lit — le contexte urbain ou rural, les contraintes patrimoniales et réglementaires, le dénivelé, les usages réels. La typologie détermine le niveau d'étude, les livrables et l'enveloppe budgétaire."
-      id="typologies-title"
-    />
+  {/* ───── 5 CHAPITRES THÉMATIQUES — style Polestar scroll-driven ───── */}
+  <section
+    id="chapitres"
+    data-section-label="Démarche"
+    class="ap-chapters relative bg-[var(--color-forest)] text-[var(--color-cream)]"
+    aria-label="Cinq dimensions de l'architecture paysagère"
+  >
+    {
+      chapitres.map((ch, i) => (
+        <article class="ap-chapter" data-ap-chapter aria-labelledby={`chapter-${ch.num}`}>
+          <div class="ap-chapter-visual" data-ap-chapter-visual>
+            <Image
+              src={ch.image}
+              alt=""
+              widths={[720, 1080, 1440, 1920]}
+              sizes="(min-width: 1024px) 55vw, 100vw"
+              quality={82}
+              format="webp"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              class="ap-chapter-img"
+              data-ap-chapter-img
+            />
+            <div class="ap-chapter-veil" aria-hidden="true" />
+          </div>
+
+          <div class="ap-chapter-copy">
+            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+              {ch.num} · Chapitre
+            </p>
+            <h2
+              id={`chapter-${ch.num}`}
+              class="ap-chapter-title mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] md:text-[length:var(--text-hero)]"
+            >
+              <em class="italic">{ch.titre}</em>
+            </h2>
+            <p class="mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.18] text-[var(--color-cream)]/90 italic">
+              {ch.accroche}
+            </p>
+            <p class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75">
+              {ch.phrase}
+            </p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  {/* ───── 4 TYPOLOGIES — grille asymétrique éditoriale ───── */}
+  <Section variant="cream" aria-labelledby="typologies-title">
+    <div class="mb-16 max-w-3xl" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Les quatre typologies
+      </p>
+      <h2
+        id="typologies-title"
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+      >
+        Chaque jardin a son <em class="text-[var(--color-laterite)] italic">territoire</em>.
+      </h2>
+    </div>
 
     <ul
       data-reveal-stagger="0.12"
@@ -115,16 +315,16 @@ const schema = jsonLdGraph([
 
                 <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
                   <div>
-                    <dt class="font-mono tracking-[0.18em] text-[var(--color-forest)]/50 uppercase">
+                    <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
                       Budget travaux
                     </dt>
                     <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
                   </div>
                   <div>
-                    <dt class="font-mono tracking-[0.18em] text-[var(--color-forest)]/50 uppercase">
+                    <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
                       Étude
                     </dt>
-                    <dd class="mt-1 text-sm">{t.prixEtude}</dd>
+                    <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
                   </div>
                 </dl>
               </div>
@@ -139,38 +339,94 @@ const schema = jsonLdGraph([
     </ul>
   </Section>
 
+  {/* ───── PROCESS 3 ÉTAPES — compact ───── */}
   <Section variant="cream" topDivider aria-labelledby="process-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-      <SectionHeader eyebrow="Le process" title="Deux études, un suivi." id="process-title" />
-      <Prose>
-        <h3>1. Étude préliminaire</h3>
-        <p>
-          Contextualisation du projet, diagnostic de site, analyse réglementaire, synthèse
-          graphique, fourchette budgétaire. Durée calibrée selon la typologie.
+    <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
+      <div data-reveal="up">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+          <span class="text-[var(--color-forest)]/40">03</span> &nbsp;·&nbsp; Le process
         </p>
-        <h3>2. Étude projet</h3>
-        <p>
-          Conception approfondie, plan masse, plans d'exécution, palettes végétales et matériaux,
-          DCE (Dossier de Consultation des Entreprises), budgétisation détaillée.
-        </p>
-        <h3>3. Suivi de chantier</h3>
-        <p>
-          Coordination des artisans mis en concurrence, pilotage du planning, réunions de chantier,
-          respect des intentions de projet jusqu'à la réception. Rémunération au pourcentage des
-          travaux : de 6 % à 12 % selon la typologie.
-        </p>
-      </Prose>
+        <h2
+          id="process-title"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
+        >
+          Deux études,<br />un <em class="italic">suivi</em>.
+        </h2>
+      </div>
+
+      <ol class="space-y-12" data-reveal-stagger="0.12" data-reveal="up">
+        <li class="border-l border-[var(--color-forest)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+            Étape 1
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+          >
+            Étude préliminaire
+          </h3>
+          <p
+            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+          >
+            Contextualisation, diagnostic de site, analyse réglementaire, synthèse graphique,
+            fourchette budgétaire. Durée calibrée selon la typologie.
+          </p>
+        </li>
+        <li class="border-l border-[var(--color-forest)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+            Étape 2
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+          >
+            Étude projet
+          </h3>
+          <p
+            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+          >
+            Conception approfondie, plan masse, plans d'exécution, palettes végétales et matériaux,
+            DCE, budgétisation détaillée.
+          </p>
+        </li>
+        <li class="border-l border-[var(--color-forest)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+            Étape 3
+          </p>
+          <h3
+            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+          >
+            Suivi de chantier
+          </h3>
+          <p
+            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75"
+          >
+            Coordination des artisans mis en concurrence, pilotage du planning, réunions de
+            chantier, respect des intentions de projet jusqu'à la réception. Rémunération de 6 à 12
+            % des travaux selon la typologie.
+          </p>
+        </li>
+      </ol>
     </div>
   </Section>
 
+  {/* ───── FAQ — 8 questions étoffées ───── */}
   <Section variant="cream" topDivider aria-labelledby="faq-title">
-    <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
+    <div class="mb-12 max-w-3xl" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">04</span> &nbsp;·&nbsp; Questions fréquentes
+      </p>
+      <h2
+        id="faq-title"
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
+      >
+        Les objections,<br /><em class="italic">avant d'appeler</em>.
+      </h2>
+    </div>
     <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
       {
         pageFaq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-laterite)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -189,28 +445,37 @@ const schema = jsonLdGraph([
     </ul>
   </Section>
 
+  {/* ───── CTA FINAL forest ───── */}
   <Section variant="forest" topDivider>
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">Démarrer</p>
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Démarrer
+      </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+        data-mask-reveal
+        data-mask-stagger="0.14"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98]"
       >
-        Votre jardin est une <em class="text-[var(--color-gold)] italic">architecture</em>.
+        <span data-mask-line class="block">Votre jardin est</span>
+        <span data-mask-line class="block text-[var(--color-laterite)] italic">
+          une architecture.
+        </span>
       </h2>
       <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
-        Un appel de 15-25 minutes pour qualifier votre projet. Aucun engagement.
+        Un appel de 15 à 25 minutes pour qualifier le projet. Sans devis préalable, sans formalisme.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <a
           href="/contact"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+          data-magnetic="0.3"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
         >
           Prendre contact
           <span aria-hidden="true">→</span>
         </a>
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-laterite)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -218,7 +483,120 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={schema} />
-  </Fragment>
+  <style>
+    /* ───── Hero image — zoom scroll-driven ───── */
+    .ap-hero-image {
+      transform: scale(1.06);
+      transform-origin: center;
+      will-change: transform, filter;
+    }
+
+    /* ───── Chapitres thématiques — scroll-driven zoom ─────
+       Chaque chapitre est pinné en sticky, l'image zoome (scale 1 → 1.15)
+       pendant le scroll, la copy apparaît avec un léger translateY. */
+    .ap-chapters {
+      position: relative;
+    }
+    .ap-chapter {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+    @media (min-width: 1024px) {
+      .ap-chapter {
+        grid-template-columns: 55fr 45fr;
+      }
+    }
+    .ap-chapter + .ap-chapter {
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 10%, transparent);
+    }
+
+    .ap-chapter-visual {
+      position: relative;
+      overflow: hidden;
+      min-height: 55vh;
+    }
+    @media (min-width: 1024px) {
+      .ap-chapter-visual {
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+    }
+    .ap-chapter-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.05);
+      transform-origin: center;
+      will-change: transform, filter;
+      transition: transform 1s var(--ease-out-editorial);
+    }
+    .ap-chapter:hover .ap-chapter-img {
+      transform: scale(1.1);
+    }
+    .ap-chapter-veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom right,
+        rgba(26, 43, 31, 0.3) 0%,
+        rgba(26, 43, 31, 0.5) 100%
+      );
+      pointer-events: none;
+    }
+
+    .ap-chapter-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2rem 5rem;
+      max-width: 640px;
+    }
+    @media (min-width: 768px) {
+      .ap-chapter-copy {
+        padding: 5rem 4rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .ap-chapter-copy {
+        padding: 6rem 5rem 6rem 6rem;
+        min-height: 100vh;
+      }
+    }
+
+    .ap-chapter-title em {
+      font-variation-settings:
+        'opsz' 144,
+        'SOFT' 70;
+    }
+
+    /* Alternance visuel/copy : pair à gauche, impair à droite */
+    @media (min-width: 1024px) {
+      .ap-chapter:nth-child(even) {
+        grid-template-columns: 45fr 55fr;
+      }
+      .ap-chapter:nth-child(even) .ap-chapter-visual {
+        order: 2;
+      }
+      .ap-chapter:nth-child(even) .ap-chapter-copy {
+        order: 1;
+        padding: 6rem 5rem 6rem 6rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ap-chapter-img {
+        transition: none;
+        transform: scale(1);
+      }
+      .ap-hero-image {
+        transform: none;
+      }
+    }
+  </style>
 </BaseLayout>

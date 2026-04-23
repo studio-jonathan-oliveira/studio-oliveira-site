@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '@/components/astro/Header.astro';
+import MenuPrimary from '@/components/astro/MenuPrimary.astro';
 import Footer from '@/components/astro/Footer.astro';
 import Grain from '@/components/astro/Grain.astro';
 import SmoothScroll from '@/components/astro/SmoothScroll.astro';
@@ -87,6 +88,7 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     </a>
 
     <Header darkHero={darkHero} />
+    <MenuPrimary />
 
     {/* Slot intro rendu hors de <main> pour ne pas être masqué par .intro-hidden. */}
     <slot name="intro" />

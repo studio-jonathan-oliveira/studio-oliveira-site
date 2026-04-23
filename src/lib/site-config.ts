@@ -132,9 +132,9 @@ export const SITE = {
     },
   ] as const,
 
-  // Réseaux sociaux — [À FOURNIR PAR JONATHAN : URLs réelles]
+  // Réseaux sociaux — décision Morgan 2026-04-22 : Instagram seul canal.
   social: {
-    instagram: '', // ex : https://www.instagram.com/oliveirastudio
+    instagram: 'https://www.instagram.com/studio_joliveira',
     linkedin: '',
     pinterest: '',
   },

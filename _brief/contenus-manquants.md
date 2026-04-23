@@ -142,4 +142,43 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 
 ---
 
+## Ajouts Phase F/G (2026-04-23)
+
+### FAQ-ARCHITECTURE-PAYSAGERE-4-NOUVELLES
+
+**Type** : texte éditorial Jonathan
+**Emplacement** : `src/pages/architecture-paysagere/index.astro` (FAQ étoffée de 4 → 8 questions)
+**Volume attendu** : 4 réponses de 80 à 180 mots chacune
+**Questions à traiter** :
+
+1. « Quelle est la différence entre designer végétal et paysagiste ? » (120-180 mots, positionnement studio concepteur vs artisan exécutant)
+2. « Le design biophilique, c'est du greenwashing ? » (100-150 mots, référence 14 principes Browning-Ryan-Clancy, distinction avec décoration végétale)
+3. « Vous êtes basé à Brive mais vous intervenez à Bordeaux, Limoges, Toulouse — comment ça marche ? » (80-120 mots, déplacements, visites, outils collaboratifs)
+4. « Peut-on voir un projet réalisé avant de commencer ? » (80-120 mots, visite sur demande qualifiée, portfolio Twinmotion, journal)
+
+**Contexte** : 5 objections prospects identifiées dans audit UX 2026-04-23 §4, à adresser pour conversion HNW.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### IMAGES-5-CHAPITRES-ARCHITECTURE-PAYSAGERE
+
+**Type** : photos macro thématiques (5)
+**Emplacement** : `src/pages/architecture-paysagere/index.astro` sections chapitres
+**Volume attendu** : 5 images 1920×1080 min, WebP/JPEG, qualité éditoriale premium
+**Thèmes** :
+
+1. **Végétal** : détail macro feuillage / port plante / texture feuille (placeholder actuel = typologie frange-urbaine)
+2. **Matières** : pierre taillée / bois brut / acier corten / gravier (placeholder = domaine-caractere)
+3. **Textures** : mousse sur pierre / herbe / bois érodé détail tactile (placeholder = coeur-urbain)
+4. **Luminaires** : jardin éclairé à la tombée du jour / luminaire détail (placeholder = micro-urbain)
+5. **Modèles biophiliques** : visuel conceptuel des 14 principes Browning-Ryan-Clancy (placeholder = hero-biophilie)
+
+**Contexte** : refonte style Polestar demandée PDF l.775-777.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### META-DESCRIPTION-STUDIO — ✅ COMPLÉTÉ Phase E
+
+Remplacé par description factuelle générée sur les faits du PDF (biophilie, Brive, 2021). À re-valider par Jonathan si besoin.
+
+---
+
 **Mise à jour** : à compléter à chaque nouveau placeholder inséré dans le code ou la doc.
