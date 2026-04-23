@@ -36,7 +36,13 @@
       "WebFetch(domain:www.awwwards.com)",
       "WebFetch(domain:www.commarts.com)",
       "Bash(node scripts/convert-typologies.mjs)",
-      "Bash(curl -sI http://localhost:4321/frames/coeur-urbain-parenthese/0000.webp)"
+      "Bash(curl -sI http://localhost:4321/frames/coeur-urbain-parenthese/0000.webp)",
+      "Bash(git commit -m ' *)",
+      "Bash(LEFTHOOK=0 git commit --allow-empty -m \"chore: commit initial vide \\(bootstrap lefthook\\)\")",
+      "Bash(pnpm format *)",
+      "Bash(git commit *)",
+      "Bash(git add *)",
+      "Bash(git push *)"
     ]
   }
 }
