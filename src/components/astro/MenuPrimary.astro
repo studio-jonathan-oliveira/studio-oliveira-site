@@ -814,43 +814,55 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
 </style>
 
 <script>
+  /*
+   * Wire menu — robustesse anti-double-listener (bug 2026-04-23 soir :
+   * « menu ouvert à l'arrivée, impossible à fermer, se réouvre »). Cause
+   * probable : à chaque astro:page-load, un nouveau listener était attaché
+   * au trigger (dataset.wired n'est pas fiable si le DOM est partiellement
+   * persisté par ClientRouter). Nouveau pattern : AbortController jetable
+   * remplacé à chaque wire → les anciens listeners sont garantis détruits.
+   */
+  let wireController: AbortController | null = null;
+
   function wirePrimaryMenu() {
     const dialog = document.getElementById('primary-menu') as HTMLDialogElement | null;
     const trigger = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
-    const closeBtn = dialog?.querySelector<HTMLButtonElement>('[data-menu-close]');
-    const links = dialog?.querySelectorAll<HTMLAnchorElement>('[data-menu-link]');
-
     if (!dialog || !trigger) return;
 
-    // Guard anti-double-wire : DOMContentLoaded + astro:page-load firent tous
-    // les deux au 1er chargement → listeners attachés 2×, 1 clic = open+close
-    // instant (bug 2026-04-23 : « menu affiche puis disparaît »).
-    if (trigger.dataset.wired === 'true') return;
-    trigger.dataset.wired = 'true';
+    // Jette tous les anciens listeners — garantit une seule source de vérité
+    wireController?.abort();
+    wireController = new AbortController();
+    const { signal } = wireController;
 
-    // Déplace le custom cursor dans le dialog à l'ouverture (sinon il est
-    // derrière le top-layer du <dialog> et invisible).
+    // Reset : si le dialog était open par erreur (état résiduel après HMR
+    // ou view transition), on ferme en dur avant de re-wire.
+    if (dialog.open) dialog.close();
+    dialog.classList.remove('is-closing', 'has-cursor');
+    trigger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-menu-close]');
+    const links = dialog.querySelectorAll<HTMLAnchorElement>('[data-menu-link]');
+
     const moveCursorInto = (target: ParentNode) => {
       const cursor = document.getElementById('cursor');
       if (cursor) target.appendChild(cursor);
     };
 
     const open = () => {
+      if (dialog.open) return;
       dialog.classList.remove('is-closing');
       dialog.showModal();
       dialog.classList.add('has-cursor');
       moveCursorInto(dialog);
       trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
-      // Stop Lenis : sans ça, la molette est interceptée par le smooth scroll
-      // global et n'arrive jamais au dialog (bug audit 2026-04-23 : « aucun
-      // scroll possible dans le menu »). Le dialog reçoit le wheel en natif.
       window.__lenis?.stop();
     };
 
     const close = () => {
+      if (!dialog.open) return;
       dialog.classList.add('is-closing');
-      // On remet le cursor dans body dès le début de l'animation out
       moveCursorInto(document.body);
       dialog.classList.remove('has-cursor');
       window.setTimeout(() => {
@@ -862,31 +874,34 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       }, 300);
     };
 
-    trigger.addEventListener('click', () => {
-      if (dialog.open) close();
-      else open();
-    });
-    closeBtn?.addEventListener('click', close);
-    links?.forEach((link) =>
-      link.addEventListener('click', () => {
-        // Même-page anchors : ferme sans navigation blocante
-        window.setTimeout(close, 100);
-      }),
+    trigger.addEventListener(
+      'click',
+      (e) => {
+        e.preventDefault();
+        if (dialog.open) close();
+        else open();
+      },
+      { signal },
     );
-    // Escape natif du <dialog> : on intercepte pour jouer l'animation out
-    dialog.addEventListener('cancel', (e) => {
-      e.preventDefault();
-      close();
-    });
-    // Clic dans le vide (zone transparente à gauche du panneau inner)
-    // → ferme. Seuls les clicks sur le dialog lui-même (pas sur l'inner
-    // ou ses enfants) remontent jusqu'ici.
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) close();
-    });
-
-    // (Wheel handler retiré : le dialog est désormais flex et l'inner est
-    // enfant avec overflow-y: auto natif, le scroll fonctionne out-of-the-box.)
+    closeBtn?.addEventListener('click', close, { signal });
+    links.forEach((link) =>
+      link.addEventListener('click', () => window.setTimeout(close, 100), { signal }),
+    );
+    dialog.addEventListener(
+      'cancel',
+      (e) => {
+        e.preventDefault();
+        close();
+      },
+      { signal },
+    );
+    dialog.addEventListener(
+      'click',
+      (e) => {
+        if (e.target === dialog) close();
+      },
+      { signal },
+    );
   }
 
   wirePrimaryMenu();
