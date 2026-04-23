@@ -31,6 +31,18 @@ import visuelTextures from '@/assets/typologies/coeur-urbain.webp';
 import visuelLuminaires from '@/assets/typologies/micro-urbain.webp';
 import visuelBiophilie from '@/assets/home/hero-biophilie.png';
 
+// Mapping typologie.slug → image pour les cards (enrichit visuel section 02)
+import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
+import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
+import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
+import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
+const typoImages: Record<string, ImageMetadata> = {
+  'micro-urbain': typoMicroUrbain,
+  'coeur-urbain': typoCoeurUrbain,
+  'frange-urbaine': typoFrangeUrbaine,
+  'domaine-caractere': typoDomaineCaractere,
+};
+
 const typologies = SITE.typologies;
 
 // 5 chapitres thématiques — titres et copy issus de la démarche Jonathan
@@ -299,44 +311,77 @@ const schema = jsonLdGraph([
     >
       {
         typologies.map((t) => (
-          <li class="bg-[var(--color-cream)]">
-            <a
-              href={`/architecture-paysagere/${t.slug}`}
-              class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
-            >
-              <div>
-                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-                  {t.surface} · {t.exemple}
-                </p>
-                <h3 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
-                  {t.nomProprietaire}
-                </h3>
-                <p class="mt-3 text-sm text-[var(--color-forest)]/60">{t.h1Seo}</p>
+          <li class="ap-typo-card group bg-[var(--color-cream)]">
+            <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
+              {typoImages[t.slug] && (
+                <div class="ap-typo-card-visual overflow-hidden">
+                  <Image
+                    src={typoImages[t.slug]!}
+                    alt=""
+                    widths={[480, 720, 960, 1280]}
+                    sizes="(min-width: 768px) 44vw, 92vw"
+                    quality={80}
+                    format="webp"
+                    class="ap-typo-card-img h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
+                <div>
+                  <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                    {t.surface} · {t.exemple}
+                  </p>
+                  <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                    <em class="italic">{t.nomProprietaire}</em>
+                  </h3>
+                  <p class="mt-3 text-sm text-[var(--color-forest)]/60">{t.h1Seo}</p>
 
-                <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
-                  <div>
-                    <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
-                      Budget travaux
-                    </dt>
-                    <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
-                  </div>
-                  <div>
-                    <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
-                      Étude
-                    </dt>
-                    <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
-                  </div>
-                </dl>
+                  <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
+                    <div>
+                      <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
+                        Budget travaux
+                      </dt>
+                      <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
+                    </div>
+                    <div>
+                      <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
+                        Étude
+                      </dt>
+                      <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
+                    </div>
+                  </dl>
+                </div>
+                <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                  Explorer
+                  <span aria-hidden="true">→</span>
+                </span>
               </div>
-              <span class="mt-10 inline-flex items-center gap-2 text-sm transition-transform group-hover:translate-x-1">
-                Explorer la typologie
-                <span aria-hidden="true">→</span>
-              </span>
             </a>
           </li>
         ))
       }
     </ul>
+
+    <style>
+      .ap-typo-card-visual {
+        aspect-ratio: 4 / 3;
+        background-color: var(--color-forest);
+      }
+      @media (min-width: 768px) {
+        .ap-typo-card-visual {
+          aspect-ratio: 5 / 3;
+        }
+      }
+      .ap-typo-card-img {
+        transform: scale(1.04);
+        transition: transform 1.2s var(--ease-out-editorial);
+      }
+      .ap-typo-card:hover .ap-typo-card-img,
+      .ap-typo-card:focus-within .ap-typo-card-img {
+        transform: scale(1.1);
+      }
+    </style>
   </Section>
 
   {/* ───── PROCESS 3 ÉTAPES — compact ───── */}

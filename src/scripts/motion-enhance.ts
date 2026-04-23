@@ -338,13 +338,15 @@ function setupQuoteScroll(root: ParentNode) {
 
     scroll(
       (progress: number) => {
-        // Section 120vh + sticky 100vh → période sticky : progress 0.45 à 0.55
-        // seulement. On élargit la fenêtre de coloration (0.30 → 0.65) pour
-        // que les mots se colorient pendant tout le trajet lecture sans
-        // attendre la fin du sticky — plus fluide (feedback Morgan 2026-04-23).
+        // Section 120vh + sticky 100vh → période sticky : progress 0.45 à 0.55.
+        // Fenêtre coloration 0.30 → 0.72 : le début se compose vite, la fin
+        // ralentit (feedback Morgan 2026-04-23 : « ralentir légèrement la
+        // vitesse de coloriage du texte à la fin »).
         const START = 0.3;
-        const END = 0.65;
-        const eased = Math.max(0, Math.min(1, (progress - START) / (END - START)));
+        const END = 0.72;
+        const linear = Math.max(0, Math.min(1, (progress - START) / (END - START)));
+        // Ease-out quad : se compose plus vite au début, ralentit vers la fin
+        const eased = 1 - Math.pow(1 - linear, 1.8);
         const active = eased * words.length;
         words.forEach((w, i) => {
           const local = Math.max(0, Math.min(1, active - i));

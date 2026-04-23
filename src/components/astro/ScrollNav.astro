@@ -41,10 +41,14 @@
 </div>
 
 <style>
-  /* ─────────── Sidebar desktop ─────────── */
+  /* ─────────── Sidebar desktop ───────────
+     Compacte par défaut (~32px de large) pour éviter de chevaucher le contenu
+     (feedback Morgan 2026-04-23 : « sidebar à cheval sur les écritures »).
+     Breakpoint 1400px car en dessous, le contenu max-w-7xl (1280px) touche
+     le bord gauche au centrage. Titres qui s'étendent au hover uniquement. */
   .scroll-nav {
     position: fixed;
-    left: 2rem;
+    left: 1.25rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 40;
@@ -53,11 +57,12 @@
     transition: opacity 0.8s var(--ease-out-editorial);
     color: var(--color-forest);
     display: none;
-    padding: 0.5rem 0 0.5rem 1.5rem; /* décalage pour le rail à gauche */
+    padding: 0.5rem 0 0.5rem 1rem;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1400px) {
     .scroll-nav {
       display: block;
+      left: 1.75rem;
     }
   }
   .scroll-nav.is-visible {
@@ -167,21 +172,34 @@
     transform: translateX(0);
   }
 
-  /* État actif */
+  /* État actif : juste le numéro devient latérite, pas d'expansion du titre
+     par défaut (éviterait collision texte — le titre apparait au hover). */
   .scroll-nav-item.is-active .scroll-nav-index {
     opacity: 1;
     color: var(--color-laterite);
+    font-weight: 500;
   }
-  .scroll-nav-item.is-active .scroll-nav-title {
+  .scroll-nav-item.is-active:hover .scroll-nav-title,
+  .scroll-nav-item.is-active:focus-within .scroll-nav-title {
     opacity: 1;
-    max-width: 220px;
-    transform: translateX(0);
     color: var(--color-forest);
   }
 
   /* Sections passées : opacité intermédiaire */
   .scroll-nav-item.is-passed .scroll-nav-index {
     opacity: 0.55;
+  }
+
+  /* Au hover de la sidebar entière, les titres apparaissent tous en parallèle
+     pour permettre l'exploration visuelle sans avoir à survoler item par item. */
+  .scroll-nav:hover .scroll-nav-title {
+    opacity: 0.7;
+    max-width: 220px;
+    transform: translateX(0);
+  }
+  .scroll-nav:hover .scroll-nav-item.is-active .scroll-nav-title {
+    opacity: 1;
+    color: var(--color-forest);
   }
 
   /* Compteur bas */
