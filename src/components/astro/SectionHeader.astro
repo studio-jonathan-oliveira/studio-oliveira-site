@@ -1,0 +1,60 @@
+---
+/*
+ * SectionHeader — pattern éditorial récurrent : eyebrow mono + H2 Cormorant + intro.
+ *
+ * Usage :
+ *   <SectionHeader eyebrow="Conception de jardin" title="Quatre typologies..." intro="..." id="typo" />
+ *   Puis utiliser aria-labelledby="typo" sur la <Section>.
+ */
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** Balise sémantique — H1 uniquement si c'est le titre principal de la page. */
+  as?: 'h1' | 'h2' | 'h3';
+  intro?: string;
+  id?: string;
+  align?: 'left' | 'center';
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  as: Tag = 'h2',
+  intro,
+  id,
+  align = 'left',
+  class: className = '',
+} = Astro.props;
+
+const alignment = align === 'center' ? 'text-center mx-auto items-center' : '';
+---
+
+<header class:list={['mb-16 flex max-w-2xl flex-col', alignment, className]}>
+  {
+    eyebrow && (
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        {eyebrow}
+      </p>
+    )
+  }
+  <Tag
+    id={id}
+    class:list={[
+      'font-[family-name:var(--font-heading)] leading-[1.05] tracking-tight',
+      Tag === 'h1' ? 'text-[length:var(--text-5xl)]' : 'text-[length:var(--text-4xl)]',
+      eyebrow && 'mt-4',
+    ]}
+  >
+    <slot name="title">{title}</slot>
+  </Tag>
+  {
+    intro && (
+      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed opacity-70">
+        {intro}
+      </p>
+    )
+  }
+  <slot />
+</header>

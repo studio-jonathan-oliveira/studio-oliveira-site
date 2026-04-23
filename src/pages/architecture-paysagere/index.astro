@@ -1,0 +1,214 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service,
+  faqPage,
+} from '@/lib/schema-org';
+
+const typologies = SITE.typologies;
+
+const pageFaq = [
+  {
+    question: "Qu'est-ce qu'une typologie de jardin ?",
+    answer:
+      'Une typologie désigne un contexte d\'intervention — micro-urbain, cœur de ville, frange péri-urbaine, domaine de caractère. Chaque typologie a ses contraintes techniques, réglementaires et son niveau d\'étude dédié.',
+  },
+  {
+    question: 'Pourquoi facturer une étude alors que beaucoup de paysagistes l\'offrent ?',
+    answer:
+      'Parce que c\'est le cœur du métier. L\'étude comprend le plan masse, les plans de plantations, le DCE, la mise en concurrence des entreprises et le suivi de chantier. Le chiffrage travaux vient ensuite, précisément.',
+  },
+  {
+    question: 'Vous réalisez les travaux vous-mêmes ?',
+    answer:
+      'Non. Je conçois et je coordonne — je sélectionne et je pilote des entreprises mises en concurrence sur chaque lot (terrassement, maçonnerie paysagère, arrosage, éclairage, plantations).',
+  },
+  {
+    question: "Quel est le délai moyen d'une étude complète ?",
+    answer:
+      'De 2,5 jours-homme pour un micro-urbain à 12 jours pour un domaine — soit 6 à 14 semaines calendaires selon la complexité et la disponibilité des intervenants.',
+  },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  service({
+    name: 'Architecture paysagère sur mesure',
+    slug: '',
+    description:
+      'Studio de design biophilique à Brive-la-Gaillarde. Études préliminaires, conception, DCE et suivi de chantier pour 4 typologies de jardin.',
+    priceRangeMin: 1200,
+    priceRangeMax: 6500,
+  }),
+  faqPage(pageFaq),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Architecture paysagère sur mesure"
+  description="Studio de design biophilique. Quatre typologies de jardin — micro-urbain, cœur urbain, frange péri-urbaine, domaine. Étude préliminaire, conception, DCE, suivi de chantier."
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl" data-reveal="up">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Architecture paysagère · {SITE.name}
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        Architecture paysagère <em class="italic">sur mesure</em>,<br />
+        pensée comme une architecture.
+      </h1>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
+        le chantier — sans jamais être juge et partie. La structuration par typologie de jardin
+        et de propriété permet une lecture juste du contexte : chaque lieu a son territoire, ses
+        contraintes réglementaires, son niveau d'étude. De la terrasse urbaine au domaine de
+        caractère, la méthode reste la même — biophilique, rigoureuse, sensible.
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="typologies-title">
+    <SectionHeader
+      eyebrow="Les quatre typologies"
+      title="Chaque jardin a son territoire."
+      intro="Avant de dessiner, on lit — le contexte urbain ou rural, les contraintes patrimoniales et réglementaires, le dénivelé, les usages réels. La typologie détermine le niveau d'étude, les livrables et l'enveloppe budgétaire."
+      id="typologies-title"
+    />
+
+    <ul data-reveal-stagger="0.12" data-reveal="up" class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+      {
+        typologies.map((t) => (
+          <li class="bg-[var(--color-cream)]">
+            <a
+              href={`/architecture-paysagere/${t.slug}`}
+              class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
+            >
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                  {t.surface} · {t.exemple}
+                </p>
+                <h3 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                  {t.nomProprietaire}
+                </h3>
+                <p class="mt-3 text-sm text-[var(--color-forest)]/60">{t.h1Seo}</p>
+
+                <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
+                  <div>
+                    <dt class="font-mono uppercase tracking-[0.18em] text-[var(--color-forest)]/50">
+                      Budget travaux
+                    </dt>
+                    <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono uppercase tracking-[0.18em] text-[var(--color-forest)]/50">
+                      Étude
+                    </dt>
+                    <dd class="mt-1 text-sm">{t.prixEtude}</dd>
+                  </div>
+                </dl>
+              </div>
+              <span class="mt-10 inline-flex items-center gap-2 text-sm transition-transform group-hover:translate-x-1">
+                Explorer la typologie
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="process-title">
+    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+      <SectionHeader
+        eyebrow="Le process"
+        title="Deux études, un suivi."
+        id="process-title"
+      />
+      <Prose>
+        <h3>1. Étude préliminaire</h3>
+        <p>
+          Contextualisation du projet, diagnostic de site, analyse réglementaire, synthèse
+          graphique, fourchette budgétaire. Durée calibrée selon la typologie.
+        </p>
+        <h3>2. Étude projet</h3>
+        <p>
+          Conception approfondie, plan masse, plans d'exécution, palettes végétales et matériaux,
+          DCE (Dossier de Consultation des Entreprises), budgétisation détaillée.
+        </p>
+        <h3>3. Suivi de chantier</h3>
+        <p>
+          Coordination des artisans mis en concurrence, pilotage du planning, réunions de chantier,
+          respect des intentions de projet jusqu'à la réception. Rémunération au pourcentage des
+          travaux : de 6 % à 12 % selon la typologie.
+        </p>
+      </Prose>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="faq-title">
+    <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
+    <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
+      {
+        pageFaq.map((item) => (
+          <li>
+            <details class="group">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+                <span>{item.question}</span>
+                <span class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <p class="pb-6 pr-10 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+                {item.answer}
+              </p>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section variant="forest" topDivider>
+    <div class="text-center">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        Démarrer
+      </p>
+      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
+        Votre jardin est une <em class="italic text-[var(--color-gold)]">architecture</em>.
+      </h2>
+      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
+        Un appel de 15-25 minutes pour qualifier votre projet. Aucun engagement.
+      </p>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Prendre contact
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+          {SITE.contact.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

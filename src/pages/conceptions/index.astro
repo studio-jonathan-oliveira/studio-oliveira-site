@@ -1,0 +1,88 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import { fetch } from '@/lib/sanity';
+import { projectsListQuery } from '@/lib/queries';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  organization,
+  localBusiness,
+} from '@/lib/schema-org';
+
+const conceptions = await fetch<unknown[]>(projectsListQuery, { section: 'conceptions' }, []);
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Conceptions', item: '/conceptions' },
+  ]),
+  {
+    '@type': 'CollectionPage',
+    name: `Conceptions — ${SITE.name}`,
+    description:
+      'Études en cours du Studio J Oliveira — rendus photoréalistes immersifs, expériences scroll-driven.',
+    url: `${SITE.url}/conceptions`,
+  },
+]);
+---
+
+<BaseLayout
+  title="Conceptions — rendus immersifs"
+  description="Études de projets en cours rendues en Twinmotion photoréaliste — expériences scroll-driven immersives signées Studio J Oliveira."
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Portefeuille · Conceptions
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        Études en <em class="italic">cours</em>,<br />
+        rendues immersives.
+      </h1>
+      <p class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        Projets en phase de conception, représentés en rendu photoréaliste Twinmotion. Des
+        expériences scroll-driven pour traverser l'espace comme si vous y étiez déjà. Les projets
+        livrés sont dans <a href="/realisations" class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]">Réalisations</a>.
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider>
+    {
+      conceptions.length === 0 ? (
+        <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            En préparation
+          </p>
+          <p class="mt-4 mx-auto max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
+            Les premières conceptions seront publiées dès réception des rendus Twinmotion —
+            chaque projet sera immersif, navigable au scroll. La check-list d'export est fournie
+            à Jonathan dans <code class="font-mono text-xs">_brief/checklist-twinmotion-jonathan.md</code>.
+          </p>
+          <div class="mt-8">
+            <a
+              href="/contact"
+              class="inline-flex items-center gap-3 border-b border-[var(--color-forest)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
+            >
+              Me parler de votre projet
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <p class="text-sm text-[var(--color-forest)]/60">
+          Liste des conceptions à venir — le template est prêt, les données seront injectées
+          depuis Sanity.
+        </p>
+      )
+    }
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

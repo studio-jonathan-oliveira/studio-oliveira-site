@@ -1,0 +1,157 @@
+@import 'tailwindcss';
+
+/* Fonts — Fontsource self-hosted, font-display: swap par défaut */
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
+/*
+ * Design tokens — Studio J Oliveira
+ *
+ * ⚠️ Palette provisoire. À confronter avec la charte graphique officielle
+ * (PDF 43 Mo non lu à ce jour) — voir _brief/questions-ouvertes.md §1.2.
+ *
+ * Couleurs confirmées par les documents client (coffret d'étude, logo) :
+ *   #6F7E4E — vert mousse (logo primaire, coffret)
+ *   #A94930 — rouge latérite (coffret option)
+ *
+ * Couleurs proposées dans le brief technique (à valider) :
+ *   #F5F1EA — crème papier (fond)
+ *   #1A2B1F — vert sombre (texte)
+ *   #3D5A3E — vert profond (accent 1)
+ *   #8B7355 — brun terre (accent 2)
+ *   #D4B896 — or végétal (accent lumière)
+ */
+
+@theme {
+  /* Couleurs marque — primaires */
+  --color-cream: #f5f1ea;
+  --color-forest: #1a2b1f;
+  --color-moss: #6f7e4e;
+  --color-laterite: #a94930;
+
+  /* Couleurs accents (à valider charte) */
+  --color-forest-deep: #3d5a3e;
+  --color-earth: #8b7355;
+  --color-gold: #d4b896;
+
+  /* Typographie — provisoire, à valider charte */
+  --font-heading: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Échelle fluide — clamp() partout, pas de breakpoints rigides */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.3vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.6rem + 1vw, 2.5rem);
+  --text-4xl: clamp(2.25rem, 1.9rem + 1.3vw, 3.5rem);
+  --text-5xl: clamp(3rem, 2.4rem + 2vw, 5rem);
+  --text-hero: clamp(3.5rem, 2.8rem + 3vw, 7rem);
+
+  /* Radii — retenue éditoriale, pas de cartes arrondies agressives */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* Durations & easings — cinématique, jamais saccadé */
+  --ease-out-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-editorial: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 700ms;
+}
+
+/*
+ * Motion fallback — masque les éléments avant que motion-enhance.ts ne tourne,
+ * pour éviter un flash de contenu visible puis caché. Les styles inline écrits
+ * par Motion prennent le pas dès que le script joue.
+ * ⚠️ Bypass reduce-motion explicite (demande Morgan 2026-04-22).
+ */
+[data-reveal],
+[data-hero-sequence] [data-hero] {
+  opacity: 0;
+}
+[data-reveal='up'],
+[data-reveal='slow'],
+[data-hero-sequence] [data-hero] {
+  transform: translateY(56px);
+}
+[data-reveal='slide-left'] {
+  transform: translateX(-56px);
+}
+
+/*
+ * Intro reveal — pendant que le bumper traverse, main + header sont "en retrait"
+ * (scale>1 + blur + opacity 0). Au dismiss, ils reviennent en scale 1 blur 0 :
+ * effet caméra qui recule vers le contenu pendant que le logo passe à travers.
+ * One-shot keyframe pour ne pas écraser les transitions natives (Header scroll bg).
+ */
+main.intro-hidden,
+header.intro-hidden {
+  transform-origin: 50% 45%;
+  transform: scale(1.18);
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+}
+main.intro-revealing,
+header.intro-revealing {
+  transform-origin: 50% 45%;
+  animation: intro-reveal 1.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  will-change: transform, filter, opacity;
+}
+@keyframes intro-reveal {
+  from { transform: scale(1.18); filter: blur(12px); opacity: 0; }
+  to   { transform: scale(1);    filter: blur(0);   opacity: 1; }
+}
+
+/* Mask-reveal — le conteneur clippe, l'enfant translateY */
+[data-mask-reveal],
+[data-hero-mask] {
+  overflow: hidden;
+}
+[data-hero-mask] {
+  display: block;
+}
+[data-mask-reveal] [data-mask-line],
+[data-hero-mask] [data-mask-line] {
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+/* Base — corps de texte éditorial */
+@layer base {
+  html {
+    font-family: var(--font-body);
+    color: var(--color-forest);
+    background-color: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Reduce-motion global block retiré volontairement (bypass Morgan 2026-04-22).
+     À réintégrer au Phase 6 audit accessibilité. */
+}

@@ -1,0 +1,179 @@
+---
+/*
+ * /pros — Page dédiée aux clients professionnels.
+ * Source PDF Jonathan : lignes 784-804.
+ *
+ * Style distinctif selon le PDF :
+ * - Clarté, rapidité, pas de blabla inutile (l. 785-786)
+ * - Images ou vidéos projets réalisés avec infos claires (l. 788-790)
+ * - Texte plus-value pro — validation investissement par séduction du design (l. 792-794)
+ * - Garanties + prix réalisation (si nécessaire, à définir plus tard l. 796-798)
+ * - Galerie/carrousel projets (l. 800)
+ * - ⚡ CTA SUIVEUR SOURIS visible tout le long du scroll (l. 801-804 + mp4 référence)
+ *   → Phase B, à implémenter via Motion + event pointermove
+ *
+ * Verticales pros (selon PDF l. 536, 732) :
+ *   - Hôtellerie
+ *   - Restauration
+ *   - Bureaux
+ *   - Commerces
+ *
+ * ⚠️ Page en squelette — contenu définitif à rédiger (Claude ébauche + Jonathan valide).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+
+const verticales = [
+  { slug: 'hotellerie', nom: 'Hôtellerie', accroche: '[À FOURNIR]' },
+  { slug: 'restauration', nom: 'Restauration', accroche: '[À FOURNIR]' },
+  { slug: 'bureaux', nom: 'Bureaux', accroche: '[À FOURNIR]' },
+  { slug: 'commerces', nom: 'Commerces', accroche: '[À FOURNIR]' },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Pros', item: '/pros' },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Design biophilique pour professionnels — Studio J Oliveira"
+  description="Studio de design biophilique à Brive. Aménagements végétalisés pour hôtellerie, restauration, bureaux et commerces. Décors immersifs, plantes naturelles et artificielles."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl" data-reveal="up">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        <span class="text-[var(--color-forest)]/40">PRO</span>
+        &nbsp;·&nbsp; Hôtellerie · Restauration · Bureaux · Commerces
+      </p>
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+      >
+        Design biophilique pour <em class="italic">professionnels</em>.
+      </h1>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR — pitch pro 60-80 mots. Plus-value business : validation de l'investissement
+        par la séduction du design, durabilité, conformité normes. Pas de blabla.]
+      </p>
+    </div>
+  </Section>
+
+  <!-- VERTICALES — 4 segments -->
+  <Section variant="cream" topDivider aria-labelledby="verticales-title">
+    <SectionHeader
+      eyebrow="Nos segments"
+      title="Quatre univers, une même exigence."
+      intro="[À FOURNIR — 2-3 lignes pour introduire les 4 verticales.]"
+      id="verticales-title"
+    />
+
+    <ul
+      data-reveal-stagger="0.12"
+      data-reveal="up"
+      class="mt-16 grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
+    >
+      {
+        verticales.map((v) => (
+          <li class="bg-[var(--color-cream)]">
+            <a
+              href={`/amenagement-vegetal-interieur/${v.slug}`}
+              class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
+            >
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                  Verticale · {v.nom}
+                </p>
+                <h3 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]">
+                  {v.nom}
+                </h3>
+                <p class="mt-4 text-sm text-[var(--color-forest)]/70">{v.accroche}</p>
+              </div>
+              <span class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1">
+                Découvrir
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- GARANTIES — placeholder structure -->
+  <Section variant="cream" topDivider>
+    <SectionHeader
+      eyebrow="Garanties"
+      title="[À FOURNIR — titre section garanties]"
+      intro="[À FOURNIR — intro 2 lignes sur les garanties que Jonathan propose aux pros.]"
+    />
+    <ul data-reveal-stagger="0.12" data-reveal="up" class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+      {
+        [1, 2, 3].map((n) => (
+          <li class="border-t border-[var(--color-forest)]/10 pt-6">
+            <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-moss)]">
+              Garantie {n}
+            </p>
+            <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
+              [À FOURNIR]
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">[À FOURNIR]</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- GALERIE PROJETS PROS — à alimenter quand inventaire Jonathan reçu -->
+  <Section variant="cream" topDivider>
+    <SectionHeader eyebrow="Portefeuille pros" title="[À FOURNIR — projets pros publiables]" />
+    <p class="mt-8 max-w-2xl text-sm text-[var(--color-forest)]/60">
+      [À FOURNIR — galerie photo ou carrousel projets pros. Selon PDF ligne 800, peut être
+      galerie statique ou carrousel. Morgan conseille galerie scroll-snap horizontal plutôt
+      que carrousel auto (anti-pattern PDF l. 688).]
+    </p>
+  </Section>
+
+  <!-- CTA FINAL (+ futur CTA suiveur souris scroll-global, Phase B) -->
+  <Section variant="forest" topDivider>
+    <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        Engager la conversation
+      </p>
+      <h2
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
+      >
+        Un projet pro ?<br /><em class="italic text-[var(--color-gold)]">Parlons-en.</em>
+      </h2>
+      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70">
+        Appel découverte 15-25 minutes. On qualifie le projet, on pose les attentes, on repart
+        avec une lecture claire de la suite.
+      </p>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          data-magnetic="0.3"
+          class="inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Démarrer un projet
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="tel:+33661088444"
+          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-gold)]"
+        >
+          06 61 08 84 44
+        </a>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

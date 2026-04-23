@@ -1,0 +1,240 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { SITE, type TypologieSlug } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+  faqPage,
+} from '@/lib/schema-org';
+
+export const getStaticPaths = (() => {
+  return SITE.typologies.map((t) => ({
+    params: { slug: t.slug },
+    props: { typologie: t },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  typologie: (typeof SITE.typologies)[number];
+}
+
+const { typologie } = Astro.props;
+
+// FAQ générique par typologie — placeholder, à enrichir par Jonathan
+const faq = [
+  {
+    question: `Quel est le délai d'une étude pour un jardin ${typologie.nomProprietaire.toLowerCase()} ?`,
+    answer:
+      '[À FOURNIR PAR JONATHAN : délai précis en semaines calendaires, dépendances réglementaires, timing des collaborations avec les artisans.]',
+  },
+  {
+    question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
+    answer:
+      'Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d\'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).',
+  },
+  {
+    question: "Intervenez-vous sur des projets hors Aquitaine / Corrèze ?",
+    answer:
+      '[À FOURNIR PAR JONATHAN : politique d\'intervention hors territoires historiques. Si oui, préciser les frais de déplacement et conditions.]',
+  },
+];
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: typologie.nomProprietaire, item: `/architecture-paysagere/${typologie.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: typologie.h1Seo,
+    slug: typologie.slug,
+    description: `${typologie.h1Seo} — Studio J Oliveira, designer végétal biophilique. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}.`,
+    priceRangeMin: typologie.coutEtudeNumeric,
+    priceRangeMax: typologie.coutEtudeNumeric,
+  }),
+  faqPage(faq),
+  breadcrumbs(breadcrumbItems),
+]);
+---
+
+<BaseLayout
+  title={typologie.h1Seo}
+  description={`${typologie.h1Seo} avec le Studio J Oliveira — ${typologie.surface}, étude ${typologie.prixEtude}. Studio biophilique à Brive-la-Gaillarde.`}
+>
+  <!-- Breadcrumb visible -->
+  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+    <nav aria-label="Fil d'Ariane" class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-forest)]/50">
+      <ol class="flex flex-wrap items-center gap-2">
+        {
+          breadcrumbItems.map((b, i) => (
+            <li class="flex items-center gap-2">
+              {i < breadcrumbItems.length - 1 ? (
+                <a href={b.item} class="hover:text-[var(--color-moss)]">{b.name}</a>
+              ) : (
+                <span class="text-[var(--color-forest)]/80">{b.name}</span>
+              )}
+              {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </Section>
+
+  <!-- HERO ───────────────────────────────────────────────── -->
+  <Section variant="cream" tight class="pt-0">
+    <div class="max-w-4xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Typologie · {typologie.nomProprietaire}
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        {typologie.h1Seo}.
+      </h1>
+      <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] italic text-[var(--color-forest)]/60">
+        {typologie.nomProprietaire} — {typologie.exemple}.
+      </p>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour {typologie.nomProprietaire} — ce
+        qui définit cette typologie, ses enjeux, son atmosphère.]
+      </p>
+    </div>
+  </Section>
+
+  <!-- Grille chiffres ───────────────────────────────────── -->
+  <Section variant="cream" topDivider tight aria-labelledby="cles-title">
+    <h2 id="cles-title" class="sr-only">Chiffres-clés de la typologie</h2>
+    <dl class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
+      <div>
+        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Surface</dt>
+        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.surface}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Budget travaux</dt>
+        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.budgetTravaux}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Étude (TTC)</dt>
+        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.prixEtude}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Suivi chantier</dt>
+        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.suiviChantierTaux}</dd>
+      </div>
+    </dl>
+  </Section>
+
+  <!-- Description longue ──────────────────────────────── -->
+  <Section variant="cream" topDivider aria-labelledby="desc-title">
+    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+      <SectionHeader
+        eyebrow="Description"
+        title={`Qu'est-ce qu'un jardin ${typologie.nomProprietaire.toLowerCase()} ?`}
+        id="desc-title"
+      />
+      <Prose size="lg">
+        <p>
+          [À FOURNIR PAR JONATHAN : 1000-1500 mots sur la typologie {typologie.nomProprietaire}.
+          Structure recommandée — contexte géographique/urbain, caractéristiques identitaires,
+          complexités techniques, approches esthétiques, exemples de livrables, pièges à éviter.
+          Voir `_brief/plan-seo.md` §3.2 pour la structure éditoriale.]
+        </p>
+        <h2>Complexité principale</h2>
+        <p>
+          [À FOURNIR PAR JONATHAN : extrait du process PDF concernant la complexité de cette
+          typologie — contraintes réglementaires (PLU, ABF si applicable), contraintes techniques
+          (dénivelé, ouvrages de soutènement, etc.), temporalité projet.]
+        </p>
+        <h2>Livrables inclus dans l'étude</h2>
+        <ul>
+          <li>Plan masse détaillé</li>
+          <li>Coupes et élévations paysagères</li>
+          <li>Plans de nivellement et gestion des eaux pluviales</li>
+          <li>Plans de plantations + palette végétale</li>
+          <li>Palettes matériaux (sols, murs, bordures, ouvrages spéciaux)</li>
+          <li>DCE — Dossier de Consultation des Entreprises</li>
+          <li>Budget détaillé par lot, après mise en concurrence</li>
+          <li>Suivi de chantier jusqu'à la réception</li>
+        </ul>
+      </Prose>
+    </div>
+  </Section>
+
+  <!-- FAQ ─────────────────────────────────────────────── -->
+  <Section variant="cream" topDivider aria-labelledby="faq-title">
+    <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
+    <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
+      {
+        faq.map((item) => (
+          <li>
+            <details class="group">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+                <span>{item.question}</span>
+                <span class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="pb-6 pr-10 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+                {item.answer}
+              </p>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Projets liés (placeholder) ─────────────────────── -->
+  <Section variant="cream" topDivider aria-labelledby="projets-title">
+    <SectionHeader
+      eyebrow={`Exemples · ${typologie.nomProprietaire}`}
+      title="Projets liés."
+      id="projets-title"
+      intro="[À FOURNIR PAR JONATHAN : sélection de 3 à 5 projets de cette typologie, via Sanity Studio.]"
+    />
+    <p class="text-sm text-[var(--color-forest)]/60">
+      Quand des projets auront été publiés dans Sanity Studio avec cette typologie, ils
+      apparaîtront automatiquement ici.
+    </p>
+  </Section>
+
+  <!-- CTA ─────────────────────────────────────────────── -->
+  <Section variant="forest" topDivider>
+    <div class="text-center">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        Étude · {typologie.prixEtude}
+      </p>
+      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
+        Votre <em class="italic text-[var(--color-gold)]">{typologie.nomProprietaire.toLowerCase()}</em>,<br />
+        étudié précisément.
+      </h2>
+      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
+        Appel de qualification gratuit, 15-25 minutes. Si nos chemins s'accordent, étude
+        préliminaire lancée sous 72 heures.
+      </p>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Démarrer mon étude
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+          {SITE.contact.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

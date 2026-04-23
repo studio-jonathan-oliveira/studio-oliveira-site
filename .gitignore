@@ -1,0 +1,44 @@
+# Build output
+dist/
+.astro/
+.vercel/
+
+# Dependencies
+node_modules/
+
+# Logs
+*-debug.log*
+*.log
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+# .vscode/ tracked — partage des settings workspace
+
+# Astro cache
+.astro/
+
+# Sanity
+sanity/dist/
+
+# Pipeline Twinmotion — sources brutes hors repo
+input/
+
+# Pipeline Twinmotion — assets générés (commit seulement si pas de CDN)
+public/scrollframes/
+
+# Fichiers temporaires
+*.tmp
+*.bak
+.cache/
+
+# Tests
+coverage/

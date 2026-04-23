@@ -1,0 +1,95 @@
+---
+/*
+ * Footer — NAP cohérent (critique SEO local), liens secondaires, légaux.
+ * Les coordonnées sont issues de brief/client-docs/PROCESS ETUDES STUDIO 2026.pdf.
+ */
+
+const currentYear = new Date().getFullYear();
+
+const columns = {
+  studio: [
+    { href: '/studio', label: 'Le studio' },
+    { href: '/journal', label: 'Journal' },
+    { href: '/contact', label: 'Contact' },
+  ],
+  services: [
+    { href: '/architecture-paysagere', label: 'Architecture paysagère' },
+    { href: '/amenagement-vegetal-interieur', label: 'Aménagement végétalisé d’intérieur' },
+    { href: '/lcd-atypiques', label: 'LCD atypiques' },
+    { href: '/pros', label: 'Pros' },
+    { href: '/projets', label: 'Projets' },
+  ],
+  zones: [
+    { href: '/zones/brive-la-gaillarde', label: 'Brive-la-Gaillarde' },
+    { href: '/zones/bordeaux', label: 'Bordeaux' },
+    { href: '/zones/limoges', label: 'Limoges' },
+    { href: '/zones/toulouse', label: 'Toulouse' },
+  ],
+};
+---
+
+<footer class="mt-32 border-t border-[var(--color-forest)]/10 pt-16 pb-12">
+  <div class="mx-auto max-w-7xl px-6 md:px-10">
+    <div class="grid grid-cols-2 gap-12 md:grid-cols-4 md:gap-8">
+      <div class="col-span-2 md:col-span-1">
+        <img src="/brand/wordmark-moss.png?v=2" alt="Studio J Oliveira" width="1200" height="288" class="h-16 w-auto md:h-20" loading="lazy" decoding="async" />
+        <p class="mt-6 max-w-xs text-sm leading-relaxed text-[var(--color-forest)]/70">
+          Designer végétal — conception biophilique d'espaces intérieurs et extérieurs.
+        </p>
+        <address class="mt-6 space-y-1 text-sm not-italic text-[var(--color-forest)]/80">
+          <p>41 rue Général Souham</p>
+          <p>19100 Brive-la-Gaillarde</p>
+          <p class="mt-3">
+            <a href="tel:+33661088444" class="hover:text-[var(--color-moss)]">
+              06 61 08 84 44
+            </a>
+          </p>
+          <p>
+            <a
+              href="mailto:contact.jonathanbiodesign@gmail.com"
+              class="hover:text-[var(--color-moss)]"
+            >
+              contact.jonathanbiodesign@gmail.com
+            </a>
+          </p>
+          {/* [À FOURNIR PAR JONATHAN : email pro sur domaine jonathanoliveira.fr — voir _brief/questions-ouvertes.md §3.3] */}
+        </address>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-medium tracking-wider uppercase text-[var(--color-forest)]/50">Studio</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          {columns.studio.map((item) => (
+            <li><a href={item.href} class="hover:text-[var(--color-moss)]">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-medium tracking-wider uppercase text-[var(--color-forest)]/50">Services</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          {columns.services.map((item) => (
+            <li><a href={item.href} class="hover:text-[var(--color-moss)]">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-medium tracking-wider uppercase text-[var(--color-forest)]/50">Zones</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          {columns.zones.map((item) => (
+            <li><a href={item.href} class="hover:text-[var(--color-moss)]">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-16 flex flex-col items-start justify-between gap-4 border-t border-[var(--color-forest)]/10 pt-8 text-xs text-[var(--color-forest)]/50 md:flex-row">
+      <p>© {currentYear} Studio J Oliveira. Tous droits réservés.</p>
+      <ul class="flex gap-6">
+        <li><a href="/mentions-legales" class="hover:text-[var(--color-moss)]">Mentions légales</a></li>
+        <li><a href="/confidentialite" class="hover:text-[var(--color-moss)]">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

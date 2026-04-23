@@ -1,0 +1,170 @@
+---
+/**
+ * CustomCursor — disque pastille forêt qui suit le curseur, s'étend sur
+ * liens/CTA/éléments magnétiques. Masqué sur touch (pointer: coarse) et
+ * sur appareils sans fine pointer.
+ *
+ * Activé uniquement sur pointer: fine pour ne pas empiéter sur le cursor natif mobile.
+ */
+---
+
+<div id="cursor" class="custom-cursor" aria-hidden="true">
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+</div>
+
+<style>
+  .custom-cursor {
+    display: none;
+  }
+
+  @media (pointer: fine) {
+    .custom-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+      z-index: 9999;
+      display: block;
+      mix-blend-mode: difference;
+    }
+
+    /* Masque le curseur natif uniquement en fine pointer. */
+    :global(html),
+    :global(body) {
+      cursor: none;
+    }
+    :global(a),
+    :global(button),
+    :global([role='button']),
+    :global(input),
+    :global(textarea),
+    :global(select),
+    :global([data-magnetic]) {
+      cursor: none;
+    }
+
+    .cursor-dot {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      transition: transform 0.18s var(--ease-out-editorial), opacity 0.2s ease;
+    }
+
+    .cursor-ring {
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--color-cream);
+      border-radius: 50%;
+      transition:
+        width 0.35s var(--ease-out-editorial),
+        height 0.35s var(--ease-out-editorial),
+        top 0.35s var(--ease-out-editorial),
+        left 0.35s var(--ease-out-editorial),
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        opacity 0.2s ease;
+    }
+
+    /* État hover : ring se gonfle et se remplit */
+    .custom-cursor.is-hover .cursor-ring {
+      width: 72px;
+      height: 72px;
+      top: -36px;
+      left: -36px;
+      background-color: var(--color-cream);
+      border-color: var(--color-cream);
+      mix-blend-mode: normal;
+    }
+    .custom-cursor.is-hover .cursor-dot {
+      opacity: 0;
+    }
+
+    /* État pressed */
+    .custom-cursor.is-active .cursor-ring {
+      width: 24px;
+      height: 24px;
+      top: -12px;
+      left: -12px;
+    }
+
+    /* État hidden lors d'un pointerout window */
+    .custom-cursor.is-hidden .cursor-dot,
+    .custom-cursor.is-hidden .cursor-ring {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  function initCursor() {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    const cursor = document.getElementById('cursor');
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!cursor || !dot || !ring) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    const onMove = (e: PointerEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      cursor.classList.remove('is-hidden');
+    };
+
+    const loop = () => {
+      // Ring trainant (lerp léger pour effet de suivi)
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+      requestAnimationFrame(loop);
+    };
+    loop();
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerdown', () => cursor.classList.add('is-active'));
+    window.addEventListener('pointerup', () => cursor.classList.remove('is-active'));
+    window.addEventListener('pointerout', (e) => {
+      if (!e.relatedTarget) cursor.classList.add('is-hidden');
+    });
+
+    // Détection hover sur cibles interactives via event delegation
+    const hoverSelectors =
+      'a, button, [role="button"], [data-magnetic], input, textarea, select, label';
+    document.addEventListener(
+      'pointerover',
+      (e) => {
+        const target = e.target as HTMLElement | null;
+        if (target?.closest?.(hoverSelectors)) cursor.classList.add('is-hover');
+      },
+      true
+    );
+    document.addEventListener(
+      'pointerout',
+      (e) => {
+        const target = e.target as HTMLElement | null;
+        if (target?.closest?.(hoverSelectors)) cursor.classList.remove('is-hover');
+      },
+      true
+    );
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursor, { once: true });
+  } else {
+    initCursor();
+  }
+  document.addEventListener('astro:page-load', initCursor);
+</script>

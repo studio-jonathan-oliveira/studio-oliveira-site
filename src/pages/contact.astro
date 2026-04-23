@@ -1,0 +1,123 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import { SITE } from '@/lib/site-config';
+import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
+
+const schema = jsonLdGraph([
+  organization(),
+  person(),
+  localBusiness(),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Contact', item: '/contact' },
+  ]),
+  {
+    '@type': 'ContactPage',
+    name: 'Contact — Studio J Oliveira',
+    url: `${SITE.url}/contact`,
+    description: `Prise de contact avec le Studio J Oliveira — ${SITE.address.city}.`,
+  },
+]);
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contactez Jonathan Oliveira — Studio de design biophilique à Brive-la-Gaillarde. Appel de qualification 15-25 min, étude préliminaire, rendez-vous studio."
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="grid gap-16 md:grid-cols-[3fr_2fr] md:gap-20">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+          Contact
+        </p>
+        <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+          Engager la <em class="italic">conversation</em>.
+        </h1>
+        <p class="mt-8 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+          Chaque projet commence par un appel de 15 à 25 minutes. Un temps de qualification pour
+          comprendre votre lieu, vos attentes et l'horizon budgétaire. Si nos chemins s'accordent,
+          nous enchaînerons par un rendez-vous au studio.
+        </p>
+
+        <div class="mt-14 space-y-8">
+          <a
+            href={`tel:${SITE.contact.phone}`}
+            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-moss)]"
+          >
+            <div>
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                Téléphone
+              </p>
+              <p class="mt-2 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
+                {SITE.contact.phoneDisplay}
+              </p>
+            </div>
+            <span class="text-xl opacity-60 transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+
+          <a
+            href={`mailto:${SITE.contact.email}`}
+            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-moss)]"
+          >
+            <div>
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                Email
+              </p>
+              <p class="mt-2 break-all font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight">
+                {SITE.contact.email}
+              </p>
+            </div>
+            <span class="text-xl opacity-60 transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="mt-16 rounded-md border border-[var(--color-forest)]/10 bg-[var(--color-forest)]/5 p-8">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            Formulaire qualifié
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">
+            [Phase 5 : formulaire Astro Actions + Zod + Turnstile + Resend. Champs : type de projet,
+            surface approx, budget tranche, délai, message, upload optionnel plans.]
+          </p>
+        </div>
+      </div>
+
+      <aside class="md:sticky md:top-32 md:self-start">
+        <div class="border border-[var(--color-forest)]/10 p-8">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            Siège social
+          </p>
+          <address class="mt-4 space-y-1 text-[length:var(--text-base)] not-italic leading-relaxed">
+            <p class="font-medium">{SITE.name}</p>
+            <p>{SITE.address.street}</p>
+            <p>{SITE.address.postalCode} {SITE.address.city}</p>
+          </address>
+
+          <div class="mt-8 border-t border-[var(--color-forest)]/10 pt-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+              Horaires
+            </p>
+            <p class="mt-3 text-sm text-[var(--color-forest)]/80">
+              {SITE.hours.days}<br />
+              {SITE.hours.open} — {SITE.hours.close} non-stop
+            </p>
+          </div>
+
+          <div class="mt-8 border-t border-[var(--color-forest)]/10 pt-6">
+            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+              Territoires
+            </p>
+            <ul class="mt-3 space-y-1 text-sm text-[var(--color-forest)]/80">
+              {SITE.zones.map((z) => <li>{z.ville} <span class="opacity-50">· {z.role}</span></li>)}
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

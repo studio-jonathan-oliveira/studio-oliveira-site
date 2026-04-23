@@ -1,0 +1,103 @@
+---
+/*
+ * /lcd-atypiques — Locations Courte Durée atypiques (airbnb Jungle Rooms, etc.)
+ * Onglet séparé selon décision Morgan 2026-04-23 (PDF l. 728).
+ *
+ * Segment commercial historique du studio : notoriété nationale sur les Jungle Rooms LCD.
+ * Cible : propriétaires d'airbnb atypiques cherchant une identité végétale immersive.
+ *
+ * ⚠️ Page en squelette — contenu définitif à rédiger (Claude ébauche + Jonathan valide).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'LCD atypiques', item: '/lcd-atypiques' },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Décoration végétale pour airbnb atypique — Jungle Rooms"
+  description="Studio J Oliveira — décors végétalisés immersifs pour locations courte durée atypiques. Jungle Rooms, airbnb de caractère. Plantes naturelles et artificielles, design biophilique."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl" data-reveal="up">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        <span class="text-[var(--color-forest)]/40">LCD</span>
+        &nbsp;·&nbsp; Locations courte durée atypiques
+      </p>
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+      >
+        Décoration végétale pour <em class="italic">airbnb atypique</em>.
+      </h1>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR — intro LCD atypiques, 60-80 mots. Positionnement "Jungle Rooms",
+        décors immersifs, ambiances expérientielles pour propriétaires d'airbnb à
+        forte identité.]
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider>
+    <SectionHeader
+      eyebrow="Démarche"
+      title="Un univers, pas une décoration."
+      intro="[À FOURNIR — 2-3 lignes sur l'approche du studio pour les LCD atypiques : différenciation marché airbnb, pouvoir narratif du végétal, rentabilité par l'expérience.]"
+    />
+
+    <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3" data-reveal-stagger="0.12" data-reveal="up">
+      {
+        [
+          { num: '01', titre: 'Lecture du lieu', description: '[À FOURNIR]' },
+          { num: '02', titre: 'Composition immersive', description: '[À FOURNIR]' },
+          { num: '03', titre: 'Mise en œuvre', description: '[À FOURNIR]' },
+        ].map((step) => (
+          <article class="bg-[var(--color-cream)] p-10 md:p-12">
+            <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-none text-[var(--color-forest)]/20">
+              {step.num}
+            </p>
+            <h3 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
+              {step.titre}
+            </h3>
+            <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
+              {step.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section variant="forest" topDivider>
+    <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        Engager la conversation
+      </p>
+      <h2
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
+      >
+        Un projet LCD ?<br /><em class="italic text-[var(--color-gold)]">Parlons-en.</em>
+      </h2>
+      <a
+        href="/contact"
+        data-magnetic="0.3"
+        class="mt-12 inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+      >
+        Démarrer un projet
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </Section>
+</BaseLayout>

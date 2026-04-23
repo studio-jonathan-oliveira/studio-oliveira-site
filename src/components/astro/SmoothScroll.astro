@@ -1,0 +1,62 @@
+---
+/*
+ * Smooth scroll global — Lenis 1.x
+ *
+ * Durée 1.2s, easing cinématique type springs.estate / felix-nieto.com.
+ * Respecte `prefers-reduced-motion` (skip init, natif OS).
+ * Compatible View Transitions Astro : re-init après `astro:page-load`.
+ * Pas de smooth sur touch mobile (OS natif > smooth forcé, évite la friction).
+ */
+---
+
+<script>
+  import Lenis from 'lenis';
+
+  declare global {
+    interface Window {
+      __lenis?: Lenis;
+    }
+  }
+
+  function initLenis() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    // Si déjà initialisé, on détruit l'ancienne instance (navigation avec View Transitions)
+    if (window.__lenis) {
+      window.__lenis.destroy();
+    }
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
+      smoothWheel: true,
+      syncTouch: false,
+    });
+
+    window.__lenis = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Cible les ancres internes : laisser Lenis gérer le scroll vers #id
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target as HTMLElement, { offset: -80 });
+      });
+    });
+  }
+
+  initLenis();
+  document.addEventListener('astro:page-load', initLenis);
+</script>

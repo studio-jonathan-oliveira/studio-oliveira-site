@@ -1,0 +1,110 @@
+---
+import '@/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/astro/Header.astro';
+import Footer from '@/components/astro/Footer.astro';
+import Grain from '@/components/astro/Grain.astro';
+import SmoothScroll from '@/components/astro/SmoothScroll.astro';
+import CustomCursor from '@/components/astro/CustomCursor.astro';
+import ScrollNav from '@/components/astro/ScrollNav.astro';
+
+interface Props {
+  title: string;
+  description?: string | undefined;
+  canonical?: string | undefined;
+  ogImage?: string | undefined;
+  ogType?: 'website' | 'article' | 'profile' | undefined;
+  noindex?: boolean | undefined;
+  lang?: string | undefined;
+  /** Première section sombre (hero immersif) : header démarre transparent + logo crème. */
+  darkHero?: boolean | undefined;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.jpg',
+  ogType = 'website',
+  noindex = false,
+  lang = 'fr',
+  darkHero = false,
+} = Astro.props;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const siteName = 'Studio J Oliveira';
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    {/* TODO Phase 6 — preload fonts via Astro Fonts API (experimental.fonts) pour éliminer CLS et LCP shift. Actuellement, fontsource importe via @import, le navigateur télécharge à la volée avec font-display: swap. */}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <meta name="theme-color" content="#F5F1EA" />
+
+    <ClientRouter />
+
+    <slot name="head" />
+  </head>
+
+  <body class="font-[var(--font-body)] text-[length:var(--text-base)]">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-[var(--color-forest)] focus:px-4 focus:py-2 focus:text-[var(--color-cream)]"
+    >
+      Aller au contenu principal
+    </a>
+
+    <Header darkHero={darkHero} />
+
+    {/* Slot intro rendu hors de <main> pour ne pas être masqué par .intro-hidden. */}
+    <slot name="intro" />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <Grain />
+
+    <CustomCursor />
+    <ScrollNav />
+
+    <SmoothScroll />
+
+    <script>
+      // Polish Motion transversal — reveals, stagger, magnetic, parallax, hero sequence.
+      import '@/scripts/motion-enhance';
+    </script>
+  </body>
+</html>

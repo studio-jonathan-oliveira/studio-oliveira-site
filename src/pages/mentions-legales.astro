@@ -1,0 +1,68 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { SITE } from '@/lib/site-config';
+---
+
+<BaseLayout
+  title="Mentions légales"
+  description="Mentions légales du site Studio J Oliveira — éditeur, hébergeur, propriété intellectuelle."
+  noindex
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-2xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Informations légales
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        Mentions légales.
+      </h1>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider>
+    <Prose>
+      <h2>Éditeur du site</h2>
+      <p>
+        <strong>{SITE.legal.companyName}</strong><br />
+        {SITE.address.street}<br />
+        {SITE.address.postalCode} {SITE.address.city}, {SITE.address.country}
+      </p>
+      <p>
+        Directeur de la publication : {SITE.legal.editorName}<br />
+        SIRET : [À FOURNIR PAR JONATHAN]<br />
+        Forme juridique : [À FOURNIR PAR JONATHAN]<br />
+        Contact : <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
+      </p>
+
+      <h2>Hébergeur</h2>
+      <p>
+        <strong>{SITE.legal.hosting.name}</strong><br />
+        {SITE.legal.hosting.address}<br />
+        <a href={SITE.legal.hosting.url} target="_blank" rel="noopener noreferrer">
+          {SITE.legal.hosting.url}
+        </a>
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble des contenus présents sur ce site — textes, photographies, rendus Twinmotion,
+        logos, identité graphique — reste la propriété exclusive de {SITE.legal.companyName}.
+        Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
+      </p>
+
+      <h2>Crédits</h2>
+      <p>
+        Photographies : [À FOURNIR PAR JONATHAN : crédits photographes, si applicable].<br />
+        Rendus photoréalistes : réalisés avec Twinmotion / Epic Games.<br />
+        Conception et développement du site : [À FOURNIR — si souhaité].
+      </p>
+
+      <p class="text-sm opacity-60">
+        Pour toute question concernant les présentes mentions légales, utilisez les coordonnées de
+        contact ci-dessus.
+      </p>
+    </Prose>
+  </Section>
+</BaseLayout>

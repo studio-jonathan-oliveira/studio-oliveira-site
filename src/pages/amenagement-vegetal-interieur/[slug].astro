@@ -1,0 +1,175 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+  faqPage,
+} from '@/lib/schema-org';
+
+export const getStaticPaths = (() => {
+  return SITE.verticalesInterieur.map((v) => ({
+    params: { slug: v.slug },
+    props: { verticale: v },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  verticale: (typeof SITE.verticalesInterieur)[number];
+}
+
+const { verticale } = Astro.props;
+
+const faq = [
+  {
+    question: `Plantes naturelles ou artificielles pour ${verticale.label.toLowerCase()} ?`,
+    answer:
+      '[À FOURNIR PAR JONATHAN : critères de choix spécifiques à cette verticale — lumière, circulation, budget entretien, exigence photographique.]',
+  },
+  {
+    question: 'Proposez-vous un contrat d’entretien ?',
+    answer:
+      'Oui — pour les plantes naturelles, un contrat mensuel ou trimestriel est mis en place. Pour les plantes artificielles premium, une intervention annuelle de nettoyage/vérification suffit.',
+  },
+  {
+    question: 'Délai entre devis et mise en place ?',
+    answer:
+      '[À FOURNIR PAR JONATHAN : délais réalistes selon la complexité — typiquement 3 à 6 semaines.]',
+  },
+];
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Aménagement intérieur', item: '/amenagement-vegetal-interieur' },
+  { name: verticale.label, item: `/amenagement-vegetal-interieur/${verticale.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: verticale.h1Seo,
+    slug: verticale.slug,
+    description: `${verticale.h1Seo} — Studio J Oliveira, designer végétal. Conception et réalisation de décors végétalisés premium.`,
+  }),
+  faqPage(faq),
+  breadcrumbs(breadcrumbItems),
+]);
+---
+
+<BaseLayout
+  title={verticale.h1Seo}
+  description={`${verticale.h1Seo} par le Studio J Oliveira — décors végétalisés premium, plantes naturelles ou artificielles, conception et réalisation.`}
+>
+  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+    <nav aria-label="Fil d'Ariane" class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-forest)]/50">
+      <ol class="flex flex-wrap items-center gap-2">
+        {
+          breadcrumbItems.map((b, i) => (
+            <li class="flex items-center gap-2">
+              {i < breadcrumbItems.length - 1 ? (
+                <a href={b.item} class="hover:text-[var(--color-moss)]">{b.name}</a>
+              ) : (
+                <span class="text-[var(--color-forest)]/80">{b.name}</span>
+              )}
+              {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </Section>
+
+  <Section variant="cream" tight class="pt-0">
+    <div class="max-w-4xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Verticale · {verticale.label}
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        {verticale.h1Seo}.
+      </h1>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour la verticale
+        {verticale.label.toLowerCase()} — enjeux métier, contraintes, exemples de livrables.]
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="desc-title">
+    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+      <SectionHeader
+        eyebrow="Approche"
+        title={`Le végétal en ${verticale.label.toLowerCase()}.`}
+        id="desc-title"
+      />
+      <Prose size="lg">
+        <p>
+          [À FOURNIR PAR JONATHAN : 800-1200 mots. Structure recommandée — rôle du végétal dans
+          cette verticale, contraintes spécifiques (circulation, hygiène, lumière, entretien),
+          choix plantes naturelles vs artificielles, exemples de cas types, contrat d'entretien
+          adapté. Voir `_brief/plan-seo.md` §5 pour les attentes de volume et maillage.]
+        </p>
+        <h2>Cas types</h2>
+        <p>
+          [À FOURNIR : 3-5 exemples de projets pour cette verticale, ou à lier depuis Sanity une
+          fois les projets publiés.]
+        </p>
+      </Prose>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="faq-title">
+    <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
+    <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
+      {
+        faq.map((item) => (
+          <li>
+            <details class="group">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+                <span>{item.question}</span>
+                <span class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="pb-6 pr-10 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+                {item.answer}
+              </p>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section variant="forest" topDivider>
+    <div class="text-center">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        {verticale.label} · Devis sur mesure
+      </p>
+      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
+        Parlons de votre <em class="italic text-[var(--color-gold)]">{verticale.label.toLowerCase()}</em>.
+      </h2>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Demander un devis
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+          {SITE.contact.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

@@ -1,0 +1,322 @@
+---
+/*
+ * Intro bumper — page de garde éditoriale jouée une seule fois par visiteur.
+ * Composition : crop marks + métadonnées studio + logo MP4 cadré + iris-close.
+ * Flag localStorage `oliveira_intro_seen_v1`. Dev-bypass si import.meta.env.DEV.
+ * Respecte prefers-reduced-motion (skip), fallback timeout 6s, skippable au clic.
+ */
+---
+
+<div
+  id="intro-bumper"
+  class="intro-bumper fixed inset-0 z-[60] overflow-hidden bg-[var(--color-forest)]"
+  role="presentation"
+  aria-hidden="true"
+>
+  <!-- Texture grain subtile -->
+  <div class="intro-grain" aria-hidden="true"></div>
+
+  <!-- Crop marks des 4 coins (tradition typographique print) -->
+  <span class="intro-crop intro-crop--tl" aria-hidden="true"></span>
+  <span class="intro-crop intro-crop--tr" aria-hidden="true"></span>
+  <span class="intro-crop intro-crop--bl" aria-hidden="true"></span>
+  <span class="intro-crop intro-crop--br" aria-hidden="true"></span>
+
+  <!-- Métadonnées haut -->
+  <div class="intro-header">
+    <span class="intro-mark">01</span>
+    <span class="intro-tag">Studio · Brive-la-Gaillarde · Aquitaine</span>
+    <span class="intro-year">Est. 2021</span>
+  </div>
+
+  <!-- Vidéo logo cadrée -->
+  <div class="intro-frame">
+    <video
+      id="intro-video"
+      class="intro-video"
+      muted
+      autoplay
+      playsinline
+      preload="auto"
+    >
+      <source src="/brand/logo-animation.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- Métadonnées bas -->
+  <div class="intro-footer">
+    <span class="intro-caption">Design végétal biophilique</span>
+    <span class="intro-divider" aria-hidden="true"></span>
+    <span class="intro-edition">MMXXVI · Édition Numérique</span>
+  </div>
+
+  <!-- Skip discret -->
+  <button
+    type="button"
+    class="intro-skip"
+    aria-label="Passer l'animation d'introduction"
+    data-intro-skip
+  >
+    Passer →
+  </button>
+</div>
+
+<script>
+  const BUMPER_KEY = 'oliveira_intro_seen_v1';
+  const bumper = document.getElementById('intro-bumper') as HTMLDivElement | null;
+  const video = document.getElementById('intro-video') as HTMLVideoElement | null;
+  const skip = document.querySelector<HTMLButtonElement>('[data-intro-skip]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // En dev, on ignore le flag localStorage pour pouvoir rejouer l'intro à chaque refresh.
+  const devBypass = import.meta.env.DEV;
+
+  if (!bumper) {
+    // rien à faire
+  } else if ((localStorage.getItem(BUMPER_KEY) && !devBypass) || reduceMotion) {
+    bumper.remove();
+  } else {
+    document.documentElement.style.overflow = 'hidden';
+
+    // La page (main) est pré-cachée en scale+blur, elle va "reculer" en se révélant
+    // pendant que le logo accélère vers nous → effet caméra-traversante.
+    const main = document.getElementById('main');
+    const header = document.querySelector('header');
+    main?.classList.add('intro-hidden');
+    header?.classList.add('intro-hidden');
+
+    const dismiss = () => {
+      if (!bumper.isConnected) return;
+      bumper.classList.add('is-closing');
+      // Bascule main/header en mode "revealing" pour jouer l'anim zoom-back.
+      main?.classList.remove('intro-hidden');
+      header?.classList.remove('intro-hidden');
+      main?.classList.add('intro-revealing');
+      header?.classList.add('intro-revealing');
+      // Notifie la hero sequence qu'elle peut démarrer pendant la traversée.
+      document.dispatchEvent(new CustomEvent('intro:done'));
+      setTimeout(() => {
+        bumper.remove();
+        document.documentElement.style.overflow = '';
+        main?.classList.remove('intro-revealing');
+        header?.classList.remove('intro-revealing');
+        localStorage.setItem(BUMPER_KEY, '1');
+      }, 1700);
+    };
+
+    video?.addEventListener('ended', dismiss);
+    skip?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismiss();
+    });
+    bumper.addEventListener('click', dismiss);
+
+    // Soft-refresh : le MP4 est en disk cache, la vidéo peut avoir fini avant
+    // l'attachement du listener `ended` → on checke l'état courant.
+    if (video) {
+      if (video.ended) {
+        dismiss();
+      } else {
+        // Force l'autoplay explicitement : si la Play Promise est rejetée
+        // (autoplay policy, tab inactif), on dismiss immédiatement plutôt
+        // que d'attendre 6s.
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.catch(() => dismiss());
+        }
+      }
+    }
+
+    // Fallback de sécurité (autoplay bloqué, vidéo corrompue, etc.)
+    setTimeout(dismiss, 6000);
+  }
+</script>
+
+<style>
+  .intro-bumper {
+    animation: intro-fade-in 0.5s var(--ease-out-editorial);
+    transform-origin: 50% 50%;
+    will-change: transform, opacity, filter;
+  }
+  /* Caméra-traversante : tout le bumper accélère vers le viewer, fade progressif */
+  .intro-bumper.is-closing {
+    animation: intro-depart 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    pointer-events: none;
+  }
+  @keyframes intro-depart {
+    0%   { transform: scale(1);    opacity: 1;    filter: blur(0); }
+    35%  { transform: scale(1.35); opacity: 0.95; filter: blur(0.5px); }
+    70%  { transform: scale(2.2);  opacity: 0.6;  filter: blur(3px); }
+    100% { transform: scale(3.4);  opacity: 0;    filter: blur(10px); }
+  }
+
+  /* Grain overlay — SVG noise subtil + opacity basse */
+  .intro-grain {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 50% 30%, rgba(212, 184, 150, 0.06) 0%, transparent 60%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.09 0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.6'/></svg>");
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  /* Crop marks — traits fins coin par coin */
+  .intro-crop {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-color: rgba(245, 241, 234, 0.35);
+    pointer-events: none;
+  }
+  .intro-crop--tl { top: 2rem; left: 2rem; border-top: 1px solid; border-left: 1px solid; }
+  .intro-crop--tr { top: 2rem; right: 2rem; border-top: 1px solid; border-right: 1px solid; }
+  .intro-crop--bl { bottom: 2rem; left: 2rem; border-bottom: 1px solid; border-left: 1px solid; }
+  .intro-crop--br { bottom: 2rem; right: 2rem; border-bottom: 1px solid; border-right: 1px solid; }
+
+  /* Header metadata */
+  .intro-header,
+  .intro-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.8rem;
+    padding: 3rem 4rem;
+    color: rgba(245, 241, 234, 0.75);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    white-space: nowrap;
+  }
+  .intro-header { top: 0; }
+  .intro-footer { bottom: 0; }
+
+  .intro-mark {
+    color: var(--color-gold);
+    font-weight: 500;
+  }
+  .intro-tag {
+    flex: 0 1 auto;
+  }
+  .intro-year,
+  .intro-edition {
+    color: rgba(245, 241, 234, 0.5);
+  }
+  .intro-caption {
+    font-family: var(--font-heading), serif;
+    font-style: italic;
+    font-size: clamp(14px, 1.4vw, 18px);
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--color-cream);
+  }
+  .intro-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(212, 184, 150, 0.5);
+  }
+
+  /* Sur petit écran, on simplifie les métadonnées */
+  @media (max-width: 640px) {
+    .intro-header,
+    .intro-footer {
+      padding: 2rem 1.5rem;
+      gap: 1rem;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+    }
+    .intro-year,
+    .intro-edition {
+      display: none;
+    }
+    .intro-crop {
+      width: 18px;
+      height: 18px;
+    }
+    .intro-crop--tl,
+    .intro-crop--tr { top: 1rem; }
+    .intro-crop--bl,
+    .intro-crop--br { bottom: 1rem; }
+    .intro-crop--tl,
+    .intro-crop--bl { left: 1rem; }
+    .intro-crop--tr,
+    .intro-crop--br { right: 1rem; }
+  }
+
+  /* Cadre vidéo — cartouche fin + lueur gold subtile */
+  .intro-frame {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+  }
+  .intro-video {
+    max-height: 55vh;
+    max-width: min(78vw, 680px);
+    width: auto;
+    height: auto;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.35));
+  }
+
+  /* Le logo accélère vers nous plus vite que le reste (perspective), courbe douce */
+  .intro-bumper.is-closing .intro-video {
+    animation: intro-video-depart 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  @keyframes intro-video-depart {
+    0%   { transform: scale(1);   opacity: 1;    filter: blur(0); }
+    40%  { transform: scale(1.7); opacity: 1;    filter: blur(0.5px); }
+    75%  { transform: scale(3.2); opacity: 0.55; filter: blur(3px); }
+    100% { transform: scale(5.2); opacity: 0;    filter: blur(9px); }
+  }
+  /* Métadonnées fade en premier (anticipation) puis bumper travers */
+  .intro-bumper.is-closing .intro-header,
+  .intro-bumper.is-closing .intro-footer,
+  .intro-bumper.is-closing .intro-crop,
+  .intro-bumper.is-closing .intro-skip {
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Skip link */
+  .intro-skip {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    color: rgba(245, 241, 234, 0.55);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 10;
+  }
+  .intro-skip:hover {
+    color: var(--color-cream);
+  }
+  @media (max-width: 640px) {
+    .intro-skip {
+      bottom: 0.5rem;
+      right: 1rem;
+    }
+  }
+
+  @keyframes intro-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-bumper {
+      display: none;
+    }
+  }
+</style>

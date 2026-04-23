@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "Bash(git --version)",
+      "PowerShell(pnpm --version; git --version; \\(Get-Command pnpm\\).Source)",
+      "Bash(\"/c/Users/Morgan/AppData/Local/Microsoft/WinGet/Links/pnpm.exe\" --version)",
+      "Bash(git init *)",
+      "Bash(git branch *)",
+      "Bash(export PATH=\"/c/Users/Morgan/AppData/Local/Microsoft/WinGet/Links:$PATH\")",
+      "Bash(pnpm create *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm astro *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm rebuild *)",
+      "Bash(pnpm check *)",
+      "Bash(pnpm exec *)",
+      "Bash(pnpm build *)",
+      "Bash(pnpm dev *)",
+      "Bash(pnpm tsx *)",
+      "Bash(where pdftotext *)",
+      "Bash(where pdftoppm *)",
+      "Bash(pdftotext -layout \"_brief/client-docs/PROCESS ETUDES STUDIO 2026.pdf\" \"_brief/client-docs/PROCESS-ETUDES-STUDIO-2026.txt\")",
+      "Read(//c/Users/Morgan/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python search.py \"animation editorial premium stagger scroll reveal\" --domain ux -n 8)",
+      "Bash(curl -s http://localhost:4321/)",
+      "Bash(node scripts/convert-frames-demo.mjs)",
+      "WebFetch(domain:9to5studio.it)",
+      "WebFetch(domain:shed.design)",
+      "WebFetch(domain:findrealestate.com)",
+      "WebFetch(domain:springs.estate)",
+      "WebFetch(domain:felix-nieto.com)",
+      "WebFetch(domain:www.9to5studio.it)",
+      "WebFetch(domain:www.springs.estate)",
+      "WebSearch",
+      "WebFetch(domain:www.awwwards.com)",
+      "WebFetch(domain:www.commarts.com)",
+      "Bash(node scripts/convert-typologies.mjs)",
+      "Bash(curl -sI http://localhost:4321/frames/coeur-urbain-parenthese/0000.webp)"
+    ]
+  }
+}

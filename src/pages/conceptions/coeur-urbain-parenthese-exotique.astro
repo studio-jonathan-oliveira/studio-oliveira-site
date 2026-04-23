@@ -1,0 +1,88 @@
+---
+/*
+ * Démo scroll-scrub Twinmotion — /conceptions/coeur-urbain-parenthese-exotique.
+ *
+ * Utilise les 15 frames Image1_000 → Image1_014 copiées depuis
+ * _brief/client-assets/photos-projets/Coeur urbain - parenthese exotique/
+ * vers public/frames/coeur-urbain-parenthese/0000.png → 0014.png.
+ *
+ * Infra prête pour monter à 192+ frames dès que Jonathan livre les assets définitifs.
+ * Pattern cible : scroll-scrub Apple AirPods / 9to5studio.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ScrollFrames from '@/components/islands/ScrollFrames.tsx';
+
+const FRAME_BASE = '/frames/coeur-urbain-parenthese';
+const FRAME_COUNT = 15;
+const FIRST_FRAME = `${FRAME_BASE}/0000.webp`;
+---
+
+<BaseLayout
+  title="Coeur urbain · Parenthèse exotique — Conception"
+  description="Étude de conception — cœur urbain corrézien, parenthèse exotique. Rendu photoréaliste scroll-driven."
+  noindex
+>
+  {/* LCP preload première frame pour un rendu initial instantané */}
+  <link rel="preload" as="image" href={FIRST_FRAME} fetchpriority="high" slot="head" />
+
+  <!-- HERO MINIMAL ──────────────────────────────────────────────── -->
+  <section
+    id="conception-hero"
+    data-section-label="Accueil"
+    class="relative border-b border-[var(--color-forest)]/10 bg-[var(--color-cream)]"
+  >
+    <div class="mx-auto max-w-7xl px-6 pt-40 pb-16 md:px-10 md:pt-48 md:pb-20">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--color-moss)]">
+        <span class="text-[var(--color-forest)]/40">Conception en cours</span> &nbsp;·&nbsp; Cœur urbain · Corrèze
+      </p>
+      <h1
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+      >
+        <span class="block">Parenthèse</span>
+        <span class="block italic text-[var(--color-moss)]">exotique</span>
+      </h1>
+      <p class="mt-8 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
+        [À FOURNIR — synopsis du projet, 3 à 4 lignes. Contexte, programme, posture biophilique, matière.]
+      </p>
+    </div>
+  </section>
+
+  <!-- SCROLL-SCRUB TWINMOTION ──────────────────────────────────── -->
+  <section
+    id="conception-walkthrough"
+    data-section-label="Parcours"
+    aria-label="Parcours caméra photoréaliste"
+    class="bg-[var(--color-forest)]"
+  >
+    <ScrollFrames
+      client:visible
+      basePath={FRAME_BASE}
+      frameCount={FRAME_COUNT}
+      format="webp"
+      digits={4}
+      alt="Parcours caméra photoréaliste — conception cœur urbain parenthèse exotique"
+    />
+  </section>
+
+  <!-- NOTE DÉMO ────────────────────────────────────────────────── -->
+  <section class="bg-[var(--color-cream)]">
+    <div class="mx-auto max-w-3xl px-6 py-24 text-center md:px-10 md:py-32">
+      <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-moss)]">
+        Note démo technique
+      </p>
+      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75">
+        Cette démonstration utilise 15 frames de rendu provisoires (Image1_000 → Image1_014).
+        L'infrastructure supporte jusqu'à 200+ frames WebP optimisées. Lorsque Jonathan livrera
+        le parcours caméra définitif via Twinmotion (~192 frames @ 1920×1080, motion blur off),
+        le composant chargera le nouveau lot sans modification de code.
+      </p>
+      <a
+        href="/"
+        class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-forest)]/30 pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
+      >
+        Retour à l'accueil
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+/*
+ * Container — wrapper horizontal avec max-width + padding responsive.
+ *
+ * Variantes :
+ *   default : max-w-7xl (~1280 px) — pages éditoriales standards
+ *   wide    : max-w-[1400px]       — header, hero full-width
+ *   narrow  : max-w-3xl            — articles longs, prose
+ */
+
+interface Props {
+  size?: 'default' | 'wide' | 'narrow';
+  as?: 'div' | 'section' | 'article' | 'header' | 'footer';
+  class?: string;
+}
+
+const {
+  size = 'default',
+  as: Tag = 'div',
+  class: className = '',
+} = Astro.props as Props;
+
+const sizes = {
+  default: 'max-w-7xl',
+  wide: 'max-w-[1400px]',
+  narrow: 'max-w-3xl',
+} as const;
+---
+
+<Tag class:list={['mx-auto px-6 md:px-10', sizes[size], className]}>
+  <slot />
+</Tag>

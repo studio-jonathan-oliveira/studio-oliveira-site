@@ -1,0 +1,57 @@
+---
+/*
+ * Section — bloc vertical aéré avec variantes de fond.
+ *
+ * Variantes :
+ *   cream        : fond cream, texte forest (default)
+ *   forest       : fond forest sombre, texte cream (CTA, hero dark)
+ *   cream-accent : cream + ruban discret
+ *
+ * Options :
+ *   topDivider    : filet fin en haut
+ *   tight         : padding vertical réduit
+ *   size          : relayé à Container enfant (default/wide/narrow)
+ *   labelledBy    : id de l'H2 pour aria-labelledby
+ */
+
+import Container from './Container.astro';
+
+interface Props {
+  variant?: 'cream' | 'forest' | 'cream-accent';
+  topDivider?: boolean;
+  tight?: boolean;
+  size?: 'default' | 'wide' | 'narrow';
+  labelledBy?: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  variant = 'cream',
+  topDivider = false,
+  tight = false,
+  size = 'default',
+  labelledBy,
+  id,
+  class: className = '',
+} = Astro.props;
+
+const bgClass = {
+  cream: 'bg-[var(--color-cream)] text-[var(--color-forest)]',
+  forest: 'bg-[var(--color-forest)] text-[var(--color-cream)]',
+  'cream-accent': 'bg-[var(--color-cream)] text-[var(--color-forest)]',
+}[variant];
+
+const dividerClass = topDivider ? 'border-t border-current/10' : '';
+const padding = tight ? 'py-20 md:py-24' : 'py-28 md:py-40';
+---
+
+<section
+  class:list={[bgClass, dividerClass, padding, className]}
+  id={id}
+  aria-labelledby={labelledBy}
+>
+  <Container size={size}>
+    <slot />
+  </Container>
+</section>

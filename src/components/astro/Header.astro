@@ -1,0 +1,404 @@
+---
+/*
+ * Header éditorial — 2 niveaux : topbar méta + main row (logo + nav + CTA pill).
+ * Fixed top, bascule transparent → cream au scroll de 80px.
+ * Drawer mobile = <dialog> natif + vanilla JS.
+ *
+ * Inspirations : Kinfolk, Hermès Jardins, 9to5studio, felix-nieto, springs.estate.
+ */
+
+interface Props {
+  darkHero?: boolean;
+}
+const { darkHero = false } = Astro.props;
+
+// Onglets EXACTS demandés par Jonathan (PDF l. 723-730).
+// Ordre et wording respectés à la lettre — ne pas dévier sans validation Jonathan.
+const navItems = [
+  { href: '/architecture-paysagere', label: 'Architecture paysagère' },
+  { href: '/amenagement-vegetal-interieur', label: 'Aménagement végétalisé d’intérieur' },
+  { href: '/projets', label: 'Projets' },
+  { href: '/lcd-atypiques', label: 'LCD atypiques' },
+  { href: '/pros', label: 'Pros' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath === href || currentPath.startsWith(href + '/');
+---
+
+<header
+  class:list={[
+    'site-header fixed top-0 left-0 right-0 z-40 transition-[background-color,color,border-color,backdrop-filter] duration-[450ms] ease-[var(--ease-out-editorial)]',
+    darkHero && 'site-header--dark-hero',
+  ]}
+  data-header
+  data-dark-hero={darkHero ? 'true' : 'false'}
+>
+  <!-- Topbar méta (desktop only) ─────────────────────── -->
+  <div class="site-header__topbar hidden border-b border-current/5 lg:block">
+    <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] uppercase tracking-[0.26em] opacity-75">
+      <p>Studio · Brive-la-Gaillarde · Aquitaine</p>
+      <p class="flex items-center gap-2.5">
+        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]"></span>
+        Disponible pour projets 2026
+      </p>
+      <p>
+        <a href="tel:+33661088444" class="transition-opacity hover:opacity-100">
+          +33 6 61 08 84 44
+        </a>
+        <span class="mx-3 opacity-40">·</span>
+        <a href="mailto:contact.jonathanbiodesign@gmail.com" class="transition-opacity hover:opacity-100">
+          Contact
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Main row : logo · nav · CTA ────────────────────── -->
+  <div class="site-header__main mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-6 py-5 md:px-10 md:py-6">
+    <a
+      href="/"
+      class="logo-swap relative flex shrink-0 items-center"
+      aria-label="Studio J Oliveira — accueil"
+      data-header-logo
+    >
+      <img
+        src="/brand/wordmark-moss.png?v=3"
+        alt=""
+        width="1200"
+        height="288"
+        class="logo-moss h-9 w-auto md:h-10 lg:h-11"
+        loading="eager"
+        decoding="async"
+      />
+      <img
+        src="/brand/wordmark-cream.png?v=3"
+        alt=""
+        width="1200"
+        height="288"
+        class="logo-cream absolute inset-0 h-9 w-auto md:h-10 lg:h-11"
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <span class="sr-only">Studio J Oliveira</span>
+    </a>
+
+    <nav aria-label="Navigation principale" class="hidden lg:block">
+      <ul class="flex items-center gap-8 xl:gap-11">
+        {
+          navItems.map((item, i) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'nav-link group/nav relative inline-flex items-baseline gap-2 py-1.5 transition-colors',
+                  isActive(item.href) && 'nav-link--active',
+                ]}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                <span class="nav-num font-mono text-[10px] tracking-[0.18em] opacity-50 transition-opacity group-hover/nav:opacity-90">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="nav-label text-[14px] leading-none tracking-[0.01em]">
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="/contact"
+        class="cta-pill group hidden items-center gap-3 rounded-full px-5 py-3 text-[13px] tracking-[0.04em] transition-all lg:inline-flex"
+      >
+        <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" aria-hidden="true"></span>
+        Démarrer un projet
+        <span aria-hidden="true" class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1">→</span>
+      </a>
+
+      <button
+        type="button"
+        class="menu-trigger relative flex items-center gap-3 text-[12px] uppercase tracking-[0.24em] lg:hidden"
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+        data-menu-trigger
+      >
+        <span>Menu</span>
+        <span class="flex flex-col gap-1">
+          <span class="block h-px w-5 bg-current"></span>
+          <span class="block h-px w-5 bg-current"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Drawer mobile ──────────────────────────────────── -->
+  <dialog
+    id="mobile-drawer"
+    class="mobile-drawer fixed inset-0 z-50 h-full w-full max-h-full max-w-full border-0 bg-[var(--color-cream)] p-0 text-[var(--color-forest)] lg:hidden"
+    aria-label="Menu mobile"
+  >
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between px-6 py-5">
+        <a href="/" class="flex items-center" aria-label="Accueil">
+          <img src="/brand/wordmark-moss.png?v=3" alt="Studio J Oliveira" width="1200" height="288" class="h-8 w-auto" />
+        </a>
+        <button type="button" class="flex items-center gap-3 text-[12px] uppercase tracking-[0.24em]" aria-label="Fermer le menu" data-menu-close>
+          <span>Fermer</span>
+          <span class="block h-px w-5 rotate-45 bg-current"></span>
+          <span class="-ml-5 block h-px w-5 -rotate-45 bg-current"></span>
+        </button>
+      </div>
+
+      <nav class="flex flex-1 flex-col justify-center px-6" aria-label="Navigation mobile">
+        <ul class="flex flex-col gap-5">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'block font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight transition-colors hover:text-[var(--color-moss)]',
+                    isActive(item.href) && 'text-[var(--color-moss)]',
+                  ]}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li class="mt-4 pt-4 border-t border-[var(--color-forest)]/10">
+            <a
+              href="/contact"
+              class="inline-flex items-center gap-3 rounded-full border border-[var(--color-forest)] px-5 py-2.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
+            >
+              Démarrer un projet
+              <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <footer class="px-6 pb-12 text-sm text-[var(--color-forest)]/60">
+        <p>41 rue Général Souham, 19100 Brive-la-Gaillarde</p>
+        <a href="tel:+33661088444" class="mt-2 inline-block hover:text-[var(--color-moss)]">
+          06 61 08 84 44
+        </a>
+      </footer>
+    </div>
+  </dialog>
+</header>
+
+<script>
+  function wireDrawer() {
+    const trigger = document.querySelector<HTMLButtonElement>('[data-menu-trigger]');
+    const drawer = document.querySelector<HTMLDialogElement>('#mobile-drawer');
+    const closeBtn = drawer?.querySelector<HTMLButtonElement>('[data-menu-close]');
+    const links = drawer?.querySelectorAll<HTMLAnchorElement>('nav a, [href]');
+
+    const open = () => {
+      drawer?.showModal();
+      trigger?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      drawer?.close();
+      trigger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    trigger?.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+    links?.forEach((link) => link.addEventListener('click', close));
+    drawer?.addEventListener('close', () => {
+      trigger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  }
+
+  function wireHeaderScroll() {
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    if (!header) return;
+    const check = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 80);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+  }
+
+  wireDrawer();
+  wireHeaderScroll();
+
+  document.addEventListener('astro:page-load', () => {
+    wireDrawer();
+    wireHeaderScroll();
+  });
+</script>
+
+<style>
+  /* État par défaut (pages classiques, header sur fond cream) */
+  .site-header {
+    background-color: var(--color-cream);
+    color: var(--color-forest);
+  }
+
+  /* Dark hero — transparent, logo crème, texte crème */
+  .site-header--dark-hero {
+    background-color: transparent;
+    color: var(--color-cream);
+  }
+  .site-header--dark-hero .logo-moss {
+    opacity: 0;
+  }
+  .site-header--dark-hero .logo-cream {
+    opacity: 1;
+  }
+
+  /* Scrolled — cream translucide flouté, forest text */
+  .site-header.is-scrolled {
+    background-color: color-mix(in oklab, var(--color-cream) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    color: var(--color-forest);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 8%, transparent);
+  }
+  .site-header.is-scrolled .logo-moss {
+    opacity: 1;
+  }
+  .site-header.is-scrolled .logo-cream {
+    opacity: 0;
+  }
+
+  .site-header:not(.site-header--dark-hero) .logo-moss {
+    opacity: 1;
+  }
+  .site-header:not(.site-header--dark-hero) .logo-cream {
+    opacity: 0;
+  }
+
+  .logo-swap .logo-moss,
+  .logo-swap .logo-cream {
+    transition: opacity 0.4s var(--ease-out-editorial);
+  }
+
+  /* Nav links — underline slide éditorial + num monospace */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link .nav-label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.55s var(--ease-out-editorial);
+  }
+  .nav-link:hover .nav-label::after,
+  .nav-link:focus-visible .nav-label::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .nav-link--active .nav-label {
+    color: var(--color-moss);
+  }
+  .nav-link--active .nav-num {
+    opacity: 0.9;
+    color: var(--color-moss);
+  }
+  .nav-link--active .nav-label::after {
+    transform: scaleX(1);
+    background: var(--color-moss);
+  }
+  .site-header--dark-hero:not(.is-scrolled) .nav-link--active .nav-label,
+  .site-header--dark-hero:not(.is-scrolled) .nav-link--active .nav-num {
+    color: var(--color-gold);
+  }
+  .site-header--dark-hero:not(.is-scrolled) .nav-link--active .nav-label::after {
+    background: var(--color-gold);
+  }
+
+  /* CTA pill — fond plein editorial, inversion au hover */
+  .cta-pill {
+    background-color: var(--color-forest);
+    color: var(--color-cream);
+    border: 1px solid var(--color-forest);
+  }
+  .cta-pill:hover {
+    background-color: var(--color-moss);
+    border-color: var(--color-moss);
+    color: var(--color-cream);
+  }
+  .cta-pill .cta-dot {
+    transition: transform 0.4s var(--ease-out-editorial), background-color 0.3s;
+  }
+  .cta-pill:hover .cta-dot {
+    transform: scale(1.4);
+    background-color: var(--color-gold);
+  }
+  /* Dark hero — pill crème contour, texte forest */
+  .site-header--dark-hero:not(.is-scrolled) .cta-pill {
+    background-color: var(--color-cream);
+    color: var(--color-forest);
+    border-color: var(--color-cream);
+  }
+  .site-header--dark-hero:not(.is-scrolled) .cta-pill:hover {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-forest);
+  }
+
+  /* Status dot — pulse discret */
+  .status-dot {
+    animation: status-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes status-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* Topbar borderless subtle tint */
+  .site-header__topbar {
+    border-bottom-color: color-mix(in oklab, currentColor 10%, transparent);
+  }
+
+  /* Drawer mobile */
+  .mobile-drawer {
+    animation: drawer-enter 0.4s var(--ease-out-editorial);
+  }
+  .mobile-drawer[open]::backdrop {
+    background: transparent;
+  }
+  @keyframes drawer-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-drawer,
+    .site-header,
+    .logo-swap .logo-moss,
+    .logo-swap .logo-cream,
+    .nav-link::after,
+    .status-dot {
+      transition: none;
+      animation: none;
+    }
+  }
+</style>

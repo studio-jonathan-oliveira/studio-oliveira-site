@@ -1,0 +1,155 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import SectionHeader from '@/components/astro/SectionHeader.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+} from '@/lib/schema-org';
+
+const verticales = SITE.verticalesInterieur;
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: 'Aménagement végétalisé d’intérieur sur mesure',
+    slug: '',
+    description:
+      'Décor végétalisé premium — plantes naturelles et artificielles — pour hôtellerie, restauration, bureaux, commerces et locations atypiques.',
+  }),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Aménagement intérieur', item: '/amenagement-vegetal-interieur' },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Aménagement végétalisé d’intérieur sur mesure"
+  description="Décors végétalisés premium pour hôtels, restaurants, bureaux, commerces et locations atypiques. Plantes naturelles et artificielles, conception et réalisation."
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Aménagement intérieur · {SITE.name}
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        Aménagement végétalisé<br />
+        <em class="italic">d'intérieur</em>.
+      </h1>
+      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR PAR JONATHAN : 80-120 mots présentant le service secondaire du studio — décors
+        végétalisés premium, plantes naturelles et artificielles (pas de stabilisé), cibles pros et
+        particuliers LCD atypique.]
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="verticales-title">
+    <SectionHeader
+      eyebrow="Cinq verticales"
+      title="Chaque contexte, son décor."
+      intro="Hôtel boutique, restaurant gastronomique, bureau corporate, boutique concept, location atypique — chacun demande une écriture végétale différente."
+      id="verticales-title"
+    />
+
+    <ul class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+      {
+        verticales.map((v) => (
+          <li class="bg-[var(--color-cream)]">
+            <a
+              href={`/amenagement-vegetal-interieur/${v.slug}`}
+              class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-moss)]/5 md:p-12"
+            >
+              <div>
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                  Verticale
+                </p>
+                <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                  {v.label}
+                </h3>
+                <p class="mt-3 text-sm text-[var(--color-forest)]/60">{v.h1Seo}</p>
+              </div>
+              <span class="mt-8 inline-flex items-center gap-2 text-sm transition-transform group-hover:translate-x-1">
+                Voir la verticale
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section variant="cream" topDivider aria-labelledby="process-title">
+    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+      <SectionHeader
+        eyebrow="Process"
+        title="Conception et réalisation."
+        id="process-title"
+      />
+      <Prose>
+        <p>
+          [À FOURNIR PAR JONATHAN : 400-600 mots sur le process spécifique à l'intérieur — lecture
+          du lieu et de la marque, sélection des plantes (naturelles vs artificielles selon
+          contraintes : lumière, circulation, entretien), scénographie, mise en place, option
+          entretien régulier.]
+        </p>
+        <h3>Plantes naturelles</h3>
+        <p>
+          Sélection adaptée aux conditions réelles du lieu (lumière, hygrométrie, circulation).
+          Contrat d'entretien mensuel ou trimestriel possible.
+        </p>
+        <h3>Plantes artificielles haut de gamme</h3>
+        <p>
+          Pour les contextes où le naturel n'est pas possible — forte circulation, faible
+          luminosité, absence d'entretien. Rendu indiscernable du naturel sur les gammes premium
+          que je sélectionne.
+        </p>
+        <h3>Murs végétaux et suspensions</h3>
+        <p>
+          Support technique dimensionné, arrosage intégré (naturel) ou structure apparente
+          (artificiel), maintenance prévue dès la conception.
+        </p>
+      </Prose>
+    </div>
+  </Section>
+
+  <Section variant="forest" topDivider>
+    <div class="text-center">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+        Devis
+      </p>
+      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
+        Votre <em class="italic text-[var(--color-gold)]">lieu</em>,<br />
+        scénarisé en végétal.
+      </h2>
+      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
+        Décrivez votre établissement, sa marque, ses contraintes — je vous propose une écriture
+        végétale alignée.
+      </p>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Demander un devis
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+          {SITE.contact.phoneDisplay}
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

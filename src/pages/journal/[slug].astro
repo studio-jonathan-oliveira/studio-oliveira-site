@@ -1,0 +1,185 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import Prose from '@/components/astro/Prose.astro';
+import { fetch } from '@/lib/sanity';
+import { articleSlugsQuery, articleBySlugQuery } from '@/lib/queries';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  organization,
+  localBusiness,
+  person,
+  article as articleSchema,
+} from '@/lib/schema-org';
+
+export const getStaticPaths = (async () => {
+  const slugs = await fetch<string[]>(articleSlugsQuery, {}, []);
+  return slugs.map((slug) => ({ params: { slug } }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+
+interface FullArticle {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  publishedAt: string;
+  readingTime?: number;
+  tags?: string[];
+  content?: unknown[];
+  coverImage?: { asset?: { _ref: string }; alt?: string };
+  author?: { name: string; slug: string; bio?: string; avatar?: unknown };
+  relatedArticles?: Array<{
+    title: string;
+    slug: string;
+    excerpt?: string;
+    coverImage?: unknown;
+  }>;
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
+const article = await fetch<FullArticle | null>(articleBySlugQuery, { slug }, null);
+
+if (!article) {
+  return Astro.redirect('/journal', 301);
+}
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Journal', item: '/journal' },
+  { name: article.title, item: `/journal/${article.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  person(),
+  localBusiness(),
+  articleSchema({
+    title: article.title,
+    slug: article.slug,
+    excerpt: article.excerpt,
+    publishedAt: article.publishedAt,
+    readingTime: article.readingTime,
+    authorName: article.author?.name,
+  }),
+  breadcrumbs(breadcrumbItems),
+]);
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+---
+
+<BaseLayout
+  title={article.seoTitle ?? article.title}
+  description={article.seoDescription ?? article.excerpt}
+>
+  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+    <nav aria-label="Fil d'Ariane" class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-forest)]/50">
+      <ol class="flex flex-wrap items-center gap-2">
+        {
+          breadcrumbItems.map((b, i) => (
+            <li class="flex items-center gap-2">
+              {i < breadcrumbItems.length - 1 ? (
+                <a href={b.item} class="hover:text-[var(--color-moss)]">{b.name}</a>
+              ) : (
+                <span class="text-[var(--color-forest)]/80 line-clamp-1 max-w-[40ch]">{b.name}</span>
+              )}
+              {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </Section>
+
+  <Section variant="cream" tight class="pt-0 pb-0">
+    <article class="mx-auto max-w-3xl">
+      <header class="mb-12">
+        <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+          Journal
+          {article.tags?.[0] && ` · ${article.tags[0]}`}
+          {article.readingTime && ` · ${article.readingTime} min`}
+        </p>
+        <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+          {article.title}
+        </h1>
+        {
+          article.excerpt && (
+            <p class="mt-8 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+              {article.excerpt}
+            </p>
+          )
+        }
+        <div class="mt-10 flex items-center gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-sm text-[var(--color-forest)]/60">
+          {
+            article.author && (
+              <>
+                <span>Par {article.author.name}</span>
+                <span aria-hidden="true">·</span>
+              </>
+            )
+          }
+          <time datetime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+        </div>
+      </header>
+
+      <Prose size="lg">
+        {/* Portable Text rendering — à implémenter quand Sanity connecté. Pour l'instant, placeholder. */}
+        <p>
+          [CONTENU PORTABLE TEXT — sera rendu depuis Sanity via un composant PortableTextRenderer
+          à créer en Phase 4 (après scaffold Sanity Studio).]
+        </p>
+      </Prose>
+
+      {
+        article.relatedArticles && article.relatedArticles.length > 0 && (
+          <aside class="mt-24 border-t border-[var(--color-forest)]/10 pt-12">
+            <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+              À lire ensuite
+            </p>
+            <ul class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+              {article.relatedArticles.map((rel) => (
+                <li>
+                  <a href={`/journal/${rel.slug}`} class="group block">
+                    <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors group-hover:text-[var(--color-moss)]">
+                      {rel.title}
+                    </h3>
+                    {rel.excerpt && (
+                      <p class="mt-2 text-sm text-[var(--color-forest)]/70 line-clamp-3">
+                        {rel.excerpt}
+                      </p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+    </article>
+  </Section>
+
+  <Section variant="cream" topDivider tight>
+    <div class="mx-auto max-w-xl text-center">
+      <a
+        href="/journal"
+        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-moss)]"
+      >
+        <span aria-hidden="true">←</span>
+        Tous les articles
+      </a>
+    </div>
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>

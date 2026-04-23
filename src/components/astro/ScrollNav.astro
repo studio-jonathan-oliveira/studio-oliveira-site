@@ -1,0 +1,187 @@
+---
+/**
+ * ScrollNav — nav latérale verticale, indexée sur les sections via IntersectionObserver.
+ * Apparaît fixe à droite après le premier scroll hors du hero. Chaque section
+ * [id][data-section-label] devient une entrée cliquable.
+ *
+ * Référence Jonathan : "Menu déroulé latéral qui évolue avec le scroll : LE MUST".
+ *
+ * Cible DOM : ce composant lit les sections au runtime (client-side) pour rester
+ * générique. Aucune config côté props — il s'auto-alimente.
+ */
+---
+
+<nav id="scroll-nav" class="scroll-nav" aria-label="Sections de la page">
+  <ul id="scroll-nav-list" class="scroll-nav-list"></ul>
+</nav>
+
+<style>
+  .scroll-nav {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.6s var(--ease-out-editorial),
+      transform 0.6s var(--ease-out-editorial);
+  }
+  .scroll-nav.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%);
+  }
+
+  .scroll-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .scroll-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    justify-content: flex-end;
+  }
+
+  .scroll-nav-label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--color-forest);
+    opacity: 0;
+    transform: translateX(12px);
+    transition:
+      opacity 0.4s var(--ease-out-editorial),
+      transform 0.4s var(--ease-out-editorial);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .scroll-nav-dot {
+    position: relative;
+    width: 28px;
+    height: 1px;
+    background-color: var(--color-forest);
+    opacity: 0.35;
+    transition:
+      width 0.4s var(--ease-out-editorial),
+      background-color 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .scroll-nav-item.is-active .scroll-nav-dot {
+    width: 56px;
+    opacity: 1;
+    background-color: var(--color-moss);
+  }
+  .scroll-nav-item.is-active .scroll-nav-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-nav-item:hover .scroll-nav-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .scroll-nav-item:hover .scroll-nav-dot {
+    width: 48px;
+    opacity: 1;
+  }
+
+  /* Sur hero sombre, inverser la colorimétrie */
+  :global(body.is-dark-section) .scroll-nav-label {
+    color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .scroll-nav-dot {
+    background-color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-dot {
+    background-color: var(--color-gold);
+  }
+
+  /* Mobile : masqué */
+  @media (max-width: 767px) {
+    .scroll-nav {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initScrollNav() {
+    const nav = document.getElementById('scroll-nav');
+    const list = document.getElementById('scroll-nav-list');
+    if (!nav || !list) return;
+
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('section[id][data-section-label]')
+    );
+    if (sections.length === 0) return;
+
+    // Construction des items
+    list.innerHTML = '';
+    const items: Record<string, HTMLElement> = {};
+    sections.forEach((section) => {
+      const id = section.id;
+      const label = section.dataset.sectionLabel || id;
+      const li = document.createElement('li');
+      li.className = 'scroll-nav-item';
+      li.dataset.target = id;
+      li.innerHTML = `
+        <a href="#${id}" class="scroll-nav-link" aria-label="${label}">
+          <span class="scroll-nav-label">${label}</span>
+          <span class="scroll-nav-dot" aria-hidden="true"></span>
+        </a>
+      `;
+      items[id] = li;
+      list.appendChild(li);
+    });
+
+    // Visibilité de la nav : apparaît après 80% du premier viewport
+    const onScroll = () => {
+      const show = window.scrollY > window.innerHeight * 0.6;
+      nav.classList.toggle('is-visible', show);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Observer sections actives
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = (entry.target as HTMLElement).id;
+          const item = items[id];
+          if (!item) return;
+          if (entry.isIntersecting) {
+            // Désactive les autres
+            Object.values(items).forEach((i) => i.classList.remove('is-active'));
+            item.classList.add('is-active');
+
+            // Marque le body si section sombre (hero + CTA)
+            const section = entry.target as HTMLElement;
+            const dark = section.classList.contains('hero-immersive') ||
+              /bg-\[var\(--color-forest\)\]/.test(section.className);
+            document.body.classList.toggle('is-dark-section', dark);
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollNav, { once: true });
+  } else {
+    initScrollNav();
+  }
+  document.addEventListener('astro:page-load', initScrollNav);
+</script>

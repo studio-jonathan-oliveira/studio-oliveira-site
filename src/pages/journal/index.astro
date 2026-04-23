@@ -1,0 +1,126 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import { fetch } from '@/lib/sanity';
+import { articlesListQuery } from '@/lib/queries';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  organization,
+  localBusiness,
+} from '@/lib/schema-org';
+import { SITE } from '@/lib/site-config';
+
+interface Article {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  publishedAt: string;
+  readingTime?: number;
+  tags?: string[];
+  coverImage?: { asset?: { _ref: string }; alt?: string };
+  author?: { name: string; slug: string };
+}
+
+const articles = await fetch<Article[]>(articlesListQuery, {}, []);
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Journal', item: '/journal' },
+  ]),
+  {
+    '@type': 'Blog',
+    '@id': `${SITE.url}/journal#blog`,
+    name: `Journal — ${SITE.name}`,
+    description:
+      'Notes sur le design biophilique, la conception de jardins sur mesure et la pratique du studio.',
+    url: `${SITE.url}/journal`,
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+]);
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+---
+
+<BaseLayout
+  title="Journal"
+  description="Notes du studio sur le design biophilique, la conception de jardins, les pratiques du métier. Articles éditoriaux par Jonathan Oliveira."
+>
+  <Section variant="cream" class="pt-40 md:pt-48">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        Journal · {SITE.name}
+      </p>
+      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        Notes de <em class="italic">studio</em>.
+      </h1>
+      <p class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+        [À FOURNIR PAR JONATHAN : 2-3 phrases d'introduction au journal — pourquoi ces articles,
+        ton éditorial, rythme de publication envisagé.]
+      </p>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider>
+    {
+      articles.length === 0 ? (
+        <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
+          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            En préparation
+          </p>
+          <p class="mt-4 max-w-lg mx-auto text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
+            Les premiers articles du journal seront publiés prochainement — une fois Sanity Studio
+            configuré et les angles éditoriaux arrêtés. Cinq articles inauguraux sont prévus (voir
+            <code class="font-mono text-xs">_brief/plan-seo.md §5</code>).
+          </p>
+        </div>
+      ) : (
+        <ul class="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-x-10">
+          {articles.map((article) => (
+            <li>
+              <a href={`/journal/${article.slug}`} class="group block">
+                <div class="aspect-[4/3] w-full overflow-hidden bg-[var(--color-forest)]/5">
+                  {article.coverImage?.asset ? (
+                    <img
+                      src="#"
+                      alt={article.coverImage.alt ?? ''}
+                      class="h-full w-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.02]"
+                      loading="lazy"
+                    />
+                  ) : null}
+                </div>
+                <div class="mt-6">
+                  <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                    {formatDate(article.publishedAt)}
+                    {article.readingTime && ` · ${article.readingTime} min de lecture`}
+                  </p>
+                  <h2 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight transition-colors group-hover:text-[var(--color-moss)]">
+                    {article.title}
+                  </h2>
+                  {article.excerpt && (
+                    <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  )}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </Section>
+
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+</BaseLayout>
