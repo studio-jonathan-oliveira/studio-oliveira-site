@@ -136,18 +136,9 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         loading="eager"
         data-hero-zoom
       />
+      <!-- Un seul gradient vertical subtil : l'image respire, le texte reste lisible -->
       <div
-        class="absolute inset-0 bg-[var(--color-forest)]/40 mix-blend-multiply"
-        aria-hidden="true"
-      >
-      </div>
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/50 to-[var(--color-forest)]/20"
-        aria-hidden="true"
-      >
-      </div>
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-[var(--color-forest)]/70 via-transparent to-transparent"
+        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/92 via-[var(--color-forest)]/35 to-transparent"
         aria-hidden="true"
       >
       </div>
@@ -159,19 +150,19 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       >
         <p
           data-hero="eyebrow"
-          class="hero-eyebrow font-mono text-[11px] tracking-[0.3em] text-[var(--color-cream)]/70 uppercase"
+          class="hero-eyebrow font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
           Studio · Brive-la-Gaillarde · Aquitaine · Est. 2021
         </p>
 
         <h1
-          class="hero-title mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight text-[var(--color-cream)]"
+          class="hero-title mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.95] tracking-tight text-[var(--color-cream)]"
         >
-          <span data-hero-mask class="hero-mask block leading-[1.02]">
+          <span data-hero-mask class="hero-mask block leading-[0.95]">
             <span data-mask-line class="hero-line block">Designer</span>
           </span>
-          <span data-hero-mask class="hero-mask block leading-[1.02]">
-            <span data-mask-line class="hero-line block text-[var(--color-gold)] italic"
+          <span data-hero-mask class="hero-mask block leading-[0.95]">
+            <span data-mask-line class="hero-line block text-[var(--color-laterite)] italic"
               >végétal</span
             >
           </span>
@@ -289,14 +280,14 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     <div class="htypo-sticky">
       <!-- Header fixe -->
       <header class="htypo-header">
-        <p class="font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/50 uppercase">
           <span class="text-[var(--color-cream)]/30">02</span> &nbsp;·&nbsp; Typologies
         </p>
         <h2
           id="typologies-title"
-          class="mt-3 max-w-lg font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.15] text-[var(--color-cream)]/90 md:text-[length:var(--text-3xl)]"
+          class="mt-3 max-w-lg font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.08] text-[var(--color-cream)]/90 md:text-[length:var(--text-3xl)]"
         >
-          Quatre manières <em class="text-[var(--color-gold)] italic">d'habiter</em> un jardin.
+          Quatre manières <em class="text-[var(--color-laterite)] italic">d'habiter</em> un jardin.
         </h2>
       </header>
 
@@ -329,51 +320,36 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
               </div>
 
               <div class="htypo-copy">
-                <p class="font-mono text-[10px] tracking-[0.3em] text-[var(--color-gold)] uppercase">
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                   {t.index} · {t.nom}
                 </p>
-                <h3 class="htypo-phrase mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.12] italic md:text-[length:var(--text-4xl)]">
+                <h3 class="htypo-phrase mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.08] italic md:text-[length:var(--text-4xl)]">
                   {t.phrase}
                 </h3>
 
-                <dl class="htypo-meta mt-10 grid max-w-md grid-cols-2 gap-x-8 gap-y-5 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/70 uppercase">
-                  <div>
-                    <dt class="text-[var(--color-cream)]/40">Requête</dt>
-                    <dd class="mt-1 text-[11px] tracking-normal text-[var(--color-cream)] normal-case">
-                      {t.requete}
-                    </dd>
-                  </div>
+                <dl class="htypo-meta mt-8 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/70 uppercase">
                   <div>
                     <dt class="text-[var(--color-cream)]/40">Surface</dt>
-                    <dd class="mt-1 text-[var(--color-cream)]">{t.surface}</dd>
+                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.surface}</dd>
                   </div>
                   <div>
-                    <dt class="text-[var(--color-cream)]/40">Budget travaux</dt>
-                    <dd class="mt-1 text-[var(--color-cream)]">{t.budget}</dd>
+                    <dt class="text-[var(--color-cream)]/40">Budget</dt>
+                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.budget}</dd>
                   </div>
                   <div>
-                    <dt class="text-[var(--color-cream)]/40">Prix étude</dt>
-                    <dd class="mt-1 text-[var(--color-gold)]">{t.etude}</dd>
-                  </div>
-                  <div class="col-span-2">
-                    <dt class="text-[var(--color-cream)]/40">Exemples</dt>
-                    <dd class="mt-1 text-[11px] tracking-normal text-[var(--color-cream)] normal-case">
-                      {t.exemples}
-                    </dd>
+                    <dt class="text-[var(--color-cream)]/40">Étude</dt>
+                    <dd class="mt-1.5 text-[var(--color-laterite)]">{t.etude}</dd>
                   </div>
                 </dl>
 
-                <span class="htypo-cta-static mt-12 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/40 pb-1 text-sm tracking-wide text-[var(--color-cream)]/80 transition-colors group-hover:border-[var(--color-gold)] group-hover:text-[var(--color-gold)]">
+                <span class="htypo-cta-static mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/40 pb-1 text-sm tracking-wide text-[var(--color-cream)]/80 transition-colors group-hover:border-[var(--color-laterite)] group-hover:text-[var(--color-laterite)]">
                   Explorer la typologie
                   <span aria-hidden="true">→</span>
                 </span>
               </div>
 
               <span class="htypo-cursor-cta" data-cursor-cta aria-hidden="true">
-                <span class="htypo-cursor-cta-inner">
-                  Explorer
-                  <br />→
-                </span>
+                <span class="htypo-cursor-cta-inner">Explorer</span>
               </span>
             </a>
           ))
@@ -451,7 +427,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
           class="font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-5xl)]"
         >
           <p
-            class="mb-8 font-mono text-[11px] tracking-[0.28em] text-[var(--color-moss)] uppercase"
+            class="mb-8 font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase"
           >
             <span class="text-[var(--color-forest)]/40">04</span> &nbsp;·&nbsp; Manifeste
           </p>
@@ -463,27 +439,27 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
             class="inline-block">pas</span
           >&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-moss)] italic">étude</span
+            class="inline-block italic">étude</span
           >,<br />
           <span data-quote-word class="inline-block">je</span>&nbsp;<span
             data-quote-word
             class="inline-block">vends</span
           >&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-gold)] italic">vision</span
+            class="inline-block text-[var(--color-laterite)] italic">vision</span
           >,&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-gold)] italic">méthode</span
+            class="inline-block italic">méthode</span
           >,<br />
           <span data-quote-word class="inline-block">une</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-gold)] italic">expérience</span
+            class="inline-block italic">expérience</span
           >,&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-gold)] italic">sécurité</span
+            class="inline-block italic">sécurité</span
           >&nbsp;<span data-quote-word class="inline-block">de</span>&nbsp;<span
             data-quote-word
-            class="inline-block text-[var(--color-gold)] italic">résultat</span
+            class="inline-block text-[var(--color-laterite)] italic">résultat</span
           >.
           <footer
             class="mt-10 font-mono text-[11px] tracking-[0.28em] text-[var(--color-forest)]/50 uppercase not-italic"
@@ -502,16 +478,16 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     class="border-t border-[var(--color-forest)]/10 bg-[var(--color-forest)] text-[var(--color-cream)]"
   >
     <div class="mx-auto max-w-4xl px-6 py-32 text-center md:px-10 md:py-48" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
         <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
         data-mask-reveal
         data-mask-stagger="0.18"
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
       >
         <span data-mask-line class="block">Un projet,</span>
-        <span data-mask-line class="block text-[var(--color-gold)] italic">une étude.</span>
+        <span data-mask-line class="block text-[var(--color-laterite)] italic">une étude.</span>
       </h2>
       <p
         class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
@@ -702,18 +678,31 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     .htypo-phrase {
       max-width: 520px;
     }
+    /*
+     * Metadata : VRAI hover reveal (reco audit DA).
+     * Masquée par défaut, révélée uniquement au hover/focus du panel.
+     * Sur mobile (pas de hover), on force l'affichage permanent.
+     */
     .htypo-meta {
-      /* Révélation progressive au hover : metadata glisse depuis le bas */
-      transform: translateY(8px);
-      opacity: 0.85;
+      opacity: 0;
+      transform: translateY(16px);
       transition:
-        transform 0.55s var(--ease-out-editorial),
-        opacity 0.4s ease;
+        transform 0.7s var(--ease-out-editorial),
+        opacity 0.5s ease;
     }
-    .htypo-panel:hover .htypo-meta,
-    .htypo-panel:focus-visible .htypo-meta {
-      transform: translateY(0);
-      opacity: 1;
+    @media (hover: hover) and (min-width: 1024px) {
+      .htypo-panel:hover .htypo-meta,
+      .htypo-panel:focus-visible .htypo-meta {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Tactile / fallback : meta toujours visible (hover n'existe pas) */
+    @media (hover: none), (max-width: 1023px) {
+      .htypo-meta {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     /* CTA statique (mobile + fallback clavier) */
@@ -727,37 +716,47 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       }
     }
 
-    /* CTA suiveur souris — desktop only */
+    /*
+     * Curseur panel : outline minimal crème (vs disque plein latérite du
+     * ScrollCursorCta global sur /pros). Hiérarchie visuelle entre les 2
+     * systèmes de curseur (reco audit DA : « double cursor system sans
+     * hiérarchie »).
+     */
     .htypo-cursor-cta {
       position: absolute;
       top: 0;
       left: 0;
-      width: 120px;
-      height: 120px;
-      margin-left: -60px;
-      margin-top: -60px;
+      width: 88px;
+      height: 88px;
+      margin-left: -44px;
+      margin-top: -44px;
       border-radius: 50%;
-      background: var(--color-gold);
-      color: var(--color-forest);
+      background: transparent;
+      border: 1px solid var(--color-cream);
+      color: var(--color-cream);
       display: none;
       align-items: center;
       justify-content: center;
       pointer-events: none;
       z-index: 5;
       opacity: 0;
-      transform: scale(0.6);
+      transform: scale(0.7);
       transition:
         opacity 0.35s var(--ease-out-editorial),
-        transform 0.45s var(--ease-out-editorial);
+        transform 0.45s var(--ease-out-editorial),
+        border-color 0.3s ease,
+        color 0.3s ease,
+        background-color 0.3s ease;
       will-change: transform, opacity, translate;
+      mix-blend-mode: difference;
     }
     .htypo-cursor-cta-inner {
       font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 10px;
-      letter-spacing: 0.22em;
+      font-size: 9px;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       text-align: center;
-      line-height: 1.5;
+      line-height: 1;
     }
     @media (min-width: 1024px) and (hover: hover) {
       .htypo-cursor-cta {

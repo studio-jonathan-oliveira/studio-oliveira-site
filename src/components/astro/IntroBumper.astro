@@ -13,7 +13,6 @@
   role="presentation"
   aria-hidden="true"
 >
-  <!-- Texture grain subtile -->
   <div class="intro-grain" aria-hidden="true"></div>
 
   <!-- Crop marks des 4 coins (tradition typographique print) -->
@@ -22,13 +21,6 @@
   <span class="intro-crop intro-crop--bl" aria-hidden="true"></span>
   <span class="intro-crop intro-crop--br" aria-hidden="true"></span>
 
-  <!-- Métadonnées haut -->
-  <div class="intro-header">
-    <span class="intro-mark">01</span>
-    <span class="intro-tag">Studio · Brive-la-Gaillarde · Aquitaine</span>
-    <span class="intro-year">Est. 2021</span>
-  </div>
-
   <!-- Vidéo logo cadrée -->
   <div class="intro-frame">
     <video id="intro-video" class="intro-video" muted autoplay playsinline preload="auto">
@@ -36,14 +28,10 @@
     </video>
   </div>
 
-  <!-- Métadonnées bas -->
-  <div class="intro-footer">
-    <span class="intro-caption">Design végétal biophilique</span>
-    <span class="intro-divider" aria-hidden="true"></span>
-    <span class="intro-edition">MMXXVI · Édition Numérique</span>
-  </div>
+  <!-- Caption unique en bas (seul texte de l'intro) -->
+  <p class="intro-caption">Studio J Oliveira — Brive-la-Gaillarde</p>
 
-  <!-- Skip discret -->
+  <!-- Skip visible -->
   <button
     type="button"
     class="intro-skip"
@@ -94,7 +82,7 @@
         main?.classList.remove('intro-revealing');
         header?.classList.remove('intro-revealing');
         localStorage.setItem(BUMPER_KEY, '1');
-      }, 1700);
+      }, 900);
     };
 
     video?.addEventListener('ended', dismiss);
@@ -120,8 +108,10 @@
       }
     }
 
-    // Fallback de sécurité (autoplay bloqué, vidéo corrompue, etc.)
-    setTimeout(dismiss, 6000);
+    // Fallback de sécurité (autoplay bloqué, vidéo corrompue, etc.) — réduit
+    // à 3.5s : si après ce délai rien ne s'est passé, on dégage le bumper pour
+    // ne pas pénaliser l'INP/LCP perçu (cf. audit UX 2026-04-23).
+    setTimeout(dismiss, 3500);
   }
 </script>
 
@@ -131,9 +121,9 @@
     transform-origin: 50% 50%;
     will-change: transform, opacity, filter;
   }
-  /* Caméra-traversante : tout le bumper accélère vers le viewer, fade progressif */
+  /* Caméra-traversante : scale + fade rapides (0.8s), retenue premium */
   .intro-bumper.is-closing {
-    animation: intro-depart 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    animation: intro-depart 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
     pointer-events: none;
   }
   @keyframes intro-depart {
@@ -142,20 +132,15 @@
       opacity: 1;
       filter: blur(0);
     }
-    35% {
-      transform: scale(1.35);
-      opacity: 0.95;
-      filter: blur(0.5px);
-    }
-    70% {
-      transform: scale(2.2);
-      opacity: 0.6;
-      filter: blur(3px);
+    60% {
+      transform: scale(1.4);
+      opacity: 0.5;
+      filter: blur(2px);
     }
     100% {
-      transform: scale(3.4);
+      transform: scale(1.9);
       opacity: 0;
-      filter: blur(10px);
+      filter: blur(6px);
     }
   }
 
@@ -203,68 +188,27 @@
     border-right: 1px solid;
   }
 
-  /* Header metadata */
-  .intro-header,
-  .intro-footer {
+  /* Caption unique — seul texte de l'intro (signal de marque minimal) */
+  .intro-caption {
     position: absolute;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.8rem;
-    padding: 3rem 4rem;
-    color: rgba(245, 241, 234, 0.75);
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10.5px;
+    font-size: 10px;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
+    color: rgba(245, 241, 234, 0.55);
     white-space: nowrap;
   }
-  .intro-header {
-    top: 0;
-  }
-  .intro-footer {
-    bottom: 0;
-  }
 
-  .intro-mark {
-    color: var(--color-gold);
-    font-weight: 500;
-  }
-  .intro-tag {
-    flex: 0 1 auto;
-  }
-  .intro-year,
-  .intro-edition {
-    color: rgba(245, 241, 234, 0.5);
-  }
-  .intro-caption {
-    font-family: var(--font-heading), serif;
-    font-style: italic;
-    font-size: clamp(14px, 1.4vw, 18px);
-    letter-spacing: 0.01em;
-    text-transform: none;
-    color: var(--color-cream);
-  }
-  .intro-divider {
-    width: 40px;
-    height: 1px;
-    background: rgba(212, 184, 150, 0.5);
-  }
-
-  /* Sur petit écran, on simplifie les métadonnées */
+  /* Adaptation mobile : crop marks resserrés */
   @media (max-width: 640px) {
-    .intro-header,
-    .intro-footer {
-      padding: 2rem 1.5rem;
-      gap: 1rem;
+    .intro-caption {
+      bottom: 2rem;
       font-size: 9px;
       letter-spacing: 0.24em;
-    }
-    .intro-year,
-    .intro-edition {
-      display: none;
     }
     .intro-crop {
       width: 18px;
@@ -305,9 +249,9 @@
     filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.35));
   }
 
-  /* Le logo accélère vers nous plus vite que le reste (perspective), courbe douce */
+  /* Le logo accélère vers nous (perspective), courbe douce — 0.8s aligné bumper */
   .intro-bumper.is-closing .intro-video {
-    animation: intro-video-depart 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    animation: intro-video-depart 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   }
   @keyframes intro-video-depart {
     0% {
@@ -315,55 +259,55 @@
       opacity: 1;
       filter: blur(0);
     }
-    40% {
-      transform: scale(1.7);
-      opacity: 1;
-      filter: blur(0.5px);
-    }
-    75% {
-      transform: scale(3.2);
-      opacity: 0.55;
-      filter: blur(3px);
+    60% {
+      transform: scale(2);
+      opacity: 0.7;
+      filter: blur(1px);
     }
     100% {
-      transform: scale(5.2);
+      transform: scale(3);
       opacity: 0;
-      filter: blur(9px);
+      filter: blur(5px);
     }
   }
-  /* Métadonnées fade en premier (anticipation) puis bumper travers */
-  .intro-bumper.is-closing .intro-header,
-  .intro-bumper.is-closing .intro-footer,
+  /* Fade simultané des éléments secondaires */
+  .intro-bumper.is-closing .intro-caption,
   .intro-bumper.is-closing .intro-crop,
   .intro-bumper.is-closing .intro-skip {
     opacity: 0;
-    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Skip link */
+  /* Skip link — visible mais discret (12px + accent latérite au hover) */
   .intro-skip {
     position: absolute;
-    bottom: 2rem;
+    top: 2rem;
     right: 2rem;
     background: transparent;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    color: rgba(245, 241, 234, 0.55);
+    border: 1px solid rgba(245, 241, 234, 0.25);
+    padding: 0.65rem 1rem;
+    color: rgba(245, 241, 234, 0.75);
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
     z-index: 10;
   }
-  .intro-skip:hover {
-    color: var(--color-cream);
+  .intro-skip:hover,
+  .intro-skip:focus-visible {
+    color: var(--color-laterite);
+    border-color: var(--color-laterite);
   }
   @media (max-width: 640px) {
     .intro-skip {
-      bottom: 0.5rem;
+      top: 1rem;
       right: 1rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 10px;
     }
   }
 
