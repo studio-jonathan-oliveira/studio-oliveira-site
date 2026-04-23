@@ -217,10 +217,14 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     color: var(--color-forest);
     z-index: 100;
     overflow: hidden;
-    /* Flex pour aligner l'inner à droite sans position:absolute.
-       L'inner devient un enfant flex scrollable. */
-    display: flex;
     justify-content: flex-end;
+  }
+  /* CRITIQUE : le <dialog> natif est `display: none` tant qu'il n'est pas
+     `[open]`. En ayant forcé `display: flex` sans condition, le menu était
+     visible en permanence même après .close() (bug 2026-04-23 soir : « menu
+     ouvert à l'arrivée »). On passe display: flex SEULEMENT sur [open]. */
+  .primary-menu[open] {
+    display: flex;
   }
   .primary-menu::backdrop {
     background: color-mix(in oklab, var(--color-forest) 60%, transparent);
