@@ -237,9 +237,9 @@ const etapesMethode = [
     </div>
   </section>
 
-  {/* ───── 02 · PARCOURS avec photo + timeline ───── */}
+  {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
   <Section variant="cream" aria-labelledby="parcours-title">
-    <div class="grid gap-16 md:grid-cols-[1fr_1.4fr] md:gap-20">
+    <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
       <div data-reveal="up">
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
           <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Parcours
@@ -252,37 +252,60 @@ const etapesMethode = [
           et trajectoire.
         </h2>
 
-        <div class="mt-10 overflow-hidden">
+        <ol class="mt-12 space-y-0" data-reveal-stagger="0.1" data-reveal="up">
+          {
+            parcours.map((p, i) => (
+              <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <div>
+                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-forest)]">
+                    <em class="italic">{p.annee}</em>
+                  </p>
+                  <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/70">
+                    {p.detail}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <aside
+        class="studio-parcours-aside flex flex-col gap-8"
+        data-reveal="up"
+        data-reveal-delay="0.2"
+      >
+        <div class="studio-parcours-portrait overflow-hidden">
           <Image
             src={portrait02}
             alt="Jonathan Oliveira, portrait éditorial"
-            widths={[480, 720]}
-            sizes="(min-width: 768px) 35vw, 80vw"
+            widths={[480, 720, 960]}
+            sizes="(min-width: 768px) 42vw, 92vw"
             quality={82}
             format="webp"
-            class="h-auto w-full max-w-sm object-cover"
+            class="h-full w-full object-cover"
             loading="lazy"
           />
         </div>
-      </div>
-
-      <ol class="relative space-y-0" data-reveal-stagger="0.1" data-reveal="up">
-        {
-          parcours.map((p, i) => (
-            <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
-                {String(i + 1).padStart(2, '0')}
-              </p>
-              <div>
-                <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-forest)]">
-                  <em class="italic">{p.annee}</em>
-                </p>
-                <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/70">{p.detail}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
+        <blockquote class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6">
+          <p
+            class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-forest)]/85 italic md:text-[length:var(--text-2xl)]"
+          >
+            Dix ans de paysagisme avant de fonder le studio — pour comprendre d'abord le métier par
+            l'intérieur, avant d'en proposer une <em class="text-[var(--color-laterite)] not-italic"
+              >autre lecture</em
+            >.
+          </p>
+          <footer
+            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase"
+          >
+            — Résumé du parcours
+          </footer>
+        </blockquote>
+      </aside>
     </div>
   </Section>
 
@@ -292,8 +315,8 @@ const etapesMethode = [
     data-dark-section
     aria-labelledby="methode-title"
   >
-    <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
-      <div class="mb-16 md:mb-20" data-reveal="up">
+    <div class="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+      <div class="mb-12 md:mb-16" data-reveal="up">
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
           <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Méthode
         </p>

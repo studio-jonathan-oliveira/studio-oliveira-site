@@ -113,7 +113,45 @@
 </style>
 
 <script>
+  /**
+   * Observer indépendant — met à jour body.is-dark-section selon la section
+   * actuellement au centre du viewport. Robuste vs ScrollNav qui ne regarde
+   * que les sections avec id+data-section-label (feedback Morgan 2026-04-23 :
+   * cursor invisible dans section CTA cream après forest sticky).
+   */
+  function initDarkSectionObserver() {
+    if (document.body.dataset.darkObserverWired === 'true') return;
+    document.body.dataset.darkObserverWired = 'true';
+
+    const isDarkSection = (el: Element): boolean => {
+      if (!(el instanceof HTMLElement)) return false;
+      if (el.hasAttribute('data-dark-section')) return true;
+      if (el.classList.contains('hero-immersive')) return true;
+      // Match bg-[var(--color-forest)] même avec suffixe /opacity
+      if (/bg-\[var\(--color-forest\)\]/.test(el.className)) return true;
+      return false;
+    };
+
+    const allSections = Array.from(document.querySelectorAll('section, [data-dark-section]'));
+    if (allSections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const dark = isDarkSection(entry.target);
+          document.body.classList.toggle('is-dark-section', dark);
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.5, 1] },
+    );
+    allSections.forEach((s) => observer.observe(s));
+  }
+
   function initCursor() {
+    // Observer dark section : toujours actif (même sur touch pour ScrollNav)
+    initDarkSectionObserver();
+
     if (!window.matchMedia('(pointer: fine)').matches) return;
 
     const cursor = document.getElementById('cursor');

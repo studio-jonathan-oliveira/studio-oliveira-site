@@ -36,7 +36,11 @@ import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
-const typoImages: Record<string, ImageMetadata> = {
+
+// On construit un tableau enrichi avec les images explicitement associées
+// (pattern plus sûr qu'un Record<string, ImageMetadata> pour <Image> Astro
+// qui peut rater les imports dynamiques au build).
+const typoImageMap: Record<string, ImageMetadata> = {
   'micro-urbain': typoMicroUrbain,
   'coeur-urbain': typoCoeurUrbain,
   'frange-urbaine': typoFrangeUrbaine,
@@ -310,56 +314,59 @@ const schema = jsonLdGraph([
       class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
     >
       {
-        typologies.map((t) => (
-          <li class="ap-typo-card group bg-[var(--color-cream)]">
-            <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
-              {typoImages[t.slug] && (
-                <div class="ap-typo-card-visual overflow-hidden">
-                  <Image
-                    src={typoImages[t.slug]!}
-                    alt=""
-                    widths={[480, 720, 960, 1280]}
-                    sizes="(min-width: 768px) 44vw, 92vw"
-                    quality={80}
-                    format="webp"
-                    class="ap-typo-card-img h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              )}
-              <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
-                <div>
-                  <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
-                    {t.surface} · {t.exemple}
-                  </p>
-                  <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
-                    <em class="italic">{t.nomProprietaire}</em>
-                  </h3>
-                  <p class="mt-3 text-sm text-[var(--color-forest)]/60">{t.h1Seo}</p>
+        typologies.map((t) => {
+          const img = typoImageMap[t.slug];
+          return (
+            <li class="ap-typo-card group bg-[var(--color-cream)]">
+              <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
+                {img && (
+                  <div class="ap-typo-card-visual overflow-hidden">
+                    <Image
+                      src={img}
+                      alt=""
+                      widths={[480, 720, 960, 1280]}
+                      sizes="(min-width: 768px) 44vw, 92vw"
+                      quality={80}
+                      format="webp"
+                      class="ap-typo-card-img h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
+                  <div>
+                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                      {t.surface} · {t.exemple}
+                    </p>
+                    <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                      <em class="italic">{t.nomProprietaire}</em>
+                    </h3>
+                    <p class="mt-3 text-sm text-[var(--color-forest)]/60">{t.h1Seo}</p>
 
-                  <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
-                    <div>
-                      <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
-                        Budget travaux
-                      </dt>
-                      <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
-                    </div>
-                    <div>
-                      <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
-                        Étude
-                      </dt>
-                      <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
-                    </div>
-                  </dl>
+                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/10 pt-6 text-xs">
+                      <div>
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
+                          Budget travaux
+                        </dt>
+                        <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
+                      </div>
+                      <div>
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
+                          Étude
+                        </dt>
+                        <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                    Explorer
+                    <span aria-hidden="true">→</span>
+                  </span>
                 </div>
-                <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
-                  Explorer
-                  <span aria-hidden="true">→</span>
-                </span>
-              </div>
-            </a>
-          </li>
-        ))
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
 

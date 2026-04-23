@@ -19,12 +19,13 @@ import {
 } from '@/lib/schema-org';
 
 // Placeholders visuels — à remplacer par des images dédiées Jonathan
-import heroInterieur from '@/assets/projets/jungle-room-entree.png';
-import imgHotel from '@/assets/projets/jungle-room-mezzanine.png';
-import imgResto from '@/assets/projets/airbnb/airbnb-01.jpeg';
-import imgBureaux from '@/assets/projets/jungle-room-espaces.png';
-import imgCommerces from '@/assets/projets/airbnb/airbnb-02.jpeg';
-import imgAirbnb from '@/assets/projets/airbnb/airbnb-03.jpeg';
+// Utilise les WebP optimisés convertis via scripts/convert-projets.mjs
+import heroInterieur from '@/assets/projets/jungle-room/01-salon.webp';
+import imgHotel from '@/assets/projets/jungle-room/02.webp';
+import imgResto from '@/assets/projets/cafe-de-paris/01-cover.webp';
+import imgBureaux from '@/assets/projets/jungle-room/03.webp';
+import imgCommerces from '@/assets/projets/schmit-cuisine/01-cover.webp';
+import imgAirbnb from '@/assets/projets/airbnb/01-cover.webp';
 
 const verticaleImages: Record<string, ImageMetadata> = {
   hotellerie: imgHotel,
@@ -158,41 +159,44 @@ const schema = jsonLdGraph([
       class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2 lg:grid-cols-3"
     >
       {
-        verticales.map((v, i) => (
-          <li class="avi-card group bg-[var(--color-cream)]">
-            <a href={`/amenagement-vegetal-interieur/${v.slug}`} class="flex h-full flex-col">
-              {verticaleImages[v.slug] && (
-                <div class="avi-card-visual overflow-hidden">
-                  <Image
-                    src={verticaleImages[v.slug]!}
-                    alt=""
-                    widths={[480, 720, 960]}
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"
-                    quality={78}
-                    format="webp"
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    class="avi-card-img h-full w-full object-cover"
-                  />
+        verticales.map((v, i) => {
+          const img = verticaleImages[v.slug];
+          return (
+            <li class="avi-card group bg-[var(--color-cream)]">
+              <a href={`/amenagement-vegetal-interieur/${v.slug}`} class="flex h-full flex-col">
+                {img && (
+                  <div class="avi-card-visual overflow-hidden">
+                    <Image
+                      src={img}
+                      alt=""
+                      widths={[480, 720, 960]}
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw"
+                      quality={78}
+                      format="webp"
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      class="avi-card-img h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+                <div class="flex flex-1 flex-col justify-between p-8 md:p-10">
+                  <div>
+                    <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+                      {String(i + 1).padStart(2, '0')} &nbsp;·&nbsp; Verticale
+                    </p>
+                    <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
+                      <em class="italic">{v.label}</em>
+                    </h3>
+                    <p class="mt-3 text-sm text-[var(--color-forest)]/65">{v.h1Seo}</p>
+                  </div>
+                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                    Voir la verticale
+                    <span aria-hidden="true">→</span>
+                  </span>
                 </div>
-              )}
-              <div class="flex flex-1 flex-col justify-between p-8 md:p-10">
-                <div>
-                  <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
-                    {String(i + 1).padStart(2, '0')} &nbsp;·&nbsp; Verticale
-                  </p>
-                  <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
-                    <em class="italic">{v.label}</em>
-                  </h3>
-                  <p class="mt-3 text-sm text-[var(--color-forest)]/65">{v.h1Seo}</p>
-                </div>
-                <span class="mt-8 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
-                  Voir la verticale
-                  <span aria-hidden="true">→</span>
-                </span>
-              </div>
-            </a>
-          </li>
-        ))
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
   </Section>

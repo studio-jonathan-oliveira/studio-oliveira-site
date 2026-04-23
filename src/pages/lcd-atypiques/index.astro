@@ -1,126 +1,357 @@
 ---
 /*
- * /lcd-atypiques — Locations Courte Durée atypiques (airbnb Jungle Rooms, etc.)
- * Onglet séparé selon décision Morgan 2026-04-23 (PDF l. 728).
+ * /lcd-atypiques — Locations Courte Durée atypiques (Jungle Rooms, airbnb signature).
+ * URL conservée par fidélité cahier Jonathan (PDF l.728), mais label affiché
+ * = « Locations signature » (feedback Morgan 2026-04-23 : LCD pas clair).
  *
- * Segment commercial historique du studio : notoriété nationale sur les Jungle Rooms LCD.
- * Cible : propriétaires d'airbnb atypiques cherchant une identité végétale immersive.
- *
- * ⚠️ Page en squelette — contenu définitif à rédiger (Claude ébauche + Jonathan valide).
+ * Refonte 2026-04-23 : hero immersif forest + galerie projets réels +
+ * section démarche forest texturée (feedback Morgan : « page fade, vide »).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import SectionHeader from '@/components/astro/SectionHeader.astro';
+import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs, service } from '@/lib/schema-org';
+
+// Assets : Jungle Room + Airbnb (signature LCD atypiques)
+import heroJungle from '@/assets/projets/jungle-room/01-salon.webp';
+import imgJungle02 from '@/assets/projets/jungle-room/02.webp';
+import imgJungle03 from '@/assets/projets/jungle-room/03.webp';
+import imgAirbnb01 from '@/assets/projets/airbnb/01-cover.webp';
+import imgAirbnb02 from '@/assets/projets/airbnb/02.webp';
+import imgAirbnb03 from '@/assets/projets/airbnb/03.webp';
+import imgAirbnb04 from '@/assets/projets/airbnb/04.webp';
+import imgAirbnb05 from '@/assets/projets/airbnb/05.webp';
+
+// 3 étapes de la démarche LCD (structure factuelle, contenu détaillé [À FOURNIR])
+const etapes = [
+  {
+    num: '01',
+    titre: 'Lecture du lieu',
+    description:
+      'Analyse du bâti existant, des contraintes techniques (lumière, hygrométrie, circulation), du public cible et du positionnement de la location sur sa plateforme.',
+  },
+  {
+    num: '02',
+    titre: 'Composition immersive',
+    description:
+      'Scénographie végétale complète — plantes naturelles ou artificielles premium selon contraintes, mobilier, textures, luminaires. Le lieu devient un univers narratif.',
+  },
+  {
+    num: '03',
+    titre: 'Mise en œuvre',
+    description:
+      "Sélection et pilotage des artisans, installation du décor, mise en scène finale. Suivi de l'impact sur les réservations les premiers mois si souhaité.",
+  },
+];
+
+const galerie = [
+  { src: imgJungle02, alt: 'Jungle Room — décor immersif', legende: 'Jungle Room, Agde' },
+  { src: imgAirbnb01, alt: 'Airbnb signature — entrée végétalisée', legende: 'Airbnb signature' },
+  { src: imgAirbnb02, alt: 'Airbnb signature — espace de vie' },
+  { src: imgJungle03, alt: 'Jungle Room — détail végétal' },
+  { src: imgAirbnb03, alt: 'Airbnb signature — chambre' },
+  { src: imgAirbnb04, alt: 'Airbnb signature — détail décor' },
+  { src: imgAirbnb05, alt: 'Airbnb signature — ambiance' },
+];
 
 const schema = jsonLdGraph([
   organization(),
   localBusiness(),
   service({
-    name: 'Décoration végétale pour airbnb atypique',
+    name: 'Décoration végétale pour locations atypiques',
     slug: 'lcd-atypiques',
     path: '/lcd-atypiques',
     description:
-      'Décors végétalisés immersifs pour locations courte durée atypiques — Jungle Rooms, airbnb de caractère, logements à forte identité. Plantes naturelles et artificielles, conception et installation.',
+      'Décors végétalisés immersifs pour locations courte durée à forte identité — Jungle Rooms, airbnb signature, logements narratifs. Plantes naturelles et artificielles, conception et installation.',
   }),
   breadcrumbs([
     { name: 'Accueil', item: '/' },
-    { name: 'LCD atypiques', item: '/lcd-atypiques' },
+    { name: 'Locations signature', item: '/lcd-atypiques' },
   ]),
 ]);
 ---
 
 <BaseLayout
-  title="Décoration végétale pour airbnb atypique — Jungle Rooms"
-  description="Studio J Oliveira — décors végétalisés immersifs pour locations courte durée atypiques. Jungle Rooms, airbnb de caractère. Plantes naturelles et artificielles, design biophilique."
+  title="Décoration végétale pour airbnb atypique — Locations signature"
+  description="Studio J Oliveira — décors végétalisés immersifs pour locations courte durée atypiques. Jungle Rooms, airbnb signature. Plantes naturelles et artificielles, design biophilique."
+  darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </Fragment>
 
-  <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-forest)]/40">LCD</span>
-        &nbsp;·&nbsp; Locations courte durée atypiques
-      </p>
-      <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+  {/* ───── HERO immersif forest avec Jungle Room ───── */}
+  <section
+    id="hero"
+    data-section-label="Locations signature"
+    class="lcd-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={heroJungle}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={80}
+        format="webp"
+        class="lcd-hero-img h-full w-full object-cover object-center"
+        loading="eager"
+        data-hero-zoom
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/45 to-transparent"
+        aria-hidden="true"
       >
-        Décoration végétale pour <em class="italic">airbnb atypique</em>.
-      </h1>
+      </div>
+    </div>
+
+    <div class="relative flex min-h-[90svh] flex-col justify-end">
+      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/50">Locations courte durée</span>
+          &nbsp;·&nbsp; Signature atypique
+        </p>
+        <h1
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight"
+        >
+          <span data-mask-line class="block pb-[0.05em]">Locations</span>
+          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
+            signature.
+          </span>
+        </h1>
+        <p
+          data-reveal="up"
+          data-reveal-delay="0.4"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+        >
+          Un airbnb à forte identité n'est pas une location — c'est un univers. Le studio conçoit
+          des décors végétalisés immersifs qui transforment un hébergement en expérience mémorable,
+          génératrice de réservations et de recommandations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ───── MANIFESTE court ───── */}
+  <Section variant="cream" tight>
+    <div class="mx-auto max-w-3xl py-20 md:py-28" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">01</span> &nbsp;·&nbsp; Le positionnement
+      </p>
       <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-4xl)]"
       >
-        [À FOURNIR — intro LCD atypiques, 60-80 mots. Positionnement "Jungle Rooms", décors
-        immersifs, ambiances expérientielles pour propriétaires d'airbnb à forte identité.]
-      </p>
-      <p class="mt-6 max-w-2xl text-sm leading-relaxed text-[var(--color-forest)]/60">
-        Segment distinct du studio, à la croisée du <a
+        À la croisée du <a
           href="/pros"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >design pour professionnels</a
-        > et des projets <a
+          class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+          ><em class="italic">design pour professionnels</em></a
+        >
+        et des <a
           href="/realisations"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
-          >réalisés</a
-        > à forte signature narrative.
+          class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+          ><em class="italic">projets réalisés</em></a
+        >
+        à forte signature narrative — la location atypique demande une
+        <em class="text-[var(--color-laterite)] italic">écriture végétale dédiée</em>, spectaculaire
+        mais habitable.
       </p>
     </div>
   </Section>
 
-  <Section variant="cream" topDivider>
-    <SectionHeader
-      eyebrow="Démarche"
-      title="Un univers, pas une décoration."
-      intro="[À FOURNIR — 2-3 lignes sur l'approche du studio pour les LCD atypiques : différenciation marché airbnb, pouvoir narratif du végétal, rentabilité par l'expérience.]"
-    />
+  {/* ───── GALERIE projets réels (Jungle Room + Airbnb) ───── */}
+  <Section variant="cream" aria-labelledby="galerie-title">
+    <div class="mb-12 max-w-3xl" data-reveal="up">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Galerie
+      </p>
+      <h2
+        id="galerie-title"
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+      >
+        <em class="text-[var(--color-laterite)] italic">Jungle Rooms</em><br />
+        & airbnb signature.
+      </h2>
+    </div>
 
     <div
-      class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3"
-      data-reveal-stagger="0.12"
+      class="lcd-gallery grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6"
+      data-reveal-stagger="0.08"
       data-reveal="up"
     >
       {
-        [
-          { num: '01', titre: 'Lecture du lieu', description: '[À FOURNIR]' },
-          { num: '02', titre: 'Composition immersive', description: '[À FOURNIR]' },
-          { num: '03', titre: 'Mise en œuvre', description: '[À FOURNIR]' },
-        ].map((step) => (
-          <article class="bg-[var(--color-cream)] p-10 md:p-12">
-            <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-none text-[var(--color-forest)]/20">
-              {step.num}
-            </p>
-            <h3 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
-              {step.titre}
-            </h3>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
-              {step.description}
-            </p>
-          </article>
+        galerie.map((item, i) => (
+          <figure
+            class:list={[
+              'lcd-gallery-item overflow-hidden',
+              i === 0 && 'md:col-span-7 md:row-span-2',
+              i === 1 && 'md:col-span-5',
+              i === 2 && 'md:col-span-5',
+              i === 3 && 'md:col-span-4',
+              i === 4 && 'md:col-span-4',
+              i === 5 && 'md:col-span-4',
+              i === 6 && 'md:col-span-12',
+            ]}
+          >
+            <Image
+              src={item.src}
+              alt={item.alt}
+              widths={[480, 720, 960, 1280]}
+              sizes="(min-width: 768px) 50vw, 92vw"
+              quality={80}
+              format="webp"
+              class="lcd-gallery-img h-full w-full object-cover"
+              loading={i < 2 ? 'eager' : 'lazy'}
+            />
+            {item.legende && (
+              <figcaption class="mt-3 font-mono text-[10px] tracking-[0.26em] text-[var(--color-forest)]/55 uppercase">
+                {item.legende}
+              </figcaption>
+            )}
+          </figure>
         ))
       }
     </div>
   </Section>
 
+  {/* ───── 03 · DÉMARCHE forest immersif ───── */}
+  <section
+    class="lcd-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-dark-section
+    aria-labelledby="demarche-title"
+  >
+    <div class="absolute inset-0 -z-10">
+      <Image
+        src={imgJungle02}
+        alt=""
+        widths={[960, 1440, 1920]}
+        sizes="100vw"
+        quality={60}
+        format="webp"
+        class="h-full w-full object-cover object-center"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-[var(--color-forest)]/92" aria-hidden="true"></div>
+      <div class="lcd-demarche-halo" aria-hidden="true"></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
+      <div class="mb-16 max-w-3xl" data-reveal="up">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Démarche
+        </p>
+        <h2
+          id="demarche-title"
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
+        >
+          Un univers,<br />
+          pas une <em class="text-[var(--color-laterite)] italic">décoration</em>.
+        </h2>
+      </div>
+
+      <ol
+        class="grid grid-cols-1 gap-px bg-[var(--color-cream)]/10 md:grid-cols-3"
+        data-reveal-stagger="0.12"
+        data-reveal="up"
+      >
+        {
+          etapes.map((etape) => (
+            <li class="bg-[var(--color-forest)]/75 p-8 backdrop-blur-sm md:p-10">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                Étape {etape.num}
+              </p>
+              <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
+                <em class="italic">{etape.titre}</em>
+              </h3>
+              <p class="mt-4 text-sm leading-relaxed text-[var(--color-cream)]/80">
+                {etape.description}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* ───── CTA final forest ───── */}
   <Section variant="forest" topDivider>
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
-        Engager la conversation
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
       >
-        Un projet LCD ?<br /><em class="text-[var(--color-gold)] italic">Parlons-en.</em>
+        Un projet de <em class="text-[var(--color-laterite)] italic">location signature</em> ?
       </h2>
-      <a
-        href="/contact"
-        data-magnetic="0.3"
-        class="mt-12 inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+      <p
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
       >
-        Démarrer un projet
-        <span aria-hidden="true">→</span>
-      </a>
+        Décrivez votre lieu, son positionnement, vos envies — je propose une écriture végétale qui
+        transforme votre location en expérience.
+      </p>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <a
+          href="/contact"
+          data-magnetic="0.3"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+        >
+          Démarrer un projet
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   </Section>
+
+  <style>
+    .lcd-hero-img {
+      transform: scale(1.06);
+      transform-origin: center;
+      will-change: transform, filter;
+    }
+
+    /* Halo latérite dans la section démarche */
+    .lcd-demarche-halo {
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(
+        circle at center,
+        color-mix(in oklab, var(--color-laterite) 30%, transparent) 0%,
+        transparent 65%
+      );
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* Galerie bento — chaque tuile garde un aspect ratio agréable */
+    .lcd-gallery-item {
+      background-color: var(--color-forest);
+    }
+    .lcd-gallery-item:first-child {
+      aspect-ratio: 1 / 1;
+    }
+    @media (min-width: 768px) {
+      .lcd-gallery-item {
+        aspect-ratio: 4 / 3;
+      }
+      .lcd-gallery-item:first-child {
+        aspect-ratio: auto;
+      }
+      .lcd-gallery-item:last-child {
+        aspect-ratio: 21 / 9;
+      }
+    }
+    .lcd-gallery-img {
+      transform: scale(1.04);
+      transition: transform 1.2s var(--ease-out-editorial);
+    }
+    .lcd-gallery-item:hover .lcd-gallery-img,
+    .lcd-gallery-item:focus-within .lcd-gallery-img {
+      transform: scale(1.1);
+    }
+  </style>
 </BaseLayout>

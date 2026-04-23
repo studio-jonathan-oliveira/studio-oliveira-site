@@ -58,8 +58,8 @@ const sections = [
   {
     num: '04',
     href: '/lcd-atypiques',
-    label: 'LCD atypiques',
-    tagline: 'Location courte durée — Jungle Rooms, airbnb signature.',
+    label: 'Locations signature',
+    tagline: 'Jungle Rooms, airbnb atypiques, locations courte durée.',
     sub: [],
   },
   {
@@ -214,11 +214,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     background: transparent;
     color: var(--color-forest);
     z-index: 100;
-    /* Scroll molette : le dialog lui-même est scrollable → les events
-       wheel sur la zone vide à gauche OU sur l'inner se propagent bien.
-       L'inner gère son propre overflow via max-height + overflow-y:auto. */
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    overflow: hidden;
+    /* Flex pour aligner l'inner à droite sans position:absolute.
+       L'inner devient un enfant flex scrollable. */
+    display: flex;
+    justify-content: flex-end;
   }
   .primary-menu::backdrop {
     background: color-mix(in oklab, var(--color-forest) 60%, transparent);
@@ -363,16 +363,12 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
 
   .primary-menu__inner {
-    position: absolute;
-    inset: 0 0 0 auto;
     width: 100vw;
     max-width: 100vw;
+    height: 100vh;
     background: var(--color-cream);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    /* Scroll molette dans le panneau : overflow-y auto + max-height viewport */
-    max-height: 100vh;
     overflow-y: auto;
     overscroll-behavior: contain;
     box-shadow: -40px 0 80px -20px color-mix(in oklab, var(--color-forest) 40%, transparent);
@@ -878,21 +874,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       if (e.target === dialog) close();
     });
 
-    // Forward wheel event de la zone vide vers l'inner scrollable
-    // (fix scroll molette 2026-04-23 Morgan).
-    const inner = dialog.querySelector<HTMLElement>('.primary-menu__inner');
-    dialog.addEventListener(
-      'wheel',
-      (e) => {
-        if (!inner) return;
-        // Si le wheel est sur le dialog lui-même (vide à gauche), on forward
-        if (e.target === dialog) {
-          e.preventDefault();
-          inner.scrollTop += e.deltaY;
-        }
-      },
-      { passive: false },
-    );
+    // (Wheel handler retiré : le dialog est désormais flex et l'inner est
+    // enfant avec overflow-y: auto natif, le scroll fonctionne out-of-the-box.)
   }
 
   wirePrimaryMenu();
