@@ -33,7 +33,7 @@ const schema = jsonLdGraph([
 
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         <span class="text-[var(--color-forest)]/40">LCD</span>
         &nbsp;·&nbsp; Locations courte durée atypiques
       </p>
@@ -42,10 +42,11 @@ const schema = jsonLdGraph([
       >
         Décoration végétale pour <em class="italic">airbnb atypique</em>.
       </h1>
-      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
-        [À FOURNIR — intro LCD atypiques, 60-80 mots. Positionnement "Jungle Rooms",
-        décors immersifs, ambiances expérientielles pour propriétaires d'airbnb à
-        forte identité.]
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
+        [À FOURNIR — intro LCD atypiques, 60-80 mots. Positionnement "Jungle Rooms", décors
+        immersifs, ambiances expérientielles pour propriétaires d'airbnb à forte identité.]
       </p>
     </div>
   </Section>
@@ -57,7 +58,11 @@ const schema = jsonLdGraph([
       intro="[À FOURNIR — 2-3 lignes sur l'approche du studio pour les LCD atypiques : différenciation marché airbnb, pouvoir narratif du végétal, rentabilité par l'expérience.]"
     />
 
-    <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3" data-reveal-stagger="0.12" data-reveal="up">
+    <div
+      class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3"
+      data-reveal-stagger="0.12"
+      data-reveal="up"
+    >
       {
         [
           { num: '01', titre: 'Lecture du lieu', description: '[À FOURNIR]' },
@@ -82,13 +87,13 @@ const schema = jsonLdGraph([
 
   <Section variant="forest" topDivider>
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
         Engager la conversation
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
       >
-        Un projet LCD ?<br /><em class="italic text-[var(--color-gold)]">Parlons-en.</em>
+        Un projet LCD ?<br /><em class="text-[var(--color-gold)] italic">Parlons-en.</em>
       </h2>
       <a
         href="/contact"

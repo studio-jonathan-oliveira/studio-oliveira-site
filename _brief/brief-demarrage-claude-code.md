@@ -88,6 +88,7 @@ Arborescence probable mais **à valider** après lecture de la vision de Jonatha
 Tu devras créer / proposer :
 
 ### Structure de dossiers
+
 ```
 /
 ├── .claude/                    # configuration Claude Code + skills
@@ -106,7 +107,9 @@ Tu devras créer / proposer :
 ```
 
 ### Fichier `CLAUDE.md`
+
 À créer à la racine. Il doit contenir :
+
 - Contexte projet condensé
 - Priorités absolues (SEO en tête)
 - Stack technique
@@ -135,12 +138,15 @@ Liste-moi les skills que tu trouves avec une courte description, et recommande-m
 Ton plan doit comporter :
 
 ### 1. Plan d'analyse des documents client
+
 Comment tu comptes lire et synthétiser les docs que Jonathan a fournis dans `_brief/client-docs/`. Quels livrables tu produiras (analyse stratégique, plan SEO, cartographie d'intentions de recherche, questions ouvertes à lui poser).
 
 ### 2. Plan de setup technique
+
 Initialisation du projet, structure de dossiers, CLAUDE.md, skills recommandés, dépendances, configuration Sanity, configuration Vercel, environnements.
 
 ### 3. Plan SEO détaillé
+
 - Architecture informationnelle (clusters, hubs, spokes)
 - Plan de mots-clés (avec hypothèses à valider quand on aura les docs)
 - Stratégie de structured data
@@ -149,15 +155,19 @@ Initialisation du projet, structure de dossiers, CLAUDE.md, skills recommandés,
 - Plan de monitoring post-lancement
 
 ### 4. Plan de développement par phases
+
 Découpage clair en phases séquentielles, avec critères de sortie pour chaque phase (ce qui doit être validé avant de passer à la suivante).
 
 ### 5. Plan pour le pipeline Twinmotion
+
 Comment tu gères le scroll-immersif : génération de frames de test synthétiques pour valider la chaîne AVANT réception des vrais assets de Jonathan, script de conversion PNG → WebP optimisé, composant React ScrollFrames avec fallback vidéo mobile, gestion performance.
 
 ### 6. Points d'attention / risques identifiés
+
 Ce que tu anticipes comme difficile ou risqué. Où tu aurais besoin de mes arbitrages.
 
 ### 7. Questions que tu me poses avant de démarrer
+
 Tout ce qui n'est pas clair dans ce brief et qui nécessite clarification de ma part.
 
 ---
@@ -202,6 +212,7 @@ Tu dois **les lire** et t'y référer dans ton plan. Si tu identifies des incoh�
 Lis ce brief intégralement. Puis produis ton **plan d'exécution complet** selon les 7 points listés ci-dessus.
 
 Tu m'indiques également :
+
 - Les skills que tu recommandes d'activer
 - Les questions ouvertes que tu as
 - Tes premiers arbitrages techniques à valider avec moi

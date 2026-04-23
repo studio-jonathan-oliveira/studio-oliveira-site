@@ -41,9 +41,19 @@ export const SITE = {
   },
 
   zones: [
-    { slug: 'brive-la-gaillarde', ville: 'Brive-la-Gaillarde', region: 'Corrèze', role: 'Siège social' },
+    {
+      slug: 'brive-la-gaillarde',
+      ville: 'Brive-la-Gaillarde',
+      region: 'Corrèze',
+      role: 'Siège social',
+    },
     { slug: 'bordeaux', ville: 'Bordeaux', region: 'Aquitaine Sud', role: 'Point d’études' },
-    { slug: 'limoges', ville: 'Limoges', region: 'Aquitaine Nord', role: 'Bureau Verneuil-sur-Vienne' },
+    {
+      slug: 'limoges',
+      ville: 'Limoges',
+      region: 'Aquitaine Nord',
+      role: 'Bureau Verneuil-sur-Vienne',
+    },
     { slug: 'toulouse', ville: 'Toulouse', region: 'Haute-Garonne', role: 'Prospection' },
   ] as const,
 

@@ -107,8 +107,16 @@ header.intro-revealing {
   will-change: transform, filter, opacity;
 }
 @keyframes intro-reveal {
-  from { transform: scale(1.18); filter: blur(12px); opacity: 0; }
-  to   { transform: scale(1);    filter: blur(0);   opacity: 1; }
+  from {
+    transform: scale(1.18);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    filter: blur(0);
+    opacity: 1;
+  }
 }
 
 /* Mask-reveal — le conteneur clippe, l'enfant translateY */

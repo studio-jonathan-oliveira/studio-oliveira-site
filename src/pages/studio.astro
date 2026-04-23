@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import Container from '@/components/astro/Container.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import Prose from '@/components/astro/Prose.astro';
 import { SITE } from '@/lib/site-config';
@@ -23,14 +22,29 @@ const parcours = [
   { annee: 'Bac Pro Travaux paysagers', detail: '1 an, mention' },
   { annee: 'BTSA Aménagement paysagers', detail: '2 ans, mention' },
   { annee: 'Licence Pro Conception et aménagement paysagers', detail: '1 an, mention' },
-  { annee: 'Chef de projet / Dessinateur-projeteur', detail: '4,5 ans — entreprise d’aménagements paysagers, Limoges' },
-  { annee: `Création du Studio J Oliveira — ${SITE.foundedYear}`, detail: 'Studio de design biophilique indépendant, Brive-la-Gaillarde' },
+  {
+    annee: 'Chef de projet / Dessinateur-projeteur',
+    detail: '4,5 ans — entreprise d’aménagements paysagers, Limoges',
+  },
+  {
+    annee: `Création du Studio J Oliveira — ${SITE.foundedYear}`,
+    detail: 'Studio de design biophilique indépendant, Brive-la-Gaillarde',
+  },
 ];
 
 const piliers = [
-  { titre: 'Le bâti', description: 'L’architecture du lieu, ses matériaux, son dialogue avec le territoire.' },
-  { titre: 'L’environnement', description: 'Le climat, le sol, les essences adaptées, la biodiversité existante.' },
-  { titre: 'L’humain', description: 'Le mode de vie, les usages réels, le rapport sensible au jardin.' },
+  {
+    titre: 'Le bâti',
+    description: 'L’architecture du lieu, ses matériaux, son dialogue avec le territoire.',
+  },
+  {
+    titre: 'L’environnement',
+    description: 'Le climat, le sol, les essences adaptées, la biodiversité existante.',
+  },
+  {
+    titre: 'L’humain',
+    description: 'Le mode de vie, les usages réels, le rapport sensible au jardin.',
+  },
 ];
 
 // Mots de Jonathan, extraits du PDF "PROCESS ETUDES STUDIO 2026".
@@ -47,14 +61,14 @@ const etapesMethode = [
     label: 'Rendez-vous studio',
     duree: '1 h 45 — 2 h',
     detail:
-      'Récit du client, co-construction visuelle à partir d\'images de référence, lecture experte du site, définition de l\'étude adaptée à la typologie.',
+      "Récit du client, co-construction visuelle à partir d'images de référence, lecture experte du site, définition de l'étude adaptée à la typologie.",
   },
   {
     num: '03',
     label: 'Validation à distance',
     duree: '15 min',
     detail:
-      'Un dernier échange 72 h à 1 semaine après le rendez-vous — lever la dernière hésitation, signer l\'étude.',
+      "Un dernier échange 72 h à 1 semaine après le rendez-vous — lever la dernière hésitation, signer l'étude.",
   },
 ];
 ---
@@ -65,18 +79,21 @@ const etapesMethode = [
 >
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Le studio · Depuis {SITE.foundedYear}
       </p>
-      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+      >
         Un studio de <em class="italic">design biophilique</em>,<br />
         indépendant, à Brive-la-Gaillarde.
       </h1>
-      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
         Le Studio J Oliveira est un studio de design spatial spécialisé dans l'aménagement
-        environnemental immersif et expérientiel — architecture d'intérieur et d'extérieur.
-        J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
-        l'humain.
+        environnemental immersif et expérientiel — architecture d'intérieur et d'extérieur. J'étudie
+        et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et l'humain.
       </p>
     </div>
   </Section>
@@ -90,11 +107,11 @@ const etapesMethode = [
       />
       <Prose>
         <p>
-          La conception biophilique est un art de conception architecturale directement inspiré
-          des environnements naturels et de leurs effets sur l'humain. C'est une démarche
-          scientifique couplée à la technicité architecturale — étudier la nature à l'état
-          primitif, comprendre ses interactions vivantes et non-vivantes, puis reproduire ses
-          bienfaits dans les espaces que nous habitons.
+          La conception biophilique est un art de conception architecturale directement inspiré des
+          environnements naturels et de leurs effets sur l'humain. C'est une démarche scientifique
+          couplée à la technicité architecturale — étudier la nature à l'état primitif, comprendre
+          ses interactions vivantes et non-vivantes, puis reproduire ses bienfaits dans les espaces
+          que nous habitons.
         </p>
         <p>
           Trois écosystèmes cohabitent dans chaque projet : le bâti, l'environnement, l'humain.
@@ -103,14 +120,14 @@ const etapesMethode = [
         </p>
         <p>
           Le design biophilique reste aujourd'hui abstrait pour la plupart des prospects. Mon
-          travail n'est pas de l'expliquer : il est de le faire sentir — dans chaque espace
-          conçu, dans l'expérience qu'il produit.
+          travail n'est pas de l'expliquer : il est de le faire sentir — dans chaque espace conçu,
+          dans l'expérience qu'il produit.
         </p>
-        <div class="mt-10 grid gap-6 not-prose sm:grid-cols-3">
+        <div class="not-prose mt-10 grid gap-6 sm:grid-cols-3">
           {
             piliers.map((p) => (
               <div class="border-t border-[var(--color-forest)]/20 pt-4">
-                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
                   {p.titre}
                 </p>
                 <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/80">
@@ -126,11 +143,7 @@ const etapesMethode = [
 
   <Section variant="cream" topDivider aria-labelledby="parcours-title">
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20" data-reveal="up">
-      <SectionHeader
-        eyebrow="Parcours"
-        title="Formation et trajectoire."
-        id="parcours-title"
-      />
+      <SectionHeader eyebrow="Parcours" title="Formation et trajectoire." id="parcours-title" />
       <ol class="space-y-6" data-reveal-stagger="0.1">
         {
           parcours.map((p) => (
@@ -148,40 +161,38 @@ const etapesMethode = [
 
   <Section variant="cream" topDivider aria-labelledby="methode-title">
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20" data-reveal="up">
-      <SectionHeader
-        eyebrow="Méthode"
-        title="Je ne vends pas une étude."
-        id="methode-title"
-      />
+      <SectionHeader eyebrow="Méthode" title="Je ne vends pas une étude." id="methode-title" />
       <Prose size="lg">
         <blockquote>
-          Je ne vends pas une étude — je vends une vision, une méthode, une expérience, une
-          sécurité de résultat. Le client ne doit jamais avoir l'impression d'être vendu, mais
-          plutôt : choisir, co-construire, s'élever vers un projet plus juste et plus qualitatif.
+          Je ne vends pas une étude — je vends une vision, une méthode, une expérience, une sécurité
+          de résultat. Le client ne doit jamais avoir l'impression d'être vendu, mais plutôt :
+          choisir, co-construire, s'élever vers un projet plus juste et plus qualitatif.
         </blockquote>
         <p class="mt-8">
           Le parcours est simple et volontairement lent — trois temps, pour créer la relation,
           comprendre le lieu, et positionner la valeur avant de chiffrer.
         </p>
         <ol class="not-prose mt-10 space-y-8" data-reveal-stagger="0.12">
-          {etapesMethode.map((etape) => (
-            <li class="grid grid-cols-[auto_1fr] gap-6 border-t border-[var(--color-forest)]/15 pt-6">
-              <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)]">
-                {etape.num}
-              </p>
-              <div>
-                <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
-                  {etape.label}
-                  <span class="ml-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-forest)]/50">
-                    {etape.duree}
-                  </span>
+          {
+            etapesMethode.map((etape) => (
+              <li class="grid grid-cols-[auto_1fr] gap-6 border-t border-[var(--color-forest)]/15 pt-6">
+                <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)]">
+                  {etape.num}
                 </p>
-                <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/75">
-                  {etape.detail}
-                </p>
-              </div>
-            </li>
-          ))}
+                <div>
+                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
+                    {etape.label}
+                    <span class="ml-3 font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase">
+                      {etape.duree}
+                    </span>
+                  </p>
+                  <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/75">
+                    {etape.detail}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
         </ol>
       </Prose>
     </div>
@@ -189,11 +200,13 @@ const etapesMethode = [
 
   <Section variant="forest" topDivider>
     <div class="text-center" data-reveal="slow">
-      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
         Étape suivante
       </p>
-      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
-        Engager la <em class="italic text-[var(--color-gold)]">conversation</em>.
+      <h2
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+      >
+        Engager la <em class="text-[var(--color-gold)] italic">conversation</em>.
       </h2>
       <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
         Premier échange téléphonique de 15 à 25 minutes pour qualifier le projet.
@@ -207,7 +220,10 @@ const etapesMethode = [
           Prendre contact
           <span aria-hidden="true">→</span>
         </a>
-        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+        <a
+          href={`tel:${SITE.contact.phone}`}
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+        >
           {SITE.contact.phoneDisplay}
         </a>
       </div>

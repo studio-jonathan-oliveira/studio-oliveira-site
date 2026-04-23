@@ -22,11 +22,7 @@ export default defineType({
       title: 'Meta description',
       description: '140-160 caractères.',
       validation: (r) =>
-        r
-          .min(120)
-          .warning('Trop court.')
-          .max(170)
-          .warning('Trop long — préférer 140-160.'),
+        r.min(120).warning('Trop court.').max(170).warning('Trop long — préférer 140-160.'),
     },
     {
       name: 'ogImage',

@@ -87,6 +87,7 @@ Pour Astro + Portable Text, utiliser `portabletext-svelte`... non, Astro. Utilis
 ## Autonomie éditoriale de Jonathan — objectif
 
 Jonathan doit pouvoir, en **totale autonomie** :
+
 1. Ajouter un nouveau projet (titre, slug auto, cover, galerie, description, SEO)
 2. Ajouter un nouvel article (titre, excerpt, cover, Portable Text rich, tags, SEO)
 3. Modifier les textes des pages piliers sans toucher au code

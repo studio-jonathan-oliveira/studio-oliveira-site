@@ -29,7 +29,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
 
 <header
   class:list={[
-    'site-header fixed top-0 left-0 right-0 z-40 transition-[background-color,color,border-color,backdrop-filter] duration-[450ms] ease-[var(--ease-out-editorial)]',
+    'site-header fixed top-0 right-0 left-0 z-40 transition-[background-color,color,border-color,backdrop-filter] duration-[450ms] ease-[var(--ease-out-editorial)]',
     darkHero && 'site-header--dark-hero',
   ]}
   data-header
@@ -37,10 +37,13 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
 >
   <!-- Topbar méta (desktop only) ─────────────────────── -->
   <div class="site-header__topbar hidden border-b border-current/5 lg:block">
-    <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] uppercase tracking-[0.26em] opacity-75">
+    <div
+      class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] tracking-[0.26em] uppercase opacity-75"
+    >
       <p>Studio · Brive-la-Gaillarde · Aquitaine</p>
       <p class="flex items-center gap-2.5">
-        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]"></span>
+        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]"
+        ></span>
         Disponible pour projets 2026
       </p>
       <p>
@@ -48,7 +51,10 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
           +33 6 61 08 84 44
         </a>
         <span class="mx-3 opacity-40">·</span>
-        <a href="mailto:contact.jonathanbiodesign@gmail.com" class="transition-opacity hover:opacity-100">
+        <a
+          href="mailto:contact.jonathanbiodesign@gmail.com"
+          class="transition-opacity hover:opacity-100"
+        >
           Contact
         </a>
       </p>
@@ -56,7 +62,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   </div>
 
   <!-- Main row : logo · nav · CTA ────────────────────── -->
-  <div class="site-header__main mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-6 py-5 md:px-10 md:py-6">
+  <div
+    class="site-header__main mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-6 py-5 md:px-10 md:py-6"
+  >
     <a
       href="/"
       class="logo-swap relative flex shrink-0 items-center"
@@ -116,14 +124,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
         href="/contact"
         class="cta-pill group hidden items-center gap-3 rounded-full px-5 py-3 text-[13px] tracking-[0.04em] transition-all lg:inline-flex"
       >
-        <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" aria-hidden="true"></span>
+        <span
+          class="cta-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]"
+          aria-hidden="true"></span>
         Démarrer un projet
-        <span aria-hidden="true" class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1">→</span>
+        <span
+          aria-hidden="true"
+          class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1"
+          >→</span
+        >
       </a>
 
       <button
         type="button"
-        class="menu-trigger relative flex items-center gap-3 text-[12px] uppercase tracking-[0.24em] lg:hidden"
+        class="menu-trigger relative flex items-center gap-3 text-[12px] tracking-[0.24em] uppercase lg:hidden"
         aria-label="Ouvrir le menu"
         aria-expanded="false"
         aria-controls="mobile-drawer"
@@ -141,15 +155,26 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   <!-- Drawer mobile ──────────────────────────────────── -->
   <dialog
     id="mobile-drawer"
-    class="mobile-drawer fixed inset-0 z-50 h-full w-full max-h-full max-w-full border-0 bg-[var(--color-cream)] p-0 text-[var(--color-forest)] lg:hidden"
+    class="mobile-drawer fixed inset-0 z-50 h-full max-h-full w-full max-w-full border-0 bg-[var(--color-cream)] p-0 text-[var(--color-forest)] lg:hidden"
     aria-label="Menu mobile"
   >
     <div class="flex h-full flex-col">
       <div class="flex items-center justify-between px-6 py-5">
         <a href="/" class="flex items-center" aria-label="Accueil">
-          <img src="/brand/wordmark-moss.png?v=3" alt="Studio J Oliveira" width="1200" height="288" class="h-8 w-auto" />
+          <img
+            src="/brand/wordmark-moss.png?v=3"
+            alt="Studio J Oliveira"
+            width="1200"
+            height="288"
+            class="h-8 w-auto"
+          />
         </a>
-        <button type="button" class="flex items-center gap-3 text-[12px] uppercase tracking-[0.24em]" aria-label="Fermer le menu" data-menu-close>
+        <button
+          type="button"
+          class="flex items-center gap-3 text-[12px] tracking-[0.24em] uppercase"
+          aria-label="Fermer le menu"
+          data-menu-close
+        >
           <span>Fermer</span>
           <span class="block h-px w-5 rotate-45 bg-current"></span>
           <span class="-ml-5 block h-px w-5 -rotate-45 bg-current"></span>
@@ -174,7 +199,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
               </li>
             ))
           }
-          <li class="mt-4 pt-4 border-t border-[var(--color-forest)]/10">
+          <li class="mt-4 border-t border-[var(--color-forest)]/10 pt-4">
             <a
               href="/contact"
               class="inline-flex items-center gap-3 rounded-full border border-[var(--color-forest)] px-5 py-2.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
@@ -340,7 +365,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     color: var(--color-cream);
   }
   .cta-pill .cta-dot {
-    transition: transform 0.4s var(--ease-out-editorial), background-color 0.3s;
+    transition:
+      transform 0.4s var(--ease-out-editorial),
+      background-color 0.3s;
   }
   .cta-pill:hover .cta-dot {
     transform: scale(1.4);
@@ -363,8 +390,15 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     animation: status-pulse 2.5s ease-in-out infinite;
   }
   @keyframes status-pulse {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.3); }
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.3);
+    }
   }
 
   /* Topbar borderless subtle tint */

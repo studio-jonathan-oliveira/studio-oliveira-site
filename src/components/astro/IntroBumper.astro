@@ -31,14 +31,7 @@
 
   <!-- Vidéo logo cadrée -->
   <div class="intro-frame">
-    <video
-      id="intro-video"
-      class="intro-video"
-      muted
-      autoplay
-      playsinline
-      preload="auto"
-    >
+    <video id="intro-video" class="intro-video" muted autoplay playsinline preload="auto">
       <source src="/brand/logo-animation.mp4" type="video/mp4" />
     </video>
   </div>
@@ -144,10 +137,26 @@
     pointer-events: none;
   }
   @keyframes intro-depart {
-    0%   { transform: scale(1);    opacity: 1;    filter: blur(0); }
-    35%  { transform: scale(1.35); opacity: 0.95; filter: blur(0.5px); }
-    70%  { transform: scale(2.2);  opacity: 0.6;  filter: blur(3px); }
-    100% { transform: scale(3.4);  opacity: 0;    filter: blur(10px); }
+    0% {
+      transform: scale(1);
+      opacity: 1;
+      filter: blur(0);
+    }
+    35% {
+      transform: scale(1.35);
+      opacity: 0.95;
+      filter: blur(0.5px);
+    }
+    70% {
+      transform: scale(2.2);
+      opacity: 0.6;
+      filter: blur(3px);
+    }
+    100% {
+      transform: scale(3.4);
+      opacity: 0;
+      filter: blur(10px);
+    }
   }
 
   /* Grain overlay — SVG noise subtil + opacity basse */
@@ -169,10 +178,30 @@
     border-color: rgba(245, 241, 234, 0.35);
     pointer-events: none;
   }
-  .intro-crop--tl { top: 2rem; left: 2rem; border-top: 1px solid; border-left: 1px solid; }
-  .intro-crop--tr { top: 2rem; right: 2rem; border-top: 1px solid; border-right: 1px solid; }
-  .intro-crop--bl { bottom: 2rem; left: 2rem; border-bottom: 1px solid; border-left: 1px solid; }
-  .intro-crop--br { bottom: 2rem; right: 2rem; border-bottom: 1px solid; border-right: 1px solid; }
+  .intro-crop--tl {
+    top: 2rem;
+    left: 2rem;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .intro-crop--tr {
+    top: 2rem;
+    right: 2rem;
+    border-top: 1px solid;
+    border-right: 1px solid;
+  }
+  .intro-crop--bl {
+    bottom: 2rem;
+    left: 2rem;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+  }
+  .intro-crop--br {
+    bottom: 2rem;
+    right: 2rem;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
 
   /* Header metadata */
   .intro-header,
@@ -192,8 +221,12 @@
     letter-spacing: 0.3em;
     white-space: nowrap;
   }
-  .intro-header { top: 0; }
-  .intro-footer { bottom: 0; }
+  .intro-header {
+    top: 0;
+  }
+  .intro-footer {
+    bottom: 0;
+  }
 
   .intro-mark {
     color: var(--color-gold);
@@ -238,13 +271,21 @@
       height: 18px;
     }
     .intro-crop--tl,
-    .intro-crop--tr { top: 1rem; }
+    .intro-crop--tr {
+      top: 1rem;
+    }
     .intro-crop--bl,
-    .intro-crop--br { bottom: 1rem; }
+    .intro-crop--br {
+      bottom: 1rem;
+    }
     .intro-crop--tl,
-    .intro-crop--bl { left: 1rem; }
+    .intro-crop--bl {
+      left: 1rem;
+    }
     .intro-crop--tr,
-    .intro-crop--br { right: 1rem; }
+    .intro-crop--br {
+      right: 1rem;
+    }
   }
 
   /* Cadre vidéo — cartouche fin + lueur gold subtile */
@@ -269,10 +310,26 @@
     animation: intro-video-depart 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   }
   @keyframes intro-video-depart {
-    0%   { transform: scale(1);   opacity: 1;    filter: blur(0); }
-    40%  { transform: scale(1.7); opacity: 1;    filter: blur(0.5px); }
-    75%  { transform: scale(3.2); opacity: 0.55; filter: blur(3px); }
-    100% { transform: scale(5.2); opacity: 0;    filter: blur(9px); }
+    0% {
+      transform: scale(1);
+      opacity: 1;
+      filter: blur(0);
+    }
+    40% {
+      transform: scale(1.7);
+      opacity: 1;
+      filter: blur(0.5px);
+    }
+    75% {
+      transform: scale(3.2);
+      opacity: 0.55;
+      filter: blur(3px);
+    }
+    100% {
+      transform: scale(5.2);
+      opacity: 0;
+      filter: blur(9px);
+    }
   }
   /* Métadonnées fade en premier (anticipation) puis bumper travers */
   .intro-bumper.is-closing .intro-header,
@@ -311,8 +368,12 @@
   }
 
   @keyframes intro-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .intro-bumper {

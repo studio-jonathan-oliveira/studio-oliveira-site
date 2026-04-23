@@ -23,12 +23,14 @@
 Le SEO conditionne **toutes** les décisions d'architecture (URLs, structure Hn, maillage interne, densité de contenu, structured data, Core Web Vitals).
 
 **KPIs cibles (6 mois post-lancement)** :
+
 - Top 3 Google sur « designer végétal [zone] »
 - 20+ requêtes longue traîne pertinentes en top 10
 - Lighthouse SEO = **100** partout
 - Lighthouse Perf ≥ **90** (pages standard) / ≥ **85** (pages immersives avec scroll-scrub)
 
 **Core Web Vitals non négociables** :
+
 - **LCP < 2 s**
 - **INP < 200 ms**
 - **CLS < 0.05**
@@ -39,23 +41,23 @@ Le SEO conditionne **toutes** les décisions d'architecture (URLs, structure Hn,
 
 ## 3. Stack technique verrouillée
 
-| Rôle | Techno | Version |
-|---|---|---|
-| Framework | Astro | ^6.1.8 (SSG) |
-| UI interactive | React | ^19.2.5 (islands Astro) |
-| Styling | Tailwind CSS | ^4.2.4 (via `@tailwindcss/vite`) |
-| Animation React | Motion (ex-Framer Motion) | ^12.38.0 |
-| Scroll-driven complexe | GSAP + ScrollTrigger | ^3.15.0 (**lazy, uniquement `/conceptions/[slug]`**) |
-| Immersif | Canvas 2D + pipeline frames Twinmotion | (pas de Three.js / R3F) |
-| CMS | Sanity.io | ^7.21.0 — package séparé `/sanity/`, **JAMAIS importé depuis `src/`** |
-| Hébergement | Vercel | région `fra1` |
-| Formulaires | Astro Actions + Resend + Turnstile | ^6.12.2 / ^1.5.0 |
-| Validation | Zod | ^4.3.6 |
-| Analytics | Plausible + GSC + Bing Webmaster | (RGPD-friendly, pas de bannière cookie) |
-| CWV tracking | web-vitals | ^5.2.0 |
-| Pipeline frames | sharp + fluent-ffmpeg + tsx | (scripts Node dans `scripts/`) |
-| Package manager | pnpm | ^10.33.1 |
-| Node runtime | | ≥ 22.12 (v24 installé localement) |
+| Rôle                   | Techno                                 | Version                                                               |
+| ---------------------- | -------------------------------------- | --------------------------------------------------------------------- |
+| Framework              | Astro                                  | ^6.1.8 (SSG)                                                          |
+| UI interactive         | React                                  | ^19.2.5 (islands Astro)                                               |
+| Styling                | Tailwind CSS                           | ^4.2.4 (via `@tailwindcss/vite`)                                      |
+| Animation React        | Motion (ex-Framer Motion)              | ^12.38.0                                                              |
+| Scroll-driven complexe | GSAP + ScrollTrigger                   | ^3.15.0 (**lazy, uniquement `/conceptions/[slug]`**)                  |
+| Immersif               | Canvas 2D + pipeline frames Twinmotion | (pas de Three.js / R3F)                                               |
+| CMS                    | Sanity.io                              | ^7.21.0 — package séparé `/sanity/`, **JAMAIS importé depuis `src/`** |
+| Hébergement            | Vercel                                 | région `fra1`                                                         |
+| Formulaires            | Astro Actions + Resend + Turnstile     | ^6.12.2 / ^1.5.0                                                      |
+| Validation             | Zod                                    | ^4.3.6                                                                |
+| Analytics              | Plausible + GSC + Bing Webmaster       | (RGPD-friendly, pas de bannière cookie)                               |
+| CWV tracking           | web-vitals                             | ^5.2.0                                                                |
+| Pipeline frames        | sharp + fluent-ffmpeg + tsx            | (scripts Node dans `scripts/`)                                        |
+| Package manager        | pnpm                                   | ^10.33.1                                                              |
+| Node runtime           |                                        | ≥ 22.12 (v24 installé localement)                                     |
 
 **Pas de drift** sans re-validation explicite par Morgan. Si besoin d'ajouter une dépendance structurante, demander d'abord.
 
@@ -71,7 +73,7 @@ Le SEO conditionne **toutes** les décisions d'architecture (URLs, structure Hn,
 - **GSAP importé dynamiquement** sur pages `/conceptions/[slug]`, jamais au top-level ailleurs.
 - **Sanity client** : uniquement dans `src/lib/sanity.ts` et via GROQ queries typées. Pas d'import depuis `/sanity/` (le studio est un package séparé).
 - **Pas de `any`** sauf justifié en commentaire. Préférer `unknown` + narrowing.
-- **Commentaires** : en français, seulement quand le *pourquoi* est non-évident. Pas de description du *quoi* que le code porte déjà.
+- **Commentaires** : en français, seulement quand le _pourquoi_ est non-évident. Pas de description du _quoi_ que le code porte déjà.
 
 ---
 
@@ -80,6 +82,7 @@ Le SEO conditionne **toutes** les décisions d'architecture (URLs, structure Hn,
 **INTERDICTION absolue d'inventer du contenu pour Jonathan** (textes, chiffres, claims, tonalité).
 
 Si un contenu manque :
+
 1. Insérer un placeholder explicite : `[À FOURNIR PAR JONATHAN : description du besoin, volume attendu, contexte]`
 2. Logger systématiquement dans [`_brief/contenus-manquants.md`](_brief/contenus-manquants.md)
 

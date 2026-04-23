@@ -3,6 +3,7 @@
 Plan SEO détaillé, fondation du site. **Le SEO conditionne toutes les décisions d'architecture.**
 
 KPIs cibles (6 mois post-lancement) :
+
 - **Top 3** sur « designer végétal [zone] »
 - **20+ requêtes longue traîne** pertinentes en top 10
 - **Lighthouse SEO = 100** partout, **Perf ≥ 90** (pages standard) / **≥ 85** (pages immersives)
@@ -65,36 +66,37 @@ KPIs cibles (6 mois post-lancement) :
 Problème central : les noms internes de Jonathan (« Micro-urbain », « Cœur urbain », « Frange urbaine », « Domaines & Caractère ») ont **0 volume de recherche Google**. Ce sont des concepts de studio, pas des requêtes utilisateur.
 
 **Solution** : chaque page typologie a **deux niveaux de titres** :
+
 - **H1 = requête SEO cherchée**
 - **H2 = nom propriétaire Jonathan** (cohérence branding interne)
 
 ### Cartographie typologies → requêtes principales
 
-| Typologie Jonathan | H1 page (requête cherchée) | Requêtes secondaires visées |
-|---|---|---|
-| Micro-urbain | « Aménagement de petit jardin en ville » | jardin terrasse sur mesure, jardin appartement rdc, jardin rooftop Paris, patio végétalisé |
-| Cœur urbain | « Conception de jardin de ville sur mesure » | paysagiste jardin urbain, jardin maison de ville, jardin 100m2 ville |
-| Frange urbaine | « Aménagement de grand jardin péri-urbain » | paysagiste maison campagne, jardin résidence secondaire, aménagement grand jardin lotissement |
-| Domaines & Caractère | « Conception de parc et domaine privé » | paysagiste domaine, aménagement grand terrain, conception parc privé, jardin château |
+| Typologie Jonathan   | H1 page (requête cherchée)                   | Requêtes secondaires visées                                                                   |
+| -------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Micro-urbain         | « Aménagement de petit jardin en ville »     | jardin terrasse sur mesure, jardin appartement rdc, jardin rooftop Paris, patio végétalisé    |
+| Cœur urbain          | « Conception de jardin de ville sur mesure » | paysagiste jardin urbain, jardin maison de ville, jardin 100m2 ville                          |
+| Frange urbaine       | « Aménagement de grand jardin péri-urbain »  | paysagiste maison campagne, jardin résidence secondaire, aménagement grand jardin lotissement |
+| Domaines & Caractère | « Conception de parc et domaine privé »      | paysagiste domaine, aménagement grand terrain, conception parc privé, jardin château          |
 
 ### Mots-clés de marque et génériques
 
-| Niveau | Requête | Intention | Page cible |
-|---|---|---|---|
-| Marque | « Jonathan Oliveira designer végétal » | Navigational | `/` |
-| Marque | « Studio Oliveira Brive » | Navigational local | `/` ou `/zones/brive-la-gaillarde` |
-| Générique expert | « designer végétal » | Informationnel / commercial | `/` + `/studio` |
-| Générique expert | « biophilic design France » | Informationnel | `/journal/biophilie-vegetal-concu` |
-| Générique | « conception jardin sur mesure » | Commercial | `/conception-jardin` |
-| Générique | « concepteur jardin » | Commercial | `/conception-jardin` |
-| Géo | « designer végétal Bordeaux » | Local commercial | `/zones/bordeaux` |
-| Géo | « paysagiste designer Limoges » | Local commercial | `/zones/limoges` |
-| Géo | « architecte paysagiste Toulouse » | Local commercial | `/zones/toulouse` |
-| Géo | « designer jardin Brive » | Local commercial | `/zones/brive-la-gaillarde` |
-| Comparatif | « designer végétal vs paysagiste » | Informationnel mid-funnel | `/journal/designer-vegetal-vs-paysagiste` |
-| Transactionnel | « prix conception jardin sur mesure » | Transactionnel | `/journal/prix-conception-jardin-2026` |
-| Vertical pro | « décorateur végétal hôtellerie » | Commercial B2B | `/amenagement-vegetal-interieur/hotellerie` |
-| Vertical pro | « mur végétal restaurant » | Commercial B2B | `/amenagement-vegetal-interieur/restauration` |
+| Niveau           | Requête                                | Intention                   | Page cible                                    |
+| ---------------- | -------------------------------------- | --------------------------- | --------------------------------------------- |
+| Marque           | « Jonathan Oliveira designer végétal » | Navigational                | `/`                                           |
+| Marque           | « Studio Oliveira Brive »              | Navigational local          | `/` ou `/zones/brive-la-gaillarde`            |
+| Générique expert | « designer végétal »                   | Informationnel / commercial | `/` + `/studio`                               |
+| Générique expert | « biophilic design France »            | Informationnel              | `/journal/biophilie-vegetal-concu`            |
+| Générique        | « conception jardin sur mesure »       | Commercial                  | `/conception-jardin`                          |
+| Générique        | « concepteur jardin »                  | Commercial                  | `/conception-jardin`                          |
+| Géo              | « designer végétal Bordeaux »          | Local commercial            | `/zones/bordeaux`                             |
+| Géo              | « paysagiste designer Limoges »        | Local commercial            | `/zones/limoges`                              |
+| Géo              | « architecte paysagiste Toulouse »     | Local commercial            | `/zones/toulouse`                             |
+| Géo              | « designer jardin Brive »              | Local commercial            | `/zones/brive-la-gaillarde`                   |
+| Comparatif       | « designer végétal vs paysagiste »     | Informationnel mid-funnel   | `/journal/designer-vegetal-vs-paysagiste`     |
+| Transactionnel   | « prix conception jardin sur mesure »  | Transactionnel              | `/journal/prix-conception-jardin-2026`        |
+| Vertical pro     | « décorateur végétal hôtellerie »      | Commercial B2B              | `/amenagement-vegetal-interieur/hotellerie`   |
+| Vertical pro     | « mur végétal restaurant »             | Commercial B2B              | `/amenagement-vegetal-interieur/restauration` |
 
 **Volume et difficulté réels à mesurer** via Ahrefs / SEMrush / Mangools au moment de la rédaction finale des pages. La cartographie ci-dessus est une **hypothèse raisonnée** à valider.
 
@@ -115,8 +117,8 @@ Problème central : les noms internes de Jonathan (« Micro-urbain », « Cœur 
    - Ex. Brive : micro-climat corrézien, chênaie, châtaignier, gramineas bas
    - Ex. Limoges : climat continental tempéré, hortensias, fougères, arbres indigènes
    - Ex. Toulouse : climat méditerranéen tardif, oliviers, agrumes rustiques, jardins secs
-4. **H2** : Typologies dominantes sur le territoire (avec liens vers /conception-jardin/*)
-5. **H2** : Projets réalisés ou zone de prospection (avec liens /realisations/* ou /conceptions/*)
+4. **H2** : Typologies dominantes sur le territoire (avec liens vers /conception-jardin/\*)
+5. **H2** : Projets réalisés ou zone de prospection (avec liens /realisations/_ ou /conceptions/_)
 6. **H2** : FAQ locale (5-7 questions : « Quelle durée pour une étude à [Ville] », « Intervenez-vous aussi sur [ville voisine] », etc.)
 7. **H2** : Contact / prise de rendez-vous (avec coordonnées locales si existantes, ou rattachement au siège Brive)
 
@@ -125,6 +127,7 @@ Problème central : les noms internes de Jonathan (« Micro-urbain », « Cœur 
 Un **seul LocalBusiness primaire** : siège Brive, 41 rue Général Souham, 19100 Brive-la-Gaillarde, 06 61 08 84 44, `contact@jonathanoliveira.fr` (ou l'actuel gmail en attendant).
 
 Pour les autres villes :
+
 - **Limoges** : bureau « box étude » à Verneuil-sur-Vienne → `areaServed` dans le schema `LocalBusiness` primaire, pas un nouveau `LocalBusiness` (sauf si Jonathan a une adresse physique stable, à clarifier).
 - **Bordeaux** et **Toulouse** : `areaServed` seulement, pas d'adresse physique.
 
@@ -140,19 +143,19 @@ Helpers typés à implémenter dans `src/lib/schema-org.ts`. Chaque page inclut 
 
 ### Mapping page ↔ schemas
 
-| Page | Schemas à injecter |
-|---|---|
-| `/` | `Organization` + `LocalBusiness` (siège Brive) + `WebSite` avec `SearchAction` + `BreadcrumbList` |
-| `/studio` | `Person` (Jonathan Oliveira) + `AboutPage` |
-| `/conception-jardin` | `Service` parent + `ItemList` des 4 typologies + `FAQPage` |
-| `/conception-jardin/[typologie]` | `Service` enfant + `Offer` (tarif étude) + `FAQPage` + `BreadcrumbList` |
-| `/amenagement-vegetal-interieur` | `Service` + `ItemList` des 5 verticales + `FAQPage` |
-| `/amenagement-vegetal-interieur/[vertical]` | `Service` + `FAQPage` + `BreadcrumbList` |
-| `/realisations/[slug]` | `CreativeWork` + `ImageObject` + `Place` (si localisable) + `BreadcrumbList` |
-| `/conceptions/[slug]` | `CreativeWork` + `ImageObject` + `Place` + `BreadcrumbList` |
-| `/journal/[slug]` | `Article` (headline, datePublished, author Person, image) + `BreadcrumbList` |
-| `/zones/[ville]` | `LocalBusiness` avec `areaServed` local + `Service` + `BreadcrumbList` |
-| `/contact` | `ContactPage` + `LocalBusiness` complet (NAP) |
+| Page                                        | Schemas à injecter                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `/`                                         | `Organization` + `LocalBusiness` (siège Brive) + `WebSite` avec `SearchAction` + `BreadcrumbList` |
+| `/studio`                                   | `Person` (Jonathan Oliveira) + `AboutPage`                                                        |
+| `/conception-jardin`                        | `Service` parent + `ItemList` des 4 typologies + `FAQPage`                                        |
+| `/conception-jardin/[typologie]`            | `Service` enfant + `Offer` (tarif étude) + `FAQPage` + `BreadcrumbList`                           |
+| `/amenagement-vegetal-interieur`            | `Service` + `ItemList` des 5 verticales + `FAQPage`                                               |
+| `/amenagement-vegetal-interieur/[vertical]` | `Service` + `FAQPage` + `BreadcrumbList`                                                          |
+| `/realisations/[slug]`                      | `CreativeWork` + `ImageObject` + `Place` (si localisable) + `BreadcrumbList`                      |
+| `/conceptions/[slug]`                       | `CreativeWork` + `ImageObject` + `Place` + `BreadcrumbList`                                       |
+| `/journal/[slug]`                           | `Article` (headline, datePublished, author Person, image) + `BreadcrumbList`                      |
+| `/zones/[ville]`                            | `LocalBusiness` avec `areaServed` local + `Service` + `BreadcrumbList`                            |
+| `/contact`                                  | `ContactPage` + `LocalBusiness` complet (NAP)                                                     |
 
 ### Règles transverses
 
@@ -169,16 +172,16 @@ Helpers typés à implémenter dans `src/lib/schema-org.ts`. Chaque page inclut 
 
 ### Pages piliers — 8 pages, ~22 000 mots
 
-| Page | Volume cible | Priorité de rédaction |
-|---|---|---|
-| `/` | 800-1200 mots | Phase 1 (placeholder OK) → Phase 7 (final) |
-| `/studio` | 1200-1800 mots | Phase 2 |
-| `/conception-jardin` (hub) | 1500-2000 mots | Phase 2 |
-| `/conception-jardin/micro-urbain` | 1500 mots | Phase 2 |
-| `/conception-jardin/coeur-urbain` | 1500 mots | Phase 2 |
-| `/conception-jardin/frange-urbaine` | 1500 mots | Phase 2 |
-| `/conception-jardin/domaine-caractere` | 1500 mots | Phase 2 |
-| `/amenagement-vegetal-interieur` (hub) | 1500 mots | Phase 4 |
+| Page                                   | Volume cible   | Priorité de rédaction                      |
+| -------------------------------------- | -------------- | ------------------------------------------ |
+| `/`                                    | 800-1200 mots  | Phase 1 (placeholder OK) → Phase 7 (final) |
+| `/studio`                              | 1200-1800 mots | Phase 2                                    |
+| `/conception-jardin` (hub)             | 1500-2000 mots | Phase 2                                    |
+| `/conception-jardin/micro-urbain`      | 1500 mots      | Phase 2                                    |
+| `/conception-jardin/coeur-urbain`      | 1500 mots      | Phase 2                                    |
+| `/conception-jardin/frange-urbaine`    | 1500 mots      | Phase 2                                    |
+| `/conception-jardin/domaine-caractere` | 1500 mots      | Phase 2                                    |
+| `/amenagement-vegetal-interieur` (hub) | 1500 mots      | Phase 4                                    |
 
 ### Pages secondaires — 9 pages, ~13 500 mots
 
@@ -187,13 +190,13 @@ Helpers typés à implémenter dans `src/lib/schema-org.ts`. Chaque page inclut 
 
 ### Articles blog inauguraux — 5 articles, ~9 000 mots
 
-| # | Titre | Intention | Mot-clé primaire | Volume | Priorité |
-|---|---|---|---|---|---|
-| 1 | Biophilie : pourquoi le végétal conçu transforme vos intérieurs | Informationnel top-funnel | design biophilique | 1800 mots | Phase 4 |
-| 2 | Designer végétal vs paysagiste : quelle différence pour votre projet | Comparatif mid-funnel | designer végétal vs paysagiste | 1500 mots | Phase 4 |
-| 3 | Combien coûte la conception d'un jardin sur mesure en 2026 | Transactionnel qualifiant | prix conception jardin sur mesure | 2000 mots | Phase 4 |
-| 4 | 5 essences corréziennes qui transforment un jardin de caractère | Local + expertise | plantes jardin Corrèze | 1500 mots | Phase 4 |
-| 5 | Aménager un jardin intérieur dans un appartement haussmannien | Niche premium urbain | jardin intérieur appartement | 1800 mots | Phase 4 |
+| #   | Titre                                                                | Intention                 | Mot-clé primaire                  | Volume    | Priorité |
+| --- | -------------------------------------------------------------------- | ------------------------- | --------------------------------- | --------- | -------- |
+| 1   | Biophilie : pourquoi le végétal conçu transforme vos intérieurs      | Informationnel top-funnel | design biophilique                | 1800 mots | Phase 4  |
+| 2   | Designer végétal vs paysagiste : quelle différence pour votre projet | Comparatif mid-funnel     | designer végétal vs paysagiste    | 1500 mots | Phase 4  |
+| 3   | Combien coûte la conception d'un jardin sur mesure en 2026           | Transactionnel qualifiant | prix conception jardin sur mesure | 2000 mots | Phase 4  |
+| 4   | 5 essences corréziennes qui transforment un jardin de caractère      | Local + expertise         | plantes jardin Corrèze            | 1500 mots | Phase 4  |
+| 5   | Aménager un jardin intérieur dans un appartement haussmannien        | Niche premium urbain      | jardin intérieur appartement      | 1800 mots | Phase 4  |
 
 ### Total contenu inaugural
 
@@ -261,14 +264,14 @@ Hors page `/conceptions/[slug]` qui peut aller jusqu'à 120 Ko (GSAP + ScrollTri
 
 ### Outils à mettre en place
 
-| Outil | Usage | Priorité |
-|---|---|---|
-| **Google Search Console** | Sitemap, indexation, requêtes, erreurs crawl, Core Web Vitals terrain | J+1 |
-| **Bing Webmaster Tools** | Sitemap, 5% trafic FR B2B premium | J+1 |
-| **Plausible Analytics** | Trafic, goals (form submit, clic tel, clic email), sources | J+1 |
-| **`web-vitals` npm** | CWV réels → `/api/vitals` → Plausible custom events | Phase 5 |
-| **UptimeRobot** | Ping 5 min home + contact + 1 page projet | J+1 |
-| **Google Business Profile** | Fiche GBP Brive, à jour et complétée | J+3 |
+| Outil                       | Usage                                                                 | Priorité |
+| --------------------------- | --------------------------------------------------------------------- | -------- |
+| **Google Search Console**   | Sitemap, indexation, requêtes, erreurs crawl, Core Web Vitals terrain | J+1      |
+| **Bing Webmaster Tools**    | Sitemap, 5% trafic FR B2B premium                                     | J+1      |
+| **Plausible Analytics**     | Trafic, goals (form submit, clic tel, clic email), sources            | J+1      |
+| **`web-vitals` npm**        | CWV réels → `/api/vitals` → Plausible custom events                   | Phase 5  |
+| **UptimeRobot**             | Ping 5 min home + contact + 1 page projet                             | J+1      |
+| **Google Business Profile** | Fiche GBP Brive, à jour et complétée                                  | J+3      |
 
 ### Actions post-lancement J+1
 
@@ -282,6 +285,7 @@ Hors page `/conceptions/[slug]` qui peut aller jusqu'à 120 Ko (GSAP + ScrollTri
 ### Rapport mensuel automatisé
 
 Script Node.js exécuté via Vercel Cron 1× par mois :
+
 1. Pull data GSC (API Search Console) → top 20 requêtes, impressions, CTR, positions
 2. Pull data Plausible → trafic, top pages, sources, goals
 3. Génère `rapport-YYYY-MM.md` dans un repo de suivi

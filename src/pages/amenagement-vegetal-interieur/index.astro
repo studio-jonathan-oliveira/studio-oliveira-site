@@ -36,14 +36,18 @@ const schema = jsonLdGraph([
 >
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Aménagement intérieur · {SITE.name}
       </p>
-      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+      >
         Aménagement végétalisé<br />
         <em class="italic">d'intérieur</em>.
       </h1>
-      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
         [À FOURNIR PAR JONATHAN : 80-120 mots présentant le service secondaire du studio — décors
         végétalisés premium, plantes naturelles et artificielles (pas de stabilisé), cibles pros et
         particuliers LCD atypique.]
@@ -68,7 +72,7 @@ const schema = jsonLdGraph([
               class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-moss)]/5 md:p-12"
             >
               <div>
-                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
                   Verticale
                 </p>
                 <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
@@ -89,11 +93,7 @@ const schema = jsonLdGraph([
 
   <Section variant="cream" topDivider aria-labelledby="process-title">
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-      <SectionHeader
-        eyebrow="Process"
-        title="Conception et réalisation."
-        id="process-title"
-      />
+      <SectionHeader eyebrow="Process" title="Conception et réalisation." id="process-title" />
       <Prose>
         <p>
           [À FOURNIR PAR JONATHAN : 400-600 mots sur le process spécifique à l'intérieur — lecture
@@ -109,8 +109,8 @@ const schema = jsonLdGraph([
         <h3>Plantes artificielles haut de gamme</h3>
         <p>
           Pour les contextes où le naturel n'est pas possible — forte circulation, faible
-          luminosité, absence d'entretien. Rendu indiscernable du naturel sur les gammes premium
-          que je sélectionne.
+          luminosité, absence d'entretien. Rendu indiscernable du naturel sur les gammes premium que
+          je sélectionne.
         </p>
         <h3>Murs végétaux et suspensions</h3>
         <p>
@@ -123,11 +123,11 @@ const schema = jsonLdGraph([
 
   <Section variant="forest" topDivider>
     <div class="text-center">
-      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
-        Devis
-      </p>
-      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
-        Votre <em class="italic text-[var(--color-gold)]">lieu</em>,<br />
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">Devis</p>
+      <h2
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+      >
+        Votre <em class="text-[var(--color-gold)] italic">lieu</em>,<br />
         scénarisé en végétal.
       </h2>
       <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
@@ -142,7 +142,10 @@ const schema = jsonLdGraph([
           Demander un devis
           <span aria-hidden="true">→</span>
         </a>
-        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+        <a
+          href={`tel:${SITE.contact.phone}`}
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+        >
           {SITE.contact.phoneDisplay}
         </a>
       </div>

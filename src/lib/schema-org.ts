@@ -229,9 +229,7 @@ export function article(input: ArticleSeoInput): Thing {
     headline: input.title,
     url: `${SITE_URL}/journal/${input.slug}`,
     datePublished: input.publishedAt,
-    author: input.authorName
-      ? { '@type': 'Person', name: input.authorName }
-      : { '@id': PERSON_ID },
+    author: input.authorName ? { '@type': 'Person', name: input.authorName } : { '@id': PERSON_ID },
     publisher: { '@id': ORGANIZATION_ID },
   };
   if (input.updatedAt) thing.dateModified = input.updatedAt;

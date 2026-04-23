@@ -6,15 +6,17 @@ import Section from '@/components/astro/Section.astro';
 <BaseLayout title="Page introuvable" noindex>
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="mx-auto max-w-xl text-center">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         404 · Page introuvable
       </p>
-      <h1 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05] tracking-tight">
+      <h1
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05] tracking-tight"
+      >
         Cette page n'existe pas,<br /><em class="italic">ou n'existe plus</em>.
       </h1>
       <p class="mt-8 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
-        L'URL que vous avez suivie pointe vers un contenu déplacé ou supprimé. Vous pouvez revenir
-        à l'accueil ou parcourir les réalisations.
+        L'URL que vous avez suivie pointe vers un contenu déplacé ou supprimé. Vous pouvez revenir à
+        l'accueil ou parcourir les réalisations.
       </p>
       <div class="mt-14 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <a
@@ -24,7 +26,10 @@ import Section from '@/components/astro/Section.astro';
           Retour à l'accueil
           <span aria-hidden="true">→</span>
         </a>
-        <a href="/realisations" class="text-sm text-[var(--color-forest)]/60 hover:text-[var(--color-forest)]">
+        <a
+          href="/realisations"
+          class="text-sm text-[var(--color-forest)]/60 hover:text-[var(--color-forest)]"
+        >
           Voir les réalisations
         </a>
       </div>

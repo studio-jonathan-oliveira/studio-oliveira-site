@@ -35,6 +35,7 @@ Dans le panneau **Media**, clique sur **+ Créer un média** → choisis **Seque
 Puis tu places des **keyframes de caméra** qui racontent l'espace. Le but : faire vivre une mini-narration en 8 secondes.
 
 **Exemple de chemin idéal pour un projet de maison végétalisée :**
+
 1. Départ : vue extérieure / entrée du lieu (1-2 sec)
 2. Glissement : on pénètre dans l'espace (2-3 sec)
 3. Révélation : on découvre le cœur du jardin intérieur (2-3 sec)
@@ -46,16 +47,16 @@ Puis tu places des **keyframes de caméra** qui racontent l'espace. Le but : fai
 
 Sélectionne ta séquence dans le panneau Media, puis dans les propriétés à droite, applique **exactement** ces réglages :
 
-| Paramètre | Valeur |
-|---|---|
-| **Type de média** | Sequence |
-| **Format de fichier** | PNG |
-| **Résolution** | 1920 × 1080 (Full HD — pas plus !) |
-| **Frame rate** | 24 fps |
-| **Durée** | 8 secondes (= 192 frames) |
-| **Qualité de rendu** | Ultra / Cinematic |
-| **Motion blur** | ❌ **Désactivé** (crucial, sinon inutilisable pour le web) |
-| **Depth of field** | Ton choix artistique, doux si activé |
+| Paramètre             | Valeur                                                     |
+| --------------------- | ---------------------------------------------------------- |
+| **Type de média**     | Sequence                                                   |
+| **Format de fichier** | PNG                                                        |
+| **Résolution**        | 1920 × 1080 (Full HD — pas plus !)                         |
+| **Frame rate**        | 24 fps                                                     |
+| **Durée**             | 8 secondes (= 192 frames)                                  |
+| **Qualité de rendu**  | Ultra / Cinematic                                          |
+| **Motion blur**       | ❌ **Désactivé** (crucial, sinon inutilisable pour le web) |
+| **Depth of field**    | Ton choix artistique, doux si activé                       |
 
 ### 4. Lance le rendu
 
@@ -66,6 +67,7 @@ Clique sur **Export**. Choisis un dossier dédié pour ce projet. Twinmotion va 
 ### 5. (Bonus) Exporte aussi une vidéo MP4
 
 En plus de la séquence d'images, refais un export du **même chemin caméra** mais cette fois en type **Video** :
+
 - Format : **MP4** (H.264)
 - Résolution : **1920 × 1080**
 - Frame rate : **24 fps**

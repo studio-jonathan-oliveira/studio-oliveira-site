@@ -6,7 +6,7 @@ Tu vas concevoir et développer la refonte complète du site de **Jonathan Olive
 
 **Site actuel** : `https://www.jonathanoliveira.fr` — structure basique type Wix/Squarespace, insuffisante pour son positionnement.
 
-**Positionnement à traduire visuellement** : premium, artisanal, contemplatif, sensoriel. On vise l'univers de marques comme *Aesop*, *Hermès Jardins*, *Maison Pierre Hermé* côté raffinement, croisé avec la puissance immersive de sites comme *Apple AirPods*, *Lusion Studio*, *Active Theory*. Pas de "site d'artisan jardinier" — on est sur du **design studio de luxe**.
+**Positionnement à traduire visuellement** : premium, artisanal, contemplatif, sensoriel. On vise l'univers de marques comme _Aesop_, _Hermès Jardins_, _Maison Pierre Hermé_ côté raffinement, croisé avec la puissance immersive de sites comme _Apple AirPods_, _Lusion Studio_, _Active Theory_. Pas de "site d'artisan jardinier" — on est sur du **design studio de luxe**.
 
 **Objectif business** : générer des demandes de devis qualifiées de clients premium (particuliers fortunés, hôtellerie, restauration haut de gamme, architectes d'intérieur). Le site doit être un outil de conversion ET une œuvre en soi (effet waouh pour partage, portfolio ambassadeur).
 
@@ -53,6 +53,7 @@ Tu vas concevoir et développer la refonte complète du site de **Jonathan Olive
 ## 🎨 Direction artistique
 
 **Palette** :
+
 - Fond principal : `#F5F1EA` (crème chaud, papier)
 - Texte principal : `#1A2B1F` (vert très sombre, presque noir)
 - Accent 1 : `#3D5A3E` (vert profond, feuillage)
@@ -60,18 +61,21 @@ Tu vas concevoir et développer la refonte complète du site de **Jonathan Olive
 - Accent lumière : `#D4B896` (or végétal, pour détails premium)
 
 **Typographie** :
+
 - Titres : **Tenor Sans** ou **Cormorant Garamond** (serif élégante, éditoriale)
 - Corps : **Inter** ou **Geist** (sans-serif moderne, lisibilité optimale)
 - Signature/détails : **Caveat** ou écriture manuscrite custom pour accents artisanaux
 - Échelle typographique fluide avec `clamp()` partout — pas de breakpoints rigides sur le texte
 
 **Grille & espacements** :
+
 - Généreux, aérés, inspiration éditoriale magazine (Kinfolk, Cereal)
 - Marges latérales respiratoires
 - Sections pleine hauteur de viewport sur pages clés
 - Éviter absolument l'aspect "bento box tech startup"
 
 **Règles visuelles** :
+
 - Photos végétales plein cadre, pas de fond blanc ni ombres portées ringardes
 - Micro-animations partout (hover, apparition, parallax subtil)
 - **Grain de papier léger** sur le fond (overlay noise SVG ~2% opacité) pour texture artisanale
@@ -83,14 +87,17 @@ Tu vas concevoir et développer la refonte complète du site de **Jonathan Olive
 ## 🌿 Expériences immersives (le cœur du site)
 
 ### Hero d'accueil
+
 Scène 3D React Three Fiber : feuillage qui s'anime lentement (shader wind subtil), caméra qui dérive en fonction de la souris/gyroscope mobile. En-dessous, le nom "Studio Jonathan Oliveira" en grand, animé en reveal lettré au chargement. CTA discret "Découvrir les créations".
 
 **Fallback mobile bas de gamme / reduced-motion** : image hero statique ultra-soignée + vidéo en boucle légère (< 2 Mo, WebM/AV1).
 
 ### Scroll-driven sur pages projets
+
 **Note critique sur les formats 3D** : SketchUp (.skp) et Twinmotion (.tm) ne sont PAS lisibles nativement dans un navigateur. Deux pipelines à prévoir selon ce que Jonathan fournit :
 
 **Pipeline A — 3D interactive (si exports GLTF possibles)** :
+
 1. Jonathan exporte depuis SketchUp via le plugin "Export GLB/GLTF" ou passe par Blender comme intermédiaire
 2. Optimisation obligatoire via `gltf-transform` CLI : draco compression + texture resize + mesh simplification (objectif < 5 Mo par scène)
 3. Intégration R3F + Theatre.js pour scripter la caméra sur le scroll
@@ -98,6 +105,7 @@ Scène 3D React Three Fiber : feuillage qui s'anime lentement (shader wind subti
 5. Suspense + loader custom végétal pendant le chargement
 
 **Pipeline B — Photoréalisme Twinmotion (plus probable, plus beau)** :
+
 1. Jonathan exporte depuis Twinmotion une **séquence d'images** (path animation rendue frame par frame, typiquement 120-240 frames à 1920×1080)
 2. OU une **vidéo** qu'on lit en scroll-scrub (technique Apple)
 3. Pour les séquences image : pré-chargement via Canvas, dessin de la frame correspondant au % de scroll, GSAP ScrollTrigger pour piloter
@@ -107,12 +115,15 @@ Scène 3D React Three Fiber : feuillage qui s'anime lentement (shader wind subti
 **Prévoir les deux pipelines dans le code**, décision frame par frame selon ce que Jonathan arrive à exporter.
 
 ### Galerie projet
+
 Scroll horizontal sur desktop (translateX piloté par scrollY), retour au vertical sur mobile. Photos plein écran avec légendes éditoriales discrètes. Navigation clavier (←/→).
 
 ### Transitions inter-pages
+
 View Transitions API d'Astro pour continuité visuelle entre liste projets → détail projet (image qui se "zoom" en fondu).
 
 ### Sections "reste du site" en 2D animé
+
 - Apparitions au scroll avec masques/reveals (GSAP SplitText pour les titres)
 - Parallax léger sur les images (pas plus de 15% de translation)
 - Hover sur cartes projets : zoom image + crossfade + légende qui apparaît
@@ -123,6 +134,7 @@ View Transitions API d'Astro pour continuité visuelle entre liste projets → d
 ## 🔍 SEO (priorité absolue)
 
 ### Technique
+
 - Rendu statique Astro (SSG) → HTML pur servi, crawl optimal
 - Core Web Vitals cibles : LCP < 2s, INP < 200ms, CLS < 0.05
 - Images en `<Image>` d'Astro (AVIF + WebP fallback, lazy, dimensions explicites)
@@ -140,18 +152,22 @@ View Transitions API d'Astro pour continuité visuelle entre liste projets → d
 - Open Graph + Twitter Cards custom par page (pas de fallback générique)
 
 ### Sémantique & mots-clés
+
 Mots-clés prioritaires à travailler dans les contenus (à intégrer naturellement, pas de bourrage) :
+
 - Principaux : "designer végétal", "biophilic design France", "jardin d'intérieur sur mesure", "mur végétal", "aménagement végétal haut de gamme"
 - Longue traîne : "designer végétal [ville]", "créateur jardin intérieur hôtel", "aménagement biophilique bureau", "paysagiste designer"
 - Géo-ciblage : à confirmer selon zone d'intervention de Jonathan (Brive-la-Gaillarde, Paris, Limousin, Nouvelle-Aquitaine, national ?)
 
 ### Contenus SEO
+
 - 5 pages services optimisées (1 H1, hiérarchie Hn propre, 600-1000 mots chacune)
 - 3 articles de blog fondateurs (pillars) : "Qu'est-ce que le design biophilique", "Comment choisir les plantes d'un jardin d'intérieur", "Bénéfices d'un aménagement végétal en entreprise"
 - Page contact avec FAQ schema
 - Alt texts descriptifs sur toutes les images (décrire la plante, le projet, le lieu)
 
 ### Local SEO
+
 - Fiche Google Business Profile à lier (Jonathan doit en créer une si pas déjà)
 - NAP (Nom, Adresse, Téléphone) cohérent partout
 - Schema `LocalBusiness` avec `areaServed`
@@ -220,6 +236,7 @@ Portable Text custom blocks : image légendée, citation stylée, galerie inline
 ## 🔐 Formulaire de contact qualifié
 
 Champs :
+
 1. Nom / Prénom
 2. Email / Téléphone
 3. Type de projet (select : résidentiel intérieur / résidentiel extérieur / professionnel / autre)
@@ -290,6 +307,7 @@ Champs :
 ## 🎯 Critères de succès final
 
 Quand le site est livré, il doit :
+
 1. Donner envie à un architecte d'intérieur parisien haut de gamme de contacter Jonathan dans les 60 secondes
 2. Être partagé spontanément sur LinkedIn / Instagram pour son esthétique
 3. Ranker top 3 sur "designer végétal [zone]" sous 6 mois post-lancement

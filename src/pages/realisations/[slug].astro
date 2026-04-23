@@ -7,7 +7,6 @@ import { Picture } from 'astro:assets';
 import { fetch } from '@/lib/sanity';
 import { projectSlugsQuery } from '@/lib/queries';
 import { mockProjects, type MockProject } from '@/data/mock-projects';
-import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -24,7 +23,10 @@ export const getStaticPaths = (async () => {
     { realisations: [], conceptions: [] },
   );
 
-  const paths: { params: { slug: string }; props: { project: MockProject | null; slug: string } }[] = [];
+  const paths: {
+    params: { slug: string };
+    props: { project: MockProject | null; slug: string };
+  }[] = [];
 
   for (const slug of slugsFromSanity.realisations) {
     paths.push({ params: { slug }, props: { project: null, slug } });
@@ -77,15 +79,22 @@ const schema = jsonLdGraph([
 
 <BaseLayout title={project.title} description={project.summary}>
   <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
-    <nav aria-label="Fil d'Ariane" class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-forest)]/50">
+    <nav
+      aria-label="Fil d'Ariane"
+      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
+    >
       <ol class="flex flex-wrap items-center gap-2">
         {
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">{b.name}</a>
+                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                  {b.name}
+                </a>
               ) : (
-                <span class="text-[var(--color-forest)]/80 line-clamp-1 max-w-[40ch]">{b.name}</span>
+                <span class="line-clamp-1 max-w-[40ch] text-[var(--color-forest)]/80">
+                  {b.name}
+                </span>
               )}
               {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
             </li>
@@ -99,13 +108,17 @@ const schema = jsonLdGraph([
   <Section variant="cream" tight class="pt-0 pb-0">
     <article>
       <header class="mb-16 max-w-3xl">
-        <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
           Réalisation · {project.typologyLabel} · {project.year}
         </p>
-        <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+        <h1
+          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+        >
           {project.title}
         </h1>
-        <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] italic text-[var(--color-forest)]/60">
+        <p
+          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic"
+        >
           {project.location}
         </p>
       </header>
@@ -130,15 +143,27 @@ const schema = jsonLdGraph([
           <div class="border-t border-[var(--color-forest)]/20 pt-6">
             <dl class="space-y-4 text-sm">
               <div>
-                <dt class="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-forest)]/50">Lieu</dt>
+                <dt
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                >
+                  Lieu
+                </dt>
                 <dd class="mt-1">{project.location}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-forest)]/50">Année</dt>
+                <dt
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                >
+                  Année
+                </dt>
                 <dd class="mt-1">{project.year}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-forest)]/50">Typologie</dt>
+                <dt
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                >
+                  Typologie
+                </dt>
                 <dd class="mt-1">
                   {
                     project.typologySlug ? (
@@ -180,7 +205,7 @@ const schema = jsonLdGraph([
                   loading="lazy"
                 />
                 {img.caption && (
-                  <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-forest)]/60">
+                  <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
                     {img.caption}
                   </figcaption>
                 )}

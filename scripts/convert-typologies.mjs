@@ -9,9 +9,12 @@ import sharp from 'sharp';
 import { mkdirSync } from 'fs';
 
 const sources = {
-  'coeur-urbain': '_brief/client-assets/photos-projets/Coeur urbain - parenthese exotique/Image1_010.png',
-  'frange-urbaine': '_brief/client-assets/photos-projets/Frange urbaine - restanque correzienne/Image4_002.png',
-  'domaine-caractere': '_brief/client-assets/photos-projets/Provence correzienne - Domaine et caracteres/terrasse day_008.png',
+  'coeur-urbain':
+    '_brief/client-assets/photos-projets/Coeur urbain - parenthese exotique/Image1_010.png',
+  'frange-urbaine':
+    '_brief/client-assets/photos-projets/Frange urbaine - restanque correzienne/Image4_002.png',
+  'domaine-caractere':
+    '_brief/client-assets/photos-projets/Provence correzienne - Domaine et caracteres/terrasse day_008.png',
   'micro-urbain': '_brief/client-assets/photos-projets/jungle-room/3.png',
 };
 

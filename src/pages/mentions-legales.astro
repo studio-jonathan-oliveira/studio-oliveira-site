@@ -12,10 +12,12 @@ import { SITE } from '@/lib/site-config';
 >
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-2xl">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Informations légales
       </p>
-      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+      >
         Mentions légales.
       </h1>
     </div>
@@ -27,7 +29,8 @@ import { SITE } from '@/lib/site-config';
       <p>
         <strong>{SITE.legal.companyName}</strong><br />
         {SITE.address.street}<br />
-        {SITE.address.postalCode} {SITE.address.city}, {SITE.address.country}
+        {SITE.address.postalCode}
+        {SITE.address.city}, {SITE.address.country}
       </p>
       <p>
         Directeur de la publication : {SITE.legal.editorName}<br />
@@ -48,8 +51,8 @@ import { SITE } from '@/lib/site-config';
       <h2>Propriété intellectuelle</h2>
       <p>
         L'ensemble des contenus présents sur ce site — textes, photographies, rendus Twinmotion,
-        logos, identité graphique — reste la propriété exclusive de {SITE.legal.companyName}.
-        Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
+        logos, identité graphique — reste la propriété exclusive de {SITE.legal.companyName}. Toute
+        reproduction, même partielle, est interdite sans autorisation écrite préalable.
       </p>
 
       <h2>Crédits</h2>

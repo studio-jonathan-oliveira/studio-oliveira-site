@@ -10,7 +10,6 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
-import SectionHeader from '@/components/astro/SectionHeader.astro';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
 
 const schema = jsonLdGraph([
@@ -33,7 +32,7 @@ const schema = jsonLdGraph([
 
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Portefeuille
       </p>
       <h1
@@ -41,8 +40,18 @@ const schema = jsonLdGraph([
       >
         Projets — <em class="italic">réalisations</em> et <em class="italic">conceptions</em>.
       </h1>
-      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
-        Deux portefeuilles parallèles. D'un côté les <a href="/realisations" class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]">réalisations</a> — projets livrés, photographiés. De l'autre les <a href="/conceptions" class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]">conceptions</a> — études approfondies, parcourues en rendu photoréaliste.
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
+        Deux portefeuilles parallèles. D'un côté les <a
+          href="/realisations"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          >réalisations</a
+        > — projets livrés, photographiés. De l'autre les <a
+          href="/conceptions"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          >conceptions</a
+        > — études approfondies, parcourues en rendu photoréaliste.
       </p>
     </div>
   </Section>
@@ -59,10 +68,12 @@ const schema = jsonLdGraph([
           class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
         >
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
               01 · Réalisations
             </p>
-            <h2 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]">
+            <h2
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]"
+            >
               Projets livrés.
             </h2>
             <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
@@ -70,7 +81,9 @@ const schema = jsonLdGraph([
               atypiques. [À ENRICHIR — inventaire projets Jonathan.]
             </p>
           </div>
-          <span class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1">
+          <span
+            class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1"
+          >
             Parcourir les réalisations
             <span aria-hidden="true">→</span>
           </span>
@@ -83,10 +96,12 @@ const schema = jsonLdGraph([
           class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
         >
           <div>
-            <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
               02 · Conceptions
             </p>
-            <h2 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]">
+            <h2
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]"
+            >
               Études immersives.
             </h2>
             <p class="mt-4 text-sm leading-relaxed text-[var(--color-forest)]/70">
@@ -94,7 +109,9 @@ const schema = jsonLdGraph([
               Twinmotion, le site les transforme en expériences immersives scroll-scrub.
             </p>
           </div>
-          <span class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1">
+          <span
+            class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1"
+          >
             Parcourir les conceptions
             <span aria-hidden="true">→</span>
           </span>
@@ -105,13 +122,13 @@ const schema = jsonLdGraph([
 
   <Section variant="forest" topDivider>
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
         Engager la conversation
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
       >
-        Un projet à <em class="italic text-[var(--color-gold)]">étudier</em> ?
+        Un projet à <em class="text-[var(--color-gold)] italic">étudier</em> ?
       </h2>
       <a
         href="/contact"

@@ -17,6 +17,7 @@ Crée un script `scripts/generate-test-frames.ts` qui génère **192 frames PNG 
 **Option A — Frames avec gradient progressif + numéro de frame (RECOMMANDÉE, simple et efficace)**
 
 Utilise **sharp** pour générer des images avec :
+
 - Un gradient de couleur qui évolue de la frame 1 à 192 (vert sombre `#1A2B1F` → vert clair `#3D5A3E` → crème `#F5F1EA`)
 - Le **numéro de frame affiché en grand** au centre (ex: "042 / 192")
 - Une **barre de progression horizontale** en bas de l'image qui avance frame par frame
@@ -36,8 +37,8 @@ const OUTPUT_DIR = './input/test-project-frames';
 // Interpolation linéaire entre 3 couleurs
 function interpolateColor(t: number): string {
   const colors = [
-    { r: 26, g: 43, b: 31 },    // #1A2B1F vert sombre
-    { r: 61, g: 90, b: 62 },    // #3D5A3E vert moyen
+    { r: 26, g: 43, b: 31 }, // #1A2B1F vert sombre
+    { r: 61, g: 90, b: 62 }, // #3D5A3E vert moyen
     { r: 245, g: 241, b: 234 }, // #F5F1EA crème
   ];
   const segment = t * 2;
@@ -64,11 +65,15 @@ async function generateFrame(frameNum: number): Promise<void> {
       
       <!-- Grille de repère pour voir le mouvement -->
       <g stroke="${textColor}" stroke-width="1" opacity="0.15">
-        ${Array.from({ length: 20 }, (_, i) => 
-          `<line x1="${i * WIDTH / 20}" y1="0" x2="${i * WIDTH / 20}" y2="${HEIGHT}"/>`
+        ${Array.from(
+          { length: 20 },
+          (_, i) =>
+            `<line x1="${(i * WIDTH) / 20}" y1="0" x2="${(i * WIDTH) / 20}" y2="${HEIGHT}"/>`,
         ).join('')}
-        ${Array.from({ length: 10 }, (_, i) => 
-          `<line x1="0" y1="${i * HEIGHT / 10}" x2="${WIDTH}" y2="${i * HEIGHT / 10}"/>`
+        ${Array.from(
+          { length: 10 },
+          (_, i) =>
+            `<line x1="0" y1="${(i * HEIGHT) / 10}" x2="${WIDTH}" y2="${(i * HEIGHT) / 10}"/>`,
         ).join('')}
       </g>
       
@@ -108,9 +113,7 @@ async function generateFrame(frameNum: number): Promise<void> {
   const frameNumber = String(frameNum).padStart(4, '0');
   const outputPath = join(OUTPUT_DIR, `frame_${frameNumber}.png`);
 
-  await sharp(Buffer.from(svg))
-    .png()
-    .toFile(outputPath);
+  await sharp(Buffer.from(svg)).png().toFile(outputPath);
 }
 
 async function main() {
@@ -173,18 +176,21 @@ Pour chaque projet mis en scène immersif :
 Le pipeline doit produire **trois variantes** par projet :
 
 ### Variante 1 — Desktop (haute qualité)
+
 - Format : **WebP** (qualité 80)
 - Résolution : **1920 × 1080**
 - Poids cible : **60-120 Ko/frame** → total ~15-20 Mo pour 192 frames
 - Usage : scroll-scrub sur écrans desktop/tablette
 
 ### Variante 2 — Mobile (allégée)
+
 - Format : **WebP** (qualité 75)
 - Résolution : **960 × 540**
 - Poids cible : **20-40 Ko/frame** → total ~5-8 Mo pour 192 frames
 - Usage : scroll-scrub sur mobile si on tient aux séquences d'images
 
 ### Variante 3 — Mobile vidéo (fallback recommandé)
+
 - Format : **MP4 (H.264)** + **WebM (VP9)** en alternatif
 - Résolution : **1280 × 720**
 - Poids cible : **3-8 Mo**
@@ -203,6 +209,7 @@ pnpm add -D sharp fluent-ffmpeg @types/fluent-ffmpeg tsx
 ```
 
 Assure-toi que **ffmpeg** est installé sur la machine (requis par fluent-ffmpeg) :
+
 - macOS : `brew install ffmpeg`
 - Linux : `apt install ffmpeg`
 - Windows : via chocolatey ou installateur officiel
@@ -248,16 +255,14 @@ const CONFIG = {
 async function processFrames(
   inputDir: string,
   outputBaseDir: string,
-  variant: 'desktop' | 'mobile'
+  variant: 'desktop' | 'mobile',
 ) {
   const { width, height, quality, suffix } = CONFIG[variant];
   const outputDir = join(outputBaseDir, suffix);
 
   if (!existsSync(outputDir)) await mkdir(outputDir, { recursive: true });
 
-  const files = (await readdir(inputDir))
-    .filter((f) => f.toLowerCase().endsWith('.png'))
-    .sort(); // garantit l'ordre numérique
+  const files = (await readdir(inputDir)).filter((f) => f.toLowerCase().endsWith('.png')).sort(); // garantit l'ordre numérique
 
   console.log(`\n🎞️  [${variant}] Traitement de ${files.length} frames...`);
 
@@ -283,7 +288,7 @@ async function processFrames(
         if (processed % 20 === 0) {
           console.log(`   ${processed}/${files.length} frames traitées`);
         }
-      })
+      }),
     );
   }
 
@@ -367,13 +372,11 @@ async function generateManifest(projectName: string, outputBaseDir: string) {
   };
 
   const manifestPath = join(outputBaseDir, 'manifest.json');
-  await Bun.write(manifestPath, JSON.stringify(manifest, null, 2)).catch(
-    async () => {
-      // fallback node si pas de Bun
-      const { writeFile } = await import('node:fs/promises');
-      await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
-    }
-  );
+  await Bun.write(manifestPath, JSON.stringify(manifest, null, 2)).catch(async () => {
+    // fallback node si pas de Bun
+    const { writeFile } = await import('node:fs/promises');
+    await writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+  });
   console.log(`\n📄 Manifest → ${manifestPath}`);
 }
 
@@ -425,6 +428,7 @@ pnpm tsx scripts/process-frames.ts villa-brive ./input/villa-brive-frames ./inpu
 ```
 
 Résultat dans `/public/scrollframes/villa-brive/` :
+
 ```
 desktop/    → 192 WebP 1920×1080 (~15 Mo total)
 mobile/     → 192 WebP 960×540   (~6 Mo total)
@@ -476,9 +480,7 @@ export default function ScrollFrames({
   const [ready, setReady] = useState(false);
 
   // Détection mobile pour choisir la variante
-  const isMobile =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(max-width: 768px)').matches;
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
   const variant = isMobile ? 'mobile' : 'desktop';
 
   // Préchargement progressif des frames
@@ -568,15 +570,12 @@ export default function ScrollFrames({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-screen overflow-hidden bg-[#1A2B1F] ${className}`}
+      className={`relative h-screen w-full overflow-hidden bg-[#1A2B1F] ${className}`}
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full object-cover" />
       {!ready && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-[#D4B896] text-sm tracking-widest uppercase">
+          <div className="text-sm tracking-widest text-[#D4B896] uppercase">
             Préparation de la scène · {progress}%
           </div>
         </div>
@@ -594,11 +593,7 @@ import ScrollFrames from '../components/ScrollFrames';
 ---
 
 <section class="relative">
-  <ScrollFrames
-    projectSlug="villa-brive"
-    frameCount={192}
-    client:visible
-  />
+  <ScrollFrames projectSlug="villa-brive" frameCount={192} client:visible />
 </section>
 ```
 
@@ -655,13 +650,13 @@ Le choix entre "frames mobile" et "vidéo mobile" peut se faire au cas par cas, 
 
 ## 📊 Budget perf attendu par projet
 
-| Métrique | Cible |
-|---|---|
-| Poids total desktop | < 20 Mo |
-| Poids total mobile (frames) | < 8 Mo |
-| Poids total mobile (vidéo) | < 10 Mo |
-| Time to first render | < 1.5 s |
-| FPS pendant scroll | 60 fps constant |
+| Métrique                             | Cible                                                                                         |
+| ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Poids total desktop                  | < 20 Mo                                                                                       |
+| Poids total mobile (frames)          | < 8 Mo                                                                                        |
+| Poids total mobile (vidéo)           | < 10 Mo                                                                                       |
+| Time to first render                 | < 1.5 s                                                                                       |
+| FPS pendant scroll                   | 60 fps constant                                                                               |
 | Lighthouse Performance (page projet) | ≥ 85 (le scroll-scrub est un feature premium, on accepte un léger compromis vs page statique) |
 
 ---

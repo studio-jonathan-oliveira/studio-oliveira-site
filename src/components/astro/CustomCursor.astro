@@ -52,7 +52,9 @@
       height: 6px;
       border-radius: 50%;
       background-color: var(--color-cream);
-      transition: transform 0.18s var(--ease-out-editorial), opacity 0.2s ease;
+      transition:
+        transform 0.18s var(--ease-out-editorial),
+        opacity 0.2s ease;
     }
 
     .cursor-ring {
@@ -149,7 +151,7 @@
         const target = e.target as HTMLElement | null;
         if (target?.closest?.(hoverSelectors)) cursor.classList.add('is-hover');
       },
-      true
+      true,
     );
     document.addEventListener(
       'pointerout',
@@ -157,7 +159,7 @@
         const target = e.target as HTMLElement | null;
         if (target?.closest?.(hoverSelectors)) cursor.classList.remove('is-hover');
       },
-      true
+      true,
     );
   }
 

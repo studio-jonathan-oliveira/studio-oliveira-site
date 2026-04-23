@@ -2,13 +2,13 @@ pre-commit:
   parallel: true
   commands:
     prettier:
-      glob: "*.{astro,ts,tsx,js,jsx,css,md,json,yml}"
+      glob: '*.{astro,ts,tsx,js,jsx,css,md,json,yml}'
       run: pnpm exec prettier --check {staged_files}
     eslint:
-      glob: "*.{astro,ts,tsx,js,jsx}"
+      glob: '*.{astro,ts,tsx,js,jsx}'
       run: pnpm exec eslint {staged_files}
     typecheck:
-      glob: "*.{ts,tsx,astro}"
+      glob: '*.{ts,tsx,astro}'
       run: pnpm exec astro check
 
 commit-msg:

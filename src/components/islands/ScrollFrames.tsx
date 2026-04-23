@@ -29,12 +29,8 @@ interface ScrollFramesProps {
   aspectRatio?: string;
 }
 
-const frameUrl = (
-  basePath: string,
-  index: number,
-  digits: number,
-  format: string
-): string => `${basePath}/${String(index).padStart(digits, '0')}.${format}`;
+const frameUrl = (basePath: string, index: number, digits: number, format: string): string =>
+  `${basePath}/${String(index).padStart(digits, '0')}.${format}`;
 
 export default function ScrollFrames({
   basePath,
@@ -71,8 +67,7 @@ export default function ScrollFrames({
     vmq.addEventListener('change', vmHandler);
 
     // Détection réseau : si 2g/slow-2g, dégrader
-    const conn = (navigator as Navigator & { connection?: { effectiveType?: string } })
-      .connection;
+    const conn = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
     const effective = conn?.effectiveType;
     if (effective && (effective === '2g' || effective === 'slow-2g')) {
       setDegraded(true);
@@ -185,10 +180,7 @@ export default function ScrollFrames({
       const scrollRange = rect.height - viewport;
       if (scrollRange <= 0) return;
       const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
-      const frameIndex = Math.min(
-        frameCount - 1,
-        Math.max(0, Math.floor(progress * frameCount))
-      );
+      const frameIndex = Math.min(frameCount - 1, Math.max(0, Math.floor(progress * frameCount)));
       if (frameIndex !== currentFrameRef.current) {
         currentFrameRef.current = frameIndex;
         draw(frameIndex);

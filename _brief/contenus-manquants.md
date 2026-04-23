@@ -22,6 +22,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 ## Contenus identifiés à ce stade
 
 ### HERO-VIDEO-HOME
+
 **Type** : vidéo (séquence Twinmotion 5s en boucle)
 **Emplacement** : `src/components/astro/HeroHome.astro` (Phase 1)
 **Volume attendu** : 5 s, 1920×1080, 24 fps = 120 frames, MP4 H.264 + WebM VP9, < 1.5 Mo chacune
@@ -29,6 +30,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : avant Phase 7 (mise en ligne). Placeholder vidéo neutre acceptable en Phase 1.
 
 ### HERO-MANIFESTE-HOME
+
 **Type** : texte court
 **Statut** : ✅ v1 posée à partir du PDF (« J'étudie et conçois des espaces à vivre... »). À valider/affiner par Jonathan.
 **Emplacement** : `src/pages/index.astro` — section hero.
@@ -36,13 +38,15 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Contexte** : manifeste condensé du studio. Ton éditorial Aesop/Kinfolk, pas « agence web ». Doit évoquer le design biophilique, l'approche architecture/humain/environnement.
 
 ### STUDIO-PAGE-CONTENU
+
 **Type** : texte long
 **Statut** : ✅ v1 posée à partir du PDF (intro, démarche biophilique 3 §, méthode 3 étapes). À enrichir éventuellement — actuellement ~300 mots, cible 1200-1800.
 **Emplacement** : `/studio`
 **Contexte** : page à propos premium. Puise dans `PROCESS ETUDES STUDIO 2026.pdf` (parcours, ADN biophilique, méthode vente).
 **Reste à faire** : étoffer la section démarche avec les 14 modèles biophiliques (Terrapin Bright Green) ; photos studio ; quote ouverture personnelle.
 
-### TYPOLOGIE-*-CONTENU (× 4)
+### TYPOLOGIE-\*-CONTENU (× 4)
+
 **Type** : texte long
 **Emplacement** : `/conception-jardin/micro-urbain`, `/conception-jardin/coeur-urbain`, `/conception-jardin/frange-urbaine`, `/conception-jardin/domaine-caractere`
 **Volume attendu** : 1500 mots chacune
@@ -50,6 +54,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : avant Phase 4.
 
 ### HUB-CONCEPTION-JARDIN
+
 **Type** : texte long
 **Statut** : 🟡 intro v1 posée (80 mots, mots Jonathan PDF). Process et FAQ déjà rédigés. Reste le corps pilier SEO 1500 mots.
 **Emplacement** : `/conception-jardin`
@@ -58,20 +63,23 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : avant Phase 4.
 
 ### HUB-AMENAGEMENT-INTERIEUR
+
 **Type** : texte long
 **Emplacement** : `/amenagement-vegetal-interieur`
 **Volume attendu** : 1500 mots
 **Contexte** : pilier secondaire. Présentation du service décors végétalisés (plantes naturelles + artificielles), cibles pros (hôtellerie/resto/bureaux/commerces), Airbnb atypiques.
 **Deadline suggérée** : avant Phase 4.
 
-### SPOKE-INTERIEUR-* (× 5)
+### SPOKE-INTERIEUR-\* (× 5)
+
 **Type** : texte long
 **Emplacement** : `/amenagement-vegetal-interieur/{hotellerie,restauration,bureaux,commerces,airbnb-locations-atypiques}`
 **Volume attendu** : 1000-1500 mots chacune
 **Contexte** : spokes du hub intérieur. Chacun ciblé sur une vertical avec cas types, contraintes métier, exemples.
 **Deadline suggérée** : Phase 4.
 
-### ZONES-* (× 4)
+### ZONES-\* (× 4)
+
 **Type** : texte long
 **Emplacement** : `/zones/brive-la-gaillarde`, `/zones/bordeaux`, `/zones/limoges`, `/zones/toulouse`
 **Volume attendu** : 1500 mots chacune (2000 pour Brive, page pilier)
@@ -79,6 +87,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : Phase 4.
 
 ### JOURNAL-ARTICLES-LANCEMENT (× 5)
+
 **Type** : texte long
 **Emplacement** : `/journal/*`
 **Volume attendu** : 1500-2000 mots chacun
@@ -86,6 +95,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : Phase 4.
 
 ### PROJETS-SCROLLFRAMES (× 3)
+
 **Type** : séquences Twinmotion
 **Emplacement** : `/conceptions/[slug]`
 **Volume attendu** : 192 frames PNG 1920×1080 à 24 fps (= 8 s) par projet. Voir `checklist-twinmotion-jonathan.md`.
@@ -93,6 +103,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : Phase 7 (avant mise en ligne). Test 96 frames en Phase 3 pour valider la chaîne.
 
 ### PROJETS-TEXTES (× N)
+
 **Type** : texte court par projet
 **Emplacement** : chaque page `/realisations/[slug]` et `/conceptions/[slug]`
 **Volume attendu** : titre, client (si diffusable), lieu, année, surface, type intervention, parti pris 2-3 paragraphes (200-400 mots)
@@ -100,6 +111,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : Phase 4 pour les 3-5 projets phares, continu ensuite.
 
 ### TEMOIGNAGES-CLIENTS
+
 **Type** : quotes clients
 **Emplacement** : home + pages typologies + portfolio
 **Volume attendu** : 3-5 quotes (nom, rôle/entreprise si B2B, quote 1-3 phrases, accord diffusion). Optionnellement photo client.
@@ -107,6 +119,7 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : avant Phase 6 (audit SEO).
 
 ### PHOTOS-STUDIO
+
 **Type** : photos lieu physique Brive
 **Emplacement** : `/studio`, `/contact`, `/zones/brive-la-gaillarde`
 **Volume attendu** : 3-5 photos haute résolution (min. 2000 px longueur) du studio 41 rue Général Souham
@@ -114,12 +127,14 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Deadline suggérée** : Phase 2-3.
 
 ### MENTIONS-LEGALES
+
 **Type** : texte long légal
 **Emplacement** : `/mentions-legales`
 **Contexte** : SIRET, représentant légal, hébergeur Vercel, propriété intellectuelle.
 **Deadline suggérée** : avant Phase 7.
 
 ### POLITIQUE-CONFIDENTIALITE
+
 **Type** : texte long légal
 **Emplacement** : `/confidentialite`
 **Contexte** : traitement données formulaire contact, durée conservation, sous-traitants (Resend, Vercel Blob, Turnstile), droits RGPD, DPO.

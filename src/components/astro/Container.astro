@@ -14,11 +14,7 @@ interface Props {
   class?: string;
 }
 
-const {
-  size = 'default',
-  as: Tag = 'div',
-  class: className = '',
-} = Astro.props as Props;
+const { size = 'default', as: Tag = 'div', class: className = '' } = Astro.props as Props;
 
 const sizes = {
   default: 'max-w-7xl',

@@ -7,6 +7,7 @@ Procédure d'export **obligatoire** pour que les rendus Twinmotion soient exploi
 ## ⚠️ Avant toute chose : séquence test 96 frames
 
 **Ne pas lancer les rendus complets des 3 projets directement.** Commencer par **1 séquence test** d'un projet pilote :
+
 - Durée : 4 secondes = **96 frames** (au lieu de 192)
 - Même path caméra que le rendu final envisagé
 - Tous les autres paramètres identiques à la liste ci-dessous
@@ -17,17 +18,17 @@ L'envoyer à Morgan → validation cadrage + colorimétrie + fluidité → feu v
 
 ## Paramètres d'export — IMMUABLES
 
-| Paramètre | Valeur |
-|---|---|
-| Type de média | **Sequence** (pas « Vidéo ») |
-| Format de fichier | **PNG** |
-| Résolution | **1920 × 1080** (Full HD — surtout pas 4K) |
-| Frame rate | **24 fps** |
-| Durée | **8 secondes** = **192 frames** (pour rendus complets projets) |
-| Qualité de rendu | **Ultra** ou **Cinematic** |
-| **Motion blur** | ❌ **DÉSACTIVÉ** — critique, sans exception |
-| Depth of field | Au choix artistique (doux si activé) |
-| Ambient occlusion | Activé (profondeur) |
+| Paramètre         | Valeur                                                         |
+| ----------------- | -------------------------------------------------------------- |
+| Type de média     | **Sequence** (pas « Vidéo »)                                   |
+| Format de fichier | **PNG**                                                        |
+| Résolution        | **1920 × 1080** (Full HD — surtout pas 4K)                     |
+| Frame rate        | **24 fps**                                                     |
+| Durée             | **8 secondes** = **192 frames** (pour rendus complets projets) |
+| Qualité de rendu  | **Ultra** ou **Cinematic**                                     |
+| **Motion blur**   | ❌ **DÉSACTIVÉ** — critique, sans exception                    |
+| Depth of field    | Au choix artistique (doux si activé)                           |
+| Ambient occlusion | Activé (profondeur)                                            |
 
 ---
 
@@ -36,12 +37,14 @@ L'envoyer à Morgan → validation cadrage + colorimétrie + fluidité → feu v
 Mouvement **doux et continu**. **Pas de cut, pas de zoom brutal.** Caméra qui flotte.
 
 Structure recommandée sur 8 secondes :
+
 1. **0-2 s** : vue extérieure / entrée du lieu
 2. **2-5 s** : glissement de pénétration dans l'espace
 3. **5-7 s** : révélation du cœur du jardin (intérieur ou point fort)
 4. **7-8 s** : détail ou plan rapproché sur élément signature
 
 Si le projet n'a pas de « pénétration » évidente (ex : jardin ouvert), structure alternative :
+
 1. **0-3 s** : plan large contemplatif
 2. **3-6 s** : travelling latéral ou avant subtil
 3. **6-8 s** : zoom caméra vers élément signature

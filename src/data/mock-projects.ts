@@ -43,9 +43,21 @@ export const mockProjects: MockProject[] = [
     typologySlug: 'micro-urbain',
     cover: jungleEntree,
     gallery: [
-      { src: jungleEntree, alt: "Entrée végétalisée du Jungle Room avec cascade de lierre", caption: 'Entrée signature — cascade de lierre et signalétique laiton.' },
-      { src: jungleEspaces, alt: "Espaces de vie végétalisés — cuisine, banquette, mur textile", caption: 'Cuisine panoramique et espaces de vie intégrés.' },
-      { src: jungleMezzanine, alt: "Chambre mezzanine avec mur végétal immersif toute hauteur", caption: 'Mezzanine chambre — mur végétal immersif, HSP 5 m.' },
+      {
+        src: jungleEntree,
+        alt: 'Entrée végétalisée du Jungle Room avec cascade de lierre',
+        caption: 'Entrée signature — cascade de lierre et signalétique laiton.',
+      },
+      {
+        src: jungleEspaces,
+        alt: 'Espaces de vie végétalisés — cuisine, banquette, mur textile',
+        caption: 'Cuisine panoramique et espaces de vie intégrés.',
+      },
+      {
+        src: jungleMezzanine,
+        alt: 'Chambre mezzanine avec mur végétal immersif toute hauteur',
+        caption: 'Mezzanine chambre — mur végétal immersif, HSP 5 m.',
+      },
     ],
     summary:
       '[À FOURNIR PAR JONATHAN : 3-5 phrases éditoriales sur le parti-pris du projet, les contraintes du lieu, le geste principal. Tonalité éditoriale 1ʳᵉ personne.]',

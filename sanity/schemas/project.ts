@@ -131,8 +131,18 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            { name: 'value', type: 'string', title: 'Valeur (ex : "180 m²")', validation: (r) => r.required() },
-            { name: 'label', type: 'string', title: 'Libellé (ex : "Surface traitée")', validation: (r) => r.required() },
+            {
+              name: 'value',
+              type: 'string',
+              title: 'Valeur (ex : "180 m²")',
+              validation: (r) => r.required(),
+            },
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Libellé (ex : "Surface traitée")',
+              validation: (r) => r.required(),
+            },
           ],
           preview: { select: { title: 'value', subtitle: 'label' } },
         },
@@ -145,7 +155,9 @@ export default defineType({
     select: { title: 'title', subtitle: 'location', media: 'coverImage', section: 'section' },
     prepare: ({ title, subtitle, media, section }) => ({
       title,
-      subtitle: [section === 'realisations' ? 'Réalisation' : 'Conception', subtitle].filter(Boolean).join(' · '),
+      subtitle: [section === 'realisations' ? 'Réalisation' : 'Conception', subtitle]
+        .filter(Boolean)
+        .join(' · '),
       media,
     }),
   },

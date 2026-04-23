@@ -54,7 +54,9 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
 
-    {/* TODO Phase 6 — preload fonts via Astro Fonts API (experimental.fonts) pour éliminer CLS et LCP shift. Actuellement, fontsource importe via @import, le navigateur télécharge à la volée avec font-display: swap. */}
+    {
+      /* TODO Phase 6 — preload fonts via Astro Fonts API (experimental.fonts) pour éliminer CLS et LCP shift. Actuellement, fontsource importe via @import, le navigateur télécharge à la volée avec font-display: swap. */
+    }
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteName} />
@@ -76,10 +78,10 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
     <slot name="head" />
   </head>
 
-  <body class="font-[var(--font-body)] text-[length:var(--text-base)]">
+  <body class="text-[length:var(--text-base)] font-[var(--font-body)]">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-[var(--color-forest)] focus:px-4 focus:py-2 focus:text-[var(--color-cream)]"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-[var(--color-forest)] focus:px-4 focus:py-2 focus:text-[var(--color-cream)]"
     >
       Aller au contenu principal
     </a>

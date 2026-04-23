@@ -22,7 +22,7 @@ public/scrollframes/[slug]/
   ├── video/[slug]_720p.mp4                       (H.264 1280×720 ~5 Mo)
   ├── video/[slug]_720p.webm                      (VP9 alternatif)
   └── manifest.json                               (inventory)
-  
+
   ↓ (optionnel en Phase 5+) upload Vercel Blob
   ↓ script scripts/upload-frames-cdn.ts
 
@@ -41,6 +41,7 @@ ScrollFrames.tsx (React island)
 Produit 192 PNG 1920×1080 de test dans `input/test-project-frames/` — gradient vert → crème, numéro de frame en gros, barre de progression, cercle mobile. Permet de valider la chaîne avant les vrais assets Jonathan.
 
 **Signature** :
+
 ```bash
 pnpm tsx scripts/generate-test-frames.ts
 ```
@@ -50,6 +51,7 @@ Utilise `sharp` ou `node-canvas`. Code de référence dans `_brief/pipeline-fram
 ### `scripts/process-frames.ts`
 
 Signature :
+
 ```bash
 pnpm tsx scripts/process-frames.ts <slug> <input-dir> [mp4-input]
 # exemple :
@@ -57,6 +59,7 @@ pnpm tsx scripts/process-frames.ts villa-brive ./input/villa-brive-frames ./inpu
 ```
 
 **Étapes internes** :
+
 1. **Check ffmpeg installé** (`execSync('ffmpeg -version')`). Exit 1 si absent avec message d'install.
 2. Lister et trier les frames PNG du dossier d'entrée (ordre numérique strict, `padStart(4, '0')`).
 3. Pour chaque frame (batch de 8 en parallèle pour pas saturer la RAM) :
@@ -138,14 +141,14 @@ Dans la page Astro qui utilise `<ScrollFrames />`, injecter dans le `<head>` :
 
 ## Budget perf par projet immersif
 
-| Métrique | Cible |
-|---|---|
-| Poids total desktop (192 WebP 1920×1080) | ≤ 20 Mo |
-| Poids total mobile (vidéo 720p) | ≤ 10 Mo |
-| Poids total mobile (WebP 960×540 alternatif 4G) | ≤ 8 Mo |
-| Time to first render (canvas) | < 1.5 s |
-| FPS pendant scroll | 60 fps constants |
-| Lighthouse Perf (page `/conceptions/[slug]`) | ≥ 85 (compromis assumé) |
+| Métrique                                        | Cible                   |
+| ----------------------------------------------- | ----------------------- |
+| Poids total desktop (192 WebP 1920×1080)        | ≤ 20 Mo                 |
+| Poids total mobile (vidéo 720p)                 | ≤ 10 Mo                 |
+| Poids total mobile (WebP 960×540 alternatif 4G) | ≤ 8 Mo                  |
+| Time to first render (canvas)                   | < 1.5 s                 |
+| FPS pendant scroll                              | 60 fps constants        |
+| Lighthouse Perf (page `/conceptions/[slug]`)    | ≥ 85 (compromis assumé) |
 
 ## Règles d'or
 

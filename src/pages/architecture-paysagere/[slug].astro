@@ -4,7 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import Prose from '@/components/astro/Prose.astro';
-import { SITE, type TypologieSlug } from '@/lib/site-config';
+import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -37,12 +37,12 @@ const faq = [
   {
     question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
     answer:
-      'Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d\'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).',
+      "Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).",
   },
   {
-    question: "Intervenez-vous sur des projets hors Aquitaine / Corrèze ?",
+    question: 'Intervenez-vous sur des projets hors Aquitaine / Corrèze ?',
     answer:
-      '[À FOURNIR PAR JONATHAN : politique d\'intervention hors territoires historiques. Si oui, préciser les frais de déplacement et conditions.]',
+      "[À FOURNIR PAR JONATHAN : politique d'intervention hors territoires historiques. Si oui, préciser les frais de déplacement et conditions.]",
   },
 ];
 
@@ -73,13 +73,18 @@ const schema = jsonLdGraph([
 >
   <!-- Breadcrumb visible -->
   <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
-    <nav aria-label="Fil d'Ariane" class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-forest)]/50">
+    <nav
+      aria-label="Fil d'Ariane"
+      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
+    >
       <ol class="flex flex-wrap items-center gap-2">
         {
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">{b.name}</a>
+                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                  {b.name}
+                </a>
               ) : (
                 <span class="text-[var(--color-forest)]/80">{b.name}</span>
               )}
@@ -94,18 +99,24 @@ const schema = jsonLdGraph([
   <!-- HERO ───────────────────────────────────────────────── -->
   <Section variant="cream" tight class="pt-0">
     <div class="max-w-4xl">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Typologie · {typologie.nomProprietaire}
       </p>
-      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+      >
         {typologie.h1Seo}.
       </h1>
-      <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] italic text-[var(--color-forest)]/60">
+      <p
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic"
+      >
         {typologie.nomProprietaire} — {typologie.exemple}.
       </p>
-      <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
-        [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour {typologie.nomProprietaire} — ce
-        qui définit cette typologie, ses enjeux, son atmosphère.]
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
+        [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour {typologie.nomProprietaire} — ce qui
+        définit cette typologie, ses enjeux, son atmosphère.]
       </p>
     </div>
   </Section>
@@ -115,20 +126,44 @@ const schema = jsonLdGraph([
     <h2 id="cles-title" class="sr-only">Chiffres-clés de la typologie</h2>
     <dl class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
       <div>
-        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Surface</dt>
-        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.surface}</dd>
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+          Surface
+        </dt>
+        <dd
+          class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+        >
+          {typologie.surface}
+        </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Budget travaux</dt>
-        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.budgetTravaux}</dd>
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+          Budget travaux
+        </dt>
+        <dd
+          class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+        >
+          {typologie.budgetTravaux}
+        </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Étude (TTC)</dt>
-        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.prixEtude}</dd>
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+          Étude (TTC)
+        </dt>
+        <dd
+          class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+        >
+          {typologie.prixEtude}
+        </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-moss)]">Suivi chantier</dt>
-        <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">{typologie.suiviChantierTaux}</dd>
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+          Suivi chantier
+        </dt>
+        <dd
+          class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
+        >
+          {typologie.suiviChantierTaux}
+        </dd>
       </div>
     </dl>
   </Section>
@@ -179,9 +214,14 @@ const schema = jsonLdGraph([
             <details class="group">
               <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
                 <span>{item.question}</span>
-                <span class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                <span
+                  class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
               </summary>
-              <p class="pb-6 pr-10 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
                 {item.answer}
               </p>
             </details>
@@ -200,19 +240,23 @@ const schema = jsonLdGraph([
       intro="[À FOURNIR PAR JONATHAN : sélection de 3 à 5 projets de cette typologie, via Sanity Studio.]"
     />
     <p class="text-sm text-[var(--color-forest)]/60">
-      Quand des projets auront été publiés dans Sanity Studio avec cette typologie, ils
-      apparaîtront automatiquement ici.
+      Quand des projets auront été publiés dans Sanity Studio avec cette typologie, ils apparaîtront
+      automatiquement ici.
     </p>
   </Section>
 
   <!-- CTA ─────────────────────────────────────────────── -->
   <Section variant="forest" topDivider>
     <div class="text-center">
-      <p class="font-mono text-xs uppercase tracking-[0.28em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
         Étude · {typologie.prixEtude}
       </p>
-      <h2 class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]">
-        Votre <em class="italic text-[var(--color-gold)]">{typologie.nomProprietaire.toLowerCase()}</em>,<br />
+      <h2
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
+      >
+        Votre <em class="text-[var(--color-gold)] italic"
+          >{typologie.nomProprietaire.toLowerCase()}</em
+        >,<br />
         étudié précisément.
       </h2>
       <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
@@ -227,7 +271,10 @@ const schema = jsonLdGraph([
           Démarrer mon étude
           <span aria-hidden="true">→</span>
         </a>
-        <a href={`tel:${SITE.contact.phone}`} class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]">
+        <a
+          href={`tel:${SITE.contact.phone}`}
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+        >
           {SITE.contact.phoneDisplay}
         </a>
       </div>

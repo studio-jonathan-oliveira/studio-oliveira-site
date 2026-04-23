@@ -14,11 +14,11 @@ Pas `from 'motion'` (qui exporte la version VanillaJS). La version React est `mo
 
 ## Timing de référence — éditorial, pas corporate
 
-| Cas | Duration | Ease |
-|---|---|---|
-| Hover subtil | 200 ms | `ease-out` |
-| Apparition section | 400 ms | `[0.16, 1, 0.3, 1]` (custom, `--ease-out-editorial`) |
-| Transition de page | 500-700 ms | `[0.76, 0, 0.24, 1]` (`--ease-in-out-editorial`) |
+| Cas                  | Duration    | Ease                                                 |
+| -------------------- | ----------- | ---------------------------------------------------- |
+| Hover subtil         | 200 ms      | `ease-out`                                           |
+| Apparition section   | 400 ms      | `[0.16, 1, 0.3, 1]` (custom, `--ease-out-editorial`) |
+| Transition de page   | 500-700 ms  | `[0.76, 0, 0.24, 1]` (`--ease-in-out-editorial`)     |
 | Reveal typographique | 800-1200 ms | `[0.16, 1, 0.3, 1]` + stagger 30-50ms par lettre/mot |
 
 **Ne jamais** : `type: 'spring'` avec bounce visible, `duration < 150ms` (saccadé), `duration > 1500ms` (traîne).
@@ -68,9 +68,11 @@ const item = {
 
 <motion.ul variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
   {items.map((it) => (
-    <motion.li key={it.id} variants={item}>{it.content}</motion.li>
+    <motion.li key={it.id} variants={item}>
+      {it.content}
+    </motion.li>
   ))}
-</motion.ul>
+</motion.ul>;
 ```
 
 ## AnimatePresence pour sorties
@@ -101,6 +103,7 @@ Les composants Motion sont React → à importer dans un `.tsx` hydraté.
 ---
 import { FadeIn } from '@/components/islands/FadeIn';
 ---
+
 <FadeIn client:visible>
   <h2>Titre</h2>
 </FadeIn>

@@ -14,13 +14,14 @@
   height="100%"
 >
   <filter id="grain-noise">
-    <feTurbulence type="fractalNoise" baseFrequency="1.8" numOctaves="2" stitchTiles="stitch" />
+    <feTurbulence type="fractalNoise" baseFrequency="1.8" numOctaves="2" stitchTiles="stitch"
+    ></feTurbulence>
     <feColorMatrix
       values="0 0 0 0 0.10
               0 0 0 0 0.17
               0 0 0 0 0.12
               0 0 0 0.9 0"
-    />
+    ></feColorMatrix>
   </filter>
   <rect width="100%" height="100%" filter="url(#grain-noise)"></rect>
 </svg>

@@ -34,7 +34,7 @@ const alignment = align === 'center' ? 'text-center mx-auto items-center' : '';
 <header class:list={['mb-16 flex max-w-2xl flex-col', alignment, className]}>
   {
     eyebrow && (
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         {eyebrow}
       </p>
     )
@@ -49,12 +49,6 @@ const alignment = align === 'center' ? 'text-center mx-auto items-center' : '';
   >
     <slot name="title">{title}</slot>
   </Tag>
-  {
-    intro && (
-      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed opacity-70">
-        {intro}
-      </p>
-    )
-  }
+  {intro && <p class="mt-6 text-[length:var(--text-base)] leading-relaxed opacity-70">{intro}</p>}
   <slot />
 </header>

@@ -23,7 +23,7 @@ Synthèse du positionnement, des cibles et du parcours d'acquisition, extraite d
 ### Claim central
 
 > « Je travaille comme un architecte/designer mais je suis noyé dans le marché de l'aménagement paysager. »
-> — *Jonathan, brief site*
+> — _Jonathan, brief site_
 
 L'enjeu de la refonte : faire **basculer intelligemment la perception** depuis le contexte marché (paysagiste/jardinier/artisan) vers **architecture/design** (studio/agence créative). **Créer la référence par la distinction.**
 
@@ -32,6 +32,7 @@ L'enjeu de la refonte : faire **basculer intelligemment la perception** depuis l
 « Design spatial spécialisé dans l'aménagement environnemental immersif et expérientiel. »
 
 Trois piliers :
+
 1. Le **bâti**
 2. L'**environnement**
 3. L'**humain**
@@ -51,6 +52,7 @@ Démarche : interprétation de la nature à l'état primitif + étude des effets
 Extrait verbatim du process :
 
 > « Je ne vends pas une étude, je vends :
+>
 > - une vision
 > - une méthode
 > - une expérience
@@ -68,12 +70,12 @@ Extrait verbatim du process :
 
 Décliné en 4 typologies (propriétaires) :
 
-| Typologie | Surface | Budget travaux | Prix étude TTC |
-|---|---|---|---|
-| **Micro-urbain** | < 50 m² | < 20 k€ | 1 200 € |
-| **Cœur urbain** | 50-300 m² | 20-50 k€ | 2 750 € |
-| **Frange urbaine** | 300-1 500 m² | 50-90 k€ | 4 250 € |
-| **Domaines & Caractère** | sans limite | > 90 k€ | 6 500 € |
+| Typologie                | Surface      | Budget travaux | Prix étude TTC |
+| ------------------------ | ------------ | -------------- | -------------- |
+| **Micro-urbain**         | < 50 m²      | < 20 k€        | 1 200 €        |
+| **Cœur urbain**          | 50-300 m²    | 20-50 k€       | 2 750 €        |
+| **Frange urbaine**       | 300-1 500 m² | 50-90 k€       | 4 250 €        |
+| **Domaines & Caractère** | sans limite  | > 90 k€        | 6 500 €        |
 
 Suivi de chantier : 6 à 12 % du montant des travaux selon la typologie.
 
@@ -109,7 +111,7 @@ Plantes naturelles + artificielles (pas de stabilisé). Cible principale : **pro
 
 ### Persona 3 : Directeur hôtellerie/restauration premium
 
-- Directeur ou propriétaire d'établissement : hôtel 4-5*, relais & châteaux, maison d'hôtes de charme, restaurant gastronomique, café concept, Airbnb atypique
+- Directeur ou propriétaire d'établissement : hôtel 4-5\*, relais & châteaux, maison d'hôtes de charme, restaurant gastronomique, café concept, Airbnb atypique
 - **Recherche** : scénographie végétale différenciante, alignée avec la marque, exploitable photographiquement sur réseaux (instagrammable), entretenable
 - **Parcours de recherche type** : « décorateur végétal hôtellerie », « aménagement végétal restaurant », « mur végétal sur mesure », « décor plantes bureaux »
 - **Déclencheur** : ouverture d'établissement, rénovation, repositionnement marketing
@@ -132,6 +134,7 @@ Plantes naturelles + artificielles (pas de stabilisé). Cible principale : **pro
 ### Étape 2 — Rendez-vous au bureau (1 h 45 – 2 h)
 
 Déroulé en 5 temps :
+
 1. **Accueil & mise en confiance** (10 min) — café, observation dynamique du client
 2. **Récit du client** — mode de vie, attentes profondes, frustrations, rêves (reformulation)
 3. **Immersion & co-construction visuelle** (30 min) — références/inspirations, tri d'appréciations
@@ -140,7 +143,7 @@ Déroulé en 5 temps :
 
 **Sortie** : validation de l'étude, délai de 72 h à 1 semaine pour acceptation.
 
-**Implication site** : le site doit déjà **pré-éduquer** le prospect sur les 4 typologies et le process d'étude, pour que le RDV bureau soit une *confirmation* et non une *découverte*. Chaque typologie a sa page dédiée avec livrables, tarifs, durée.
+**Implication site** : le site doit déjà **pré-éduquer** le prospect sur les 4 typologies et le process d'étude, pour que le RDV bureau soit une _confirmation_ et non une _découverte_. Chaque typologie a sa page dédiée avec livrables, tarifs, durée.
 
 ### Étape 3 — Point de validation à distance (15 min)
 
@@ -152,25 +155,27 @@ Appel / visio pour lever les hésitations finales et fermer la vente. Signature 
 
 ## Différenciation vs concurrence paysagiste traditionnelle
 
-| Axe | Paysagiste traditionnel | Studio J Oliveira |
-|---|---|---|
-| Métier déclaré | Paysagiste / entreprise d'aménagement | **Studio de design biophilique** — architecture paysagère |
-| Livrables d'étude | Devis simple, plan 2D basique | **Étude préliminaire + étude projet structurées** : plan masse, coupes, plan de nivellement, gestion EP, plans de plantations, palettes végétales et matériaux, rendus d'ambiance, DCE |
-| Tarification | Incluse dans les travaux, souvent gratuite | **Étude facturée séparément** (1 200 à 6 500 €) — posture de designer |
-| Relation client | Vente classique | **Pas de vente** — « choisir, co-construire, s'élever » |
-| Réalisation | Interne (souvent) | **Externalisée** via artisans mis en concurrence, suivis par le studio |
-| Positionnement marque | Service local | **Studio identifié**, ADN biophilique, ambition internationale |
-| Coffret d'étude | Non | **Coffret physique remis** (USB + livret d'identité A5 + carnet de notes + stylo) |
+| Axe                   | Paysagiste traditionnel                    | Studio J Oliveira                                                                                                                                                                      |
+| --------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Métier déclaré        | Paysagiste / entreprise d'aménagement      | **Studio de design biophilique** — architecture paysagère                                                                                                                              |
+| Livrables d'étude     | Devis simple, plan 2D basique              | **Étude préliminaire + étude projet structurées** : plan masse, coupes, plan de nivellement, gestion EP, plans de plantations, palettes végétales et matériaux, rendus d'ambiance, DCE |
+| Tarification          | Incluse dans les travaux, souvent gratuite | **Étude facturée séparément** (1 200 à 6 500 €) — posture de designer                                                                                                                  |
+| Relation client       | Vente classique                            | **Pas de vente** — « choisir, co-construire, s'élever »                                                                                                                                |
+| Réalisation           | Interne (souvent)                          | **Externalisée** via artisans mis en concurrence, suivis par le studio                                                                                                                 |
+| Positionnement marque | Service local                              | **Studio identifié**, ADN biophilique, ambition internationale                                                                                                                         |
+| Coffret d'étude       | Non                                        | **Coffret physique remis** (USB + livret d'identité A5 + carnet de notes + stylo)                                                                                                      |
 
 ---
 
 ## Inspirations de référence (fournies par Jonathan)
 
 **Sites web benchmarks** :
+
 - Minimalistes/efficaces : `omaivillas.com`, `archidomo.fr`, `studiodado.com`, `studioredd.nl`, `designbyad.com.au`
 - Immersifs/premiums : `9to5studio.it`, `shed.design`, `findrealestate.com`, `springs.estate`, `felix-nieto.com`
 
 **Territoires visuels externes (brief technique)** :
+
 - **Raffinement éditorial** : Aesop, Kinfolk, Hermès Jardins
 - **Immersion cinématique** : Apple, Lusion Studio
 

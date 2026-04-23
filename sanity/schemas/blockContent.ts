@@ -67,7 +67,12 @@ export default defineType({
       type: 'image',
       options: { hotspot: true },
       fields: [
-        { name: 'alt', type: 'string', title: 'Texte alternatif (alt)', validation: (r) => r.required() },
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Texte alternatif (alt)',
+          validation: (r) => r.required(),
+        },
         { name: 'caption', type: 'string', title: 'Légende' },
       ],
     }),
@@ -83,7 +88,10 @@ export default defineType({
             {
               type: 'image',
               options: { hotspot: true },
-              fields: [{ name: 'alt', type: 'string' }, { name: 'caption', type: 'string' }],
+              fields: [
+                { name: 'alt', type: 'string' },
+                { name: 'caption', type: 'string' },
+              ],
             },
           ],
           validation: (r) => r.min(2).max(3),

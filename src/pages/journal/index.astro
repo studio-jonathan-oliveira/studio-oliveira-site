@@ -3,12 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import { fetch } from '@/lib/sanity';
 import { articlesListQuery } from '@/lib/queries';
-import {
-  jsonLdGraph,
-  breadcrumbs,
-  organization,
-  localBusiness,
-} from '@/lib/schema-org';
+import { jsonLdGraph, breadcrumbs, organization, localBusiness } from '@/lib/schema-org';
 import { SITE } from '@/lib/site-config';
 
 interface Article {
@@ -57,15 +52,19 @@ const formatDate = (iso: string) =>
 >
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-moss)]">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Journal · {SITE.name}
       </p>
-      <h1 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight">
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+      >
         Notes de <em class="italic">studio</em>.
       </h1>
-      <p class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
-        [À FOURNIR PAR JONATHAN : 2-3 phrases d'introduction au journal — pourquoi ces articles,
-        ton éditorial, rythme de publication envisagé.]
+      <p
+        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+      >
+        [À FOURNIR PAR JONATHAN : 2-3 phrases d'introduction au journal — pourquoi ces articles, ton
+        éditorial, rythme de publication envisagé.]
       </p>
     </div>
   </Section>
@@ -74,10 +73,10 @@ const formatDate = (iso: string) =>
     {
       articles.length === 0 ? (
         <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
-          <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
             En préparation
           </p>
-          <p class="mt-4 max-w-lg mx-auto text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
+          <p class="mx-auto mt-4 max-w-lg text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
             Les premiers articles du journal seront publiés prochainement — une fois Sanity Studio
             configuré et les angles éditoriaux arrêtés. Cinq articles inauguraux sont prévus (voir
             <code class="font-mono text-xs">_brief/plan-seo.md §5</code>).
@@ -99,7 +98,7 @@ const formatDate = (iso: string) =>
                   ) : null}
                 </div>
                 <div class="mt-6">
-                  <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-moss)]">
+                  <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
                     {formatDate(article.publishedAt)}
                     {article.readingTime && ` · ${article.readingTime} min de lecture`}
                   </p>
@@ -107,7 +106,7 @@ const formatDate = (iso: string) =>
                     {article.title}
                   </h2>
                   {article.excerpt && (
-                    <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70 line-clamp-3">
+                    <p class="mt-3 line-clamp-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
                       {article.excerpt}
                     </p>
                   )}
