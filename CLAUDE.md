@@ -1,7 +1,7 @@
 # CLAUDE.md — Règles permanentes du projet
 
 **Destinataire** : toi, Claude, à chaque session de travail sur ce dépôt.
-**Dernière mise à jour** : 2026-04-22 (Phase 0).
+**Dernière mise à jour** : 2026-04-24 (Phase 0 — note reprise §11 ajoutée).
 
 ---
 
@@ -164,3 +164,31 @@ pnpm tsx scripts/process-frames.ts <slug> <input-dir> [video-file]
 
 **Path pnpm Windows local** (si non-PATH dans shell fraîchement spawné) :
 `C:\Users\Morgan\AppData\Local\Microsoft\WinGet\Links\pnpm.exe`
+
+---
+
+## 11. Reprise prochaine session — animations designbyad
+
+**Note posée le 2026-04-24 par Morgan.** À traiter dès la prochaine ouverture de session.
+
+**Objectif** : compléter / affiner la reproduction de la structure et des effets d'animations de `designbyad.com.au` (home, menu, transitions).
+
+**Outils à mobiliser** :
+
+- **MCP `magic`** (`@21st-dev/magic`, scope user) — composants UI, inspiration, refiner. ⚠️ Vérifier qu'il est toujours connecté en début de session (`/mcp`). Sinon réinstaller :
+  ```
+  claude mcp add magic --scope user --env API_KEY="<clé>" -- npx -y @21st-dev/magic@latest
+  ```
+- **Skill `ui-ux` (« pro max »)** — à charger côté Morgan si pas natif dans l'env. Confirmer dispo avant usage.
+- **Vidéos de référence designbyad** — Morgan doit les pousser depuis son PC dev dans `_brief/client-assets/refs-designbyad/` (nommage explicite : `home.mp4`, `menu-open.mp4`, `project-hover.mp4`, etc.) avec un mini-README qui dit ce que chaque vidéo capture.
+
+**État existant à connaître avant d'ouvrir** : un audit des patterns designbyad déjà implémentés a été fait. **13 patterns sont déjà codés** (smooth scroll Lenis, mix-blend-difference header, burger↔X morph, custom cursor, menu fullscreen curtain + stagger, link underline, SplitText, justified text dynamique, image reveal masque, parallax inverse cadre/image, manifeste justify uppercase, alternance cream/ink). Voir `src/components/astro/{SmoothScroll,Header,MenuPrimary,CustomCursor}.astro`, `src/scripts/motion-enhance.ts`, `src/styles/global.css`, `src/pages/index.astro`.
+
+**Workflow prévu** :
+
+1. Extraire frames clés des vidéos refs via ffmpeg (créer `scripts/extract-ref-frames.ts` si besoin)
+2. Comparer frame-à-frame avec l'existant → liste de deltas
+3. Patterns probablement manquants à vérifier : transitions inter-pages, hero entry sequence, hover project cards, footer reveal, loader/preload, marquee infini, scroll-snap horizontal éventuel
+4. Implémenter les deltas, exécuter skill `simplify` après, MCP `magic` pour générer composants candidats si pertinent
+
+**Garde-fou** : Phase 0 **toujours pas validée** par Morgan. Ces animations relèvent de Phase 1+. Demander green light explicite avant d'écrire du code production. Tant que pas validé : audit, plan, POC isolés OK ; pas de modification massive de pages live.
