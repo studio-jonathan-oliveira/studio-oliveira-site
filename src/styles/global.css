@@ -1,52 +1,56 @@
 @import 'tailwindcss';
 
 /* Fonts — Fontsource self-hosted, font-display: swap par défaut.
-   Fraunces = serif editorial variable (heading), caractère italique expressif.
-   Geist Sans + Mono = sans-serif géométrique moderne (body + eyebrow mono). */
-@import '@fontsource-variable/fraunces';
-@import '@fontsource-variable/fraunces/wght-italic.css';
-@import '@fontsource-variable/geist';
+   Refonte DA 2026-04-24 (brief Jonathan) :
+   - Jost Variable = alternative OSS à Futura (titres + corps)
+   - Gloock = serif affichage pour mots-clés et compléments titres
+   - Geist Mono conservé pour eyebrows / labels techniques
+   Ancien duo Fraunces + Geist retiré. */
+@import '@fontsource-variable/jost';
+@import '@fontsource/gloock';
 @import '@fontsource-variable/geist-mono';
 
 /*
  * Design tokens — Studio J Oliveira
  *
- * Palette validée par Morgan 2026-04-23 (rapport audit DA) : accent = latérite
- * issu du coffret d'étude physique Jonathan (charte officielle l.481 PDF).
+ * Palette refondue 2026-04-24 (brief Jonathan) :
+ *   #70725B — vert grisé (accent sobre, fond section foncée possible)
+ *   #A94930 — rouge latérite (accent signature, hover mots-clés)
+ *   #1D1F1B — gris profond (texte principal sur fond crème)
+ *   #F5F1EA — crème papier (fond unique home)
  *
- * Couleurs confirmées par les documents client :
- *   #6F7E4E — vert mousse (logo primaire, coffret)
- *   #A94930 — rouge latérite (coffret, accent signature)
+ * Règle texte Jonathan : une couleur de texte par fond (figée).
+ *   Fond clair → #1D1F1B (gris profond) ou #70725B (vert grisé, secondaire)
+ *   Fond foncé → #F5F1EA (crème) ou blanc
+ *   Plus jamais de latérite au milieu d'un titre (réservé aux hover mots-clés).
  *
- * Couleurs techniques :
- *   #F5F1EA — crème papier (fond)
- *   #1A2B1F — vert sombre (texte)
+ * Alias rétro-compat : --color-forest ancien vert sombre (#1A2B1F) conservé
+ * comme token de fond pour variants dark historiques, mais la home devient uni-crème.
  */
 
 @theme {
-  /* Couleurs marque — primaires */
+  /* Couleurs marque — primaires (refonte 2026-04-24) */
   --color-cream: #f5f1ea;
-  --color-forest: #1a2b1f;
-  --color-moss: #6f7e4e;
+  --color-moss: #70725b;
   --color-laterite: #a94930;
+  --color-ink: #1d1f1b;
 
-  /* Couleurs accents secondaires */
-  --color-forest-deep: #3d5a3e;
-  --color-earth: #8b7355;
+  /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
+     Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */
+  --color-forest: var(--color-ink);
+  --color-forest-deep: #2a2d28;
 
-  /*
-   * Alias rétro-compat : --color-gold était l'accent historique (or végétal
-   * #D4B896). Remplacé par latérite suite à l'audit DA. Les usages existants
-   * pointent désormais automatiquement vers latérite — pas besoin de touch
-   * chaque composant. Migration future : renommer progressivement --color-gold
-   * → --color-accent dans les fichiers modifiés pour les raisons métier.
-   */
+  /* Accent signature — latérite sur hover mots-clés et CTA primaire */
   --color-gold: var(--color-laterite);
   --color-accent: var(--color-laterite);
 
-  /* Typographie — Fraunces (serif editorial) + Geist (sans-serif + mono) */
-  --font-heading: 'Fraunces Variable', 'Georgia', serif;
-  --font-body: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  /* Typographies — refonte Jonathan 2026-04-24
+     Jost* = alternative OSS à Futura (titres + corps)
+     Gloock = serif affichage (mots-clés, compléments titre, hover-accent)
+     Geist Mono = eyebrows / labels techniques */
+  --font-heading: 'Jost Variable', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Jost Variable', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  --font-display: 'Gloock', 'Playfair Display', 'Georgia', serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 
   /* Échelle fluide — clamp() partout, pas de breakpoints rigides */
@@ -224,20 +228,20 @@ header.intro-revealing {
   h5,
   h6 {
     font-family: var(--font-heading);
-    font-weight: 500;
+    /* Jost Bold (700) — caractère géométrique premium, équivalent Futura Bold */
+    font-weight: 700;
     letter-spacing: -0.015em;
     text-wrap: balance;
-    /* Fraunces optique pour display sizes : opsz max + légère négative pour resserrer */
-    font-variation-settings: 'opsz' 144;
   }
-  /* Italique Fraunces — réduire soft pour garder le caractère premium */
+  /* Les <em> dans les titres ne basculent PLUS automatiquement en couleur accent
+     (règle Jonathan 2026-04-24 : textes monochromes). Pour mettre un mot en
+     évidence, utiliser <span class="hover-accent"> ou <span class="display">. */
   h1 em,
   h2 em,
   h3 em,
   h4 em {
-    font-variation-settings:
-      'opsz' 144,
-      'SOFT' 50;
+    font-style: italic;
+    color: inherit;
   }
 
   p {
@@ -287,6 +291,32 @@ header.intro-revealing {
   /* Sur section sombre, les eyebrow moss restent lisibles, accent garde latérite */
   [data-theme='dark'] .eyebrow {
     color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+  }
+
+  /* Display — Gloock serif pour mots-clés et compléments de titre.
+     Usage : <span class="display">nature</span> dans un h1 Jost Bold. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0;
+  }
+
+  /* Hover accent — sur survol, un mot-clé bascule de Jost → Gloock serif +
+     couleur latérite. Signature interactive Jonathan 2026-04-24.
+     Usage : <span class="hover-accent">aménagement</span>.
+     Le font-family change en 0.25s easing editorial, l'italic est optionnel. */
+  .hover-accent {
+    cursor: pointer;
+    transition:
+      color 0.25s var(--ease-out-editorial),
+      font-family 0.25s var(--ease-out-editorial),
+      font-style 0.25s var(--ease-out-editorial);
+  }
+  .hover-accent:hover {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-laterite);
   }
 
   /* Link underline slide — signature designbyad.com.au :
