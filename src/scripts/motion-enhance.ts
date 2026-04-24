@@ -220,7 +220,6 @@ function setupSplitReveals(root: ParentNode) {
     el.dataset.splitDone = 'true';
 
     const types = (el.dataset.splitTypes || 'chars') as 'chars' | 'words' | 'lines';
-    const stagger = parseFloat(el.dataset.splitStagger || '0.025');
 
     const split = new SplitType(el, { types });
     const targets = types === 'lines' ? split.lines : types === 'words' ? split.words : split.chars;
@@ -236,16 +235,16 @@ function setupSplitReveals(root: ParentNode) {
       el.style.paddingBottom = '0.1em';
     }
 
-    // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24 : « animations
-    // dépendantes du scroll doivent être inversées si on scroll dans l'autre
-    // sens »). progress 0 = off-screen → 110% ; progress 0.5+ = à l'écran → 0% ;
-    // staggé par index pour effet cascade qui se joue/rejoue au scroll.
+    // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24).
+    // Window compacte 0.15 → 0.35 : les textes se révèlent dès que le target
+    // entre dans le viewport (évite « il faut scroll beaucoup pour les voir
+    // s'afficher entier, sinon ils tombent »). Stagger court entre targets.
     scroll(
       (progress: number) => {
         const count = targets.length;
         targets.forEach((t, i) => {
-          const localStart = Math.min(0.5, (i / count) * 0.35);
-          const localEnd = Math.min(0.9, localStart + 0.35 + stagger * 1.2);
+          const localStart = 0.15 + (i / Math.max(count, 1)) * 0.08;
+          const localEnd = localStart + 0.18;
           const local = Math.max(0, Math.min(1, (progress - localStart) / (localEnd - localStart)));
           const translateY = (1 - local) * 110;
           (t as HTMLElement).style.transform = `translateY(${translateY}%)`;
@@ -682,28 +681,25 @@ function setupHorizontalTypologies(root: ParentNode) {
           }
         }
 
-        // Pattern designbyad.com.au exact (analyse 2026-04-24) : pour CHAQUE
-        // panel, on calcule sa position viewport (bord droit / viewport width)
-        // et on translate l'image inverse — elle « reste en place » pendant
-        // que le cadre glisse vers la gauche. Amplitude 140px = marge overflow
-        // des inner (wider que frame). Les textes bougent à 40% de l'amplitude
-        // pour la profondeur stratifiée.
+        // Parallax image inverse dans le cadre — pattern designbyad (feedback
+        // Morgan « augmenter l'effet de parallax sur les images dans leur cadres »).
+        // Amplitude doublée 140 → 280px. Image reste en place visuellement
+        // pendant que le cadre glisse → sensation profondeur forte.
+        // Texte : pas de parallax horizontal (retiré — causait les "textes
+        // figés à moitié" — il se déplace naturellement avec le rail).
         const vw = window.innerWidth;
         layers.forEach((layer) => {
           if (!layer.frame) return;
           const rect = layer.frame.getBoundingClientRect();
-          // posRight : 1 quand frame est entièrement à droite du viewport,
-          // 0 quand entièrement à gauche — normalisation [0, 1] clampée.
           const posRight = Math.max(0, Math.min(1, rect.right / vw));
-          // Centré : 0.5 quand le cadre est au milieu → offset 0 ; 1 quand à droite → +140px
-          // (image en retard, "révèle" le côté droit) ; 0 quand à gauche → -140px.
           const centered = posRight - 0.5;
-          const imgShift = centered * 140;
+          const imgShift = centered * 280;
           if (layer.image) {
             layer.image.style.transform = `translate3d(${-imgShift}px, 0, 0)`;
           }
           if (layer.text) {
-            layer.text.style.transform = `translate3d(${-imgShift * 0.4}px, 0, 0)`;
+            // Reset : le texte ne subit plus de parallax horizontal forcé
+            layer.text.style.transform = '';
           }
         });
 

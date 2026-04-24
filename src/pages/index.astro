@@ -13,7 +13,10 @@
  * Tous les textes sont soit sourcés du PDF process Jonathan, soit marqués [À FOURNIR].
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import IntroBumper from '@/components/astro/IntroBumper.astro';
+// IntroBumper désactivé 2026-04-24 : couvrait l'écran en noir si la vidéo
+// logo ne jouait pas (fallback 3.5s + dismiss parfois laggy). Morgan
+// signalait « accueil toujours noir ». À réactiver quand Jonathan fournira
+// une vidéo logo plus robuste + une seconde de fallback.
 import { Image } from 'astro:assets';
 // Slideshow hero — 4 créations Jonathan qui crossfadent en boucle (brief Morgan)
 import hero01 from '@/assets/home/hero-01.jpg';
@@ -129,13 +132,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
   description="Studio de design paysagiste biophilique à Brive-la-Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine et Limousin. Architectures vivantes, bâti × environnement × humain."
   darkHero
 >
-  {
-    /* Intro logo vidéo centré — brief Jonathan 2026-04-24 :
-      « Logo : plutôt central, en apparition direct pour qu'il marque les esprits
-      > avec ou sans animation mais il faut que quelque chose se passe avec le logo,
-      une transition vers une photo/vidéo ou autre ». */
-  }
-  <IntroBumper slot="intro" />
+  {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
 
   <!-- 01 · HERO IMMERSIF — sticky "recouvrement" style Polestar 5 (mail Jonathan).
        Le hero reste fixé en arrière-plan pendant que la section suivante
