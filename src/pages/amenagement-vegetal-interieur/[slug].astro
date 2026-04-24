@@ -4,7 +4,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import Prose from '@/components/astro/Prose.astro';
+import Gallery from '@/components/astro/Gallery.astro';
 import { SITE } from '@/lib/site-config';
+import { getVerticaleGallery } from '@/lib/galleries';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -26,6 +28,7 @@ interface Props {
 }
 
 const { verticale } = Astro.props;
+const gallery = getVerticaleGallery(verticale.slug);
 
 const faq = [
   {
@@ -110,6 +113,20 @@ const schema = jsonLdGraph([
       </p>
     </div>
   </Section>
+
+  {
+    gallery.length > 0 && (
+      <Section variant="cream" topDivider aria-labelledby="gallery-title">
+        <h2 id="gallery-title" class="sr-only">
+          Visuels — {verticale.label}
+        </h2>
+        <Gallery images={gallery} label={verticale.label} />
+        <p class="mt-6 font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase">
+          Projets livrés · Studio J Oliveira
+        </p>
+      </Section>
+    )
+  }
 
   <Section variant="cream" topDivider aria-labelledby="desc-title">
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
