@@ -461,13 +461,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
               </div>
 
               <div class="htypo-copy" data-parallax-layer="text">
-                <p
-                  data-split
-                  data-split-types="chars"
-                  data-split-stagger="0.02"
-                  data-split-duration="0.8"
-                  class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase"
-                >
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                   {t.index} &nbsp;·&nbsp; Typologie
                 </p>
                 <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-cream)] md:text-[length:var(--text-6xl)]">
@@ -717,15 +711,15 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       opacity: 1;
     }
 
-    /* Hero sticky — transition "recouvrement" style Polestar 5 (mail Jonathan) :
-       le hero reste fixé pendant que la section suivante vient se superposer
-       au scroll. Solution : position sticky top 0, les sections suivantes ont
-       un z-index supérieur et glissent par-dessus. */
+    /* Hero sticky — transition "recouvrement" style Polestar 5 (mail Jonathan).
+       Le hero reste fixé, les sections suivantes (z-index 1) glissent dessus.
+       PAS de z-index explicite ici : avec z-index:0 on créait un stacking
+       context qui clampait les enfants -z-10 (images slideshow) derrière le
+       bg de la section → écran noir sur le hero. */
     .hero-sticky {
       position: sticky;
       top: 0;
       height: 100vh;
-      z-index: 0;
     }
     /* Toutes les sections après le hero doivent être au-dessus dans le stacking */
     .archi-intro,
@@ -1067,11 +1061,11 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       transition: opacity 60ms linear;
     }
 
-    /* Typologies — scroll horizontal pinned (signature PDF l.750) */
+    /* Typologies — scroll horizontal pinned. Refonte 2026-04-24 :
+       550vh pour ralentir le défilement horizontal (feedback Morgan :
+       « scroll horizontal plus lent »). */
     .htypo-section {
-      /* Hauteur = nb panneaux × viewport pour mapper scroll vertical → translateX rail.
-         400vh = 4 panneaux. Ajuster si nombre de typologies change. */
-      height: 400vh;
+      height: 550vh;
       position: relative;
     }
     .htypo-sticky {
