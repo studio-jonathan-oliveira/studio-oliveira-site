@@ -110,12 +110,12 @@ const methode = [
 ];
 
 // Zones d'intervention — cf. site-config.ts (sourcé)
-const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
+const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
 ---
 
 <BaseLayout
   title="Studio J Oliveira — Designer paysagiste & design biophilique"
-  description="Studio de design paysagiste biophilique à Brive-la-Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine, Limousin, Toulouse. Architectures vivantes, bâti × environnement × humain."
+  description="Studio de design paysagiste biophilique à Brive-la-Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine et Limousin. Architectures vivantes, bâti × environnement × humain."
   darkHero
 >
   <!-- 01 · HERO IMMERSIF ─────────────────────────────────────────── -->
@@ -296,30 +296,13 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     </div>
   </section>
 
-  <!-- 02 · STUDIO BIOPHILIQUE — section immersive forest sombre ─────────── -->
+  <!-- 02 · STUDIO BIOPHILIQUE — refonte 2026-04-24 : fond uni cream (brief Jonathan) -->
   <section
     id="studio-lead"
     data-section-label="Studio"
-    data-theme="dark"
-    class="studio-biophilique relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="studio-biophilique relative isolate overflow-hidden border-t border-[var(--color-ink)]/8 bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="studio-lead-title"
   >
-    <!-- Image végétale en fond (voile + halo) -->
-    <div class="absolute inset-0 -z-10">
-      <Image
-        src={heroImage}
-        alt=""
-        widths={[960, 1440, 1920]}
-        sizes="100vw"
-        quality={60}
-        format="webp"
-        class="h-full w-full object-cover object-center"
-        loading="lazy"
-      />
-      <div class="absolute inset-0 bg-[var(--color-forest)]/88" aria-hidden="true"></div>
-      <div class="studio-biophilique-halo" aria-hidden="true"></div>
-    </div>
-
     <div class="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-40">
       <div class="grid gap-16 md:grid-cols-12 md:gap-20">
         <div class="md:col-span-7" data-reveal="up">
@@ -336,12 +319,10 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
             <span data-mask-line class="block pb-[0.05em]">
               Design <span class="display">végétal</span> en
             </span>
-            <span data-mask-line class="display block pb-[0.12em]">
-              Aquitaine, Limousin, Toulouse.
-            </span>
+            <span data-mask-line class="display block pb-[0.12em]">Aquitaine, Limousin.</span>
           </h2>
           <p
-            class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
+            class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/80"
           >
             Art de conception architecturale inspiré des environnements naturels et de leurs effets
             sur les humains. Une démarche
@@ -351,7 +332,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
           </p>
           <a
             href="/studio"
-            class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/30 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)] uppercase transition-colors hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-ink)]/25 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)] uppercase transition-colors hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
           >
             Lire le manifeste complet
             <span aria-hidden="true">→</span>
@@ -372,7 +353,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
             Zones d'intervention
           </p>
           <ul
-            class="mt-8 divide-y divide-[var(--color-cream)]/12 border-t border-b border-[var(--color-cream)]/12"
+            class="mt-8 divide-y divide-[var(--color-ink)]/10 border-t border-b border-[var(--color-ink)]/10"
           >
             {
               zones.map((zone, i) => (
@@ -381,44 +362,43 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
                     <span class="w-7 font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span class="font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-none text-[var(--color-cream)] transition-colors group-hover:text-[var(--color-laterite)]">
-                      <em class="italic">{zone}</em>
+                    <span class="font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-none text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-laterite)]">
+                      {zone}
                     </span>
                   </span>
-                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/40 transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/40 transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
                     →
                   </span>
                 </li>
               ))
             }
           </ul>
-          <p class="mt-6 text-sm leading-relaxed text-[var(--color-cream)]/65">
-            Studio basé à Brive-la-Gaillarde. Déplacements réguliers vers Bordeaux, Limoges et
-            Toulouse — aucun bureau satellite, le studio vient au projet.
+          <p class="mt-6 text-sm leading-relaxed text-[var(--color-ink)]/70">
+            Studio basé à Brive-la-Gaillarde. Déplacements réguliers vers Bordeaux et Limoges —
+            aucun bureau satellite, le studio vient au projet.
           </p>
         </aside>
       </div>
     </div>
   </section>
 
-  <!-- 03 · TYPOLOGIES — SCROLL HORIZONTAL PINNED (signature PDF l.750) ──── -->
+  <!-- 03 · TYPOLOGIES — refonte 2026-04-24 : fond uni cream (brief Jonathan) -->
   <section
     id="typologies"
     data-section-label="Typologies"
     data-hscroll-typologies
-    data-theme="dark"
-    class="htypo-section relative bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="htypo-section relative border-t border-[var(--color-ink)]/8 bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
       <!-- Header fixe -->
       <header class="htypo-header">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/50 uppercase">
-          <span class="text-[var(--color-cream)]/30">03</span> &nbsp;·&nbsp; Typologies
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <span class="text-[var(--color-ink)]/35">03</span> &nbsp;·&nbsp; Typologies
         </p>
         <h2
           id="typologies-title"
-          class="mt-4 max-w-md pb-[0.12em] font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.15] text-[var(--color-cream)]/90 md:text-[length:var(--text-2xl)]"
+          class="mt-4 max-w-md pb-[0.12em] font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.15] text-[var(--color-ink)] md:text-[length:var(--text-2xl)]"
         >
           Quatre manières <span class="display">d'habiter</span>
           un jardin.
@@ -459,29 +439,29 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
                 <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                   {t.index} &nbsp;·&nbsp; Typologie
                 </p>
-                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] md:text-[length:var(--text-hero)]">
-                  <em class="italic">{t.nom}</em>
+                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-ink)] md:text-[length:var(--text-hero)]">
+                  <span class="display">{t.nom}</span>
                 </h3>
-                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.15] text-[var(--color-cream)]/80 italic md:text-[length:var(--text-3xl)]">
+                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.15] text-[var(--color-ink)]/75 md:text-[length:var(--text-3xl)]">
                   {t.phrase}
                 </p>
 
-                <dl class="htypo-meta mt-8 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/70 uppercase">
+                <dl class="htypo-meta mt-8 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/70 uppercase">
                   <div>
-                    <dt class="text-[var(--color-cream)]/40">Surface</dt>
-                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.surface}</dd>
+                    <dt class="text-[var(--color-ink)]/45">Surface</dt>
+                    <dd class="mt-1.5 text-[var(--color-ink)]">{t.surface}</dd>
                   </div>
                   <div>
-                    <dt class="text-[var(--color-cream)]/40">Budget</dt>
-                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.budget}</dd>
+                    <dt class="text-[var(--color-ink)]/45">Budget</dt>
+                    <dd class="mt-1.5 text-[var(--color-ink)]">{t.budget}</dd>
                   </div>
                   <div>
-                    <dt class="text-[var(--color-cream)]/40">Étude</dt>
+                    <dt class="text-[var(--color-ink)]/45">Étude</dt>
                     <dd class="mt-1.5 text-[var(--color-laterite)]">{t.etude}</dd>
                   </div>
                 </dl>
 
-                <span class="htypo-cta-static mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/40 pb-1 text-sm tracking-wide text-[var(--color-cream)]/80 transition-colors group-hover:border-[var(--color-laterite)] group-hover:text-[var(--color-laterite)]">
+                <span class="htypo-cta-static mt-10 inline-flex items-center gap-3 border-b border-[var(--color-ink)]/35 pb-1 text-sm tracking-wide text-[var(--color-ink)]/85 transition-colors group-hover:border-[var(--color-laterite)] group-hover:text-[var(--color-laterite)]">
                   Explorer la typologie
                   <span aria-hidden="true">→</span>
                 </span>
@@ -624,16 +604,15 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     </div>
   </section>
 
-  <!-- 06 · CTA CONTACT ───────────────────────────────────────────── -->
+  <!-- 06 · CTA CONTACT — refonte 2026-04-24 : fond uni cream (brief Jonathan) -->
   <section
     id="contact-cta"
     data-section-label="Contact"
-    data-theme="dark"
-    class="border-t border-[var(--color-forest)]/10 bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
   >
     <div class="mx-auto max-w-4xl px-6 py-32 text-center md:px-10 md:py-48" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-cream)]/40">06</span> &nbsp;·&nbsp; Engager la conversation
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <span class="text-[var(--color-ink)]/40">06</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
         data-mask-reveal
@@ -644,7 +623,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         <span data-mask-line class="display block">une étude.</span>
       </h2>
       <p
-        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/70"
       >
         Chaque projet commence par un appel de découverte de 15 à 25 minutes. On qualifie ensemble
         le site, le programme et les attentes.
@@ -653,14 +632,14 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
         <a
           href="/contact"
           data-magnetic="0.3"
-          class="inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+          class="inline-flex items-center gap-3 border border-[var(--color-ink)] px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)]"
         >
           Démarrer un projet
           <span aria-hidden="true">→</span>
         </a>
         <a
           href="tel:+33661088444"
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-laterite)]"
         >
           06 61 08 84 44
         </a>
@@ -1016,7 +995,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     .htypo-visual {
       position: relative;
       overflow: hidden;
-      background: var(--color-forest);
+      background: var(--color-ink);
     }
     .htypo-img {
       width: 100%;
@@ -1035,8 +1014,8 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       inset: 0;
       background: linear-gradient(
         to bottom right,
-        rgba(26, 43, 31, 0.25) 0%,
-        rgba(26, 43, 31, 0.55) 100%
+        rgba(29, 31, 27, 0.12) 0%,
+        rgba(29, 31, 27, 0.32) 100%
       );
       transition: opacity 0.6s ease;
     }
@@ -1048,11 +1027,11 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
       position: absolute;
       bottom: 1.5rem;
       left: 1.75rem;
-      font-family: var(--font-heading), serif;
+      font-family: var(--font-display), serif;
       font-size: clamp(6rem, 14vw, 14rem);
       line-height: 0.85;
       color: var(--color-cream);
-      opacity: 0.18;
+      opacity: 0.32;
       pointer-events: none;
       font-style: italic;
       letter-spacing: -0.03em;
@@ -1190,11 +1169,15 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
     .htypo-tick {
       width: 28px;
       height: 1px;
-      background-color: var(--color-cream);
-      opacity: 0.25;
+      background-color: var(--color-ink);
+      opacity: 0.2;
       transition:
         width 0.45s var(--ease-out-editorial),
-        opacity 0.3s ease;
+        opacity 0.3s ease,
+        background-color 0.3s ease;
+    }
+    .htypo-tick.is-active {
+      background-color: var(--color-laterite);
     }
     .htypo-tick.is-active {
       width: 56px;

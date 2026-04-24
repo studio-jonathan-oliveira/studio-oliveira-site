@@ -54,7 +54,7 @@ export const SITE = {
       region: 'Aquitaine Nord',
       role: 'Bureau Verneuil-sur-Vienne',
     },
-    { slug: 'toulouse', ville: 'Toulouse', region: 'Haute-Garonne', role: 'Prospection' },
+    // Toulouse retiré 2026-04-24 (demande Morgan) — zone prospection gelée.
   ] as const,
 
   typologies: [
