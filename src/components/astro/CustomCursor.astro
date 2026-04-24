@@ -10,7 +10,9 @@
 
 <div id="cursor" class="custom-cursor" aria-hidden="true">
   <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="cursor-ring" id="cursor-ring">
+    <span class="cursor-label" id="cursor-label"></span>
+  </div>
 </div>
 
 <style>
@@ -94,10 +96,44 @@
       height: 56px;
       top: -28px;
       left: -28px;
-      border-width: 1.5px;
     }
     .custom-cursor.is-hover .cursor-dot {
       opacity: 0;
+    }
+
+    /* Label contextuel centré dans le ring ; devient visible en mode is-labeled.
+       Le ring s'agrandit pour accueillir le mot (max ~5 lettres). Typo mono,
+       couleur inversée via le mix-blend du parent → lisible sur tout fond.
+       Signature designbyad.com.au : « VIEW » / « VOIR » sur vignettes projets. */
+    .cursor-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-forest);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      /* Le label doit être lisible malgré mix-blend: on le sort du blend
+         via isolation locale — le ring reste en difference, le texte en normal */
+      mix-blend-mode: normal;
+    }
+    .custom-cursor.is-labeled .cursor-ring {
+      width: 96px;
+      height: 96px;
+      top: -48px;
+      left: -48px;
+    }
+    .custom-cursor.is-labeled .cursor-dot {
+      opacity: 0;
+    }
+    .custom-cursor.is-labeled .cursor-label {
+      opacity: 1;
     }
 
     /* État pressed */
@@ -161,11 +197,23 @@
     // sur chaque label/input traversé (feedback 2026-04-24 : cursor rouge
     // « quasiment tout le temps »).
     const hoverSelectors = 'a[href], button:not([disabled]), [data-magnetic]';
+    // Label contextuel : tout élément [data-cursor-label="VOIR"] affiche ce mot
+    // dans le ring agrandi. Fallback : 'LIRE' sur gallery-item, 'VOIR' sur les
+    // liens vers /projets /realisations /conceptions, flèche '→' sinon.
+    const labelEl = document.getElementById('cursor-label');
     document.addEventListener(
       'pointerover',
       (e) => {
         const target = e.target as HTMLElement | null;
-        if (target?.closest?.(hoverSelectors)) cursor.classList.add('is-hover');
+        const labeledAncestor = target?.closest?.('[data-cursor-label]') as HTMLElement | null;
+        const interactive = target?.closest?.(hoverSelectors);
+        if (labeledAncestor && labelEl) {
+          labelEl.textContent = labeledAncestor.dataset.cursorLabel || '→';
+          cursor.classList.add('is-labeled');
+          cursor.classList.remove('is-hover');
+        } else if (interactive) {
+          cursor.classList.add('is-hover');
+        }
       },
       true,
     );
@@ -173,7 +221,10 @@
       'pointerout',
       (e) => {
         const target = e.target as HTMLElement | null;
-        if (target?.closest?.(hoverSelectors)) cursor.classList.remove('is-hover');
+        const labeledAncestor = target?.closest?.('[data-cursor-label]');
+        const interactive = target?.closest?.(hoverSelectors);
+        if (labeledAncestor) cursor.classList.remove('is-labeled');
+        if (interactive) cursor.classList.remove('is-hover');
       },
       true,
     );

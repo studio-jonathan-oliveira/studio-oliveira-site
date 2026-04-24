@@ -27,7 +27,12 @@ if (!images || images.length === 0) {
   images && images.length > 0 && (
     <div class="gallery" role="list">
       {images.map((img, i) => (
-        <figure class={`gallery-item gallery-item-${i % 6}`} role="listitem" data-img-reveal>
+        <figure
+          class={`gallery-item gallery-item-${i % 6}`}
+          role="listitem"
+          data-img-reveal
+          data-cursor-label="VOIR"
+        >
           <Image
             src={img}
             alt={label ? `${label} — visuel ${i + 1}` : `Visuel ${i + 1}`}
