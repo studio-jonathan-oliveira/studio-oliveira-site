@@ -562,6 +562,26 @@ function setupHorizontalTypologies(root: ParentNode) {
     const DWELL_END = 0.24;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
+    // Pré-split chars des noms de typologie pour stagger reveal par panel actif
+    const names = panels.map((p) => p.querySelector<HTMLElement>('.htypo-name em'));
+    const nameSplits = names.map((el) => {
+      if (!el) return null;
+      const split = new SplitType(el, { types: 'chars' });
+      (split.chars || []).forEach((c) => {
+        (c as HTMLElement).style.display = 'inline-block';
+        (c as HTMLElement).style.transform = 'translateY(110%)';
+        (c as HTMLElement).style.willChange = 'transform';
+      });
+      el.style.overflow = 'hidden';
+      el.style.paddingBottom = '0.1em';
+      return split;
+    });
+    const playedSplits = new Set<number>();
+
+    // Parallax intra-panel : l'image de fond glisse plus lentement que le panel
+    // pour créer une sensation de profondeur cinématique.
+    const panelImages = panels.map((p) => p.querySelector<HTMLElement>('.htypo-img'));
+
     scroll(
       (progress: number) => {
         // Remap : 0 → reste sur panel 1 ; DWELL_START → commence à translater ;
@@ -575,6 +595,36 @@ function setupHorizontalTypologies(root: ParentNode) {
         rail.style.transform = `translate3d(${x}px, 0, 0)`;
 
         const activeIndex = Math.min(n - 1, Math.floor(eased * n + 0.0001));
+
+        // Reveal chars du panel actif au premier passage
+        if (!playedSplits.has(activeIndex)) {
+          playedSplits.add(activeIndex);
+          const split = nameSplits[activeIndex];
+          const chars = split?.chars;
+          if (chars) {
+            chars.forEach((c, i) => {
+              animate(
+                c as HTMLElement,
+                { y: ['110%', '0%'] },
+                { duration: 0.9, delay: i * 0.02, ease: EASE_EDITORIAL },
+              );
+            });
+          }
+        }
+
+        // Parallax images : déplacement horizontal léger inverse au rail pour
+        // donner l'illusion que chaque image « reste » pendant que le panel glisse.
+        const localProgress = eased * n - activeIndex;
+        panelImages.forEach((img, i) => {
+          if (!img) return;
+          if (i === activeIndex) {
+            const shift = (localProgress - 0.5) * -40;
+            img.style.transform = `translate3d(${shift}px, 0, 0) scale(1.06)`;
+          } else if (Math.abs(i - activeIndex) === 1) {
+            img.style.transform = 'translate3d(0, 0, 0) scale(1.02)';
+          }
+        });
+
         ticks.forEach((tick, i) => {
           tick.classList.toggle('is-active', i === activeIndex);
           tick.classList.toggle('is-passed', i < activeIndex);
