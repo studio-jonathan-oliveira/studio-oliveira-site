@@ -7,6 +7,7 @@ import Prose from '@/components/astro/Prose.astro';
 import Gallery from '@/components/astro/Gallery.astro';
 import { SITE } from '@/lib/site-config';
 import { getVerticaleGallery } from '@/lib/galleries';
+import { PROJETS_PAR_SLUG } from '@/lib/projets';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -29,6 +30,7 @@ interface Props {
 
 const { verticale } = Astro.props;
 const gallery = getVerticaleGallery(verticale.slug);
+const projet = PROJETS_PAR_SLUG[verticale.slug];
 
 const faq = [
   {
@@ -115,15 +117,31 @@ const schema = jsonLdGraph([
   </Section>
 
   {
-    gallery.length > 0 && (
+    gallery.length > 0 && projet && (
       <Section variant="cream" topDivider aria-labelledby="gallery-title">
-        <h2 id="gallery-title" class="sr-only">
-          Visuels — {verticale.label}
-        </h2>
-        <Gallery images={gallery} label={verticale.label} />
-        <p class="mt-6 font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase">
-          Projets livrés · Studio J Oliveira
-        </p>
+        <div class="mb-12 grid gap-10 md:mb-16 md:grid-cols-[1fr_2fr] md:items-start md:gap-16">
+          <div>
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+              Projet exemplaire · {projet.statut}
+            </p>
+            <h2
+              id="gallery-title"
+              class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.1] tracking-tight"
+            >
+              {projet.nom}
+            </h2>
+            <p class="mt-3 text-sm text-[var(--color-forest)]/60">{projet.lieu}</p>
+          </div>
+          <div>
+            <p class="text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+              {projet.resume}
+            </p>
+            <p class="mt-6 font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/45 uppercase">
+              Verticale · {verticale.label}
+            </p>
+          </div>
+        </div>
+        <Gallery images={gallery} label={projet.nom} />
       </Section>
     )
   }
