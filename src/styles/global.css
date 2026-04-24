@@ -231,9 +231,18 @@ header.intro-revealing {
     font-family: var(--font-heading);
     /* Jost Bold (700) — caractère géométrique premium, équivalent Futura Bold */
     font-weight: 700;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
     text-wrap: balance;
   }
+  h1 {
+    line-height: 0.95;
+  }
+  h2 {
+    line-height: 1;
+  }
+  /* Interlignes resserrés demande Jonathan 2026-04-24 mail :
+     « Les interlignes entre les titres à resserrer si possible : moins d'écart ». */
   /* Les <em> dans les titres ne basculent PLUS automatiquement en couleur accent
      (règle Jonathan 2026-04-24 : textes monochromes). Pour mettre un mot en
      évidence, utiliser <span class="hover-accent"> ou <span class="display">. */
