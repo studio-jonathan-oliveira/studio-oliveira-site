@@ -78,10 +78,10 @@ const schema = jsonLdGraph([
   description={`${typologie.h1Seo} avec le Studio J Oliveira — ${typologie.surface}, étude ${typologie.prixEtude}. Studio biophilique à Brive-la-Gaillarde.`}
 >
   <!-- Breadcrumb visible -->
-  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+  <Section variant="forest" tight class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
-      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
+      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/50 uppercase"
     >
       <ol class="flex flex-wrap items-center gap-2">
         {
@@ -92,7 +92,7 @@ const schema = jsonLdGraph([
                   {b.name}
                 </a>
               ) : (
-                <span class="text-[var(--color-forest)]/80">{b.name}</span>
+                <span class="text-[var(--color-cream)]/80">{b.name}</span>
               )}
               {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
             </li>
@@ -103,7 +103,7 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- HERO ───────────────────────────────────────────────── -->
-  <Section variant="cream" tight class="pt-0">
+  <Section variant="forest" tight class="pt-0">
     <div class="max-w-4xl">
       <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
         Typologie · {typologie.nomProprietaire}
@@ -117,19 +117,19 @@ const schema = jsonLdGraph([
         {typologie.h1Seo}.
       </h1>
       <p
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic"
       >
         {typologie.nomProprietaire} — {typologie.exemple}.
       </p>
       {
         extraitPdf && (
-          <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
+          <p class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80">
             {extraitPdf}
           </p>
         )
       }
       <p
-        class="mt-6 font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/40 uppercase"
+        class="mt-6 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/40 uppercase"
       >
         Extrait du process d'études — Jonathan Oliveira, 2026
       </p>
@@ -138,7 +138,7 @@ const schema = jsonLdGraph([
 
   {
     gallery.length > 0 && projet && (
-      <Section variant="cream" topDivider aria-labelledby="gallery-title">
+      <Section variant="forest" topDivider aria-labelledby="gallery-title">
         <div class="mb-12 grid gap-10 md:mb-16 md:grid-cols-[1fr_2fr] md:items-start md:gap-16">
           <div>
             <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
@@ -150,13 +150,13 @@ const schema = jsonLdGraph([
             >
               {projet.nom}
             </h2>
-            <p class="mt-3 text-sm text-[var(--color-forest)]/60">{projet.lieu}</p>
+            <p class="mt-3 text-sm text-[var(--color-cream)]/60">{projet.lieu}</p>
           </div>
           <div>
-            <p class="text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+            <p class="text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80">
               {projet.resume}
             </p>
-            <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-[var(--color-forest)]/10 pt-6 md:grid-cols-3">
+            <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-[var(--color-cream)]/10 pt-6 md:grid-cols-3">
               <div>
                 <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
                   Typologie
@@ -179,7 +179,7 @@ const schema = jsonLdGraph([
           </div>
         </div>
         <Gallery images={gallery} label={projet.nom} />
-        <p class="mt-6 font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/45 uppercase">
+        <p class="mt-6 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/45 uppercase">
           Rendus & visuels d'étude · Studio J Oliveira · {new Date().getFullYear()}
         </p>
       </Section>
@@ -187,7 +187,7 @@ const schema = jsonLdGraph([
   }
 
   <!-- Grille chiffres ───────────────────────────────────── -->
-  <Section variant="cream" topDivider tight aria-labelledby="cles-title">
+  <Section variant="forest" topDivider tight aria-labelledby="cles-title">
     <h2 id="cles-title" class="sr-only">Chiffres-clés de la typologie</h2>
     <dl class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
       <div>
@@ -234,7 +234,7 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- Description longue ──────────────────────────────── -->
-  <Section variant="cream" topDivider aria-labelledby="desc-title">
+  <Section variant="forest" topDivider aria-labelledby="desc-title">
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
       <SectionHeader
         eyebrow="Description"
@@ -270,9 +270,9 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- FAQ ─────────────────────────────────────────────── -->
-  <Section variant="cream" topDivider aria-labelledby="faq-title">
+  <Section variant="forest" topDivider aria-labelledby="faq-title">
     <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
-    <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
+    <ul class="divide-y divide-[var(--color-cream)]/10 border-y border-[var(--color-cream)]/10">
       {
         faq.map((item) => (
           <li>
@@ -286,7 +286,7 @@ const schema = jsonLdGraph([
                   +
                 </span>
               </summary>
-              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/80">
+              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80">
                 {item.answer}
               </p>
             </details>
@@ -297,14 +297,14 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- Projets liés (placeholder) ─────────────────────── -->
-  <Section variant="cream" topDivider aria-labelledby="projets-title">
+  <Section variant="forest" topDivider aria-labelledby="projets-title">
     <SectionHeader
       eyebrow={`Exemples · ${typologie.nomProprietaire}`}
       title="Projets liés."
       id="projets-title"
       intro="[À FOURNIR PAR JONATHAN : sélection de 3 à 5 projets de cette typologie, via Sanity Studio.]"
     />
-    <p class="text-sm text-[var(--color-forest)]/60">
+    <p class="text-sm text-[var(--color-cream)]/60">
       Quand des projets auront été publiés dans Sanity Studio avec cette typologie, ils apparaîtront
       automatiquement ici.
     </p>
@@ -331,7 +331,7 @@ const schema = jsonLdGraph([
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <a
           href="/contact"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
+          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-cream)]"
         >
           Démarrer mon étude
           <span aria-hidden="true">→</span>

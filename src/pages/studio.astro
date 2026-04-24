@@ -111,14 +111,13 @@ const etapesMethode = [
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
         >
           <span data-mask-line class="block pb-[0.05em]">Jonathan</span>
-          <span data-mask-line class="block pb-[0.05em] text-[var(--color-forest)]">Oliveira —</span
-          >
+          <span data-mask-line class="block pb-[0.05em] text-[var(--color-cream)]">Oliveira —</span>
           <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
             Designer biophilique.
           </span>
         </h1>
         <p
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
         >
           Le Studio J Oliveira est un studio de design spatial spécialisé dans l'aménagement
           environnemental immersif et expérientiel —
@@ -238,11 +237,11 @@ const etapesMethode = [
   </section>
 
   {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
-  <Section variant="cream" aria-labelledby="parcours-title">
+  <Section variant="forest" aria-labelledby="parcours-title">
     <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
       <div data-reveal="up">
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
-          <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Parcours
+          <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Parcours
         </p>
         <h2
           id="parcours-title"
@@ -260,10 +259,10 @@ const etapesMethode = [
                   {String(i + 1).padStart(2, '0')}
                 </p>
                 <div>
-                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-forest)]">
+                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-cream)]">
                     <em class="italic">{p.annee}</em>
                   </p>
-                  <p class="mt-2 text-sm leading-relaxed text-[var(--color-forest)]/70">
+                  <p class="mt-2 text-sm leading-relaxed text-[var(--color-cream)]/70">
                     {p.detail}
                   </p>
                 </div>
@@ -292,7 +291,7 @@ const etapesMethode = [
         </div>
         <blockquote class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6">
           <p
-            class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-forest)]/85 italic md:text-[length:var(--text-2xl)]"
+            class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/85 italic md:text-[length:var(--text-2xl)]"
           >
             Dix ans de paysagisme avant de fonder le studio — pour comprendre d'abord le métier par
             l'intérieur, avant d'en proposer une <em class="text-[var(--color-laterite)] not-italic"
@@ -378,18 +377,18 @@ const etapesMethode = [
   </section>
 
   {/* ───── CTA final cream ───── */}
-  <Section variant="cream" topDivider>
+  <Section variant="forest" topDivider>
     <div class="text-center" data-reveal="slow">
       <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
         Étape suivante
       </p>
       <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-forest)]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-cream)]"
       >
         Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.
       </h2>
       <p
-        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70"
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
       >
         Premier échange téléphonique de 15 à 25 minutes pour qualifier le projet.
       </p>
@@ -397,14 +396,14 @@ const etapesMethode = [
         <a
           href="/contact"
           data-magnetic="0.3"
-          class="inline-flex items-center gap-3 rounded-full border border-[var(--color-forest)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-forest)] transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
+          class="inline-flex items-center gap-3 rounded-full border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
         >
           Prendre contact
           <span aria-hidden="true">→</span>
         </a>
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm text-[var(--color-forest)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
