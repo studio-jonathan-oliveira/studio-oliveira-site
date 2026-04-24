@@ -284,11 +284,12 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Stagger des items nav : chaque item entre progressivement après le slide */
+  /* Stagger des items nav : chaque item entre par le bas avec fade
+     (refonte 2026-04-24 : plus prononcé, style designbyad). */
   .primary-menu[open] .primary-menu__item {
     opacity: 0;
-    transform: translateX(24px);
-    animation: primary-menu-item 0.7s var(--ease-out-editorial) forwards;
+    transform: translateY(60px);
+    animation: primary-menu-item 0.95s var(--ease-out-editorial) forwards;
   }
   .primary-menu[open] .primary-menu__item:nth-child(1) {
     animation-delay: 0.25s;
@@ -311,7 +312,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   @keyframes primary-menu-item {
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
   }
 
@@ -368,27 +369,23 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
+  /* Refonte 2026-04-24 brief Jonathan/designbyad :
+     FULLSCREEN bg ink + text cream + liens énormes, plus un panneau droit.
+     Le menu couvre TOUT l'écran (pas de side panel), l'aside coordonnées
+     passe en footer compact en bas à droite. */
   .primary-menu__inner {
     width: 100vw;
     max-width: 100vw;
     height: 100dvh;
-    min-height: 0; /* flex child scrollable correctement */
-    background: var(--color-cream);
+    min-height: 0;
+    background: var(--color-ink);
+    color: var(--color-cream);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overscroll-behavior: contain;
-    /* touch-action auto pour que iOS ne freeze pas le scroll dans le dialog top-layer */
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
-    box-shadow: -40px 0 80px -20px color-mix(in oklab, var(--color-forest) 40%, transparent);
-  }
-  @media (min-width: 1024px) {
-    .primary-menu__inner {
-      width: 62vw;
-      max-width: 62vw;
-      border-left: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
-    }
   }
 
   /* ───────── En-tête menu ───────── */
@@ -500,7 +497,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
 
   .primary-menu__item {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 8%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 10%, transparent);
   }
   .primary-menu__item:last-child {
     border-bottom: none;
@@ -539,22 +536,22 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     gap: 0.3rem;
     min-width: 0;
   }
+  /* Liens menu refonte designbyad 2026-04-24 : énormes Jost Bold */
   .primary-menu__label-main {
-    font-family: var(--font-heading), serif;
-    font-size: clamp(1.5rem, 2.8vw, 2.4rem);
-    line-height: 1;
-    letter-spacing: -0.015em;
-    font-weight: 400;
-    font-variation-settings:
-      'opsz' 144,
-      'SOFT' 50;
-    transition: color 0.4s var(--ease-out-editorial);
+    font-family: var(--font-heading), sans-serif;
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    transition:
+      color 0.4s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
   }
   .primary-menu__tagline {
     font-family: var(--font-body), sans-serif;
     font-size: 13px;
     letter-spacing: 0.01em;
-    color: color-mix(in oklab, var(--color-forest) 55%, transparent);
+    color: color-mix(in oklab, var(--color-cream) 60%, transparent);
     opacity: 0;
     transform: translateY(-4px);
     transition:
@@ -583,8 +580,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   @media (hover: hover) and (min-width: 768px) {
     .primary-menu__link:hover .primary-menu__label-main,
     .primary-menu__link:focus-visible .primary-menu__label-main {
+      font-family: var(--font-display), serif;
+      font-weight: 400;
       font-style: italic;
       color: var(--color-laterite);
+      transform: translateX(16px);
     }
     .primary-menu__link:hover .primary-menu__tagline,
     .primary-menu__link:focus-visible .primary-menu__tagline {
