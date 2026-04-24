@@ -197,23 +197,64 @@ const { darkHero = false } = Astro.props;
     color: var(--color-cream);
   }
 
-  /* Menu trigger — minimal burger 2 bars, bascule en X quand ouvert */
+  /* Burger ↔ X — polish 2026-04-24 (brief Jonathan/Morgan, référence designbyad).
+     Transitions explicites smooth + morph propre + hover non destructif. */
   .menu-trigger {
     cursor: pointer;
     padding: 0.4rem 0;
   }
+  .menu-bars {
+    position: relative;
+    height: 9px;
+    width: 24px;
+    display: inline-block;
+  }
+  .menu-bars > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition:
+      transform 0.45s cubic-bezier(0.76, 0, 0.24, 1),
+      top 0.45s cubic-bezier(0.76, 0, 0.24, 1),
+      bottom 0.45s cubic-bezier(0.76, 0, 0.24, 1),
+      width 0.3s var(--ease-out-editorial);
+    transform-origin: center;
+  }
+  .menu-bars > span:first-child {
+    top: 0;
+  }
+  .menu-bars > span:last-child {
+    bottom: 0;
+  }
+  /* Hover closed : les 2 barres se rétractent depuis la droite */
+  .menu-trigger:hover .menu-bars > span:first-child {
+    width: 65%;
+    margin-left: auto;
+  }
+  .menu-trigger:hover .menu-bars > span:last-child {
+    width: 85%;
+  }
+  /* Open : les 2 barres se rejoignent au centre et tournent en X */
+  .menu-trigger[aria-expanded='true'] .menu-bars > span {
+    width: 100% !important;
+    margin-left: 0;
+  }
   .menu-trigger[aria-expanded='true'] .menu-bars > span:first-child {
-    transform: translateY(4px) rotate(45deg);
+    top: 4px;
+    transform: rotate(45deg);
   }
   .menu-trigger[aria-expanded='true'] .menu-bars > span:last-child {
-    transform: translateY(-4px) rotate(-45deg);
+    bottom: 4px;
+    transform: rotate(-45deg);
   }
-  .menu-trigger:hover .menu-bars > span {
-    transform: scaleX(0.85);
-    transform-origin: right;
+  /* Open + hover : léger scale pulse sans casser le X */
+  .menu-trigger[aria-expanded='true']:hover .menu-bars > span:first-child {
+    transform: rotate(45deg) scale(1.1);
   }
-  .menu-trigger[aria-expanded='true']:hover .menu-bars > span {
-    transform-origin: center;
+  .menu-trigger[aria-expanded='true']:hover .menu-bars > span:last-child {
+    transform: rotate(-45deg) scale(1.1);
   }
 
   /* Status dot — pulse discret */

@@ -257,6 +257,75 @@ function setupSplitReveals(root: ParentNode) {
 }
 
 /**
+ * Justified text dynamique — signature designbyad.com.au : un texte dont les
+ * ESPACES entre mots varient au scroll avec des amplitudes irrégulières.
+ * Les mots se dispersent/rassemblent, jamais uniformément.
+ *
+ * Usage : <h2 data-justify-scroll>Titre avec plusieurs mots</h2>
+ *
+ * Options :
+ *   - data-justify-min="0"     (px min entre mots)
+ *   - data-justify-max="60"    (px max entre mots au scroll)
+ *   - data-justify-seed="42"   (seed irrégularité, stable par target)
+ *
+ * Technique : SplitType en mots → chaque word a un multiplicateur random
+ * (seedé par index + seed) → translate X cumulatif par mot, scrubbed sur
+ * le scroll progress du target. Transform-only, pas de reflow.
+ */
+function setupJustifiedScroll(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-justify-scroll]');
+  nodes.forEach((el) => {
+    if (el.dataset.justifyDone) return;
+    el.dataset.justifyDone = 'true';
+
+    const minPx = parseFloat(el.dataset.justifyMin || '0');
+    const maxPx = parseFloat(el.dataset.justifyMax || '60');
+    const seed = parseInt(el.dataset.justifySeed || '42', 10);
+
+    const split = new SplitType(el, { types: 'words' });
+    const words = split.words;
+    if (!words || words.length < 2) return;
+
+    // Mulberry32 PRNG seedé — stable entre renders, multiplicateur par mot
+    function mulberry32(a: number) {
+      return () => {
+        let t = (a += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rng = mulberry32(seed);
+    // Chaque mot (sauf le dernier) a son propre multiplicateur [0.3, 1.0]
+    // → amplitudes irrégulières, pas uniformes
+    const multipliers = words.map(() => 0.3 + rng() * 0.7);
+
+    words.forEach((w) => {
+      (w as HTMLElement).style.display = 'inline-block';
+      (w as HTMLElement).style.willChange = 'transform';
+    });
+
+    scroll(
+      (progress: number) => {
+        // Fenêtre d'animation : 0.2 (entre viewport) → 0.7 (full in) → 1 (sort)
+        // Amplitude max au milieu (progress 0.5), 0 aux extrémités
+        // → respiration visuelle
+        const t = Math.max(0, Math.min(1, (progress - 0.15) / 0.7));
+        const easedAmp = Math.sin(t * Math.PI); // 0 → 1 → 0 (dome)
+        let cumulative = 0;
+        words.forEach((w, i) => {
+          (w as HTMLElement).style.transform = `translateX(${cumulative}px)`;
+          const mult = multipliers[i] ?? 0.5;
+          const spacing = minPx + easedAmp * (maxPx - minPx) * mult;
+          cumulative += spacing;
+        });
+      },
+      { target: el, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
+/**
  * Image reveal — wipe clip-path bottom→top sur toute image ou figure qui porte
  * [data-img-reveal] (ou tag <img> dans [data-gallery-auto-reveal]). Signature
  * designbyad.com.au : images qui apparaissent masque-balayé à l'entrée viewport.
@@ -672,6 +741,7 @@ function setupHorizontalTypologies(root: ParentNode) {
 function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
+  setupJustifiedScroll(root);
   setupImageReveals(root);
   setupStaggers(root);
   setupReveals(root);
