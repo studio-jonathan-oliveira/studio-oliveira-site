@@ -127,12 +127,14 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
   }
   <IntroBumper slot="intro" />
 
-  <!-- 01 · HERO IMMERSIF ─────────────────────────────────────────── -->
+  <!-- 01 · HERO IMMERSIF — sticky "recouvrement" style Polestar 5 (mail Jonathan).
+       Le hero reste fixé en arrière-plan pendant que la section suivante
+       vient se superposer au scroll (pas un défilement classique). -->
   <section
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
-    class="hero-immersive relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="hero-immersive hero-sticky relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
   >
     <div class="absolute inset-0 -z-10">
       <Image
@@ -661,6 +663,34 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
   </section>
 
   <style>
+    /* Hero sticky — transition "recouvrement" style Polestar 5 (mail Jonathan) :
+       le hero reste fixé pendant que la section suivante vient se superposer
+       au scroll. Solution : position sticky top 0, les sections suivantes ont
+       un z-index supérieur et glissent par-dessus. */
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 0;
+    }
+    /* Toutes les sections après le hero doivent être au-dessus dans le stacking */
+    .archi-intro,
+    .studio-biophilique,
+    .htypo-section,
+    #methode,
+    #manifeste,
+    #contact-cta {
+      position: relative;
+      z-index: 1;
+    }
+    /* Reduce-motion : désactive le sticky (scroll normal) */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-sticky {
+        position: relative;
+        height: auto;
+      }
+    }
+
     /* Archi-intro — section immersive intro architecture paysagère (mail Jonathan) */
     .archi-intro-visual {
       position: relative;
