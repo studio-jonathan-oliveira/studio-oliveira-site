@@ -595,52 +595,27 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     aria-label="Citation Jonathan Oliveira"
   >
     <div class="pull-quote-sticky">
-      <div class="mx-auto flex min-h-[100vh] max-w-5xl items-center px-6 py-24 md:px-10">
-        <blockquote
-          data-quote-scroll
-          class="relative font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.18] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
+      <div class="mx-auto flex min-h-[100vh] max-w-6xl flex-col justify-center px-6 py-24 md:px-10">
+        <p
+          class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
-          <p
-            class="mb-8 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
-          >
-            <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Manifeste
-          </p>
-          <span data-quote-word class="inline-block">Je</span>&nbsp;<span
-            data-quote-word
-            class="inline-block">ne</span
-          >&nbsp;<span data-quote-word class="inline-block">vends</span>&nbsp;<span
-            data-quote-word
-            class="inline-block">pas</span
-          >&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
-            data-quote-word
-            class="inline-block italic">étude</span
-          >,<br />
-          <span data-quote-word class="inline-block">je</span>&nbsp;<span
-            data-quote-word
-            class="inline-block">vends</span
-          >&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
-            data-quote-word
-            class="display inline-block">vision</span
-          >,&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
-            data-quote-word
-            class="inline-block italic">méthode</span
-          >,<br />
-          <span data-quote-word class="inline-block">une</span>&nbsp;<span
-            data-quote-word
-            class="inline-block italic">expérience</span
-          >,&nbsp;<span data-quote-word class="inline-block">une</span>&nbsp;<span
-            data-quote-word
-            class="inline-block italic">sécurité</span
-          >&nbsp;<span data-quote-word class="inline-block">de</span>&nbsp;<span
-            data-quote-word
-            class="display inline-block">résultat</span
-          >.
-          <footer
-            class="mt-10 font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase not-italic"
-          >
-            Jonathan Oliveira — Fondateur du studio
-          </footer>
+          <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Manifeste
+        </p>
+        {
+          /* Pattern designbyad (vidéo scroll_home.mp4) : texte uppercase
+            en text-align: justify CSS natif. Les espaces s'écartent
+            automatiquement pour remplir chaque ligne → effet "irrégulier"
+            visuel sans JS. */
+        }
+        <blockquote class="manifeste-justify">
+          JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
+          DE RÉSULTAT.
         </blockquote>
+        <footer
+          class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase"
+        >
+          Jonathan Oliveira — Fondateur du studio
+        </footer>
       </div>
     </div>
   </section>
@@ -732,6 +707,30 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       .hero-sticky {
         position: relative;
         height: auto;
+      }
+    }
+
+    /* Manifeste text-align justify uppercase (pattern designbyad video :
+       scroll_home.mp4 frame 5 — texte CAPS bold justify, les espaces
+       s'écartent naturellement pour remplir chaque ligne = effet "irrégulier"
+       visuel pur CSS, pas de JS). */
+    .manifeste-justify {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.25rem, 5.5vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: inherit;
+      hyphens: none;
+      word-spacing: 0;
+    }
+    /* text-align-last: justify → la dernière ligne aussi s'écarte pour remplir */
+    @media (max-width: 767px) {
+      .manifeste-justify {
+        text-align-last: left;
       }
     }
 

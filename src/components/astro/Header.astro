@@ -120,10 +120,16 @@ const { darkHero = false } = Astro.props;
 </header>
 
 <style>
-  /* État par défaut (pages classiques, header sur fond cream) */
+  /* État par défaut — mix-blend-mode difference (brief Morgan 2026-04-24 :
+     les éléments de la page passent au travers de la topbar en couleur
+     inversée, comme l'intérieur du curseur). Plus de background opaque
+     sur la topbar — elle est transparente et le texte s'inverse selon
+     ce qui passe dessous au scroll. */
   .site-header {
-    background-color: var(--color-cream);
-    color: var(--color-forest);
+    background-color: transparent;
+    color: var(--color-cream);
+    mix-blend-mode: difference;
+    isolation: isolate;
   }
 
   /* Dark hero — transparent, logo crème, texte crème */
@@ -138,13 +144,13 @@ const { darkHero = false } = Astro.props;
     opacity: 1;
   }
 
-  /* Scrolled — cream translucide flouté, forest text */
+  /* Scrolled — garde mix-blend-difference (pattern designbyad/Morgan) :
+     pas de fond solide cream, la couleur s'inverse selon le contenu derrière.
+     Le backdrop-filter blur est incompatible avec mix-blend, on s'en passe. */
   .site-header.is-scrolled {
-    background-color: color-mix(in oklab, var(--color-cream) 92%, transparent);
-    backdrop-filter: saturate(180%) blur(12px);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
-    color: var(--color-forest);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 8%, transparent);
+    background-color: transparent;
+    color: var(--color-cream);
+    border-bottom: none;
   }
   .site-header.is-scrolled .logo-moss {
     opacity: 1;
