@@ -532,15 +532,19 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         </div>
       </div>
 
+      {/* Cards méthode avec parallax vertical staggered — plus fluide (brief Jonathan) */}
       <ol
         data-reveal-stagger="0.14"
         data-reveal="up"
         class="grid grid-cols-1 gap-px bg-[var(--color-cream)]/10 md:grid-cols-3"
       >
         {
-          methode.map((step) => (
-            <li class="bg-[var(--color-ink)] p-10 md:p-14">
-              <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.85] text-[var(--color-laterite)]/22 italic">
+          methode.map((step, i) => (
+            <li
+              class="bg-[var(--color-ink)] p-10 md:p-14"
+              data-parallax={i === 0 ? '0.12' : i === 1 ? '-0.08' : '0.1'}
+            >
+              <p class="display text-[length:var(--text-hero)] leading-[0.85] text-[var(--color-laterite)]/28 italic">
                 {step.num}
               </p>
               <p class="mt-8 font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
