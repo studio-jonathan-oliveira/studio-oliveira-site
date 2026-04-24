@@ -8,7 +8,7 @@
 
 export const SITE = {
   name: 'Studio J Oliveira',
-  tagline: 'Designer végétal · Studio de design biophilique',
+  tagline: 'Designer paysagiste · Studio de design biophilique',
   founderName: 'Jonathan Oliveira',
   foundedYear: 2021,
   url: 'https://www.jonathanoliveira.fr',

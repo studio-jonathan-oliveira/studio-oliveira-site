@@ -98,7 +98,7 @@ export function person(): Thing {
     '@type': 'Person',
     '@id': PERSON_ID,
     name: SITE.founderName,
-    jobTitle: 'Designer végétal · Architecte biophilique',
+    jobTitle: 'Designer paysagiste · Architecte biophilique',
     worksFor: { '@id': ORGANIZATION_ID },
     url: `${SITE_URL}/studio`,
   };

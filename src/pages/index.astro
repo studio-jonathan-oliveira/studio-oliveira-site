@@ -3,7 +3,6 @@
  * Home — Studio J Oliveira
  *
  * Architecture v2 (refonte vitrine premium, 2026-04-22 soir) :
- *   00. IntroBumper (slot="intro")
  *   01. Hero plein écran
  *   02. Positionnement & territoires (#studio-lead)
  *   03. Typologies scrollytelling (#typologies) — 4 scènes plein écran
@@ -14,9 +13,8 @@
  * Tous les textes sont soit sourcés du PDF process Jonathan, soit marqués [À FOURNIR].
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import IntroBumper from '@/components/astro/IntroBumper.astro';
 import { Image } from 'astro:assets';
-import heroImage from '@/assets/home/hero-biophilie.png';
+import heroImage from '@/assets/home/hero-biophilie.jpg';
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
@@ -116,12 +114,10 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
 ---
 
 <BaseLayout
-  title="Studio J Oliveira — Designer végétal & design biophilique"
-  description="Studio de design biophilique à Brive-la-Gaillarde. Études et conceptions de jardins en Aquitaine, Limousin, Toulouse. Architectures vivantes, bâti × environnement × humain."
+  title="Studio J Oliveira — Designer paysagiste & design biophilique"
+  description="Studio de design paysagiste biophilique à Brive-la-Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine, Limousin, Toulouse. Architectures vivantes, bâti × environnement × humain."
   darkHero
 >
-  <IntroBumper slot="intro" />
-
   <!-- 01 · HERO IMMERSIF ─────────────────────────────────────────── -->
   <section
     id="hero"
@@ -168,7 +164,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges', 'Toulouse'];
           </span>
           <span data-hero-mask class="hero-mask block pb-[0.12em] leading-[1.08]">
             <span data-mask-line class="hero-line block text-[var(--color-laterite)] italic"
-              >végétal</span
+              >paysagiste</span
             >
           </span>
         </h1>
