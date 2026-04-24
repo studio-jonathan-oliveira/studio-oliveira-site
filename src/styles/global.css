@@ -308,6 +308,25 @@ header.intro-revealing {
   }
 }
 
+/* Page curtain — rideau full-bleed forest qui monte au départ de page,
+   descend à l'arrivée. Piloté par BaseLayout.astro via Astro ClientRouter events.
+   transform-origin switche entre bottom (upstroke) et top (downstroke). */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  background-color: var(--color-forest);
+  pointer-events: none;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain {
+    display: none;
+  }
+}
+
 /* Micro-preloader — overlay full-bleed en forest qui fade-out 0.45s
    après first paint. Évite l'impression de chargement "nu" sans
    pénaliser LCP (le contenu est déjà peint dessous). */
