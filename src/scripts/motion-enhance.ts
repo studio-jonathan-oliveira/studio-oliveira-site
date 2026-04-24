@@ -19,6 +19,7 @@
  */
 
 import { animate, inView, scroll } from 'motion';
+import SplitType from 'split-type';
 
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -193,6 +194,95 @@ function setupMaskReveals(root: ParentNode) {
         return undefined;
       });
     }
+  });
+}
+
+/**
+ * Split chars reveal — tous les [data-split] ont leurs caractères splittés
+ * et animés un par un (yPercent 110 → 0) avec stagger 0.025s, easing expo.inOut,
+ * déclenchement à l'entrée viewport. Signature designbyad.com.au / GSAP SplitText.
+ *
+ * Usage : <h2 data-split>Mon titre</h2>  ou  <p data-split data-split-stagger="0.02">…</p>
+ *
+ * Options :
+ *   - data-split-delay="0.2"     (s, délai avant démarrage)
+ *   - data-split-stagger="0.03"  (s, pas entre caractères)
+ *   - data-split-duration="1.0"  (s)
+ *   - data-split-types="chars"   (chars | words | lines — défaut chars)
+ */
+function setupSplitReveals(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-split]');
+  nodes.forEach((el) => {
+    if (el.dataset.splitDone) return;
+    el.dataset.splitDone = 'true';
+
+    const types = (el.dataset.splitTypes || 'chars') as 'chars' | 'words' | 'lines';
+    const stagger = parseFloat(el.dataset.splitStagger || '0.025');
+    const delay = parseFloat(el.dataset.splitDelay || '0');
+    const duration = parseFloat(el.dataset.splitDuration || '1');
+
+    const split = new SplitType(el, { types });
+    const targets = types === 'lines' ? split.lines : types === 'words' ? split.words : split.chars;
+    if (!targets || targets.length === 0) return;
+
+    targets.forEach((t) => {
+      (t as HTMLElement).style.display = 'inline-block';
+      (t as HTMLElement).style.transform = 'translateY(110%)';
+      (t as HTMLElement).style.willChange = 'transform';
+    });
+    // Container overflow hidden pour que le clip soit propre (sauf si déjà stylé)
+    if (getComputedStyle(el).overflow === 'visible') {
+      el.style.overflow = 'hidden';
+      el.style.paddingBottom = '0.1em';
+    }
+
+    inView(
+      el,
+      () => {
+        targets.forEach((t, i) => {
+          animate(
+            t as HTMLElement,
+            { y: ['110%', '0%'] },
+            {
+              duration,
+              delay: delay + i * stagger,
+              ease: EASE_EDITORIAL,
+            },
+          );
+        });
+        return undefined;
+      },
+      { margin: '0px 0px -10% 0px' },
+    );
+  });
+}
+
+/**
+ * Image reveal — wipe clip-path bottom→top sur toute image ou figure qui porte
+ * [data-img-reveal] (ou tag <img> dans [data-gallery-auto-reveal]). Signature
+ * designbyad.com.au : images qui apparaissent masque-balayé à l'entrée viewport.
+ */
+function setupImageReveals(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-img-reveal]');
+  nodes.forEach((el) => {
+    if (el.dataset.imgRevealDone) return;
+    el.dataset.imgRevealDone = 'true';
+    const dur = parseFloat(el.dataset.imgRevealDuration || '1.4');
+    el.style.clipPath = 'inset(100% 0 0 0)';
+    el.style.willChange = 'clip-path';
+
+    inView(
+      el,
+      () => {
+        animate(
+          el,
+          { clipPath: ['inset(100% 0 0 0)', 'inset(0 0 0 0)'] },
+          { duration: dur, ease: EASE_EDITORIAL },
+        );
+        return undefined;
+      },
+      { margin: '0px 0px -8% 0px' },
+    );
   });
 }
 
@@ -518,6 +608,8 @@ function setupHorizontalTypologies(root: ParentNode) {
 
 function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
+  setupSplitReveals(root);
+  setupImageReveals(root);
   setupStaggers(root);
   setupReveals(root);
   setupMaskReveals(root);

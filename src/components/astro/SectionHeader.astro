@@ -41,6 +41,9 @@ const alignment = align === 'center' ? 'text-center mx-auto items-center' : '';
   }
   <Tag
     id={id}
+    data-split
+    data-split-stagger="0.018"
+    data-split-duration="1.05"
     class:list={[
       'font-[family-name:var(--font-heading)] leading-[1.05] tracking-tight',
       Tag === 'h1' ? 'text-[length:var(--text-5xl)]' : 'text-[length:var(--text-4xl)]',

@@ -80,6 +80,8 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
   </head>
 
   <body class="text-[length:var(--text-base)] font-[var(--font-body)]">
+    <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>
+
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-[var(--color-forest)] focus:px-4 focus:py-2 focus:text-[var(--color-cream)]"
@@ -111,6 +113,21 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
       import '@/scripts/motion-enhance';
       // Theme observer : source unique de vérité pour html[data-theme] + body.is-dark-section.
       import '@/scripts/theme-observer';
+
+      // Micro-preloader : retire l'overlay 80ms après first paint. Cache les
+      // éventuels reflows/FOUC tout en restant bref (pas de coût LCP significatif).
+      function dismissPreloader() {
+        const el = document.getElementById('site-preloader');
+        if (!el) return;
+        window.setTimeout(() => el.classList.add('is-done'), 80);
+        // Purge du DOM après transition
+        window.setTimeout(() => el.remove(), 900);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', dismissPreloader, { once: true });
+      } else {
+        dismissPreloader();
+      }
     </script>
   </body>
 </html>

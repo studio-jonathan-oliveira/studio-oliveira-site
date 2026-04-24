@@ -288,4 +288,43 @@ header.intro-revealing {
   [data-theme='dark'] .eyebrow {
     color: color-mix(in oklab, var(--color-cream) 75%, transparent);
   }
+
+  /* Link underline slide — signature designbyad.com.au :
+     soulignement qui se trace de gauche à droite au hover.
+     Opt-in via class `.link-underline` ou auto via [data-link-underline].
+     Utilise background-size animation (plus léger qu'un DrawSVG). */
+  .link-underline,
+  [data-link-underline] {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.55s var(--ease-out-editorial);
+    padding-bottom: 2px;
+  }
+  .link-underline:hover,
+  [data-link-underline]:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* Micro-preloader — overlay full-bleed en forest qui fade-out 0.45s
+   après first paint. Évite l'impression de chargement "nu" sans
+   pénaliser LCP (le contenu est déjà peint dessous). */
+.site-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background-color: var(--color-forest);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.55s var(--ease-out-editorial);
+}
+.site-preloader.is-done {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-preloader {
+    display: none;
+  }
 }
