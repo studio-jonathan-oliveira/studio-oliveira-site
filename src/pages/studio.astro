@@ -94,7 +94,8 @@ const etapesMethode = [
   <section
     id="hero"
     data-section-label="Studio"
-    class="studio-hero relative bg-[var(--color-cream)]"
+    data-theme="dark"
+    class="studio-hero relative bg-[var(--color-ink)] text-[var(--color-cream)]"
   >
     <div class="mx-auto grid max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12">
       <div
@@ -111,10 +112,8 @@ const etapesMethode = [
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
         >
           <span data-mask-line class="block pb-[0.05em]">Jonathan</span>
-          <span data-mask-line class="block pb-[0.05em] text-[var(--color-cream)]">Oliveira —</span>
-          <span data-mask-line class="block pb-[0.12em] text-[var(--color-laterite)] italic">
-            Designer biophilique.
-          </span>
+          <span data-mask-line class="block pb-[0.05em]">Oliveira —</span>
+          <span data-mask-line class="display block pb-[0.12em]">Designer biophilique.</span>
         </h1>
         <p
           class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
@@ -187,7 +186,7 @@ const etapesMethode = [
             class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
           >
             Trois piliers,<br />
-            un même <em class="text-[var(--color-laterite)] italic">écosystème</em>.
+            un même <span class="display">écosystème</span>.
           </h2>
         </div>
 
@@ -199,15 +198,15 @@ const etapesMethode = [
           <p>
             La conception biophilique est un art de conception architecturale directement inspiré
             des environnements naturels et de leurs effets sur l'humain. Une démarche
-            <em class="text-[var(--color-moss)] italic">scientifique</em> couplée à la technicité architecturale
-            — étudier la nature à l'état primitif, comprendre ses interactions, puis reproduire ses bienfaits
-            dans les espaces que nous habitons.
+            <span class="hover-accent">scientifique</span> couplée à la <span class="hover-accent"
+              >technicité</span
+            > architecturale — étudier la nature à l'état primitif, comprendre ses interactions, puis
+            reproduire ses bienfaits dans les espaces que nous habitons.
           </p>
           <p>
             Trois écosystèmes cohabitent dans chaque projet : le bâti, l'environnement, l'humain.
-            C'est cet <em class="text-[var(--color-laterite)] italic">équilibre</em> que je cherche —
-            une conception juste, logique avec les besoins du client, en considération de l'environnement
-            dans lequel elle s'implante.
+            C'est cet <span class="hover-accent">équilibre</span> que je cherche — une conception juste,
+            logique avec les besoins du client, en considération de l'environnement dans lequel elle s'implante.
           </p>
         </div>
       </div>
