@@ -437,8 +437,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__close:hover,
   .primary-menu__close:focus-visible {
-    color: var(--color-laterite);
-    border-color: var(--color-laterite);
+    color: var(--color-cream);
+    border-color: var(--color-cream);
   }
   .primary-menu__close-x {
     position: relative;
@@ -524,7 +524,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 11px;
     letter-spacing: 0.28em;
-    color: var(--color-laterite);
+    color: var(--color-cream);
     opacity: 0.75;
     margin-top: 0.55em;
     transition: opacity 0.35s ease;
@@ -578,12 +578,12 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
 
   /* Hover / active */
   @media (hover: hover) and (min-width: 768px) {
+    /* Hover lien menu — refonte monochrome Jonathan 2026-04-24 :
+       plus de bascule Gloock+latérite. Au hover : opacity 60% + léger
+       translateX. Effet respiration, pas de changement de couleur. */
     .primary-menu__link:hover .primary-menu__label-main,
     .primary-menu__link:focus-visible .primary-menu__label-main {
-      font-family: var(--font-display), serif;
-      font-weight: 400;
-      font-style: italic;
-      color: var(--color-laterite);
+      opacity: 0.6;
       transform: translateX(16px);
     }
     .primary-menu__link:hover .primary-menu__tagline,
@@ -599,17 +599,17 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     .primary-menu__link:hover .primary-menu__num,
     .primary-menu__link:focus-visible .primary-menu__num {
       opacity: 0.9;
-      color: var(--color-laterite);
+      color: var(--color-cream);
     }
   }
 
   .primary-menu__item.is-active .primary-menu__label-main {
     font-style: italic;
-    color: var(--color-laterite);
+    color: var(--color-cream);
   }
   .primary-menu__item.is-active .primary-menu__num {
     opacity: 1;
-    color: var(--color-laterite);
+    color: var(--color-cream);
   }
   .primary-menu__item.is-active .primary-menu__tagline {
     opacity: 1;
@@ -646,8 +646,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__sub a:hover,
   .primary-menu__sub a:focus-visible {
-    color: var(--color-laterite);
-    border-color: var(--color-laterite);
+    color: var(--color-cream);
+    border-color: var(--color-cream);
   }
 
   /* ───────── Aside ───────── */
@@ -683,7 +683,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     height: 60%;
     background: radial-gradient(
       circle at center,
-      color-mix(in oklab, var(--color-laterite) 35%, transparent) 0%,
+      color-mix(in oklab, var(--color-cream) 35%, transparent) 0%,
       transparent 65%
     );
     z-index: -1;
@@ -706,7 +706,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     font-size: 10px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--color-laterite);
+    color: var(--color-cream);
     opacity: 1;
     margin: 0 0 0.9rem 0;
   }
@@ -732,8 +732,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__aside-contact a:hover,
   .primary-menu__aside-contact a:focus-visible {
-    color: var(--color-laterite);
-    border-color: var(--color-laterite);
+    color: var(--color-cream);
+    border-color: var(--color-cream);
   }
 
   .primary-menu__zones {
@@ -767,8 +767,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__social:hover,
   .primary-menu__social:focus-visible {
-    color: var(--color-laterite);
-    border-color: var(--color-laterite);
+    color: var(--color-cream);
+    border-color: var(--color-cream);
   }
 
   .primary-menu__aside-footer {
@@ -788,7 +788,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: var(--color-laterite);
+    background-color: var(--color-cream);
     animation: status-pulse 2.5s ease-in-out infinite;
   }
   @keyframes status-pulse {

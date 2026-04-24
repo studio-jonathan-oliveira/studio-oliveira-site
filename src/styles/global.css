@@ -312,21 +312,16 @@ header.intro-revealing {
     letter-spacing: 0;
   }
 
-  /* Hover accent — sur survol, un mot-clé bascule de Jost → Gloock serif +
-     couleur latérite. Signature interactive Jonathan 2026-04-24.
-     Usage : <span class="hover-accent">aménagement</span>.
-     Le font-family change en 0.25s easing editorial, l'italic est optionnel. */
+  /* Hover accent — refonte 2026-04-24 soir (brief Jonathan strict monochrome) :
+     plus de bascule Gloock + latérite. Au hover, le mot se met en opacity
+     55% — effet léger qui marque le survol sans rompre le monochrome.
+     Usage : <span class="hover-accent">aménagement</span>. */
   .hover-accent {
     cursor: pointer;
-    transition:
-      color 0.25s var(--ease-out-editorial),
-      font-family 0.25s var(--ease-out-editorial),
-      font-style 0.25s var(--ease-out-editorial);
+    transition: opacity 0.3s var(--ease-out-editorial);
   }
   .hover-accent:hover {
-    font-family: var(--font-display);
-    font-style: italic;
-    color: var(--color-laterite);
+    opacity: 0.55;
   }
 
   /* Link underline slide — signature designbyad.com.au :
