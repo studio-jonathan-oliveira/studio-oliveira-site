@@ -139,6 +139,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       />
       <!-- Un seul gradient vertical subtil : l'image respire, le texte reste lisible -->
       <div
+        data-parallax="0.15"
         class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/92 via-[var(--color-forest)]/35 to-transparent"
         aria-hidden="true"
       >
@@ -417,36 +418,38 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
               data-cursor-label="EXPLORER"
               aria-label={`Explorer la typologie ${t.nom}`}
             >
-              <div class="htypo-visual">
-                <Image
-                  src={t.image}
-                  alt=""
-                  widths={[720, 1080, 1440, 1920]}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  quality={82}
-                  format="webp"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  class="htypo-img"
-                  style={`object-position: ${t.imagePosition ?? 'center'}`}
-                />
-                <div class="htypo-veil" aria-hidden="true" />
+              <div class="htypo-visual" data-parallax-layer="frame">
+                <div class="htypo-visual-inner" data-parallax-layer="image">
+                  <Image
+                    src={t.image}
+                    alt=""
+                    widths={[720, 1080, 1440, 1920]}
+                    sizes="(min-width: 1024px) 38vw, 80vw"
+                    quality={82}
+                    format="webp"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    class="htypo-img"
+                    style={`object-position: ${t.imagePosition ?? 'center'}`}
+                  />
+                  <div class="htypo-veil" aria-hidden="true" />
+                </div>
                 <span class="htypo-index-xl" aria-hidden="true">
                   {t.index}
                 </span>
               </div>
 
-              <div class="htypo-copy">
+              <div class="htypo-copy" data-parallax-layer="text">
                 <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                   {t.index} &nbsp;·&nbsp; Typologie
                 </p>
-                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-ink)] md:text-[length:var(--text-hero)]">
+                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-ink)] md:text-[length:var(--text-6xl)]">
                   <span class="display">{t.nom}</span>
                 </h3>
-                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.15] text-[var(--color-ink)]/75 md:text-[length:var(--text-3xl)]">
+                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-ink)]/75 md:text-[length:var(--text-2xl)]">
                   {t.phrase}
                 </p>
 
-                <dl class="htypo-meta mt-8 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/70 uppercase">
+                <dl class="htypo-meta mt-10 grid max-w-md grid-cols-3 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/70 uppercase">
                   <div>
                     <dt class="text-[var(--color-ink)]/45">Surface</dt>
                     <dd class="mt-1.5 text-[var(--color-ink)]">{t.surface}</dd>
@@ -972,42 +975,68 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       will-change: transform;
     }
 
-    /* Panneau individuel = 1 viewport plein, grid 2 colonnes */
+    /* Panneau refondu 2026-04-24 (brief Jonathan + référence designbyad) :
+       - Images plus petites (cadre flottant ~60vh), pas plein cadre
+       - Texte plus présent à côté
+       - 3 couches parallax : frame (cadre) + image (à l'intérieur) + text */
     .htypo-panel {
       flex: 0 0 100vw;
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 55vh auto;
+      grid-template-rows: 1fr auto;
+      padding: 9rem 1.5rem 4rem;
       position: relative;
       text-decoration: none;
       color: inherit;
       overflow: hidden;
+      gap: 2.5rem;
+    }
+    @media (min-width: 768px) {
+      .htypo-panel {
+        padding: 10rem 3rem 4rem;
+      }
     }
     @media (min-width: 1024px) {
       .htypo-panel {
         grid-template-rows: 1fr;
-        grid-template-columns: 55fr 45fr;
+        grid-template-columns: 42fr 58fr;
+        padding: 8rem 4rem 4rem 6rem;
+        gap: 5rem;
+        align-items: center;
       }
     }
 
-    /* Colonne visuel */
+    /* Couche 1 — CADRE : container de l'image, se déplace légèrement
+       horizontalement en parallax (vitesse la plus lente). Ratio proche 4:5. */
     .htypo-visual {
       position: relative;
+      width: 100%;
+      max-width: 520px;
+      height: clamp(280px, 52vh, 620px);
+      margin-inline: auto;
+      will-change: transform;
+    }
+    /* Couche 2 — IMAGE dans le cadre : clip par le cadre, peut dépasser légèrement
+       et bouger plus vite que le cadre (effet profondeur). */
+    .htypo-visual-inner {
+      position: absolute;
+      inset: -5% -8%;
       overflow: hidden;
       background: var(--color-ink);
+      will-change: transform;
     }
     .htypo-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transform: scale(1.06);
+      transform: scale(1.08);
       transition: transform 1.2s var(--ease-out-editorial);
     }
     .htypo-panel:hover .htypo-img,
     .htypo-panel:focus-visible .htypo-img {
-      transform: scale(1.12);
+      transform: scale(1.14);
     }
     .htypo-veil {
       position: absolute;
@@ -1022,38 +1051,30 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     .htypo-panel:hover .htypo-veil {
       opacity: 0.55;
     }
-    /* Grand index décoratif en surimpression sur le visuel */
+    /* Grand index décoratif — devient filigrane ink derrière le cadre
+       (décalé vers le haut-gauche pour servir de contrepoint au cadre centré). */
     .htypo-index-xl {
       position: absolute;
-      bottom: 1.5rem;
-      left: 1.75rem;
+      top: -0.2em;
+      left: -0.1em;
       font-family: var(--font-display), serif;
-      font-size: clamp(6rem, 14vw, 14rem);
+      font-size: clamp(8rem, 18vw, 18rem);
       line-height: 0.85;
-      color: var(--color-cream);
-      opacity: 0.32;
+      color: var(--color-ink);
+      opacity: 0.06;
       pointer-events: none;
       font-style: italic;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
+      z-index: -1;
     }
 
-    /* Colonne copy */
+    /* Couche 3 — TEXTE : bouge en parallax à vitesse intermédiaire */
     .htypo-copy {
-      padding: 3rem 2rem 4rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       max-width: 620px;
-    }
-    @media (min-width: 768px) {
-      .htypo-copy {
-        padding: 4rem 4rem 5rem;
-      }
-    }
-    @media (min-width: 1024px) {
-      .htypo-copy {
-        padding: 5rem 5rem 5rem 6rem;
-      }
+      will-change: transform;
     }
 
     .htypo-phrase {

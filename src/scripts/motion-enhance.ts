@@ -578,9 +578,15 @@ function setupHorizontalTypologies(root: ParentNode) {
     });
     const playedSplits = new Set<number>();
 
-    // Parallax intra-panel : l'image de fond glisse plus lentement que le panel
-    // pour créer une sensation de profondeur cinématique.
-    const panelImages = panels.map((p) => p.querySelector<HTMLElement>('.htypo-img'));
+    // Parallax 3 couches (brief Jonathan 2026-04-24 : « parallax multicouche
+    // entre le cadre où sont les images, les images à l'intérieur qui bouge
+    // en parallax au scroll, les textes aussi qui évoluent en parallax »).
+    // Ratios parallax différents par couche pour l'effet profondeur.
+    const layers = panels.map((p) => ({
+      frame: p.querySelector<HTMLElement>('[data-parallax-layer="frame"]'),
+      image: p.querySelector<HTMLElement>('[data-parallax-layer="image"]'),
+      text: p.querySelector<HTMLElement>('[data-parallax-layer="text"]'),
+    }));
 
     scroll(
       (progress: number) => {
@@ -612,16 +618,27 @@ function setupHorizontalTypologies(root: ParentNode) {
           }
         }
 
-        // Parallax images : déplacement horizontal léger inverse au rail pour
-        // donner l'illusion que chaque image « reste » pendant que le panel glisse.
+        // Parallax 3 couches : le cadre bouge peu (ancre), l'image dedans
+        // bouge plus (profondeur), le texte bouge au milieu.
         const localProgress = eased * n - activeIndex;
-        panelImages.forEach((img, i) => {
-          if (!img) return;
+        layers.forEach((layer, i) => {
           if (i === activeIndex) {
-            const shift = (localProgress - 0.5) * -40;
-            img.style.transform = `translate3d(${shift}px, 0, 0) scale(1.06)`;
+            // Centered on 0.5 : avant → décalage positif, après → négatif
+            const t = localProgress - 0.5;
+            if (layer.frame) {
+              layer.frame.style.transform = `translate3d(${t * -15}px, 0, 0)`;
+            }
+            if (layer.image) {
+              // Image à l'intérieur du cadre : amplitude 2x supérieure
+              layer.image.style.transform = `translate3d(${t * -45}px, 0, 0)`;
+            }
+            if (layer.text) {
+              layer.text.style.transform = `translate3d(${t * -25}px, 0, 0)`;
+            }
           } else if (Math.abs(i - activeIndex) === 1) {
-            img.style.transform = 'translate3d(0, 0, 0) scale(1.02)';
+            if (layer.frame) layer.frame.style.transform = '';
+            if (layer.image) layer.image.style.transform = '';
+            if (layer.text) layer.text.style.transform = '';
           }
         });
 
