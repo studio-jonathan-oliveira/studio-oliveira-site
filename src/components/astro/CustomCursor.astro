@@ -51,12 +51,15 @@
       cursor: none;
     }
 
+    /* Dot central — point de contact précis pour bien viser les liens
+       (feedback Morgan 2026-04-24 : « on a du mal à cibler les liens »).
+       Plus gros qu'avant (6 → 9px) pour servir de vrai crosshair. */
     .cursor-dot {
       position: absolute;
-      top: -3px;
-      left: -3px;
-      width: 6px;
-      height: 6px;
+      top: -4.5px;
+      left: -4.5px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background-color: var(--cursor-color);
       transition:
@@ -65,12 +68,14 @@
         background-color 0.4s ease;
     }
 
+    /* Ring plus petit (36 → 24px) pour laisser le dot central dominer
+       comme point de mire précis. Moins d'obstruction visuelle. */
     .cursor-ring {
       position: absolute;
-      top: -18px;
-      left: -18px;
-      width: 36px;
-      height: 36px;
+      top: -12px;
+      left: -12px;
+      width: 24px;
+      height: 24px;
       /* Disque BLANC 100% opaque + mix-blend-mode: difference sur le parent
          = inversion exacte de la couleur du fond (|255 - R/G/B|).
          Feedback Morgan 2026-04-24 : le semi-transparent précédent donnait
@@ -92,10 +97,10 @@
        en mix-blend-mode: difference, le ring garde sa magie d'inversion.
        L'accent latérite se lit déjà sur les CTA eux-mêmes. */
     .custom-cursor.is-hover .cursor-ring {
-      width: 56px;
-      height: 56px;
-      top: -28px;
-      left: -28px;
+      width: 44px;
+      height: 44px;
+      top: -22px;
+      left: -22px;
     }
     .custom-cursor.is-hover .cursor-dot {
       opacity: 0;

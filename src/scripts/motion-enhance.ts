@@ -145,9 +145,12 @@ function setupParallax(root: ParentNode) {
     if (el.dataset.parallaxDone) return;
     el.dataset.parallaxDone = 'true';
     const factor = parseFloat(el.dataset.parallax || '0.2');
+    // Multiplier 280 (vs 120 avant) — amplitude plus ressentie (feedback Morgan
+    // 2026-04-24 : « je ne ressent pas très bien le parallax dans la fluidité »).
+    // Factor typique 0.2 → ±56px d'amplitude, 0.4 → ±112px.
     scroll(
       (progress: number) => {
-        const offset = (progress - 0.5) * factor * 120;
+        const offset = (progress - 0.5) * factor * 280;
         el.style.transform = `translate3d(0, ${offset}px, 0)`;
       },
       { target: el },
@@ -618,22 +621,22 @@ function setupHorizontalTypologies(root: ParentNode) {
           }
         }
 
-        // Parallax 3 couches : le cadre bouge peu (ancre), l'image dedans
-        // bouge plus (profondeur), le texte bouge au milieu.
+        // Parallax 3 couches AMPLIFIÉ (feedback Morgan 2026-04-24 : « les images
+        // se déplaces pas tout à fait à la même vitesse que leur encadrement,
+        // exactement comme sur designbyad »). Amplitudes 2.5x supérieures.
         const localProgress = eased * n - activeIndex;
         layers.forEach((layer, i) => {
           if (i === activeIndex) {
-            // Centered on 0.5 : avant → décalage positif, après → négatif
             const t = localProgress - 0.5;
             if (layer.frame) {
-              layer.frame.style.transform = `translate3d(${t * -15}px, 0, 0)`;
+              layer.frame.style.transform = `translate3d(${t * -40}px, 0, 0)`;
             }
             if (layer.image) {
-              // Image à l'intérieur du cadre : amplitude 2x supérieure
-              layer.image.style.transform = `translate3d(${t * -45}px, 0, 0)`;
+              // Image dans le cadre : la plus mobile — sensation profondeur
+              layer.image.style.transform = `translate3d(${t * -120}px, 0, 0)`;
             }
             if (layer.text) {
-              layer.text.style.transform = `translate3d(${t * -25}px, 0, 0)`;
+              layer.text.style.transform = `translate3d(${t * -70}px, 0, 0)`;
             }
           } else if (Math.abs(i - activeIndex) === 1) {
             if (layer.frame) layer.frame.style.transform = '';

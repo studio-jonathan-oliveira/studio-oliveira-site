@@ -16,6 +16,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import IntroBumper from '@/components/astro/IntroBumper.astro';
 import { Image } from 'astro:assets';
 import heroImage from '@/assets/home/hero-biophilie.jpg';
+// Slideshow hero — 4 créations Jonathan qui crossfadent en boucle (brief Morgan)
+import hero01 from '@/assets/home/hero-01.jpg';
+import hero02 from '@/assets/home/hero-02.jpg';
+import hero03 from '@/assets/home/hero-03.jpg';
+import hero04 from '@/assets/home/hero-04.jpg';
+const heroSlides = [
+  { src: hero01, alt: 'Chambre biophilique — projet airbnb Jungle Room' },
+  { src: hero02, alt: 'Mur végétal — Café de Paris, Brive' },
+  { src: hero03, alt: 'Feuillage tropical — Café de Paris, Brive' },
+  { src: hero04, alt: 'Textures matière et plantes — projet airbnb' },
+];
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
@@ -136,19 +147,24 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     data-theme="dark"
     class="hero-immersive hero-sticky relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
   >
-    <div class="absolute inset-0 -z-10">
-      <Image
-        src={heroImage}
-        alt=""
-        widths={[640, 960, 1280, 1600, 1920, 2560]}
-        sizes="100vw"
-        quality={82}
-        format="webp"
-        class="hero-image h-full w-full object-cover object-center"
-        loading="eager"
-        data-hero-zoom
-      />
-      <!-- Un seul gradient vertical subtil : l'image respire, le texte reste lisible -->
+    <div class="absolute inset-0 -z-10" data-hero-slideshow>
+      {
+        heroSlides.map((slide, i) => (
+          <Image
+            src={slide.src}
+            alt={i === 0 ? slide.alt : ''}
+            widths={[640, 960, 1280, 1600, 1920, 2560]}
+            sizes="100vw"
+            quality={82}
+            format="webp"
+            class={`hero-slide h-full w-full object-cover object-center ${i === 0 ? 'is-active' : ''}`}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            data-hero-slide-index={i}
+            data-hero-zoom={i === 0 ? '' : undefined}
+          />
+        ))
+      }
+      <!-- Gradient overlay : subtil, texte lisible sur toutes les slides -->
       <div
         data-parallax="0.35"
         class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/92 via-[var(--color-forest)]/35 to-transparent"
@@ -235,7 +251,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     <div
       class="mx-auto grid max-w-[1500px] grid-cols-1 gap-12 px-6 py-24 md:grid-cols-12 md:gap-16 md:px-10 md:py-32"
     >
-      <header class="md:col-span-5" data-reveal="up" data-parallax="-0.12">
+      <header class="md:col-span-5" data-reveal="up" data-parallax="-0.25">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
           <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Architecture paysagère
         </p>
@@ -268,6 +284,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         class="archi-intro-visual relative md:col-span-7"
         data-reveal="up"
         data-reveal-delay="0.15"
+        data-parallax="0.15"
       >
         <Image
           src={heroImage}
@@ -278,7 +295,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
           format="webp"
           class="archi-intro-img"
           loading="lazy"
-          data-parallax="0.18"
+          data-parallax="0.4"
         />
         <ul class="archi-intro-legendes" aria-label="Légendes du projet">
           <li>
@@ -310,7 +327,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
   >
     <div class="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-40">
       <div class="grid gap-16 md:grid-cols-12 md:gap-20">
-        <div class="md:col-span-7" data-reveal="up" data-parallax="-0.18">
+        <div class="md:col-span-7" data-reveal="up" data-parallax="-0.3">
           <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
             <span class="studio-zones-dot" aria-hidden="true"></span>
             02 &nbsp;·&nbsp; Studio biophilique
@@ -348,7 +365,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
           class="md:col-span-5"
           data-reveal="up"
           data-reveal-delay="0.15"
-          data-parallax="0.28"
+          data-parallax="0.4"
           aria-labelledby="zones-title"
         >
           <p
@@ -445,13 +462,25 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
               </div>
 
               <div class="htypo-copy" data-parallax-layer="text">
-                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                <p
+                  data-split
+                  data-split-types="chars"
+                  data-split-stagger="0.02"
+                  data-split-duration="0.8"
+                  class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase"
+                >
                   {t.index} &nbsp;·&nbsp; Typologie
                 </p>
                 <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-cream)] md:text-[length:var(--text-6xl)]">
                   <span class="display">{t.nom}</span>
                 </h3>
-                <p class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/75 md:text-[length:var(--text-2xl)]">
+                <p
+                  data-split
+                  data-split-types="words"
+                  data-split-stagger="0.06"
+                  data-split-duration="1.05"
+                  class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/75 md:text-[length:var(--text-2xl)]"
+                >
                   {t.phrase}
                 </p>
 
@@ -505,7 +534,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     <div class="mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-36">
       <!-- Header en 2 colonnes : eyebrow/titre gauche · tagline droite -->
       <div class="mb-16 grid gap-10 md:mb-24 md:grid-cols-12 md:gap-16" data-reveal="up">
-        <div class="md:col-span-7" data-parallax="-0.15">
+        <div class="md:col-span-7" data-parallax="-0.28">
           <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
             <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Avant de commencer
           </p>
@@ -519,7 +548,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
             <span data-mask-line class="display block pb-[0.12em]"> de qualification. </span>
           </h2>
         </div>
-        <div class="md:col-span-5 md:self-end" data-parallax="0.22">
+        <div class="md:col-span-5 md:self-end" data-parallax="0.38">
           <p
             class="max-w-md text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/75"
             data-reveal="up"
@@ -550,7 +579,12 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
               <p class="mt-8 font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
                 {step.duree}
               </p>
-              <h3 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)]">
+              <h3
+                data-split
+                data-split-types="words"
+                data-split-stagger="0.05"
+                class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)]"
+              >
                 {step.titre}
               </h3>
               <p class="mt-5 text-sm leading-relaxed text-[var(--color-cream)]/70">
@@ -667,6 +701,23 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
   </section>
 
   <style>
+    /* Hero slideshow — 4 créations Jonathan qui crossfadent en boucle
+       (brief Morgan 2026-04-24 : « plusieurs créations de Jonathan en fond
+       au lieu d'une seule photo »). Toutes les images absolute stack,
+       seule .is-active a opacity 1, crossfade 1.6s. */
+    [data-hero-slideshow] {
+      position: relative;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.6s var(--ease-out-editorial);
+    }
+    .hero-slide.is-active {
+      opacity: 1;
+    }
+
     /* Hero sticky — transition "recouvrement" style Polestar 5 (mail Jonathan) :
        le hero reste fixé pendant que la section suivante vient se superposer
        au scroll. Solution : position sticky top 0, les sections suivantes ont
@@ -1343,4 +1394,41 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       }
     }
   </style>
+
+  <script>
+    // Hero slideshow rotation — crossfade toutes les 6s (brief Morgan 2026-04-24).
+    // Pause si prefers-reduced-motion. Respecte view transitions Astro.
+    function initHeroSlideshow() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const container = document.querySelector<HTMLElement>('[data-hero-slideshow]');
+      if (!container) return;
+      const slides = Array.from(container.querySelectorAll<HTMLElement>('.hero-slide'));
+      if (slides.length < 2) return;
+      if (container.dataset.slideshowWired === 'true') return;
+      container.dataset.slideshowWired = 'true';
+
+      let current = 0;
+      const interval = window.setInterval(() => {
+        slides[current]?.classList.remove('is-active');
+        current = (current + 1) % slides.length;
+        slides[current]?.classList.add('is-active');
+      }, 6000);
+
+      // Nettoyage au swap Astro pour éviter les timers orphelins
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          window.clearInterval(interval);
+          container.dataset.slideshowWired = '';
+        },
+        { once: true },
+      );
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroSlideshow, { once: true });
+    } else {
+      initHeroSlideshow();
+    }
+    document.addEventListener('astro:page-load', initHeroSlideshow);
+  </script>
 </BaseLayout>

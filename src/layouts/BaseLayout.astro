@@ -82,11 +82,11 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
   <body class="text-[length:var(--text-base)] font-[var(--font-body)]">
     <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>
 
-    <!-- Curtain de transition de page : rideau forest qui monte au départ,
-         descend à l'arrivée. Animé via Motion sur events astro:before-preparation
-         et astro:after-swap. Signature designbyad.com.au (Barba.js là-bas,
-         Astro ClientRouter + Motion chez nous — même rendu sans la dette JS). -->
-    <div class="page-curtain" id="page-curtain" aria-hidden="true"></div>
+    {
+      /* Curtain page transition retiré 2026-04-24 : bloquait la navigation
+        (écran noir infini au click, bug Morgan). Transition native Astro
+        ClientRouter utilisée à la place. */
+    }
 
     <a
       href="#main"
@@ -135,43 +135,8 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
         dismissPreloader();
       }
 
-      // Page curtain — transition entre pages via Astro ClientRouter events.
-      // Le curtain commence caché (scaleY 0, origin bottom). Au départ : monte
-      // (origin bottom → scaleY 1). Au swap : la nouvelle page est chargée
-      // dessous, on bascule l'origin en top et on descend (scaleY 1 → 0).
-      const curtain = document.getElementById('page-curtain');
-      if (curtain && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        curtain.style.transformOrigin = 'bottom';
-        curtain.style.transform = 'scaleY(0)';
-
-        document.addEventListener('astro:before-preparation', (e) => {
-          const event = e as unknown as { loader: () => Promise<void> };
-          const original = event.loader;
-          // Retarde le chargement pour laisser le curtain monter (0.45s)
-          event.loader = async () => {
-            curtain.style.transformOrigin = 'bottom';
-            curtain.style.transform = 'scaleY(1)';
-            curtain.style.transition = 'transform 0.45s cubic-bezier(0.7, 0, 0.3, 1)';
-            await new Promise((r) => window.setTimeout(r, 450));
-            await original();
-          };
-        });
-
-        document.addEventListener('astro:after-swap', () => {
-          // Nouvelle page swappée : on bascule l'origin et on descend
-          curtain.style.transition = 'none';
-          curtain.style.transformOrigin = 'top';
-          // Force reflow pour appliquer le changement d'origin
-          curtain.getBoundingClientRect();
-          curtain.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
-          curtain.style.transform = 'scaleY(0)';
-          window.setTimeout(() => {
-            // Reset pour la prochaine navigation
-            curtain.style.transition = 'none';
-            curtain.style.transformOrigin = 'bottom';
-          }, 600);
-        });
-      }
+      // Curtain de transition retiré 2026-04-24 (bug écran noir infini).
+      // La transition native Astro ClientRouter (fade rapide) suffit.
     </script>
   </body>
 </html>
