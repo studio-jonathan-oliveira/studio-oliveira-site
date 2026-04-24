@@ -221,8 +221,6 @@ function setupSplitReveals(root: ParentNode) {
 
     const types = (el.dataset.splitTypes || 'chars') as 'chars' | 'words' | 'lines';
     const stagger = parseFloat(el.dataset.splitStagger || '0.025');
-    const delay = parseFloat(el.dataset.splitDelay || '0');
-    const duration = parseFloat(el.dataset.splitDuration || '1');
 
     const split = new SplitType(el, { types });
     const targets = types === 'lines' ? split.lines : types === 'words' ? split.words : split.chars;
@@ -233,29 +231,27 @@ function setupSplitReveals(root: ParentNode) {
       (t as HTMLElement).style.transform = 'translateY(110%)';
       (t as HTMLElement).style.willChange = 'transform';
     });
-    // Container overflow hidden pour que le clip soit propre (sauf si déjà stylé)
     if (getComputedStyle(el).overflow === 'visible') {
       el.style.overflow = 'hidden';
       el.style.paddingBottom = '0.1em';
     }
 
-    inView(
-      el,
-      () => {
+    // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24 : « animations
+    // dépendantes du scroll doivent être inversées si on scroll dans l'autre
+    // sens »). progress 0 = off-screen → 110% ; progress 0.5+ = à l'écran → 0% ;
+    // staggé par index pour effet cascade qui se joue/rejoue au scroll.
+    scroll(
+      (progress: number) => {
+        const count = targets.length;
         targets.forEach((t, i) => {
-          animate(
-            t as HTMLElement,
-            { y: ['110%', '0%'] },
-            {
-              duration,
-              delay: delay + i * stagger,
-              ease: EASE_EDITORIAL,
-            },
-          );
+          const localStart = Math.min(0.5, (i / count) * 0.35);
+          const localEnd = Math.min(0.9, localStart + 0.35 + stagger * 1.2);
+          const local = Math.max(0, Math.min(1, (progress - localStart) / (localEnd - localStart)));
+          const translateY = (1 - local) * 110;
+          (t as HTMLElement).style.transform = `translateY(${translateY}%)`;
         });
-        return undefined;
       },
-      { margin: '0px 0px -10% 0px' },
+      { target: el, offset: ['start end', 'end start'] as never },
     );
   });
 }
@@ -270,21 +266,17 @@ function setupImageReveals(root: ParentNode) {
   nodes.forEach((el) => {
     if (el.dataset.imgRevealDone) return;
     el.dataset.imgRevealDone = 'true';
-    const dur = parseFloat(el.dataset.imgRevealDuration || '1.4');
-    el.style.clipPath = 'inset(100% 0 0 0)';
+    // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24) : clip-path piloté
+    // par progress directement. Se referme si on remonte, se rouvre si on
+    // redescend — sensation de vie dans toutes les directions.
     el.style.willChange = 'clip-path';
-
-    inView(
-      el,
-      () => {
-        animate(
-          el,
-          { clipPath: ['inset(100% 0 0 0)', 'inset(0 0 0 0)'] },
-          { duration: dur, ease: EASE_EDITORIAL },
-        );
-        return undefined;
+    scroll(
+      (progress: number) => {
+        const local = Math.max(0, Math.min(1, progress / 0.45));
+        const inset = (1 - local) * 100;
+        el.style.clipPath = `inset(${inset}% 0 0 0)`;
       },
-      { margin: '0px 0px -8% 0px' },
+      { target: el, offset: ['start end', 'end start'] as never },
     );
   });
 }
@@ -557,12 +549,11 @@ function setupHorizontalTypologies(root: ParentNode) {
     const mq = window.matchMedia('(min-width: 1024px) and (hover: hover)');
     if (!mq.matches) return;
 
-    // Dwell : le rail reste figé pendant une portion au début et à la fin
-    // du scroll de la section — on admire le 1er et le dernier panel sans
-    // translation immédiate (bug 2026-04-23 Morgan : « on a pas le temps
-    // de voir le 1er typo »).
-    const DWELL_START = 0.25;
-    const DWELL_END = 0.24;
+    // Dwell réduit 2026-04-24 (feedback Morgan « faut beaucoup plus progressif
+    // comme designbyad »). Scroll horizontal démarre quasi-immédiatement et
+    // continue jusqu'à la fin pour une sensation fluide et constante.
+    const DWELL_START = 0.08;
+    const DWELL_END = 0.05;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
     // Pré-split chars des noms de typologie pour stagger reveal par panel actif
@@ -621,27 +612,28 @@ function setupHorizontalTypologies(root: ParentNode) {
           }
         }
 
-        // Parallax 3 couches AMPLIFIÉ (feedback Morgan 2026-04-24 : « les images
-        // se déplaces pas tout à fait à la même vitesse que leur encadrement,
-        // exactement comme sur designbyad »). Amplitudes 2.5x supérieures.
-        const localProgress = eased * n - activeIndex;
-        layers.forEach((layer, i) => {
-          if (i === activeIndex) {
-            const t = localProgress - 0.5;
-            if (layer.frame) {
-              layer.frame.style.transform = `translate3d(${t * -40}px, 0, 0)`;
-            }
-            if (layer.image) {
-              // Image dans le cadre : la plus mobile — sensation profondeur
-              layer.image.style.transform = `translate3d(${t * -120}px, 0, 0)`;
-            }
-            if (layer.text) {
-              layer.text.style.transform = `translate3d(${t * -70}px, 0, 0)`;
-            }
-          } else if (Math.abs(i - activeIndex) === 1) {
-            if (layer.frame) layer.frame.style.transform = '';
-            if (layer.image) layer.image.style.transform = '';
-            if (layer.text) layer.text.style.transform = '';
+        // Pattern designbyad.com.au exact (analyse 2026-04-24) : pour CHAQUE
+        // panel, on calcule sa position viewport (bord droit / viewport width)
+        // et on translate l'image inverse — elle « reste en place » pendant
+        // que le cadre glisse vers la gauche. Amplitude 140px = marge overflow
+        // des inner (wider que frame). Les textes bougent à 40% de l'amplitude
+        // pour la profondeur stratifiée.
+        const vw = window.innerWidth;
+        layers.forEach((layer) => {
+          if (!layer.frame) return;
+          const rect = layer.frame.getBoundingClientRect();
+          // posRight : 1 quand frame est entièrement à droite du viewport,
+          // 0 quand entièrement à gauche — normalisation [0, 1] clampée.
+          const posRight = Math.max(0, Math.min(1, rect.right / vw));
+          // Centré : 0.5 quand le cadre est au milieu → offset 0 ; 1 quand à droite → +140px
+          // (image en retard, "révèle" le côté droit) ; 0 quand à gauche → -140px.
+          const centered = posRight - 0.5;
+          const imgShift = centered * 140;
+          if (layer.image) {
+            layer.image.style.transform = `translate3d(${-imgShift}px, 0, 0)`;
+          }
+          if (layer.text) {
+            layer.text.style.transform = `translate3d(${-imgShift * 0.4}px, 0, 0)`;
           }
         });
 

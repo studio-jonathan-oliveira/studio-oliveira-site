@@ -15,17 +15,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import IntroBumper from '@/components/astro/IntroBumper.astro';
 import { Image } from 'astro:assets';
-import heroImage from '@/assets/home/hero-biophilie.jpg';
 // Slideshow hero — 4 créations Jonathan qui crossfadent en boucle (brief Morgan)
 import hero01 from '@/assets/home/hero-01.jpg';
 import hero02 from '@/assets/home/hero-02.jpg';
 import hero03 from '@/assets/home/hero-03.jpg';
 import hero04 from '@/assets/home/hero-04.jpg';
 const heroSlides = [
-  { src: hero01, alt: 'Chambre biophilique — projet airbnb Jungle Room' },
-  { src: hero02, alt: 'Mur végétal — Café de Paris, Brive' },
-  { src: hero03, alt: 'Feuillage tropical — Café de Paris, Brive' },
-  { src: hero04, alt: 'Textures matière et plantes — projet airbnb' },
+  { src: hero01, alt: 'Jardin nocturne — Parenthèse exotique, Cœur urbain' },
+  { src: hero02, alt: 'Terrasse méditerranéenne — Restanque corrézienne' },
+  { src: hero03, alt: 'Demeure corrézienne — Provence intérieure' },
+  { src: hero04, alt: 'Entrée de jardin contemporain — Cœur urbain' },
 ];
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
@@ -287,8 +286,8 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         data-parallax="0.15"
       >
         <Image
-          src={heroImage}
-          alt="Projet paysager — Café de Paris, Brive-la-Gaillarde"
+          src={hero02}
+          alt="Projet architecture paysagère — Restanque corrézienne, terrasse méditerranéenne"
           widths={[720, 1080, 1440, 1920]}
           sizes="(min-width: 768px) 55vw, 100vw"
           quality={82}
@@ -300,15 +299,15 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         <ul class="archi-intro-legendes" aria-label="Légendes du projet">
           <li>
             <span class="archi-legende-num">01</span>
-            <span>Mur végétal immersif</span>
+            <span>Ouvrages paysagers sur mesure</span>
           </li>
           <li>
             <span class="archi-legende-num">02</span>
-            <span>Matières & textures naturelles</span>
+            <span>Essences sélectionnées au site</span>
           </li>
           <li>
             <span class="archi-legende-num">03</span>
-            <span>Éclairage architectural</span>
+            <span>Éclairage architectural nocturne</span>
           </li>
         </ul>
       </div>
@@ -1146,24 +1145,29 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       }
     }
 
-    /* Couche 1 — CADRE : container de l'image, se déplace légèrement
-       horizontalement en parallax (vitesse la plus lente). Ratio proche 4:5. */
+    /* Refonte pattern designbyad 2026-04-24 (feedback Morgan + rapport
+       analyse agent) : le CADRE est overflow hidden, l'IMAGE à l'intérieur
+       est wider (+180px sur chaque côté) et se translate inverse selon la
+       position viewport du cadre → effet "l'image reste en place pendant
+       que le cadre glisse". */
     .htypo-visual {
       position: relative;
       width: 100%;
       max-width: 520px;
       height: clamp(280px, 52vh, 620px);
       margin-inline: auto;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
       will-change: transform;
     }
-    /* Couche 2 — IMAGE dans le cadre : clip par le cadre, peut dépasser légèrement
-       et bouger plus vite que le cadre (effet profondeur). Background cream
-       sur fond ink (section), pour que le cadre se détache. */
+    /* Image wider que son cadre → margin négative + width calc pour permettre
+       le translate latéral sans trou. */
     .htypo-visual-inner {
       position: absolute;
-      inset: -5% -8%;
-      overflow: hidden;
-      background: color-mix(in srgb, var(--color-cream) 12%, var(--color-ink));
+      top: 0;
+      bottom: 0;
+      left: -180px;
+      right: -180px;
       will-change: transform;
     }
     .htypo-img {
