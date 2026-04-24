@@ -236,35 +236,31 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       paysagère seule. Remplacée par la section intro ci-dessous. */
   }
 
-  <!-- 01b · ARCHITECTURE PAYSAGÈRE — intro immersive (mail Jonathan 2026-04-24) -->
+  <!-- 01b · ARCHITECTURE PAYSAGÈRE — section RESPIRATION cream (option C
+       Morgan 2026-04-24 : alternance designbyad adaptée à palette Oliveira).
+       Première section après hero = cream clair pour rupture visuelle. -->
   <section
     id="archi-intro"
     data-section-label="Architecture paysagère"
-    data-theme="dark"
-    class="archi-intro relative isolate overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="archi-intro relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="archi-intro-title"
   >
     <div
       class="mx-auto grid max-w-[1500px] grid-cols-1 gap-12 px-6 py-24 md:grid-cols-12 md:gap-16 md:px-10 md:py-32 lg:pl-24 xl:pl-32"
     >
       <header class="md:col-span-5" data-reveal="up" data-parallax="-0.25">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-          <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Architecture paysagère
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
+          <span class="text-[var(--color-ink)]/40">01</span> &nbsp;·&nbsp; Architecture paysagère
         </p>
         <h2
           id="archi-intro-title"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98] md:text-[length:var(--text-hero)]"
         >
           <span class="block">Le jardin,</span>
-          <span
-            data-justify-scroll
-            data-justify-max="80"
-            data-justify-seed="7"
-            class="display block">une architecture.</span
-          >
+          <span class="display block">une architecture.</span>
         </h2>
         <p
-          class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
+          class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75"
         >
           Chaque lieu appelle une <span class="hover-accent">écriture</span> précise. Le studio conçoit
           des jardins comme des <span class="hover-accent">pièces à vivre</span> — en dialogue avec le
@@ -272,7 +268,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         </p>
         <a
           href="/architecture-paysagere"
-          class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/35 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)] uppercase transition-colors hover:opacity-60"
+          class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-ink)]/35 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)] uppercase transition-opacity hover:opacity-60"
         >
           Découvrir les typologies
           <span aria-hidden="true">→</span>
@@ -779,7 +775,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       gap: 0.6rem;
     }
     .archi-legende-num {
-      color: var(--color-laterite);
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
       font-weight: 500;
     }
 

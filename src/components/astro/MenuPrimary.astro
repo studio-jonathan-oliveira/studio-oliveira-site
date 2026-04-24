@@ -249,12 +249,13 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     cursor: pointer;
   }
 
-  /* Animation entrée : panneau slide-in + backdrop fade-in + stagger items */
+  /* Animation entrée — curtain top→bottom (spec vidéo designbyad) :
+     le fond cream « tombe » depuis le haut pour recouvrir l'écran. */
   .primary-menu[open] {
     animation: primary-menu-enter 0s linear;
   }
   .primary-menu[open] .primary-menu__inner {
-    animation: primary-menu-panel 0.6s var(--ease-out-editorial);
+    animation: primary-menu-panel 0.75s cubic-bezier(0.7, 0, 0.3, 1);
   }
   .primary-menu[open]::backdrop {
     animation: primary-menu-backdrop 0.4s var(--ease-out-editorial);
@@ -269,10 +270,10 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   @keyframes primary-menu-panel {
     from {
-      transform: translateX(100%);
+      clip-path: inset(0 0 100% 0);
     }
     to {
-      transform: translateX(0);
+      clip-path: inset(0 0 0 0);
     }
   }
   @keyframes primary-menu-backdrop {
@@ -345,19 +346,22 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Sortie : slide-out panneau + fade-out backdrop */
+  /* Sortie — fondu + léger blur (spec vidéo designbyad : effet distorsion
+     douce en sortie, pas simple reverse). */
   .primary-menu.is-closing .primary-menu__inner {
-    animation: primary-menu-panel-exit 0.4s var(--ease-in-out-editorial) forwards;
+    animation: primary-menu-panel-exit 0.5s cubic-bezier(0.55, 0, 0.45, 1) forwards;
   }
   .primary-menu.is-closing::backdrop {
-    animation: primary-menu-backdrop-exit 0.3s var(--ease-in-out-editorial) forwards;
+    animation: primary-menu-backdrop-exit 0.4s var(--ease-in-out-editorial) forwards;
   }
   @keyframes primary-menu-panel-exit {
     from {
-      transform: translateX(0);
+      opacity: 1;
+      filter: blur(0);
     }
     to {
-      transform: translateX(100%);
+      opacity: 0;
+      filter: blur(8px);
     }
   }
   @keyframes primary-menu-backdrop-exit {
@@ -369,17 +373,16 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Refonte 2026-04-24 brief Jonathan/designbyad :
-     FULLSCREEN bg ink + text cream + liens énormes, plus un panneau droit.
-     Le menu couvre TOUT l'écran (pas de side panel), l'aside coordonnées
-     passe en footer compact en bas à droite. */
+  /* Refonte 2026-04-24 soir — spec extraite vidéo designbyad :
+     FULLSCREEN bg CREAM (papier, pas ink) + text INK + liens alignés droite,
+     NAP à gauche. Structure = footer designbyad qui remplit l'écran. */
   .primary-menu__inner {
     width: 100vw;
     max-width: 100vw;
     height: 100dvh;
     min-height: 0;
-    background: var(--color-ink);
-    color: var(--color-cream);
+    background: var(--color-cream);
+    color: var(--color-ink);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -459,7 +462,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     transform: rotate(-45deg);
   }
 
-  /* ───────── Body : grid nav + aside ───────── */
+  /* ───────── Body : ASIDE gauche (NAP) + NAV droite (liens) — layout designbyad ───────── */
   .primary-menu__body {
     display: grid;
     grid-template-columns: 1fr;
@@ -468,11 +471,19 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   @media (min-width: 1024px) {
     .primary-menu__body {
-      grid-template-columns: 1fr 360px;
+      /* Aside gauche (NAP) + Nav droite (liens alignés droite) */
+      grid-template-columns: 380px 1fr;
+    }
+    /* Inverser l'ordre DOM : aside visuellement gauche, nav droite */
+    .primary-menu__nav {
+      order: 2;
+    }
+    .primary-menu__aside {
+      order: 1;
     }
   }
 
-  /* ───────── Nav primaire ───────── */
+  /* ───────── Nav primaire — labels alignés droite (pattern designbyad) ───────── */
   .primary-menu__nav {
     padding: 2rem 1.5rem 3rem;
   }
@@ -483,8 +494,14 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   @media (min-width: 1024px) {
     .primary-menu__nav {
-      padding: 3rem 3rem 4rem 4rem;
-      border-right: 1px solid color-mix(in oklab, var(--color-forest) 10%, transparent);
+      padding: 3rem 4rem 4rem 3rem;
+      text-align: right;
+    }
+    .primary-menu__nav ol {
+      max-width: 100%;
+    }
+    .primary-menu__link {
+      justify-content: flex-end;
     }
   }
   .primary-menu__nav ol {
