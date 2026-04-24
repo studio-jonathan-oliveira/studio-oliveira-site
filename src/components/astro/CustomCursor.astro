@@ -69,12 +69,13 @@
       left: -18px;
       width: 36px;
       height: 36px;
-      /* Cercle visible + intérieur qui prend le négatif du fond :
-         - border 1.5px blanc = trait de cercle toujours lisible (inversion 100% via mix-blend du parent)
-         - background blanc 45% = intérieur rempli qui inverse doucement la couleur survolée
-         Combinaison = ring net autour du pointeur dont l'intérieur affiche le négatif live du fond. */
-      border: 1.5px solid var(--cursor-color);
-      background-color: color-mix(in srgb, var(--cursor-color) 45%, transparent);
+      /* Disque BLANC 100% opaque + mix-blend-mode: difference sur le parent
+         = inversion exacte de la couleur du fond (|255 - R/G/B|).
+         Feedback Morgan 2026-04-24 : le semi-transparent précédent donnait
+         un gris moyen ; il faut 100% opaque pour que la différence soit nette.
+         Pas de border — la silhouette du disque inversé contre le fond est
+         déjà un « cercle » parfaitement lisible sur tout contexte. */
+      background-color: var(--cursor-color);
       border-radius: 50%;
       transition:
         width 0.35s var(--ease-out-editorial),
@@ -82,7 +83,6 @@
         top 0.35s var(--ease-out-editorial),
         left 0.35s var(--ease-out-editorial),
         background-color 0.3s ease,
-        border-color 0.4s ease,
         opacity 0.2s ease;
     }
 
