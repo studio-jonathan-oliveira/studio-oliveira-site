@@ -377,32 +377,6 @@ function setupScrollRise(root: ParentNode) {
 }
 
 /**
- * Slide X — un élément translate horizontalement de -amp à +amp pendant
- * sa traversée du viewport. Simple glissement gauche → droite (ou inverse
- * via amp négatif). Pattern designbyad pour textes courts qui « respirent »
- * latéralement au scroll, sans déformer le texte.
- *
- * Usage : <p data-slide-x data-slide-x-amp="40">Mots...</p>
- */
-function setupSlideX(root: ParentNode) {
-  const nodes = root.querySelectorAll<HTMLElement>('[data-slide-x]');
-  nodes.forEach((el) => {
-    if (el.dataset.slideXDone) return;
-    el.dataset.slideXDone = 'true';
-    const amp = parseFloat(el.dataset.slideXAmp || '40');
-    el.style.willChange = 'transform';
-    scroll(
-      (progress: number) => {
-        // progress 0 → -amp (entrée bas), 1 → +amp (sortie haut).
-        const x = (progress - 0.5) * 2 * amp;
-        el.style.transform = `translate3d(${x}px, 0, 0)`;
-      },
-      { target: el, offset: ['start end', 'end start'] as never },
-    );
-  });
-}
-
-/**
  * Horizontal wheel — sur un container [data-wheel-horizontal] avec overflow-x:auto,
  * convertit le scroll vertical de la souris en scroll horizontal natif.
  * Les trackpads horizontaux passent à travers (deltaX déjà non-nul).
@@ -849,7 +823,6 @@ function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
-  setupSlideX(root);
   setupWheelHorizontal(root);
   setupScrollRise(root);
   setupImageReveals(root);
