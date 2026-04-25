@@ -359,8 +359,8 @@ const vitrine = [
         class="studio-keywords mb-20 md:mb-28"
         data-reveal="up"
         data-justify-scroll
-        data-justify-max="80"
-        data-justify-seed="7"
+        data-justify-max="18"
+        data-justify-letters="0.04"
       >
         Architecture paysagère <span aria-hidden="true">·</span>
         Design biophilique <span aria-hidden="true">·</span>
@@ -658,7 +658,7 @@ const vitrine = [
       </h2>
     </header>
 
-    <div class="vitrine-rail" role="list">
+    <div class="vitrine-rail" role="list" data-wheel-horizontal>
       {
         vitrine.map((p, i) => (
           <a
@@ -728,8 +728,8 @@ const vitrine = [
         <blockquote
           class="manifeste-justify"
           data-justify-scroll
-          data-justify-max="55"
-          data-justify-seed="11"
+          data-justify-max="14"
+          data-justify-letters="0.025"
         >
           JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
           DE RÉSULTAT.

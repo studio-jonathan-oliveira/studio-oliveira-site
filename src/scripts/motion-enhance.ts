@@ -270,19 +270,19 @@ function setupSplitReveals(root: ParentNode) {
 
 /**
  * Justified text dynamique — signature designbyad.com.au : un texte dont les
- * ESPACES entre mots varient au scroll avec des amplitudes irrégulières.
- * Les mots se dispersent/rassemblent, jamais uniformément.
+ * ESPACES entre mots respirent au scroll. Reste calé gauche-droite parce que
+ * l'alignement justify CSS natif redistribue l'espace résiduel.
  *
  * Usage : <h2 data-justify-scroll>Titre avec plusieurs mots</h2>
  *
  * Options :
- *   - data-justify-min="0"     (px min entre mots)
- *   - data-justify-max="60"    (px max entre mots au scroll)
- *   - data-justify-seed="42"   (seed irrégularité, stable par target)
+ *   - data-justify-max="60"    (px max d'espace ajouté entre mots au pic scroll)
+ *   - data-justify-letters="0.06"  (em max letter-spacing additionnel, optionnel)
  *
- * Technique : SplitType en mots → chaque word a un multiplicateur random
- * (seedé par index + seed) → translate X cumulatif par mot, scrubbed sur
- * le scroll progress du target. Transform-only, pas de reflow.
+ * Technique : on anime word-spacing (et optionnellement letter-spacing) en CSS.
+ * text-align: justify natif redistribue l'espace pour aligner droite. Aucune
+ * translation, donc pas de débordement à droite. Sin-dome 0 → max → 0 sur
+ * la traversée viewport.
  */
 function setupJustifiedScroll(root: ParentNode) {
   const nodes = root.querySelectorAll<HTMLElement>('[data-justify-scroll]');
@@ -290,47 +290,24 @@ function setupJustifiedScroll(root: ParentNode) {
     if (el.dataset.justifyDone) return;
     el.dataset.justifyDone = 'true';
 
-    const minPx = parseFloat(el.dataset.justifyMin || '0');
-    const maxPx = parseFloat(el.dataset.justifyMax || '60');
-    const seed = parseInt(el.dataset.justifySeed || '42', 10);
+    const maxPx = parseFloat(el.dataset.justifyMax || '40');
+    const maxLetters = parseFloat(el.dataset.justifyLetters || '0');
 
-    const split = new SplitType(el, { types: 'words' });
-    const words = split.words;
-    if (!words || words.length < 2) return;
-
-    // Mulberry32 PRNG seedé — stable entre renders, multiplicateur par mot
-    function mulberry32(a: number) {
-      return () => {
-        let t = (a += 0x6d2b79f5);
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-      };
+    el.style.willChange = 'word-spacing, letter-spacing';
+    // S'assure que le justify natif est actif (sinon respiration visuelle nulle).
+    if (getComputedStyle(el).textAlign !== 'justify') {
+      el.style.textAlign = 'justify';
     }
-    const rng = mulberry32(seed);
-    // Chaque mot (sauf le dernier) a son propre multiplicateur [0.3, 1.0]
-    // → amplitudes irrégulières, pas uniformes
-    const multipliers = words.map(() => 0.3 + rng() * 0.7);
-
-    words.forEach((w) => {
-      (w as HTMLElement).style.display = 'inline-block';
-      (w as HTMLElement).style.willChange = 'transform';
-    });
 
     scroll(
       (progress: number) => {
-        // Fenêtre d'animation : 0.2 (entre viewport) → 0.7 (full in) → 1 (sort)
-        // Amplitude max au milieu (progress 0.5), 0 aux extrémités
-        // → respiration visuelle
+        // Fenêtre 0.15 → 0.85 (entrée/sortie viewport), dome sinus 0→1→0.
         const t = Math.max(0, Math.min(1, (progress - 0.15) / 0.7));
-        const easedAmp = Math.sin(t * Math.PI); // 0 → 1 → 0 (dome)
-        let cumulative = 0;
-        words.forEach((w, i) => {
-          (w as HTMLElement).style.transform = `translateX(${cumulative}px)`;
-          const mult = multipliers[i] ?? 0.5;
-          const spacing = minPx + easedAmp * (maxPx - minPx) * mult;
-          cumulative += spacing;
-        });
+        const eased = Math.sin(t * Math.PI);
+        el.style.wordSpacing = `${eased * maxPx}px`;
+        if (maxLetters > 0) {
+          el.style.letterSpacing = `${eased * maxLetters}em`;
+        }
       },
       { target: el, offset: ['start end', 'end start'] as never },
     );
@@ -366,6 +343,39 @@ function setupScrollRise(root: ParentNode) {
         el.style.transform = `translate3d(0, ${y}px, 0)`;
       },
       { target: el, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
+/**
+ * Horizontal wheel — sur un container [data-wheel-horizontal] avec overflow-x:auto,
+ * convertit le scroll vertical de la souris en scroll horizontal natif.
+ * Les trackpads horizontaux passent à travers (deltaX déjà non-nul).
+ * Désactive sur touch / reduce-motion (pas besoin, swipe natif marche).
+ */
+function setupWheelHorizontal(root: ParentNode) {
+  const rails = root.querySelectorAll<HTMLElement>('[data-wheel-horizontal]');
+  rails.forEach((rail) => {
+    if (rail.dataset.wheelHorizDone) return;
+    rail.dataset.wheelHorizDone = 'true';
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    rail.addEventListener(
+      'wheel',
+      (e: WheelEvent) => {
+        // Si l'utilisateur fait du wheel vertical (deltaY dominant), on
+        // convertit en horizontal. Si trackpad horizontal (deltaX != 0),
+        // on laisse le natif.
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        // Bord gauche + scroll vers le haut, ou bord droit + scroll vers le bas
+        // → laisser passer pour ne pas piéger le scroll de page.
+        const atStart = rail.scrollLeft <= 0 && e.deltaY < 0;
+        const atEnd = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1 && e.deltaY > 0;
+        if (atStart || atEnd) return;
+        e.preventDefault();
+        rail.scrollBy({ left: e.deltaY, behavior: 'auto' });
+      },
+      { passive: false },
     );
   });
 }
@@ -784,6 +794,7 @@ function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
+  setupWheelHorizontal(root);
   setupScrollRise(root);
   setupImageReveals(root);
   setupStaggers(root);
