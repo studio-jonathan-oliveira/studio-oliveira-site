@@ -158,12 +158,12 @@ function setupParallax(root: ParentNode) {
     if (el.dataset.parallaxDone) return;
     el.dataset.parallaxDone = 'true';
     const factor = parseFloat(el.dataset.parallax || '0.2');
-    // Multiplier 280 (vs 120 avant) — amplitude plus ressentie (feedback Morgan
-    // 2026-04-24 : « je ne ressent pas très bien le parallax dans la fluidité »).
-    // Factor typique 0.2 → ±56px d'amplitude, 0.4 → ±112px.
+    // Multiplier 520 (vs 280 avant) — Morgan 2026-04-25 : « casser les codes,
+    // super vivant et fluide ». Factor typique 0.2 → ±104px d'amplitude,
+    // 0.4 → ±208px. Sections concernées sont overflow-hidden.
     scroll(
       (progress: number) => {
-        const offset = (progress - 0.5) * factor * 280;
+        const offset = (progress - 0.5) * factor * 520;
         el.style.transform = `translate3d(0, ${offset}px, 0)`;
       },
       { target: el },
