@@ -338,6 +338,39 @@ function setupJustifiedScroll(root: ParentNode) {
 }
 
 /**
+ * Scroll rise — pattern designbyad (vidéo scroll_home.mp4) : un élément se
+ * déplace continuellement vers le haut pendant sa traversée du viewport
+ * (translate Y de +amp à -amp). Sensation que l'image « monte plus tôt que
+ * le scroll » et continue à monter après → dynamisme constant.
+ *
+ * Distinct de data-parallax (générique avec compose 0.5 baseline) : ici
+ * amplitude pure et symétrique, pensé pour images cinématiques.
+ *
+ * Usage : <figure data-scroll-rise data-scroll-rise-amp="80">
+ * Combinable avec data-reveal="image-rise" sur <img> enfant.
+ */
+function setupScrollRise(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-scroll-rise]');
+  nodes.forEach((el) => {
+    if (el.dataset.scrollRiseDone) return;
+    el.dataset.scrollRiseDone = 'true';
+    const amp = parseFloat(el.dataset.scrollRiseAmp || '80');
+    el.style.willChange = 'transform';
+    scroll(
+      (progress: number) => {
+        // progress 0 = bord bas viewport touche haut élément ;
+        // progress 1 = bord haut viewport touche bas élément.
+        // y = (1 - 2*p) * amp : +amp → -amp au passage = monte plus vite
+        // que le scroll, l'image quitte le viewport plus tôt que prévu.
+        const y = (1 - 2 * progress) * amp;
+        el.style.transform = `translate3d(0, ${y}px, 0)`;
+      },
+      { target: el, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
+/**
  * Image reveal — wipe clip-path bottom→top sur toute image ou figure qui porte
  * [data-img-reveal] (ou tag <img> dans [data-gallery-auto-reveal]). Signature
  * designbyad.com.au : images qui apparaissent masque-balayé à l'entrée viewport.
@@ -751,6 +784,7 @@ function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
+  setupScrollRise(root);
   setupImageReveals(root);
   setupStaggers(root);
   setupReveals(root);

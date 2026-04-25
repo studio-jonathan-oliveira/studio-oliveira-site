@@ -677,6 +677,8 @@ const vitrine = [
               data-clip-reveal="top"
               data-clip-duration="1.4"
               data-clip-delay={String(0.1 + i * 0.08)}
+              data-scroll-rise
+              data-scroll-rise-amp="50"
             >
               <Image
                 src={p.image}
@@ -719,11 +721,16 @@ const vitrine = [
         </p>
         {
           /* Pattern designbyad (vidéo scroll_home.mp4) : texte uppercase
-            en text-align: justify CSS natif. Les espaces s'écartent
-            automatiquement pour remplir chaque ligne → effet "irrégulier"
-            visuel sans JS. */
+            en justify dynamique au scroll. data-justify-scroll → les espaces
+            respirent (sin-dome 0→max→0, multiplicateurs irréguliers par mot).
+            text-align: justify CSS reste comme fallback pré-hydratation. */
         }
-        <blockquote class="manifeste-justify">
+        <blockquote
+          class="manifeste-justify"
+          data-justify-scroll
+          data-justify-max="20"
+          data-justify-seed="11"
+        >
           JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
           DE RÉSULTAT.
         </blockquote>

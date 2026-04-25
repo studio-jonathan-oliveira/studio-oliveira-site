@@ -42,7 +42,25 @@
       "Bash(pnpm format *)",
       "Bash(git commit *)",
       "Bash(git add *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Read(//c/Program Files/**)",
+      "Bash(ffmpeg -version)",
+      "Bash(pnpm list *)",
+      "Bash(mkdir -p /tmp/cta-frames)",
+      "Bash(/tmp/ffmpeg-extract/node_modules/ffmpeg-static/ffmpeg.exe -y -i '_brief/client-assets/exemple defilement souris call to action.mp4' -vf fps=2,scale=960:-1 /tmp/cta-frames/f_%03d.jpg)",
+      "Bash(pnpm prettier *)",
+      "Bash(grep -iA 3 -n \"parenth\\\\|restanque\\\\|provence\\\\|coeur urbain\\\\|frange\" _brief/client-docs/PROCESS-ETUDES-STUDIO-2026.txt)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://designbyad.com.au\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $r.Content.Substring\\(0, [Math]::Min\\(30000, $r.Content.Length\\)\\))",
+      "Bash(curl -sL -A \"Mozilla/5.0\" https://designbyad.com.au/ -o /tmp/dbad-home.html)",
+      "Bash(python -c \"import re; html=open\\('C:/Users/Morgan/AppData/Local/Temp/dba-home.html',encoding='utf-8',errors='ignore'\\).read\\(\\); i=html.find\\('naylaprojectscarousel'\\); print\\(html[i-100:i+2500] if i>0 else 'not found'\\)\")",
+      "Read(//c/Users/Morgan/AppData/Local/Temp/dba-js/**)",
+      "Bash(python -c ' *)",
+      "Bash(pnpm eslint *)",
+      "Bash(claude mcp *)",
+      "PowerShell(claude mcp add magic --scope user --env API_KEY=\"19fe5ce9afd9de333037f6f23857386163de33d6cc3573d3db10dbc891755cf9\" -- npx -y \"@21st-dev/magic@latest\")",
+      "Bash(node -e \"const fs=require\\('fs'\\);const p='C:/Users/Morgan/.claude.json';const c=JSON.parse\\(fs.readFileSync\\(p,'utf8'\\)\\);console.log\\('mcpServers keys:',Object.keys\\(c.mcpServers||{}\\)\\);console.log\\('has magic:', !!\\(c.mcpServers&&c.mcpServers.magic\\)\\);\")",
+      "Bash(node -e ' *)",
+      "Bash(git restore *)"
     ]
   }
 }
