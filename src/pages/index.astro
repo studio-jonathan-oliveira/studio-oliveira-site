@@ -277,8 +277,8 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
 
       <div
         class="archi-intro-visual relative md:col-span-7"
-        data-reveal="up"
-        data-reveal-delay="0.15"
+        data-clip-reveal="top"
+        data-clip-duration="1.6"
         data-parallax="0.15"
       >
         <Image
@@ -290,7 +290,7 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
           format="webp"
           class="archi-intro-img"
           loading="lazy"
-          data-parallax="0.4"
+          data-reveal="image-rise"
         />
         <ul class="archi-intro-legendes" aria-label="Légendes du projet">
           <li>
@@ -746,12 +746,10 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transform: scale(1.08);
-      transition: transform 1.4s var(--ease-out-editorial);
     }
-    .archi-intro-visual:hover .archi-intro-img {
-      transform: scale(1.14);
-    }
+    /* Hover scale retiré 2026-04-25 : conflit avec inline transform de
+       data-reveal="image-rise" (Motion garde le translateY(0)/scale(1) inline
+       après animation, ce qui empêche tout :hover CSS de s'appliquer). */
     .archi-intro-legendes {
       position: absolute;
       left: 0;

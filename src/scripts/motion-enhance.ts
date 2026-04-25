@@ -23,7 +23,7 @@ import SplitType from 'split-type';
 
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type RevealVariant = 'up' | 'fade' | 'slide-left' | 'slow';
+type RevealVariant = 'up' | 'fade' | 'slide-left' | 'slow' | 'image-rise';
 
 interface RevealSpec {
   from: Record<string, number | string>;
@@ -52,13 +52,26 @@ const REVEALS: Record<RevealVariant, RevealSpec> = {
     to: { opacity: 1, y: 0 },
     duration: 1.6,
   },
+  // Pattern designbyad (videos scroll_home + scroll_projet) : les images
+  // entrent de façon cinématique avec mask clip-path + translate + scale.
+  // L'effet « monte d'en bas comme si elle venait d'ailleurs » (brief Morgan).
+  // Combiné avec un wrapper [data-rise-mask] pour le clip CSS (cf global.css).
+  'image-rise': {
+    from: { opacity: 0, y: 120, scale: 1.08 },
+    to: { opacity: 1, y: 0, scale: 1 },
+    duration: 1.8,
+  },
 };
 
 function applyInitial(el: HTMLElement, from: Record<string, number | string>) {
   // État initial inline pour éviter tout flash entre rendu HTML et animation
   if ('opacity' in from) el.style.opacity = String(from.opacity);
-  if ('y' in from) el.style.transform = `translateY(${from.y}px)`;
-  if ('x' in from) el.style.transform = `translateX(${from.x}px)`;
+  // Compose translate + scale (image-rise utilise les trois axes)
+  const parts: string[] = [];
+  if ('y' in from) parts.push(`translateY(${from.y}px)`);
+  if ('x' in from) parts.push(`translateX(${from.x}px)`);
+  if ('scale' in from) parts.push(`scale(${from.scale})`);
+  if (parts.length) el.style.transform = parts.join(' ');
 }
 
 function setupReveal(el: HTMLElement, variant: RevealVariant, delay = 0) {

@@ -35,6 +35,9 @@ input/
 # Pipeline Twinmotion — assets générés (commit seulement si pas de CDN)
 public/scrollframes/
 
+# Références client locales (vidéos + frames extraites pour analyse)
+_brief/client-assets/references/
+
 # Fichiers temporaires
 *.tmp
 *.bak

@@ -345,6 +345,15 @@ header.intro-revealing {
 
 /* Page curtain retiré 2026-04-24 (bloquait la navigation). */
 
+/*
+ * Image rise-from-bottom — pattern designbyad (videos scroll_home/scroll_projet
+ * 2026-04-24). Combinaison :
+ *   - wrapper [data-clip-reveal="top"]   → reveal cinématique CSS clip-path bas→haut (existant)
+ *   - image  data-reveal="image-rise"    → translateY 120 + scale 1.08→1 (Motion existant)
+ * Effet « monte d'en bas comme si elle venait d'ailleurs » (brief Morgan).
+ * Aucun CSS spécifique requis — les attributs data-* font tout le travail.
+ */
+
 /* Micro-preloader — overlay full-bleed en forest qui fade-out 0.45s
    après first paint. Évite l'impression de chargement "nu" sans
    pénaliser LCP (le contenu est déjà peint dessous). */
