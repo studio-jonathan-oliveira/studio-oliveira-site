@@ -33,6 +33,7 @@ import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaine from '@/assets/typologies/domaine-caractere.webp';
+import { PROJETS_PAR_SLUG } from '@/lib/projets';
 
 // Typologies — données sourcées du PDF PROCESS-ETUDES-STUDIO-2026 (lignes 29-306)
 // Les phrases courtes sont extraites des citations Jonathan (brief consolidé).
@@ -125,6 +126,32 @@ const methode = [
 
 // Zones d'intervention — cf. site-config.ts (sourcé)
 const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
+
+// Vitrine projets — pattern designbyad (scroll_home.mp4 frame 7-9) :
+// portraits 70vh + name UPPERCASE au-dessus + scroll horizontal natif touch.
+// Sources sourcées : noms + lieux issus de src/lib/projets.ts (extraits PDF Jonathan).
+const vitrine = [
+  {
+    ...PROJETS_PAR_SLUG['coeur-urbain']!,
+    image: typoCoeurUrbain,
+    href: '/architecture-paysagere/coeur-urbain',
+  },
+  {
+    ...PROJETS_PAR_SLUG['frange-urbaine']!,
+    image: typoFrangeUrbaine,
+    href: '/architecture-paysagere/frange-urbaine',
+  },
+  {
+    ...PROJETS_PAR_SLUG['domaine-caractere']!,
+    image: typoDomaine,
+    href: '/architecture-paysagere/domaine-caractere',
+  },
+  {
+    ...PROJETS_PAR_SLUG['micro-urbain']!,
+    image: typoMicroUrbain,
+    href: '/architecture-paysagere/micro-urbain',
+  },
+];
 ---
 
 <BaseLayout
@@ -320,7 +347,19 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     class="studio-biophilique relative isolate overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="studio-lead-title"
   >
-    <div class="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-40">
+    <div class="relative mx-auto max-w-[1500px] px-6 py-28 md:px-10 md:py-40">
+      {
+        /* Pattern designbyad (scroll_home.mp4 frame 2) : bloc mots-clés justifiés
+          UPPERCASE en pleine largeur juste avant le titre. text-align: justify
+          natif → espaces s'écartent automatiquement pour remplir la ligne. */
+      }
+      <p class="studio-keywords mb-20 md:mb-28" data-reveal="up">
+        Architecture paysagère <span aria-hidden="true">·</span>
+        Design biophilique <span aria-hidden="true">·</span>
+        Études sur-mesure <span aria-hidden="true">·</span>
+        Studio indépendant
+      </p>
+
       <div class="grid gap-16 md:grid-cols-12 md:gap-20">
         <div class="md:col-span-7" data-reveal="up" data-parallax="-0.3">
           <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
@@ -586,6 +625,75 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
     </div>
   </section>
 
+  <!-- 04b · VITRINE PROJETS — pattern designbyad (scroll_home.mp4 frame 7-9) :
+       projets en portraits 70vh + name UPPERCASE au-dessus, scroll horizontal
+       natif touch-friendly (snap mandatory). Chaque card image-rise au reveal. -->
+  <section
+    id="vitrine"
+    data-section-label="Projets"
+    data-theme="dark"
+    class="vitrine-section relative isolate overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    aria-labelledby="vitrine-title"
+  >
+    <header class="mx-auto max-w-[1500px] px-6 pt-28 md:px-10 md:pt-36">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
+        <span class="text-[var(--color-cream)]/40">04b</span> &nbsp;·&nbsp; Sélection de projets
+      </p>
+      <h2
+        id="vitrine-title"
+        data-mask-reveal
+        data-mask-stagger="0.14"
+        class="mt-5 max-w-3xl font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
+      >
+        <span data-mask-line class="block pb-[0.05em]">Quelques</span>
+        <span data-mask-line class="display block pb-[0.12em]">études récentes.</span>
+      </h2>
+    </header>
+
+    <div class="vitrine-rail" role="list">
+      {
+        vitrine.map((p, i) => (
+          <a
+            href={p.href}
+            class="vitrine-card group"
+            role="listitem"
+            data-cursor-cta-host
+            data-cursor-label="OUVRIR"
+            aria-label={`Ouvrir la typologie ${p.typologieSlug} — projet ${p.nom}`}
+          >
+            <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
+              {p.nom}
+            </p>
+            <div
+              class="vitrine-frame"
+              data-clip-reveal="top"
+              data-clip-duration="1.4"
+              data-clip-delay={String(0.1 + i * 0.08)}
+            >
+              <Image
+                src={p.image}
+                alt={`${p.nom} — ${p.lieu}`}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 1024px) 32vw, (min-width: 640px) 60vw, 80vw"
+                quality={82}
+                format="webp"
+                class="vitrine-img"
+                loading={i < 2 ? 'eager' : 'lazy'}
+                data-reveal="image-rise"
+                data-reveal-delay={String(0.15 + i * 0.08)}
+              />
+            </div>
+            <p class="vitrine-meta">
+              <span>{p.lieu}</span>
+              <span aria-hidden="true">—</span>
+              <span class="text-[var(--color-cream)]/50">{p.statut}</span>
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
   <!-- 05 · PULL-QUOTE SCROLL-PIN — fond uni ink (mail Jonathan 2026-04-24) -->
   <section
     id="manifeste"
@@ -708,6 +816,110 @@ const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
         position: relative;
         height: auto;
       }
+    }
+
+    /* Bloc keywords studio-lead — pattern designbyad section 2 (scroll_home.mp4
+       frame 2) : mots-clés UPPERCASE en justify pleine largeur, juste avant le
+       paragraphe long. text-align: justify natif → espaces s'écartent
+       automatiquement. Plus discret que le manifeste (taille moyenne, weight
+       moyen) mais même mécanique CSS. */
+    .studio-keywords {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      hyphens: none;
+    }
+    .studio-keywords [aria-hidden] {
+      color: color-mix(in oklab, var(--color-cream) 35%, transparent);
+      margin: 0 0.25em;
+    }
+    @media (max-width: 767px) {
+      .studio-keywords {
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+
+    /* Vitrine projets — pattern designbyad (scroll_home.mp4 frame 7-9) :
+       portraits ~70vh, name UPPERCASE au-dessus, scroll horizontal natif
+       avec snap mandatory. Cards image-rise au reveal (data-clip-reveal +
+       data-reveal="image-rise" sur img enfant). */
+    .vitrine-rail {
+      display: flex;
+      gap: clamp(1.5rem, 3vw, 3rem);
+      padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .vitrine-rail::-webkit-scrollbar {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .vitrine-rail {
+        padding-top: 4rem;
+        padding-bottom: 7rem;
+      }
+    }
+    .vitrine-card {
+      flex: 0 0 auto;
+      width: clamp(260px, 80vw, 320px);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    @media (min-width: 768px) {
+      .vitrine-card {
+        width: clamp(320px, 38vw, 460px);
+      }
+    }
+    @media (min-width: 1280px) {
+      .vitrine-card {
+        width: clamp(380px, 28vw, 520px);
+      }
+    }
+    .vitrine-name {
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      padding-left: 0.25rem;
+    }
+    .vitrine-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--color-cream) 8%, var(--color-ink));
+      will-change: clip-path;
+    }
+    .vitrine-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .vitrine-meta {
+      display: flex;
+      gap: 0.6rem;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      padding-left: 0.25rem;
     }
 
     /* Manifeste text-align justify uppercase (pattern designbyad video :

@@ -123,8 +123,11 @@ const schema = jsonLdGraph([
         </p>
       </header>
 
-      <!-- Image couverture full-width éditorial -->
-      <figure class="mb-16 md:mb-24">
+      {
+        /* Image couverture full-width éditorial — pattern designbyad
+         (scroll_projet.mp4) : clip-reveal bas→haut + image-rise translate+scale. */
+      }
+      <figure class="mb-16 md:mb-24" data-clip-reveal="top" data-clip-duration="1.6">
         <Picture
           src={project.cover}
           alt={project.title}
@@ -134,6 +137,7 @@ const schema = jsonLdGraph([
           quality={85}
           class="aspect-[16/10] w-full object-cover"
           loading="eager"
+          data-reveal="image-rise"
         />
       </figure>
 
@@ -192,8 +196,12 @@ const schema = jsonLdGraph([
       {
         project.gallery.length > 0 && (
           <div class="mt-24 grid grid-cols-1 gap-6 md:mt-32 md:grid-cols-2">
-            {project.gallery.map((img) => (
-              <figure>
+            {project.gallery.map((img, i) => (
+              <figure
+                data-clip-reveal="top"
+                data-clip-duration="1.4"
+                data-clip-delay={String(0.05 + (i % 2) * 0.1)}
+              >
                 <Picture
                   src={img.src}
                   alt={img.alt}
@@ -203,6 +211,8 @@ const schema = jsonLdGraph([
                   quality={82}
                   class="aspect-[4/5] w-full object-cover"
                   loading="lazy"
+                  data-reveal="image-rise"
+                  data-reveal-delay={String(0.1 + (i % 2) * 0.1)}
                 />
                 {img.caption && (
                   <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
