@@ -349,11 +349,19 @@ const vitrine = [
   >
     <div class="relative mx-auto max-w-[1500px] px-6 py-28 md:px-10 md:py-40">
       {
-        /* Pattern designbyad (scroll_home.mp4 frame 2) : bloc mots-clés justifiés
-          UPPERCASE en pleine largeur juste avant le titre. text-align: justify
-          natif → espaces s'écartent automatiquement pour remplir la ligne. */
+        /* Pattern designbyad (scroll_home.mp4 frame 2) : bloc mots-clés UPPERCASE
+          en pleine largeur juste avant le titre. data-justify-scroll → les espaces
+          entre mots respirent au scroll (sin-dome 0→max→0, multiplicateurs
+          irréguliers par mot, cf motion-enhance.ts setupJustifiedScroll).
+          text-align: justify reste comme fallback pré-hydratation. */
       }
-      <p class="studio-keywords mb-20 md:mb-28" data-reveal="up">
+      <p
+        class="studio-keywords mb-20 md:mb-28"
+        data-reveal="up"
+        data-justify-scroll
+        data-justify-max="28"
+        data-justify-seed="7"
+      >
         Architecture paysagère <span aria-hidden="true">·</span>
         Design biophilique <span aria-hidden="true">·</span>
         Études sur-mesure <span aria-hidden="true">·</span>
