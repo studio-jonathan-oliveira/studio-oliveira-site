@@ -350,11 +350,18 @@ const vitrine = [
     <div class="relative mx-auto max-w-[1500px] px-6 py-28 md:px-10 md:py-40">
       {
         /* Pattern designbyad (scroll_home.mp4 frame 2) : bloc mots-clés UPPERCASE
-          calé gauche-droite par justify CSS natif. data-slide-x → tout le bloc
-          glisse latéralement -amp → +amp pendant la traversée viewport, sans
-          déformer le texte (Morgan 2026-04-25 : « juste de gauche à droite »). */
+          calé gauche-droite par justify CSS natif. data-justify-scroll → chaque
+          mot oscille individuellement autour de sa position justify naturelle
+          au scroll (direction/amplitude/phase seedées par mot). Premier et
+          dernier mot ancrés → calage gauche-droite préservé. */
       }
-      <p class="studio-keywords mb-20 md:mb-28" data-reveal="up" data-slide-x data-slide-x-amp="50">
+      <p
+        class="studio-keywords mb-20 md:mb-28"
+        data-reveal="up"
+        data-justify-scroll
+        data-justify-amp="14"
+        data-justify-seed="7"
+      >
         Architecture paysagère <span aria-hidden="true">·</span>
         Design biophilique <span aria-hidden="true">·</span>
         Études sur-mesure <span aria-hidden="true">·</span>
@@ -717,7 +724,12 @@ const vitrine = [
             justify CSS natif. data-slide-x → glide latéral du bloc entier
             pendant la traversée viewport, sans déformer le texte. */
         }
-        <blockquote class="manifeste-justify" data-slide-x data-slide-x-amp="60">
+        <blockquote
+          class="manifeste-justify"
+          data-justify-scroll
+          data-justify-amp="18"
+          data-justify-seed="11"
+        >
           JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
           DE RÉSULTAT.
         </blockquote>

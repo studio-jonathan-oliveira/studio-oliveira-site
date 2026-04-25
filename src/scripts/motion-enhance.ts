@@ -269,20 +269,20 @@ function setupSplitReveals(root: ParentNode) {
 }
 
 /**
- * Justified text dynamique — signature designbyad.com.au : un texte dont les
- * ESPACES entre mots respirent au scroll. Reste calé gauche-droite parce que
- * l'alignement justify CSS natif redistribue l'espace résiduel.
+ * Justified text dynamique — signature designbyad.com.au : un texte calé
+ * gauche-droite par justify CSS natif, dont chaque mot OSCILLE individuellement
+ * autour de sa position naturelle pendant le scroll. Mouvement irrégulier
+ * (direction et amplitude seedées par mot) → effet vivant.
  *
- * Usage : <h2 data-justify-scroll>Titre avec plusieurs mots</h2>
+ * Premier et dernier mot ancrés → calage extrême gauche-droite préservé.
+ * Les translations sont purement visuelles (display inline-block) → ne
+ * cassent pas le flux ni le justify CSS de référence.
+ *
+ * Usage : <p data-justify-scroll>Plusieurs mots ici</p>
  *
  * Options :
- *   - data-justify-max="60"    (px max d'espace ajouté entre mots au pic scroll)
- *   - data-justify-letters="0.06"  (em max letter-spacing additionnel, optionnel)
- *
- * Technique : on anime word-spacing (et optionnellement letter-spacing) en CSS.
- * text-align: justify natif redistribue l'espace pour aligner droite. Aucune
- * translation, donc pas de débordement à droite. Sin-dome 0 → max → 0 sur
- * la traversée viewport.
+ *   - data-justify-amp="10"   (px max d'oscillation par mot, default 10)
+ *   - data-justify-seed="42"  (seed irrégularité, stable par target)
  */
 function setupJustifiedScroll(root: ParentNode) {
   const nodes = root.querySelectorAll<HTMLElement>('[data-justify-scroll]');
@@ -290,24 +290,53 @@ function setupJustifiedScroll(root: ParentNode) {
     if (el.dataset.justifyDone) return;
     el.dataset.justifyDone = 'true';
 
-    const maxPx = parseFloat(el.dataset.justifyMax || '40');
-    const maxLetters = parseFloat(el.dataset.justifyLetters || '0');
+    const amp = parseFloat(el.dataset.justifyAmp || '10');
+    const seed = parseInt(el.dataset.justifySeed || '42', 10);
 
-    el.style.willChange = 'word-spacing, letter-spacing';
-    // S'assure que le justify natif est actif (sinon respiration visuelle nulle).
+    // Justify natif obligatoire pour calage gauche-droite.
     if (getComputedStyle(el).textAlign !== 'justify') {
       el.style.textAlign = 'justify';
     }
 
+    const split = new SplitType(el, { types: 'words' });
+    const words = split.words;
+    if (!words || words.length < 3) return;
+
+    function mulberry32(a: number) {
+      return () => {
+        let t = (a += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rng = mulberry32(seed);
+    // Direction signée [-1, +1] avec amplitude individuelle [0.4, 1.0]
+    const offsets = words.map(() => (rng() - 0.5) * 2 * (0.4 + rng() * 0.6));
+    // Phase individuelle par mot : décale la sin-dome → mots pas synchrones,
+    // certains à leur pic quand d'autres reviennent. Effet « vivant ».
+    const phases = words.map(() => rng() * 0.4);
+
+    words.forEach((w) => {
+      (w as HTMLElement).style.display = 'inline-block';
+      (w as HTMLElement).style.willChange = 'transform';
+    });
+
     scroll(
       (progress: number) => {
-        // Fenêtre 0.15 → 0.85 (entrée/sortie viewport), dome sinus 0→1→0.
-        const t = Math.max(0, Math.min(1, (progress - 0.15) / 0.7));
-        const eased = Math.sin(t * Math.PI);
-        el.style.wordSpacing = `${eased * maxPx}px`;
-        if (maxLetters > 0) {
-          el.style.letterSpacing = `${eased * maxLetters}em`;
-        }
+        words.forEach((w, i) => {
+          // Premier et dernier mot ancrés → bords justify préservés.
+          if (i === 0 || i === words.length - 1) {
+            (w as HTMLElement).style.transform = '';
+            return;
+          }
+          const phase = phases[i] ?? 0;
+          // Fenêtre individuelle décalée par phase, dome sin 0→1→0.
+          const t = Math.max(0, Math.min(1, (progress - 0.15 + phase * 0.2) / 0.7));
+          const eased = Math.sin(t * Math.PI);
+          const off = offsets[i] ?? 0;
+          (w as HTMLElement).style.transform = `translate3d(${eased * amp * off}px, 0, 0)`;
+        });
       },
       { target: el, offset: ['start end', 'end start'] as never },
     );
