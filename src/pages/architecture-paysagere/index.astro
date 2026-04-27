@@ -38,6 +38,11 @@ import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
 
+// Image full-bleed de respiration entre typologies et process (Morgan
+// 2026-04-27 : « grand espace vide, faut une image »). Projet livré en
+// nocturne, bonne respiration éditoriale.
+import respirationProcess from '@/assets/projets/coeur-urbain-parenthese/02.webp';
+
 // On construit un tableau enrichi avec les images explicitement associées
 // (pattern plus sûr qu'un Record<string, ImageMetadata> pour <Image> Astro
 // qui peut rater les imports dynamiques au build).
@@ -444,10 +449,31 @@ const schema = jsonLdGraph([
   </Section>
 
   {
-    /* ───── PROCESS 3 ÉTAPES — compact ─────
-       space="compact" pour resserrer l'écart avec la section Typologies au-dessus
-       (Morgan 2026-04-27 : « grand espace noir entre typologies et process »). */
+    /* ───── BANDE RESPIRATION full-bleed (Morgan 2026-04-27 : « grand espace
+      vide entre typologies et process, manque une image »). Photo projet
+      livré en bande horizontale 60vh, data-img-reveal lent au scroll pour
+      effet cinématique. Pas de texte par-dessus — pure respiration visuelle. */
   }
+  <section
+    class="ap-respiration relative overflow-hidden bg-[var(--color-forest)]"
+    aria-hidden="true"
+    data-theme="dark"
+  >
+    <div data-img-reveal data-img-reveal-speed="1" class="ap-respiration-frame">
+      <Image
+        src={respirationProcess}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={82}
+        format="webp"
+        class="ap-respiration-img h-full w-full object-cover object-center"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  {/* ───── PROCESS 3 ÉTAPES — compact ───── */}
   <Section
     variant="forest"
     topDivider
@@ -627,6 +653,30 @@ const schema = jsonLdGraph([
       color: var(--color-cream);
       opacity: 0.4;
       font-weight: 400;
+    }
+
+    /* ───── Bande respiration full-bleed (entre typologies et process) ─────
+       Hauteur 60vh desktop / 50vh mobile, image plein cadre projet livré.
+       Léger zoom in subtil au scroll via parallax pour donner du mouvement. */
+    .ap-respiration {
+      height: 60vh;
+      min-height: 320px;
+    }
+    @media (max-width: 768px) {
+      .ap-respiration {
+        height: 50vh;
+      }
+    }
+    .ap-respiration-frame {
+      position: absolute;
+      inset: 0;
+    }
+    .ap-respiration-img {
+      transform: scale(1.04);
+      transition: transform 1.4s var(--ease-out-editorial);
+    }
+    .ap-respiration:hover .ap-respiration-img {
+      transform: scale(1.08);
     }
 
     /* ───── Hero image — zoom scroll-driven ───── */

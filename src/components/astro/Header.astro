@@ -132,19 +132,27 @@ const { darkHero = false } = Astro.props;
     isolation: isolate;
   }
 
-  /* Dark hero NON scrolled (Morgan 2026-04-27 — passe relisibilité 3) :
-     passes 1 et 2 (mix-blend-normal + text-shadow + vignette renforcée)
-     jugées encore insuffisantes. Bascule sur effet "verre dépoli" pattern
-     Aesop/Polestar : fond semi-opaque + backdrop-filter blur isole les
-     éléments du fond bruyant du slideshow sans créer un bandeau brut.
-     Text-shadow renforcés en complément pour assurance maximum. */
+  /* Verre dépoli — appliqué sur (Morgan 2026-04-27 passe 4) :
+     1. body.is-dark-section : alimentée par theme-observer dès qu'on scroll
+        sur une section data-theme="dark". Couvre toutes les pages avec
+        sections sombres uniformément (studio, archi-paysagere, etc.).
+     2. dark-hero non scrolled : compatibilité avec l'ancienne logique pour
+        les pages qui posent darkHero sur BaseLayout sans avoir tagué leurs
+        sections en data-theme="dark".
+     Sur sections claires (cream / sans is-dark-section) : retour au
+     mix-blend-mode: difference par défaut qui marche bien sur fond uni. */
+  :global(body.is-dark-section) .site-header,
   .site-header--dark-hero:not(.is-scrolled) {
     mix-blend-mode: normal;
     background-color: rgba(0, 0, 0, 0.28);
     backdrop-filter: blur(16px) saturate(120%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--color-cream);
   }
+  :global(body.is-dark-section) .logo-cream,
+  :global(body.is-dark-section) .menu-trigger,
+  :global(body.is-dark-section) .site-header__topbar,
   .site-header--dark-hero:not(.is-scrolled) .logo-cream,
   .site-header--dark-hero:not(.is-scrolled) .menu-trigger,
   .site-header--dark-hero:not(.is-scrolled) .site-header__topbar {
@@ -152,17 +160,29 @@ const { darkHero = false } = Astro.props;
       0 1px 4px rgba(0, 0, 0, 0.85),
       0 2px 14px rgba(0, 0, 0, 0.5);
   }
+  :global(body.is-dark-section) .menu-bars > span,
   .site-header--dark-hero:not(.is-scrolled) .menu-bars > span {
     box-shadow:
       0 1px 3px rgba(0, 0, 0, 0.85),
       0 2px 8px rgba(0, 0, 0, 0.5);
   }
-  /* CTA pill : background cream opaque déjà très visible sur fond sombre,
-     drop-shadow plus marqué pour le détacher franchement du verre dépoli. */
+  /* CTA pill sur fond sombre : cream bg + forest text + drop-shadow franc
+     pour détacher du verre dépoli. */
+  :global(body.is-dark-section) .cta-pill,
   .site-header--dark-hero:not(.is-scrolled) .cta-pill {
+    background-color: var(--color-cream);
+    color: var(--color-forest);
+    border-color: var(--color-cream);
     box-shadow:
       0 6px 24px rgba(0, 0, 0, 0.45),
       0 2px 6px rgba(0, 0, 0, 0.35);
+  }
+  /* Logo swap sur sections sombres */
+  :global(body.is-dark-section) .logo-moss {
+    opacity: 0;
+  }
+  :global(body.is-dark-section) .logo-cream {
+    opacity: 1;
   }
 
   /* Dark hero — transparent, logo crème, texte crème */
