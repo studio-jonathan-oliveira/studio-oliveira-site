@@ -87,7 +87,7 @@ const schema = jsonLdGraph([
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                <a href={b.item} class="hover:text-[var(--color-forest)]">
                   {b.name}
                 </a>
               ) : (
@@ -106,7 +106,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" tight class="pt-0 pb-0">
     <article>
       <header class="mb-16 max-w-3xl">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           Conception · {project.typology?.title}
           {project.year && ` · ${project.year}`}
         </p>
@@ -130,7 +130,7 @@ const schema = jsonLdGraph([
           <dl class="mb-16 grid grid-cols-2 gap-8 border-y border-[var(--color-forest)]/10 py-10 md:grid-cols-4 md:gap-12">
             {project.outcomeStats.map((stat) => (
               <div>
-                <dt class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                <dt class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                   {stat.label}
                 </dt>
                 <dd class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
@@ -145,7 +145,7 @@ const schema = jsonLdGraph([
       {/* Description */}
       <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
         <aside>
-          <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+          <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
             Parti-pris
           </p>
         </aside>
@@ -185,7 +185,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" topDivider>
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
       <div>
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           Le défi
         </p>
       </div>
@@ -201,7 +201,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" topDivider>
     <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
       <div>
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           La réponse
         </p>
       </div>
@@ -211,15 +211,20 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
         Votre tour
       </p>
       <h2
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
       >
-        Votre lieu,<br /><em class="text-[var(--color-gold)] italic">conçu précisément</em>.
+        <span data-mask-line class="block pb-[0.05em]">Votre lieu,</span>
+        <span data-mask-line class="block pb-[0.12em]"
+          ><em class="text-[var(--color-cream)]/55 italic">conçu précisément</em>.</span
+        >
       </h2>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <CtaLink href="/contact" label="Lancer une étude" tone="dark" size="lg" magnetic={0} />

@@ -30,16 +30,25 @@ const schema = jsonLdGraph([
   title="Conceptions — rendus immersifs"
   description="Études de projets en cours rendues en Twinmotion photoréaliste — expériences scroll-driven immersives signées Studio J Oliveira."
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
+  <Section variant="cream" id="hero" sectionLabel="Conceptions" class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
         Portefeuille · Conceptions
       </p>
       <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+        data-mask-reveal
+        data-mask-stagger="0.14"
+        class="mt-6 font-[family-name:var(--font-heading)] leading-[1.02] tracking-tight"
       >
-        Études en <em class="italic">cours</em>,<br />
-        rendues immersives.
+        <span data-mask-line class="block pb-[0.05em] text-[length:var(--text-4xl)] italic"
+          >Études en cours,</span
+        >
+        <span
+          data-mask-line
+          class="block pb-[0.18em] text-[length:var(--text-5xl)] md:text-[length:var(--text-hero)]"
+          style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;"
+          >RENDUES IMMERSIVES.</span
+        >
       </h1>
       <p
         class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
@@ -48,18 +57,18 @@ const schema = jsonLdGraph([
         expériences scroll-driven pour traverser l'espace comme si vous y étiez déjà. Les projets
         livrés sont dans <a
           href="/realisations"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
           >Réalisations</a
         >.
       </p>
     </div>
   </Section>
 
-  <Section variant="cream" topDivider>
+  <Section variant="cream" topDivider id="liste" sectionLabel="Études">
     {
       conceptions.length === 0 ? (
         <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
             En préparation
           </p>
           <p class="mx-auto mt-4 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">

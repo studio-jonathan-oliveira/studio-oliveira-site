@@ -402,20 +402,32 @@
 
     if (counterTotal) counterTotal.textContent = pad(sections.length);
 
-    // Smooth scroll au clic. Pour le 1er item (Accueil/hero), on force
-    // window.scrollTo(0) car scrollIntoView sur une section sticky top:0
-    // ne ramenait pas tout en haut de la page (Morgan 2026-04-27).
+    // Smooth scroll au clic. Pour le 1er item (Accueil/hero) sur la home,
+    // le hero est en position:sticky → scrollIntoView ne suffit pas, il faut
+    // forcer scroll-to-top du body. Morgan 2026-04-27 (passes 1+2) : ça ne
+    // remontait toujours pas. Passe 3 : combo Lenis + native + failsafe
+    // instant à 1500 ms si scrollY n'est pas redescendu à 0.
     Object.entries(items).forEach(([id, { link }], i) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const lenis = window.__lenis;
         if (i === 0) {
-          // Lenis intercepte les scroll natifs ; on utilise son API si dispo.
+          // Combo robuste : Lenis si dispo, sinon scroll natif smooth.
           if (lenis && typeof lenis.scrollTo === 'function') {
-            lenis.scrollTo(0, { duration: 1.2, immediate: false });
+            lenis.scrollTo(0, { duration: 1.2, immediate: false, force: true });
           } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
+          // Failsafe instant : si après 1.5 s on n'est pas en haut, force
+          // scroll natif synchrone (cas où Lenis serait corrompu / scroll
+          // intercepté par autre chose).
+          window.setTimeout(() => {
+            if (window.scrollY > 8) {
+              window.scrollTo(0, 0);
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+            }
+          }, 1500);
           history.replaceState(null, '', window.location.pathname);
           return;
         }

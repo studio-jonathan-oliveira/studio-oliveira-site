@@ -91,30 +91,46 @@ const etapesMethode = [
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ───── HERO SPLIT : portrait Jonathan + texte éditorial ───── */}
+  {
+    /* ───── HERO SPLIT : portrait Jonathan PLEINE PAGE + texte éditorial ─────
+       Morgan 2026-04-27 « images presque pleine hauteur pour l'immersion ».
+       Section min-h 100svh, portrait droite étire sur la pleine hauteur. */
+  }
   <section
     id="hero"
     data-section-label="Studio"
     data-theme="dark"
-    class="studio-hero relative bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="studio-hero relative min-h-[100svh] bg-[var(--color-ink)] text-[var(--color-cream)]"
   >
-    <div class="mx-auto grid max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12">
+    <div
+      class="mx-auto grid min-h-[100svh] max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12"
+    >
       <div
         class="px-6 pt-8 pb-16 md:px-12 md:pt-16 md:pb-24 lg:col-span-7 lg:col-start-1"
         data-reveal="up"
+        data-scroll-rise
+        data-scroll-rise-amp="-80"
       >
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="studio-dot" aria-hidden="true"></span>
           Le studio · Depuis {SITE.foundedYear}
         </p>
+        {
+          /* H1 cassé designbyad (Morgan 2026-04-27 : « casser les codes
+            visuels ») : nom propre Cormorant italique mid-size, suivi du
+            positionnement DESIGNER BIOPHILIQUE en CAPS Jost monumentales
+            (clamp 3-7rem). Asymétrie visuelle = signature designer. */
+        }
         <h1
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
+          class="studio-h1-broken mt-6 font-[family-name:var(--font-heading)] leading-[1.02]"
         >
-          <span data-mask-line class="block pb-[0.05em]">Jonathan</span>
-          <span data-mask-line class="block pb-[0.05em]">Oliveira —</span>
-          <span data-mask-line class="display block pb-[0.12em]">Designer biophilique.</span>
+          <span data-mask-line class="block pb-[0.05em] italic">Jonathan</span>
+          <span data-mask-line class="block pb-[0.05em] italic">Oliveira —</span>
+          <span data-mask-line class="studio-h1-positioning block pb-[0.18em]"
+            >DESIGNER BIOPHILIQUE.</span
+          >
         </h1>
         <p
           class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
@@ -123,19 +139,25 @@ const etapesMethode = [
           environnemental immersif et expérientiel —
           <a
             href="/architecture-paysagere"
-            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
             >architecture paysagère</a
           > et <a
             href="/amenagement-vegetal-interieur"
-            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
             >aménagement végétalisé d'intérieur</a
           >. J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
           l'humain.
         </p>
       </div>
 
-      <div class="relative lg:col-span-5 lg:col-start-8" data-reveal="up" data-reveal-delay="0.2">
-        <div class="studio-portrait relative overflow-hidden">
+      <div class="relative lg:col-span-5 lg:col-start-8 lg:h-full">
+        <div
+          class="studio-portrait relative h-full overflow-hidden"
+          data-img-reveal
+          data-img-reveal-speed="0.95"
+          data-img-reveal-offset="right"
+          data-img-reveal-offset-amp="50"
+        >
           <Image
             src={portrait01}
             alt="Jonathan Oliveira, fondateur du Studio"
@@ -157,6 +179,8 @@ const etapesMethode = [
 
   {/* ───── 01 · DÉMARCHE — avec texture végétale en fond + piliers ───── */}
   <section
+    id="demarche"
+    data-section-label="Démarche"
     class="studio-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
     data-theme="dark"
     aria-labelledby="demarche-title"
@@ -178,16 +202,20 @@ const etapesMethode = [
 
     <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
       <div class="grid gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
-        <div data-reveal="up">
-          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <div data-reveal="up" data-parallax="-0.25">
+          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
             <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
           </p>
           <h2
             id="demarche-title"
+            data-mask-reveal
+            data-mask-stagger="0.14"
             class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
           >
-            Trois piliers,<br />
-            un même <span class="display">écosystème</span>.
+            <span data-mask-line class="block pb-[0.05em]">Trois piliers,</span>
+            <span data-mask-line class="block pb-[0.12em]"
+              >un même <span class="display">écosystème</span>.</span
+            >
           </h2>
         </div>
 
@@ -195,6 +223,7 @@ const etapesMethode = [
           class="space-y-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
           data-reveal="up"
           data-reveal-delay="0.15"
+          data-parallax="0.18"
         >
           <p>
             La conception biophilique est un art de conception architecturale directement inspiré
@@ -220,7 +249,7 @@ const etapesMethode = [
         {
           piliers.map((p, i) => (
             <li class="bg-[var(--color-forest)]/80 p-8 backdrop-blur-sm md:p-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                 Pilier {String(i + 1).padStart(2, '0')}
               </p>
               <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
@@ -233,29 +262,52 @@ const etapesMethode = [
           ))
         }
       </ul>
+
+      {
+        /* Bande keywords designbyad (Morgan 2026-04-27 « casser les codes »).
+          Mots-clés issus du contenu de la section démarche (3 piliers + 2
+          adjectifs Jonathan déjà présents : "scientifique", "sensible").
+          data-justify-scroll : oscille spread compact → justify final au
+          scroll. Pattern signature de la home. */
+      }
+      <p
+        class="studio-keywords-band mt-20 md:mt-28"
+        data-reveal="up"
+        data-justify-scroll
+        data-justify-amp="20"
+        data-justify-seed="7"
+      >
+        Bâti <span aria-hidden="true">·</span>
+        Environnement <span aria-hidden="true">·</span>
+        Humain <span aria-hidden="true">·</span>
+        Scientifique <span aria-hidden="true">·</span>
+        Sensible
+      </p>
     </div>
   </section>
 
   {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
-  <Section variant="forest" aria-labelledby="parcours-title">
+  <Section variant="forest" id="parcours" sectionLabel="Parcours" labelledBy="parcours-title">
     <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
-      <div data-reveal="up">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <div data-reveal="up" data-parallax="-0.22">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Parcours
         </p>
         <h2
           id="parcours-title"
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
         >
-          <em class="italic">Formation</em><br />
-          et trajectoire.
+          <span data-mask-line class="block pb-[0.05em]"><em class="italic">Formation</em></span>
+          <span data-mask-line class="block pb-[0.05em]">et trajectoire.</span>
         </h2>
 
         <ol class="mt-12 space-y-0" data-reveal-stagger="0.1" data-reveal="up">
           {
             parcours.map((p, i) => (
               <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
-                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                   {String(i + 1).padStart(2, '0')}
                 </p>
                 <div>
@@ -272,12 +324,14 @@ const etapesMethode = [
         </ol>
       </div>
 
-      <aside
-        class="studio-parcours-aside flex flex-col gap-8"
-        data-reveal="up"
-        data-reveal-delay="0.2"
-      >
-        <div class="studio-parcours-portrait overflow-hidden">
+      <aside class="studio-parcours-aside flex flex-col gap-8">
+        <div
+          class="studio-parcours-portrait overflow-hidden"
+          data-img-reveal
+          data-img-reveal-speed="0.95"
+          data-img-reveal-offset="left"
+          data-img-reveal-offset-amp="40"
+        >
           <Image
             src={portrait02}
             alt="Jonathan Oliveira, portrait éditorial"
@@ -289,17 +343,21 @@ const etapesMethode = [
             loading="lazy"
           />
         </div>
-        <blockquote class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6">
+        <blockquote
+          class="studio-parcours-quote border-l border-[var(--color-cream)]/40 pl-6"
+          data-reveal="up"
+          data-reveal-delay="0.3"
+        >
           <p
             class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/85 italic md:text-[length:var(--text-2xl)]"
           >
             Dix ans de paysagisme avant de fonder le studio — pour comprendre d'abord le métier par
-            l'intérieur, avant d'en proposer une <em class="text-[var(--color-laterite)] not-italic"
+            l'intérieur, avant d'en proposer une <em class="text-[var(--color-cream)]/55 not-italic"
               >autre lecture</em
             >.
           </p>
           <footer
-            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase"
+            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase"
           >
             — Résumé du parcours
           </footer>
@@ -310,32 +368,41 @@ const etapesMethode = [
 
   {/* ───── 03 · MÉTHODE forest immersif avec blockquote géant ───── */}
   <section
+    id="methode"
+    data-section-label="Méthode"
     class="studio-methode relative bg-[var(--color-forest)] text-[var(--color-cream)]"
     data-theme="dark"
     aria-labelledby="methode-title"
   >
     <div class="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <div class="mb-12 md:mb-16" data-reveal="up">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Méthode
         </p>
         <h2
           id="methode-title"
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
         >
-          Je ne vends pas<br />
-          une <em class="text-[var(--color-laterite)] italic">étude</em>.
+          <span data-mask-line class="block pb-[0.05em]">Je ne vends pas</span>
+          <span data-mask-line class="block pb-[0.12em]"
+            >une <em class="text-[var(--color-cream)]/55 italic">étude</em>.</span
+          >
         </h2>
       </div>
 
       <blockquote
         class="studio-quote mx-auto max-w-4xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] italic md:text-[length:var(--text-4xl)]"
         data-reveal="up"
+        data-justify-scroll
+        data-justify-amp="0.55"
+        data-justify-window="0.05,0.65"
       >
-        Je vends une <em class="text-[var(--color-laterite)] not-italic">vision</em>, une
-        <em class="text-[var(--color-moss)] not-italic">méthode</em>, une
-        <em class="text-[var(--color-moss)] not-italic">expérience</em>, une
-        <em class="text-[var(--color-laterite)] not-italic">sécurité de résultat</em>. Le client ne
+        Je vends une <em class="text-[var(--color-cream)]/55 not-italic">vision</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">méthode</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">expérience</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">sécurité de résultat</em>. Le client ne
         doit jamais avoir l'impression d'être vendu, mais plutôt : choisir, co-construire, s'élever
         vers un projet plus juste et plus qualitatif.
       </blockquote>
@@ -353,7 +420,7 @@ const etapesMethode = [
         {
           etapesMethode.map((etape) => (
             <li class="studio-methode-item grid grid-cols-[auto_1fr] items-baseline gap-6 border-t border-[var(--color-cream)]/12 py-8 md:gap-16 md:py-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                 {etape.num}
               </p>
               <div>
@@ -361,7 +428,7 @@ const etapesMethode = [
                   <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight md:text-[length:var(--text-3xl)]">
                     <em class="italic">{etape.label}</em>
                   </h3>
-                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
                     {etape.duree}
                   </span>
                 </div>
@@ -377,15 +444,19 @@ const etapesMethode = [
   </section>
 
   {/* ───── CTA final cream ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         Étape suivante
       </p>
       <h2
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-cream)]"
       >
-        Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.
+        <span data-mask-line class="block pb-[0.12em]"
+          >Engager la <em class="text-[var(--color-cream)]/55 italic">conversation</em>.</span
+        >
       </h2>
       <p
         class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
@@ -396,7 +467,7 @@ const etapesMethode = [
         <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -405,14 +476,53 @@ const etapesMethode = [
   </Section>
 
   <style>
-    /* Dot pulsant (signature) */
+    /* H1 cassé designbyad — nom propre Cormorant italique mid-size + ligne
+       positionnement DESIGNER BIOPHILIQUE Jost CAPS monumentales. */
+    .studio-h1-broken {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    .studio-h1-positioning {
+      display: block;
+      margin-top: 0.4rem;
+      font-family: var(--font-heading), sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+      line-height: 0.96;
+      letter-spacing: -0.012em;
+    }
+
+    /* Bande keywords designbyad — mots-clés en CAPS justify-scroll, font
+       heading pour gras éditorial, espacement marqué. */
+    .studio-keywords-band {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.25rem, 3.2vw, 2.4rem);
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      text-align: justify;
+      max-width: 90rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .studio-keywords-band > span[aria-hidden] {
+      display: inline-block;
+      margin: 0 0.4em;
+      color: var(--color-cream);
+      opacity: 0.4;
+      font-weight: 400;
+    }
+
+    /* Dot pulsant (signature) — passé en cream/60 (monochrome Morgan 2026-04-27) */
     .studio-dot {
       display: inline-block;
       width: 7px;
       height: 7px;
       margin-right: 0.4rem;
       border-radius: 50%;
-      background-color: var(--color-laterite);
+      background-color: color-mix(in oklab, var(--color-cream) 60%, transparent);
       vertical-align: middle;
       animation: studio-pulse 2.6s ease-in-out infinite;
     }
@@ -428,7 +538,8 @@ const etapesMethode = [
       }
     }
 
-    /* Portrait Jonathan */
+    /* Portrait Jonathan — pleine hauteur sur desktop (immersion Morgan
+       2026-04-27). Mobile : aspect-ratio classique pour préserver lisibilité. */
     .studio-portrait {
       aspect-ratio: 4 / 5;
       background-color: var(--color-forest);
@@ -436,7 +547,9 @@ const etapesMethode = [
     }
     @media (min-width: 1024px) {
       .studio-portrait {
-        aspect-ratio: 4 / 6;
+        aspect-ratio: auto;
+        height: 100%;
+        min-height: 100svh;
       }
     }
     .studio-portrait-caption {
@@ -475,11 +588,11 @@ const etapesMethode = [
       height: 70%;
       background: radial-gradient(
         circle at center,
-        color-mix(in oklab, var(--color-laterite) 32%, transparent) 0%,
+        color-mix(in oklab, var(--color-cream) 18%, transparent) 0%,
         transparent 65%
       );
       pointer-events: none;
-      opacity: 0.85;
+      opacity: 0.7;
     }
 
     /* Parcours timeline hover */
@@ -493,7 +606,7 @@ const etapesMethode = [
       border-top: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
     }
     .studio-parcours-item:hover {
-      background-color: color-mix(in oklab, var(--color-laterite) 4%, transparent);
+      background-color: color-mix(in oklab, var(--color-cream) 6%, transparent);
       padding-left: 0.5rem;
     }
 
@@ -510,8 +623,8 @@ const etapesMethode = [
       font-family: var(--font-heading), serif;
       font-size: 6rem;
       line-height: 1;
-      color: var(--color-laterite);
-      opacity: 0.5;
+      color: var(--color-cream);
+      opacity: 0.3;
       font-style: italic;
     }
 

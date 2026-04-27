@@ -91,7 +91,7 @@ const formatDate = (iso: string) =>
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                <a href={b.item} class="hover:text-[var(--color-forest)]">
                   {b.name}
                 </a>
               ) : (
@@ -110,7 +110,7 @@ const formatDate = (iso: string) =>
   <Section variant="cream" tight class="pt-0 pb-0">
     <article class="mx-auto max-w-3xl">
       <header class="mb-12">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           Journal
           {article.tags?.[0] && ` · ${article.tags[0]}`}
           {article.readingTime && ` · ${article.readingTime} min`}
@@ -155,14 +155,14 @@ const formatDate = (iso: string) =>
       {
         article.relatedArticles && article.relatedArticles.length > 0 && (
           <aside class="mt-24 border-t border-[var(--color-forest)]/10 pt-12">
-            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
               À lire ensuite
             </p>
             <ul class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
               {article.relatedArticles.map((rel) => (
                 <li>
                   <a href={`/journal/${rel.slug}`} class="group block">
-                    <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors group-hover:text-[var(--color-moss)]">
+                    <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors group-hover:text-[var(--color-forest)]">
                       {rel.title}
                     </h3>
                     {rel.excerpt && (
@@ -184,7 +184,7 @@ const formatDate = (iso: string) =>
     <div class="mx-auto max-w-xl text-center">
       <a
         href="/journal"
-        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-moss)]"
+        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-forest)]"
       >
         <span aria-hidden="true">←</span>
         Tous les articles

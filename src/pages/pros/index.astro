@@ -64,7 +64,7 @@ const schema = jsonLdGraph([
 
   <Section variant="cream" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
         <span class="text-[var(--color-forest)]/40">PRO</span>
         &nbsp;·&nbsp; Hôtellerie · Restauration · Bureaux · Commerces
       </p>
@@ -101,10 +101,10 @@ const schema = jsonLdGraph([
           <li class="bg-[var(--color-cream)]">
             <a
               href={`/amenagement-vegetal-interieur/${v.slug}`}
-              class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-moss)]/5 md:p-14"
+              class="group flex h-full flex-col justify-between p-10 transition-colors hover:bg-[var(--color-forest)]/5 md:p-14"
             >
               <div>
-                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                   Verticale · {v.nom}
                 </p>
                 <h3 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]">
@@ -138,7 +138,7 @@ const schema = jsonLdGraph([
       {
         [1, 2, 3].map((n) => (
           <li class="border-t border-[var(--color-forest)]/10 pt-6">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-moss)] uppercase">
+            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-forest)]/55 uppercase">
               Garantie {n}
             </p>
             <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
@@ -163,15 +163,20 @@ const schema = jsonLdGraph([
 
   <!-- CTA FINAL — zone de masquage du CTA suiveur souris (éviter doublon) -->
   <div data-cta-hide>
-    <Section variant="forest" topDivider>
+    <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
       <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-        <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
           Engager la conversation
         </p>
         <h2
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.05] text-[var(--color-cream)]"
         >
-          Un projet pro ?<br /><em class="text-[var(--color-gold)] italic">Parlons-en.</em>
+          <span data-mask-line class="block pb-[0.05em]">Un projet pro ?</span>
+          <span data-mask-line class="block pb-[0.12em]"
+            ><em class="text-[var(--color-cream)]/55 italic">Parlons-en.</em></span
+          >
         </h2>
         <p
           class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
@@ -183,7 +188,7 @@ const schema = jsonLdGraph([
           <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0} />
           <a
             href="tel:+33661088444"
-            class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-gold)]"
+            class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-cream)]"
           >
             06 61 08 84 44
           </a>

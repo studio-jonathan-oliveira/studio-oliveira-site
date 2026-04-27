@@ -84,7 +84,7 @@ const schema = jsonLdGraph([
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                <a href={b.item} class="hover:text-[var(--color-forest)]">
                   {b.name}
                 </a>
               ) : (
@@ -100,7 +100,7 @@ const schema = jsonLdGraph([
 
   <Section variant="cream" tight class="pt-0">
     <div class="max-w-4xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
         Verticale · {verticale.label}
       </p>
       <h1
@@ -125,7 +125,7 @@ const schema = jsonLdGraph([
       <Section variant="cream" topDivider aria-labelledby="gallery-title">
         <div class="mb-12 grid gap-10 md:mb-16 md:grid-cols-[1fr_2fr] md:items-start md:gap-16">
           <div>
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
               Projet exemplaire · {projet.statut}
             </p>
             <h2
@@ -180,7 +180,7 @@ const schema = jsonLdGraph([
         faq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-forest)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -199,23 +199,27 @@ const schema = jsonLdGraph([
     </ul>
   </Section>
 
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
         {verticale.label} · Devis sur mesure
       </p>
       <h2
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
       >
-        Parlons de votre <em class="text-[var(--color-gold)] italic"
-          >{verticale.label.toLowerCase()}</em
-        >.
+        <span data-mask-line class="block pb-[0.05em]">Parlons de votre</span>
+        <span data-mask-line class="block pb-[0.12em]"
+          ><em class="text-[var(--color-cream)]/55 italic">{verticale.label.toLowerCase()}</em
+          >.</span
+        >
       </h2>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
         <CtaLink href="/contact" label="Demander un devis" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>

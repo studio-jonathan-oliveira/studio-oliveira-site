@@ -38,6 +38,11 @@ import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
 
+// Image full-bleed de respiration entre typologies et process (Morgan
+// 2026-04-27 : « grand espace vide, faut une image »). Projet livré en
+// nocturne, bonne respiration éditoriale.
+import respirationProcess from '@/assets/projets/coeur-urbain-parenthese/02.webp';
+
 // On construit un tableau enrichi avec les images explicitement associées
 // (pattern plus sûr qu'un Record<string, ImageMetadata> pour <Image> Astro
 // qui peut rater les imports dynamiques au build).
@@ -205,19 +210,28 @@ const schema = jsonLdGraph([
       </div>
     </div>
 
-    <div class="relative flex min-h-[92svh] flex-col justify-end">
-      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
+    <div class="relative flex min-h-[100svh] flex-col justify-end">
+      <div
+        class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32"
+        data-scroll-rise
+        data-scroll-rise-amp="-90"
+      >
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
           <span class="text-[var(--color-cream)]/40">Studio</span>
           &nbsp;·&nbsp; Architecture paysagère
         </p>
+        {
+          /* H1 cassé designbyad (Morgan 2026-04-27) : ARCHITECTURE PAYSAGÈRE
+            CAPS Jost monumentales + "sur mesure." italic Cormorant laterite
+            en contrepoint. Asymétrie typo qui signe la voix du studio. */
+        }
         <h1
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.94] tracking-tight"
+          class="ap-h1-broken mt-8 font-[family-name:var(--font-heading)] leading-[0.94] tracking-tight"
         >
-          <span data-mask-line class="block">Architecture paysagère</span>
-          <span data-mask-line class="block text-[var(--color-laterite)] italic">
+          <span data-mask-line class="ap-h1-positioning block">ARCHITECTURE PAYSAGÈRE</span>
+          <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
             sur mesure.
           </span>
         </h1>
@@ -236,17 +250,36 @@ const schema = jsonLdGraph([
   {/* ───── MANIFESTE — court, éditorial, en cream ───── */}
   <Section variant="forest" tight>
     <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+        <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Démarche
       </p>
       <p
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-cream)] md:text-[length:var(--text-4xl)]"
       >
-        Chaque lieu a son <em class="text-[var(--color-laterite)] italic">territoire</em>, ses
+        Chaque lieu a son <em class="text-[var(--color-cream)]/55 italic">territoire</em>, ses
         contraintes, son niveau d'étude. La méthode, elle, reste la même —
         <em class="italic">biophilique, rigoureuse, sensible</em>.
       </p>
     </div>
+
+    {
+      /* Bande keywords designbyad — mots-clés CAPS justify-scroll. Mots issus
+        du process Jonathan déjà présents plus bas dans la page (étapes 1/2/3
+        + déclinaisons). Pattern signature du studio. */
+    }
+    <p
+      class="ap-keywords-band mx-auto mt-10 max-w-[1500px] px-6 pb-20 md:px-10 md:pb-28"
+      data-reveal="up"
+      data-justify-scroll
+      data-justify-amp="20"
+      data-justify-seed="11"
+    >
+      Étude préliminaire <span aria-hidden="true">·</span>
+      Conception <span aria-hidden="true">·</span>
+      DCE <span aria-hidden="true">·</span>
+      Coordination <span aria-hidden="true">·</span>
+      Suivi
+    </p>
   </Section>
 
   {/* ───── 5 CHAPITRES THÉMATIQUES — style Polestar scroll-driven ───── */}
@@ -266,6 +299,7 @@ const schema = jsonLdGraph([
             class="ap-chapter-visual"
             data-ap-chapter-visual
             data-img-reveal
+            data-img-reveal-speed="1"
             data-img-reveal-offset={i % 2 === 0 ? 'left' : 'right'}
             data-img-reveal-offset-amp="60"
           >
@@ -284,7 +318,7 @@ const schema = jsonLdGraph([
           </div>
 
           <div class="ap-chapter-copy">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
               {ch.num} · Chapitre
             </p>
             <h2
@@ -306,24 +340,33 @@ const schema = jsonLdGraph([
   </section>
 
   {/* ───── 4 TYPOLOGIES — grille asymétrique éditoriale ───── */}
-  <Section variant="forest" aria-labelledby="typologies-title">
+  <Section variant="forest" id="typologies" sectionLabel="Typologies" labelledBy="typologies-title">
     <div class="mb-16 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Les quatre typologies
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+        <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Les quatre typologies
       </p>
       <h2
         id="typologies-title"
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
       >
-        Chaque jardin a son <em class="text-[var(--color-laterite)] italic">territoire</em>.
+        <span data-mask-line class="block pb-[0.12em]"
+          >Chaque jardin a son <em class="text-[var(--color-cream)]/55 italic">territoire</em
+          >.</span
+        >
       </h2>
     </div>
 
-    <ul
-      data-reveal-stagger="0.12"
-      data-reveal="up"
-      class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
-    >
+    {
+      /* Animation cards : CSS pure avec animation-delay nth-child + Intersection
+        Observer inline page-level pour trigger au scroll (Morgan 2026-04-27 :
+        « je veux de l'animation sur ces cards, c'est mort »). Pas de
+        data-reveal/-stagger (qui buggaient sur cette grid avec aspect-ratio
+        4/5). Approche bétonnée : observer simple, classe .is-revealed
+        qui démarre l'animation par card avec stagger. */
+    }
+    <ul data-typo-cards class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
       {
         typologies.map((t) => {
           const img = typoImageMap[t.slug];
@@ -331,7 +374,7 @@ const schema = jsonLdGraph([
             <li class="ap-typo-card group bg-[var(--color-cream)]">
               <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
                 {img && (
-                  <div class="ap-typo-card-visual overflow-hidden" data-img-reveal>
+                  <div class="ap-typo-card-visual overflow-hidden">
                     <Image
                       src={img}
                       alt=""
@@ -339,37 +382,39 @@ const schema = jsonLdGraph([
                       sizes="(min-width: 768px) 44vw, 92vw"
                       quality={80}
                       format="webp"
-                      class="ap-typo-card-img h-full w-full object-cover"
+                      class={`ap-typo-card-img h-full w-full object-cover ${t.slug === 'domaine-caractere' ? 'object-top' : 'object-center'}`}
                       loading="lazy"
                     />
                   </div>
                 )}
-                <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
+                <div class="flex flex-1 flex-col justify-between p-8 text-[var(--color-forest)] md:p-12">
                   <div>
-                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/65 uppercase">
                       {t.surface} · {t.exemple}
                     </p>
                     <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
                       <em class="italic">{t.nomProprietaire}</em>
                     </h3>
-                    <p class="mt-3 text-sm text-[var(--color-cream)]/60">{t.h1Seo}</p>
+                    <p class="mt-3 text-sm text-[var(--color-forest)]/70">{t.h1Seo}</p>
 
-                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-cream)]/10 pt-6 text-xs">
+                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/15 pt-6 text-xs">
                       <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                           Budget travaux
                         </dt>
                         <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
                       </div>
                       <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                           Étude
                         </dt>
-                        <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
+                        <dd class="mt-1 text-sm text-[var(--color-forest)]/70">
+                          À partir de {t.prixEtude}
+                        </dd>
                       </div>
                     </dl>
                   </div>
-                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1">
                     Explorer
                     <span aria-hidden="true">→</span>
                   </span>
@@ -382,13 +427,16 @@ const schema = jsonLdGraph([
     </ul>
 
     <style>
+      /* Cards typologies — aspect-ratio plus haut sur desktop pour l'immersion
+         (Morgan 2026-04-27). 4/5 portrait desktop = vertical élégant. */
       .ap-typo-card-visual {
         aspect-ratio: 4 / 3;
         background-color: var(--color-forest);
+        overflow: hidden;
       }
       @media (min-width: 768px) {
         .ap-typo-card-visual {
-          aspect-ratio: 5 / 3;
+          aspect-ratio: 4 / 5;
         }
       }
       .ap-typo-card-img {
@@ -399,27 +447,153 @@ const schema = jsonLdGraph([
       .ap-typo-card:focus-within .ap-typo-card-img {
         transform: scale(1.1);
       }
+
+      /* Animation reveal — pre-state + classe .is-revealed posée par observer
+         inline (script en bas du fichier). Stagger via nth-child : card 1
+         apparait sans delay, puis +0.15s par card. Image sur clip-path qui
+         se révèle, contenu qui fade-up légèrement. */
+      .ap-typo-card {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 1s var(--ease-out-editorial),
+          transform 1s var(--ease-out-editorial);
+      }
+      .ap-typo-card-visual .ap-typo-card-img {
+        clip-path: inset(100% 0 0 0);
+        transition:
+          clip-path 1.2s var(--ease-out-editorial),
+          transform 1.2s var(--ease-out-editorial);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card-img {
+        clip-path: inset(0 0 0 0);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) {
+        transition-delay: 0s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) .ap-typo-card-img {
+        transition-delay: 0s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) {
+        transition-delay: 0.12s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) .ap-typo-card-img {
+        transition-delay: 0.12s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) {
+        transition-delay: 0.24s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) .ap-typo-card-img {
+        transition-delay: 0.24s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) {
+        transition-delay: 0.36s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) .ap-typo-card-img {
+        transition-delay: 0.36s;
+      }
     </style>
+
+    <script>
+      // Observer simple page-level pour déclencher l'animation des cards
+      // typologies (data-reveal-stagger ne fonctionnait pas sur cette grid,
+      // cause non identifiée). Pattern bétonné : add class .is-revealed dès
+      // que l'élément entre dans le viewport.
+      function initTypoCardsObserver() {
+        const ul = document.querySelector<HTMLElement>('[data-typo-cards]');
+        if (!ul) return;
+        if (ul.dataset.observerWired === 'true') return;
+        ul.dataset.observerWired = 'true';
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                ul.classList.add('is-revealed');
+                observer.disconnect();
+                break;
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+        observer.observe(ul);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTypoCardsObserver, { once: true });
+      } else {
+        initTypoCardsObserver();
+      }
+      document.addEventListener('astro:page-load', initTypoCardsObserver);
+    </script>
   </Section>
 
-  {/* ───── PROCESS 3 ÉTAPES — compact ───── */}
-  <Section variant="forest" topDivider aria-labelledby="process-title">
+  {
+    /* ───── BANDE RESPIRATION full-bleed (Morgan 2026-04-27 : « grand espace
+      vide entre typologies et process, manque une image »). Photo projet
+      livré en bande horizontale 60vh, data-img-reveal lent au scroll pour
+      effet cinématique. Pas de texte par-dessus — pure respiration visuelle. */
+  }
+  <section
+    class="ap-respiration relative overflow-hidden bg-[var(--color-forest)]"
+    aria-hidden="true"
+    data-theme="dark"
+  >
+    <div data-img-reveal data-img-reveal-speed="1" class="ap-respiration-frame">
+      <Image
+        src={respirationProcess}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={82}
+        format="webp"
+        class="ap-respiration-img h-full w-full object-cover object-center"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  {
+    /* ───── PROCESS 3 ÉTAPES ─────
+       Padding "default" (compact retiré 2026-04-27 — Morgan : « 3 étapes
+       n'apparaissaient pas, section super vide »). La bande respiration
+       full-bleed au-dessus assure désormais la transition visuelle. */
+  }
+  <Section
+    variant="forest"
+    topDivider
+    id="process"
+    sectionLabel="Process"
+    labelledBy="process-title"
+  >
     <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
       <div data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
-          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Le process
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+          <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Le process
         </p>
         <h2
           id="process-title"
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
         >
-          Deux études,<br />un <em class="italic">suivi</em>.
+          <span data-mask-line class="block pb-[0.05em]">Deux études,</span>
+          <span data-mask-line class="block pb-[0.05em]">un <em class="italic">suivi</em>.</span>
         </h2>
       </div>
 
-      <ol class="space-y-12" data-reveal-stagger="0.12" data-reveal="up">
+      {
+        /* data-reveal retiré 2026-04-27 — même bug que typologies (3 étapes
+         invisibles au load, observer ne déclenche pas). Affichage direct. */
+      }
+      <ol class="space-y-12">
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 1
           </p>
           <h3
@@ -435,7 +609,7 @@ const schema = jsonLdGraph([
           </p>
         </li>
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 2
           </p>
           <h3
@@ -451,7 +625,7 @@ const schema = jsonLdGraph([
           </p>
         </li>
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 3
           </p>
           <h3
@@ -472,16 +646,21 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── FAQ — 8 questions étoffées ───── */}
-  <Section variant="forest" topDivider aria-labelledby="faq-title">
+  <Section variant="forest" topDivider id="faq" sectionLabel="FAQ" labelledBy="faq-title">
     <div class="mb-12 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Questions fréquentes
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Questions fréquentes
       </p>
       <h2
         id="faq-title"
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
       >
-        Les objections,<br /><em class="italic">avant d'appeler</em>.
+        <span data-mask-line class="block pb-[0.05em]">Les objections,</span>
+        <span data-mask-line class="block pb-[0.05em]"
+          ><em class="italic">avant d'appeler</em>.</span
+        >
       </h2>
     </div>
     <ul class="divide-y divide-[var(--color-cream)]/10 border-y border-[var(--color-cream)]/10">
@@ -489,7 +668,7 @@ const schema = jsonLdGraph([
         pageFaq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-laterite)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-cream)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -509,10 +688,10 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── CTA FINAL forest ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
-        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Démarrer
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+        <span class="text-[var(--color-cream)]/40">06</span> &nbsp;·&nbsp; Démarrer
       </p>
       <h2
         data-mask-reveal
@@ -520,7 +699,7 @@ const schema = jsonLdGraph([
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98]"
       >
         <span data-mask-line class="block">Votre jardin est</span>
-        <span data-mask-line class="block text-[var(--color-laterite)] italic">
+        <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
           une architecture.
         </span>
       </h2>
@@ -531,7 +710,7 @@ const schema = jsonLdGraph([
         <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -540,6 +719,59 @@ const schema = jsonLdGraph([
   </Section>
 
   <style>
+    /* H1 cassé designbyad — ARCHITECTURE PAYSAGÈRE CAPS monumentales +
+       "sur mesure." italic en contrepoint laterite. */
+    .ap-h1-positioning {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      line-height: 0.92;
+      letter-spacing: -0.015em;
+    }
+
+    /* Bande keywords — CAPS justify-scroll, signature studio. */
+    .ap-keywords-band {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      text-align: justify;
+    }
+    .ap-keywords-band > span[aria-hidden] {
+      display: inline-block;
+      margin: 0 0.35em;
+      color: var(--color-cream);
+      opacity: 0.4;
+      font-weight: 400;
+    }
+
+    /* ───── Bande respiration full-bleed (entre typologies et process) ─────
+       Hauteur 60vh desktop / 50vh mobile, image plein cadre projet livré.
+       Léger zoom in subtil au scroll via parallax pour donner du mouvement. */
+    .ap-respiration {
+      height: 60vh;
+      min-height: 320px;
+    }
+    @media (max-width: 768px) {
+      .ap-respiration {
+        height: 50vh;
+      }
+    }
+    .ap-respiration-frame {
+      position: absolute;
+      inset: 0;
+    }
+    .ap-respiration-img {
+      transform: scale(1.04);
+      transition: transform 1.4s var(--ease-out-editorial);
+    }
+    .ap-respiration:hover .ap-respiration-img {
+      transform: scale(1.08);
+    }
+
     /* ───── Hero image — zoom scroll-driven ───── */
     .ap-hero-image {
       transform: scale(1.06);

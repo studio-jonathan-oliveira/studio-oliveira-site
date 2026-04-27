@@ -50,15 +50,24 @@ const formatDate = (iso: string) =>
   title="Journal"
   description="Notes du studio sur le design biophilique, la conception de jardins, les pratiques du métier. Articles éditoriaux par Jonathan Oliveira."
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
+  <Section variant="cream" id="hero" sectionLabel="Journal" class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
         Journal · {SITE.name}
       </p>
       <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+        data-mask-reveal
+        data-mask-stagger="0.14"
+        class="mt-6 font-[family-name:var(--font-heading)] leading-[1.02] tracking-tight"
       >
-        Notes de <em class="italic">studio</em>.
+        <span data-mask-line class="block pb-[0.05em] text-[length:var(--text-4xl)] italic"
+          >Notes de</span
+        >
+        <span
+          data-mask-line
+          class="block pb-[0.18em] text-[length:var(--text-5xl)] md:text-[length:var(--text-hero)]"
+          style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;">STUDIO.</span
+        >
       </h1>
       <p
         class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
@@ -69,11 +78,11 @@ const formatDate = (iso: string) =>
     </div>
   </Section>
 
-  <Section variant="cream" topDivider>
+  <Section variant="cream" topDivider id="articles" sectionLabel="Articles">
     {
       articles.length === 0 ? (
         <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
             En préparation
           </p>
           <p class="mx-auto mt-4 max-w-lg text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
@@ -98,11 +107,11 @@ const formatDate = (iso: string) =>
                   ) : null}
                 </div>
                 <div class="mt-6">
-                  <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                  <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                     {formatDate(article.publishedAt)}
                     {article.readingTime && ` · ${article.readingTime} min de lecture`}
                   </p>
-                  <h2 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight transition-colors group-hover:text-[var(--color-moss)]">
+                  <h2 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight transition-colors group-hover:text-[var(--color-forest)]/55">
                     {article.title}
                   </h2>
                   {article.excerpt && (
