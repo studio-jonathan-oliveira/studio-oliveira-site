@@ -107,14 +107,22 @@ const etapesMethode = [
           <span class="studio-dot" aria-hidden="true"></span>
           Le studio · Depuis {SITE.foundedYear}
         </p>
+        {
+          /* H1 cassé designbyad (Morgan 2026-04-27 : « casser les codes
+            visuels ») : nom propre Cormorant italique mid-size, suivi du
+            positionnement DESIGNER BIOPHILIQUE en CAPS Jost monumentales
+            (clamp 3-7rem). Asymétrie visuelle = signature designer. */
+        }
         <h1
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
+          class="studio-h1-broken mt-6 font-[family-name:var(--font-heading)] leading-[1.02]"
         >
-          <span data-mask-line class="block pb-[0.05em]">Jonathan</span>
-          <span data-mask-line class="block pb-[0.05em]">Oliveira —</span>
-          <span data-mask-line class="display block pb-[0.12em]">Designer biophilique.</span>
+          <span data-mask-line class="block pb-[0.05em] italic">Jonathan</span>
+          <span data-mask-line class="block pb-[0.05em] italic">Oliveira —</span>
+          <span data-mask-line class="studio-h1-positioning block pb-[0.18em]"
+            >DESIGNER BIOPHILIQUE.</span
+          >
         </h1>
         <p
           class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
@@ -242,6 +250,27 @@ const etapesMethode = [
           ))
         }
       </ul>
+
+      {
+        /* Bande keywords designbyad (Morgan 2026-04-27 « casser les codes »).
+          Mots-clés issus du contenu de la section démarche (3 piliers + 2
+          adjectifs Jonathan déjà présents : "scientifique", "sensible").
+          data-justify-scroll : oscille spread compact → justify final au
+          scroll. Pattern signature de la home. */
+      }
+      <p
+        class="studio-keywords-band mt-20 md:mt-28"
+        data-reveal="up"
+        data-justify-scroll
+        data-justify-amp="20"
+        data-justify-seed="7"
+      >
+        Bâti <span aria-hidden="true">·</span>
+        Environnement <span aria-hidden="true">·</span>
+        Humain <span aria-hidden="true">·</span>
+        Scientifique <span aria-hidden="true">·</span>
+        Sensible
+      </p>
     </div>
   </section>
 
@@ -429,6 +458,45 @@ const etapesMethode = [
   </Section>
 
   <style>
+    /* H1 cassé designbyad — nom propre Cormorant italique mid-size + ligne
+       positionnement DESIGNER BIOPHILIQUE Jost CAPS monumentales. */
+    .studio-h1-broken {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    .studio-h1-positioning {
+      display: block;
+      margin-top: 0.4rem;
+      font-family: var(--font-heading), sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+      line-height: 0.96;
+      letter-spacing: -0.012em;
+    }
+
+    /* Bande keywords designbyad — mots-clés en CAPS justify-scroll, font
+       heading pour gras éditorial, espacement marqué. */
+    .studio-keywords-band {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.25rem, 3.2vw, 2.4rem);
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      text-align: justify;
+      max-width: 90rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .studio-keywords-band > span[aria-hidden] {
+      display: inline-block;
+      margin: 0 0.4em;
+      color: var(--color-laterite);
+      opacity: 0.6;
+      font-weight: 400;
+    }
+
     /* Dot pulsant (signature) */
     .studio-dot {
       display: inline-block;

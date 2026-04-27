@@ -211,12 +211,17 @@ const schema = jsonLdGraph([
           <span class="text-[var(--color-cream)]/40">Studio</span>
           &nbsp;·&nbsp; Architecture paysagère
         </p>
+        {
+          /* H1 cassé designbyad (Morgan 2026-04-27) : ARCHITECTURE PAYSAGÈRE
+            CAPS Jost monumentales + "sur mesure." italic Cormorant laterite
+            en contrepoint. Asymétrie typo qui signe la voix du studio. */
+        }
         <h1
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[0.94] tracking-tight"
+          class="ap-h1-broken mt-8 font-[family-name:var(--font-heading)] leading-[0.94] tracking-tight"
         >
-          <span data-mask-line class="block">Architecture paysagère</span>
+          <span data-mask-line class="ap-h1-positioning block">ARCHITECTURE PAYSAGÈRE</span>
           <span data-mask-line class="block text-[var(--color-laterite)] italic">
             sur mesure.
           </span>
@@ -247,6 +252,25 @@ const schema = jsonLdGraph([
         <em class="italic">biophilique, rigoureuse, sensible</em>.
       </p>
     </div>
+
+    {
+      /* Bande keywords designbyad — mots-clés CAPS justify-scroll. Mots issus
+        du process Jonathan déjà présents plus bas dans la page (étapes 1/2/3
+        + déclinaisons). Pattern signature du studio. */
+    }
+    <p
+      class="ap-keywords-band mx-auto mt-10 max-w-[1500px] px-6 pb-20 md:px-10 md:pb-28"
+      data-reveal="up"
+      data-justify-scroll
+      data-justify-amp="20"
+      data-justify-seed="11"
+    >
+      Étude préliminaire <span aria-hidden="true">·</span>
+      Conception <span aria-hidden="true">·</span>
+      DCE <span aria-hidden="true">·</span>
+      Coordination <span aria-hidden="true">·</span>
+      Suivi
+    </p>
   </Section>
 
   {/* ───── 5 CHAPITRES THÉMATIQUES — style Polestar scroll-driven ───── */}
@@ -553,6 +577,35 @@ const schema = jsonLdGraph([
   </Section>
 
   <style>
+    /* H1 cassé designbyad — ARCHITECTURE PAYSAGÈRE CAPS monumentales +
+       "sur mesure." italic en contrepoint laterite. */
+    .ap-h1-positioning {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      line-height: 0.92;
+      letter-spacing: -0.015em;
+    }
+
+    /* Bande keywords — CAPS justify-scroll, signature studio. */
+    .ap-keywords-band {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      text-align: justify;
+    }
+    .ap-keywords-band > span[aria-hidden] {
+      display: inline-block;
+      margin: 0 0.35em;
+      color: var(--color-laterite);
+      opacity: 0.6;
+      font-weight: 400;
+    }
+
     /* ───── Hero image — zoom scroll-driven ───── */
     .ap-hero-image {
       transform: scale(1.06);
