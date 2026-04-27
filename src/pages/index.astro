@@ -399,11 +399,7 @@ const vitrine = [
             <span data-mask-line class="block pb-[0.05em]">
               Design <span class="display">végétal</span> en
             </span>
-            <span data-mask-line class="display block pb-[0.12em]">
-              <span data-char-drift data-char-drift-amp="10" data-char-drift-amp-y="6"
-                >Aquitaine, Limousin.</span
-              >
-            </span>
+            <span data-mask-line class="display block pb-[0.12em]">Aquitaine, Limousin.</span>
           </h2>
           <p
             class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
@@ -692,13 +688,15 @@ const vitrine = [
             <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
               {p.nom}
             </p>
+            {/* scroll-rise retiré 2026-04-27 (feedback Morgan : "scroll en
+                haut/bas change la disposition + 4e card crop"). On garde
+                clip-reveal one-shot pour l'entrée cinématique, mais plus
+                de translate continu qui sortait les cards de leur cadre. */}
             <div
               class="vitrine-frame"
               data-clip-reveal="top"
               data-clip-duration="1.4"
               data-clip-delay={String(0.1 + i * 0.08)}
-              data-scroll-rise
-              data-scroll-rise-amp="140"
             >
               <Image
                 src={p.image}
@@ -867,49 +865,37 @@ const vitrine = [
       .hero-title-asym {
         padding: 0;
       }
+      /* Pattern designbyad (frame scroll_home/f_001) : "DESIGN" / "BY AD"
+         empilés à droite, taille modeste, le mot tient dans le viewport.
+         Ici on garde la cadence "Designer" haut + "paysagiste" Gloock
+         italic juste en dessous, alignés DROITE, avec léger décalage
+         horizontal pour casser la rigidité (Designer rentré, Paysagiste
+         qui touche le bord droit). Pas de débord viewport. */
       .hero-word-designer {
         position: absolute;
-        top: 30vh;
-        left: clamp(2rem, 6vw, 6rem);
-        font-size: clamp(4rem, 9vw, 9rem);
+        top: 38vh;
+        right: clamp(8rem, 14vw, 14rem);
+        font-size: clamp(3rem, 6vw, 6rem);
         font-weight: 400;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.035em;
+        text-align: right;
       }
       .hero-word-paysagiste {
         position: absolute;
         top: 50vh;
-        right: clamp(0rem, -2vw, 1rem);
-        font-size: clamp(6rem, 16vw, 17rem);
-        line-height: 0.92;
-        letter-spacing: -0.045em;
-        /* Léger débord à droite — sensation que le mot "sort" du cadre */
-        translate: 4vw 0;
-        max-width: 95vw;
+        right: clamp(2rem, 4vw, 4rem);
+        font-size: clamp(4.5rem, 9vw, 9.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        text-align: right;
+        max-width: 92vw;
       }
     }
 
-    /* Trait vertical signature qui traverse le hero entre les 2 mots du H1 */
+    /* Trait vertical retiré — le hero designbyad est sobre, sans
+       décoration. Le rythme vient des positions et des tailles. */
     .hero-rule {
       display: none;
-    }
-    @media (min-width: 1024px) {
-      .hero-rule {
-        display: block;
-        position: absolute;
-        top: 35vh;
-        left: 50%;
-        width: 1px;
-        height: 22vh;
-        background: linear-gradient(
-          to bottom,
-          transparent,
-          color-mix(in oklab, var(--color-cream) 40%, transparent) 30%,
-          color-mix(in oklab, var(--color-cream) 40%, transparent) 70%,
-          transparent
-        );
-        z-index: 1;
-        pointer-events: none;
-      }
     }
 
     /* Manifesto — bas-gauche en desktop, bloc court avec serifs italiques */
@@ -1062,7 +1048,10 @@ const vitrine = [
     .vitrine-rail {
       display: flex;
       gap: clamp(1.5rem, 3vw, 3rem);
+      /* Padding-end large pour que la 4e card soit entièrement scrollable
+         et pas tronquée par le bord viewport (feedback Morgan 2026-04-27). */
       padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
+      padding-right: clamp(4rem, 12vw, 14rem);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;

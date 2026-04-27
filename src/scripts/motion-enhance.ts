@@ -269,20 +269,21 @@ function setupSplitReveals(root: ParentNode) {
 }
 
 /**
- * Justified text dynamique — signature designbyad.com.au : un texte calé
- * gauche-droite par justify CSS natif, dont chaque mot OSCILLE individuellement
- * autour de sa position naturelle pendant le scroll. Mouvement irrégulier
- * (direction et amplitude seedées par mot) → effet vivant.
+ * Justified spread — signature designbyad.com.au (vidéo scroll_home.mp4
+ * frame 3+5) : un bloc texte est groupé à gauche au début, puis ses mots
+ * s'ÉCARTENT vers leur position justify pleine-largeur au fil du scroll.
+ * Effet "le bloc s'étire en se calant aux bords" — pas d'oscillation,
+ * juste un spread directionnel.
  *
- * Premier et dernier mot ancrés → calage extrême gauche-droite préservé.
- * Les translations sont purement visuelles (display inline-block) → ne
- * cassent pas le flux ni le justify CSS de référence.
+ * Mécanique : on mesure la position justify naturelle (offsetLeft de chaque
+ * .word), puis on remap vers la position "left-aligned compact" en
+ * appliquant un translateX inverse proportionnel à (1 - progress). Quand
+ * progress=1, plus aucun translate → mots à leur place justify natif.
  *
- * Usage : <p data-justify-scroll>Plusieurs mots ici</p>
+ * Usage : <p data-justify-scroll>Mots ici</p>
  *
  * Options :
- *   - data-justify-amp="10"   (px max d'oscillation par mot, default 10)
- *   - data-justify-seed="42"  (seed irrégularité, stable par target)
+ *   - data-justify-amp="0.6"  (intensité du regroupement initial, 0→1, default 0.7)
  */
 function setupJustifiedScroll(root: ParentNode) {
   const nodes = root.querySelectorAll<HTMLElement>('[data-justify-scroll]');
@@ -290,52 +291,69 @@ function setupJustifiedScroll(root: ParentNode) {
     if (el.dataset.justifyDone) return;
     el.dataset.justifyDone = 'true';
 
-    const amp = parseFloat(el.dataset.justifyAmp || '10');
-    const seed = parseInt(el.dataset.justifySeed || '42', 10);
+    // data-justify-amp historique en px (10-32) → on remappe en intensité 0-1.
+    // Les anciennes valeurs px sont écrasées par data-justify-spread si fourni.
+    const rawAmp = parseFloat(el.dataset.justifySpread || el.dataset.justifyAmp || '20');
+    // Si valeur > 1, on suppose ancien format px → ratio (px/40 cap 0.95)
+    const intensity = rawAmp > 1 ? Math.min(0.95, rawAmp / 40) : Math.min(0.95, rawAmp);
 
-    // Justify natif obligatoire pour calage gauche-droite.
     if (getComputedStyle(el).textAlign !== 'justify') {
       el.style.textAlign = 'justify';
     }
 
     const split = new SplitType(el, { types: 'words' });
-    const words = split.words;
+    const words = split.words as HTMLElement[] | null;
     if (!words || words.length < 3) return;
 
-    function mulberry32(a: number) {
-      return () => {
-        let t = (a += 0x6d2b79f5);
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-      };
-    }
-    const rng = mulberry32(seed);
-    // Direction signée [-1, +1] avec amplitude individuelle [0.4, 1.0]
-    const offsets = words.map(() => (rng() - 0.5) * 2 * (0.4 + rng() * 0.6));
-    // Phase individuelle par mot : décale la sin-dome → mots pas synchrones,
-    // certains à leur pic quand d'autres reviennent. Effet « vivant ».
-    const phases = words.map(() => rng() * 0.4);
-
     words.forEach((w) => {
-      (w as HTMLElement).style.display = 'inline-block';
-      (w as HTMLElement).style.willChange = 'transform';
+      w.style.display = 'inline-block';
+      w.style.willChange = 'transform';
+    });
+
+    // Mesure des positions justify naturelles (état final).
+    // On laisse le navigateur calculer la justify, puis on capture par mot.
+    let justifyLefts: number[] = [];
+    let leftLefts: number[] = [];
+
+    function measure() {
+      // Capture justify
+      el.style.textAlignLast = 'justify';
+      justifyLefts = words!.map((w) => w.offsetLeft);
+      // Capture left-aligned (text-align left temporairement via word-spacing 0)
+      // On simule un "compact left" en collant les mots avec word-spacing 0
+      // mais ça ne marche pas vraiment — solution : mesurer en text-align left.
+      const prevAlign = el.style.textAlign;
+      const prevLast = el.style.textAlignLast;
+      el.style.textAlign = 'left';
+      el.style.textAlignLast = 'left';
+      // Force reflow
+      void el.offsetHeight;
+      leftLefts = words!.map((w) => w.offsetLeft);
+      el.style.textAlign = prevAlign || 'justify';
+      el.style.textAlignLast = prevLast || 'justify';
+      void el.offsetHeight;
+    }
+
+    measure();
+
+    // Re-measure on resize (debounced)
+    let resizeT = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeT);
+      resizeT = window.setTimeout(measure, 200);
     });
 
     scroll(
       (progress: number) => {
+        // Window 0.1 → 0.55 : spread se déclenche à l'entrée viewport et
+        // atteint l'état justify final avant la sortie. Au-delà, stable.
+        const t = Math.max(0, Math.min(1, (progress - 0.1) / 0.45));
+        const closure = (1 - t) * intensity;
         words.forEach((w, i) => {
-          // Premier et dernier mot ancrés → bords justify préservés.
-          if (i === 0 || i === words.length - 1) {
-            (w as HTMLElement).style.transform = '';
-            return;
-          }
-          const phase = phases[i] ?? 0;
-          // Fenêtre individuelle décalée par phase, dome sin 0→1→0.
-          const t = Math.max(0, Math.min(1, (progress - 0.15 + phase * 0.2) / 0.7));
-          const eased = Math.sin(t * Math.PI);
-          const off = offsets[i] ?? 0;
-          (w as HTMLElement).style.transform = `translate3d(${eased * amp * off}px, 0, 0)`;
+          const dx = (leftLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
+          // Plus on est tôt dans le scroll, plus on tire vers la position
+          // left-aligned (compact, gauche). En fin de scroll, plus de translate.
+          w.style.transform = `translate3d(${dx * closure}px, 0, 0)`;
         });
       },
       { target: el, offset: ['start end', 'end start'] as never },
