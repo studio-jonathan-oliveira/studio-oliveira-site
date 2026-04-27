@@ -226,7 +226,7 @@ const schema = jsonLdGraph([
           class="ap-h1-broken mt-8 font-[family-name:var(--font-heading)] leading-[0.94] tracking-tight"
         >
           <span data-mask-line class="ap-h1-positioning block">ARCHITECTURE PAYSAGÈRE</span>
-          <span data-mask-line class="block text-[var(--color-laterite)] italic">
+          <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
             sur mesure.
           </span>
         </h1>
@@ -245,13 +245,13 @@ const schema = jsonLdGraph([
   {/* ───── MANIFESTE — court, éditorial, en cream ───── */}
   <Section variant="forest" tight>
     <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
       </p>
       <p
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-cream)] md:text-[length:var(--text-4xl)]"
       >
-        Chaque lieu a son <em class="text-[var(--color-laterite)] italic">territoire</em>, ses
+        Chaque lieu a son <em class="text-[var(--color-cream)]/55 italic">territoire</em>, ses
         contraintes, son niveau d'étude. La méthode, elle, reste la même —
         <em class="italic">biophilique, rigoureuse, sensible</em>.
       </p>
@@ -294,6 +294,7 @@ const schema = jsonLdGraph([
             class="ap-chapter-visual"
             data-ap-chapter-visual
             data-img-reveal
+            data-img-reveal-speed="1"
             data-img-reveal-offset={i % 2 === 0 ? 'left' : 'right'}
             data-img-reveal-offset-amp="60"
           >
@@ -312,7 +313,7 @@ const schema = jsonLdGraph([
           </div>
 
           <div class="ap-chapter-copy">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
               {ch.num} · Chapitre
             </p>
             <h2
@@ -334,9 +335,9 @@ const schema = jsonLdGraph([
   </section>
 
   {/* ───── 4 TYPOLOGIES — grille asymétrique éditoriale ───── */}
-  <Section variant="forest" aria-labelledby="typologies-title">
+  <Section variant="forest" id="typologies" sectionLabel="Typologies" labelledBy="typologies-title">
     <div class="mb-16 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Les quatre typologies
       </p>
       <h2
@@ -346,7 +347,7 @@ const schema = jsonLdGraph([
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
       >
         <span data-mask-line class="block pb-[0.12em]"
-          >Chaque jardin a son <em class="text-[var(--color-laterite)] italic">territoire</em
+          >Chaque jardin a son <em class="text-[var(--color-cream)]/55 italic">territoire</em
           >.</span
         >
       </h2>
@@ -383,7 +384,7 @@ const schema = jsonLdGraph([
                 )}
                 <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
                   <div>
-                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
                       {t.surface} · {t.exemple}
                     </p>
                     <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
@@ -402,11 +403,11 @@ const schema = jsonLdGraph([
                         <dt class="font-mono tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
                           Étude
                         </dt>
-                        <dd class="mt-1 text-sm text-[var(--color-laterite)]">{t.prixEtude}</dd>
+                        <dd class="mt-1 text-sm text-[var(--color-cream)]/55">{t.prixEtude}</dd>
                       </div>
                     </dl>
                   </div>
-                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-laterite)]">
+                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-cream)]">
                     Explorer
                     <span aria-hidden="true">→</span>
                   </span>
@@ -442,11 +443,22 @@ const schema = jsonLdGraph([
     </style>
   </Section>
 
-  {/* ───── PROCESS 3 ÉTAPES — compact ───── */}
-  <Section variant="forest" topDivider aria-labelledby="process-title">
+  {
+    /* ───── PROCESS 3 ÉTAPES — compact ─────
+       space="compact" pour resserrer l'écart avec la section Typologies au-dessus
+       (Morgan 2026-04-27 : « grand espace noir entre typologies et process »). */
+  }
+  <Section
+    variant="forest"
+    topDivider
+    space="compact"
+    id="process"
+    sectionLabel="Process"
+    labelledBy="process-title"
+  >
     <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
       <div data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Le process
         </p>
         <h2
@@ -462,7 +474,7 @@ const schema = jsonLdGraph([
 
       <ol class="space-y-12" data-reveal-stagger="0.12" data-reveal="up">
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 1
           </p>
           <h3
@@ -478,7 +490,7 @@ const schema = jsonLdGraph([
           </p>
         </li>
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 2
           </p>
           <h3
@@ -494,7 +506,7 @@ const schema = jsonLdGraph([
           </p>
         </li>
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 3
           </p>
           <h3
@@ -515,9 +527,9 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── FAQ — 8 questions étoffées ───── */}
-  <Section variant="forest" topDivider aria-labelledby="faq-title">
+  <Section variant="forest" topDivider id="faq" sectionLabel="FAQ" labelledBy="faq-title">
     <div class="mb-12 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Questions fréquentes
       </p>
       <h2
@@ -537,7 +549,7 @@ const schema = jsonLdGraph([
         pageFaq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-laterite)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-cream)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -557,9 +569,9 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── CTA FINAL forest ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Démarrer
       </p>
       <h2
@@ -568,7 +580,7 @@ const schema = jsonLdGraph([
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98]"
       >
         <span data-mask-line class="block">Votre jardin est</span>
-        <span data-mask-line class="block text-[var(--color-laterite)] italic">
+        <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
           une architecture.
         </span>
       </h2>
@@ -579,7 +591,7 @@ const schema = jsonLdGraph([
         <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -612,8 +624,8 @@ const schema = jsonLdGraph([
     .ap-keywords-band > span[aria-hidden] {
       display: inline-block;
       margin: 0 0.35em;
-      color: var(--color-laterite);
-      opacity: 0.6;
+      color: var(--color-cream);
+      opacity: 0.4;
       font-weight: 400;
     }
 

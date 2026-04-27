@@ -111,7 +111,7 @@ const etapesMethode = [
         data-scroll-rise
         data-scroll-rise-amp="-80"
       >
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="studio-dot" aria-hidden="true"></span>
           Le studio · Depuis {SITE.foundedYear}
         </p>
@@ -139,11 +139,11 @@ const etapesMethode = [
           environnemental immersif et expérientiel —
           <a
             href="/architecture-paysagere"
-            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
             >architecture paysagère</a
           > et <a
             href="/amenagement-vegetal-interieur"
-            class="border-b border-[var(--color-moss)]/40 hover:border-[var(--color-laterite)] hover:text-[var(--color-laterite)]"
+            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
             >aménagement végétalisé d'intérieur</a
           >. J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
           l'humain.
@@ -179,6 +179,8 @@ const etapesMethode = [
 
   {/* ───── 01 · DÉMARCHE — avec texture végétale en fond + piliers ───── */}
   <section
+    id="demarche"
+    data-section-label="Démarche"
     class="studio-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
     data-theme="dark"
     aria-labelledby="demarche-title"
@@ -201,7 +203,7 @@ const etapesMethode = [
     <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
       <div class="grid gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
         <div data-reveal="up" data-parallax="-0.25">
-          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
             <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
           </p>
           <h2
@@ -247,7 +249,7 @@ const etapesMethode = [
         {
           piliers.map((p, i) => (
             <li class="bg-[var(--color-forest)]/80 p-8 backdrop-blur-sm md:p-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                 Pilier {String(i + 1).padStart(2, '0')}
               </p>
               <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
@@ -285,10 +287,10 @@ const etapesMethode = [
   </section>
 
   {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
-  <Section variant="forest" aria-labelledby="parcours-title">
+  <Section variant="forest" id="parcours" sectionLabel="Parcours" labelledBy="parcours-title">
     <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
       <div data-reveal="up" data-parallax="-0.22">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Parcours
         </p>
         <h2
@@ -305,7 +307,7 @@ const etapesMethode = [
           {
             parcours.map((p, i) => (
               <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
-                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                   {String(i + 1).padStart(2, '0')}
                 </p>
                 <div>
@@ -342,7 +344,7 @@ const etapesMethode = [
           />
         </div>
         <blockquote
-          class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6"
+          class="studio-parcours-quote border-l border-[var(--color-cream)]/40 pl-6"
           data-reveal="up"
           data-reveal-delay="0.3"
         >
@@ -350,12 +352,12 @@ const etapesMethode = [
             class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/85 italic md:text-[length:var(--text-2xl)]"
           >
             Dix ans de paysagisme avant de fonder le studio — pour comprendre d'abord le métier par
-            l'intérieur, avant d'en proposer une <em class="text-[var(--color-laterite)] not-italic"
+            l'intérieur, avant d'en proposer une <em class="text-[var(--color-cream)]/55 not-italic"
               >autre lecture</em
             >.
           </p>
           <footer
-            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-moss)] uppercase"
+            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase"
           >
             — Résumé du parcours
           </footer>
@@ -366,13 +368,15 @@ const etapesMethode = [
 
   {/* ───── 03 · MÉTHODE forest immersif avec blockquote géant ───── */}
   <section
+    id="methode"
+    data-section-label="Méthode"
     class="studio-methode relative bg-[var(--color-forest)] text-[var(--color-cream)]"
     data-theme="dark"
     aria-labelledby="methode-title"
   >
     <div class="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
       <div class="mb-12 md:mb-16" data-reveal="up">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Méthode
         </p>
         <h2
@@ -383,7 +387,7 @@ const etapesMethode = [
         >
           <span data-mask-line class="block pb-[0.05em]">Je ne vends pas</span>
           <span data-mask-line class="block pb-[0.12em]"
-            >une <em class="text-[var(--color-laterite)] italic">étude</em>.</span
+            >une <em class="text-[var(--color-cream)]/55 italic">étude</em>.</span
           >
         </h2>
       </div>
@@ -391,13 +395,14 @@ const etapesMethode = [
       <blockquote
         class="studio-quote mx-auto max-w-4xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] italic md:text-[length:var(--text-4xl)]"
         data-reveal="up"
-        data-scroll-rise
-        data-scroll-rise-amp="60"
+        data-justify-scroll
+        data-justify-amp="0.55"
+        data-justify-window="0.05,0.65"
       >
-        Je vends une <em class="text-[var(--color-laterite)] not-italic">vision</em>, une
-        <em class="text-[var(--color-moss)] not-italic">méthode</em>, une
-        <em class="text-[var(--color-moss)] not-italic">expérience</em>, une
-        <em class="text-[var(--color-laterite)] not-italic">sécurité de résultat</em>. Le client ne
+        Je vends une <em class="text-[var(--color-cream)]/55 not-italic">vision</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">méthode</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">expérience</em>, une
+        <em class="text-[var(--color-cream)]/55 not-italic">sécurité de résultat</em>. Le client ne
         doit jamais avoir l'impression d'être vendu, mais plutôt : choisir, co-construire, s'élever
         vers un projet plus juste et plus qualitatif.
       </blockquote>
@@ -415,7 +420,7 @@ const etapesMethode = [
         {
           etapesMethode.map((etape) => (
             <li class="studio-methode-item grid grid-cols-[auto_1fr] items-baseline gap-6 border-t border-[var(--color-cream)]/12 py-8 md:gap-16 md:py-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
                 {etape.num}
               </p>
               <div>
@@ -423,7 +428,7 @@ const etapesMethode = [
                   <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight md:text-[length:var(--text-3xl)]">
                     <em class="italic">{etape.label}</em>
                   </h3>
-                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
                     {etape.duree}
                   </span>
                 </div>
@@ -439,9 +444,9 @@ const etapesMethode = [
   </section>
 
   {/* ───── CTA final cream ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
         Étape suivante
       </p>
       <h2
@@ -450,7 +455,7 @@ const etapesMethode = [
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-cream)]"
       >
         <span data-mask-line class="block pb-[0.12em]"
-          >Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.</span
+          >Engager la <em class="text-[var(--color-cream)]/55 italic">conversation</em>.</span
         >
       </h2>
       <p
@@ -462,7 +467,7 @@ const etapesMethode = [
         <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -505,19 +510,19 @@ const etapesMethode = [
     .studio-keywords-band > span[aria-hidden] {
       display: inline-block;
       margin: 0 0.4em;
-      color: var(--color-laterite);
-      opacity: 0.6;
+      color: var(--color-cream);
+      opacity: 0.4;
       font-weight: 400;
     }
 
-    /* Dot pulsant (signature) */
+    /* Dot pulsant (signature) — passé en cream/60 (monochrome Morgan 2026-04-27) */
     .studio-dot {
       display: inline-block;
       width: 7px;
       height: 7px;
       margin-right: 0.4rem;
       border-radius: 50%;
-      background-color: var(--color-laterite);
+      background-color: color-mix(in oklab, var(--color-cream) 60%, transparent);
       vertical-align: middle;
       animation: studio-pulse 2.6s ease-in-out infinite;
     }
@@ -583,11 +588,11 @@ const etapesMethode = [
       height: 70%;
       background: radial-gradient(
         circle at center,
-        color-mix(in oklab, var(--color-laterite) 32%, transparent) 0%,
+        color-mix(in oklab, var(--color-cream) 18%, transparent) 0%,
         transparent 65%
       );
       pointer-events: none;
-      opacity: 0.85;
+      opacity: 0.7;
     }
 
     /* Parcours timeline hover */
@@ -601,7 +606,7 @@ const etapesMethode = [
       border-top: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
     }
     .studio-parcours-item:hover {
-      background-color: color-mix(in oklab, var(--color-laterite) 4%, transparent);
+      background-color: color-mix(in oklab, var(--color-cream) 6%, transparent);
       padding-left: 0.5rem;
     }
 
@@ -618,8 +623,8 @@ const etapesMethode = [
       font-family: var(--font-heading), serif;
       font-size: 6rem;
       line-height: 1;
-      color: var(--color-laterite);
-      opacity: 0.5;
+      color: var(--color-cream);
+      opacity: 0.3;
       font-style: italic;
     }
 

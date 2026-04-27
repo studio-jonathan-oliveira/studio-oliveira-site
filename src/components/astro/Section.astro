@@ -38,6 +38,8 @@ interface Props {
   size?: 'default' | 'wide' | 'narrow';
   labelledBy?: string;
   id?: string;
+  /** Label pour ScrollNav (auto-alimenté par section[id][data-section-label]). */
+  sectionLabel?: string;
   class?: string;
   image?: ImageMetadata;
   imageOverlay?: number;
@@ -53,6 +55,7 @@ const {
   size = 'default',
   labelledBy,
   id,
+  sectionLabel,
   class: className = '',
   image,
   imageOverlay = 88,
@@ -89,6 +92,7 @@ const dividerClass = topDivider ? 'border-t border-current/10' : '';
   id={id}
   aria-labelledby={labelledBy}
   data-theme={effectiveTheme}
+  data-section-label={sectionLabel}
 >
   {
     variant === 'immersive' && image && (
