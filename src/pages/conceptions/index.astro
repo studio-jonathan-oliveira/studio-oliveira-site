@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { fetch } from '@/lib/sanity';
 import { projectsListQuery } from '@/lib/queries';
 import { SITE } from '@/lib/site-config';
@@ -67,13 +68,7 @@ const schema = jsonLdGraph([
             dans <code class="font-mono text-xs">_brief/checklist-twinmotion-jonathan.md</code>.
           </p>
           <div class="mt-8">
-            <a
-              href="/contact"
-              class="inline-flex items-center gap-3 border-b border-[var(--color-forest)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
-            >
-              Me parler de votre projet
-              <span aria-hidden="true">→</span>
-            </a>
+            <CtaLink href="/contact" label="Me parler de votre projet" tone="light" />
           </div>
         </div>
       ) : (

@@ -8,6 +8,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
@@ -392,14 +393,7 @@ const etapesMethode = [
         Premier échange téléphonique de 15 à 25 minutes pour qualifier le projet.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/contact"
-          data-magnetic="0.3"
-          class="inline-flex items-center gap-3 rounded-full border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide text-[var(--color-cream)] transition-colors hover:bg-[var(--color-forest)] hover:text-[var(--color-cream)]"
-        >
-          Prendre contact
-          <span aria-hidden="true">→</span>
-        </a>
+        <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
           class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-laterite)]"

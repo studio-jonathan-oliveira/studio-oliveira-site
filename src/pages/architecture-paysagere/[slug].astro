@@ -5,6 +5,7 @@ import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import Prose from '@/components/astro/Prose.astro';
 import Gallery from '@/components/astro/Gallery.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { SITE } from '@/lib/site-config';
 import { getTypologieGallery } from '@/lib/galleries';
 import { PROJETS_PAR_SLUG, PDF_EXTRAITS_TYPOLOGIES } from '@/lib/projets';
@@ -329,13 +330,7 @@ const schema = jsonLdGraph([
         préliminaire lancée sous 72 heures.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-6 py-3 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-cream)]"
-        >
-          Démarrer mon étude
-          <span aria-hidden="true">→</span>
-        </a>
+        <CtaLink href="/contact" label="Démarrer mon étude" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
           class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"

@@ -521,8 +521,16 @@ function setupImageReveals(root: ParentNode) {
     // Plus la valeur est haute, plus le déroulé est lent et visible — Morgan
     // 2026-04-27 : « augmenter qu'on voit encore mieux ce dérouler ».
     const speed = parseFloat(el.dataset.imgRevealSpeed || '0.55');
-    el.style.willChange = 'clip-path';
+    // Pattern designbyad asymétrique (frames scroll_projet f_006) : l'image
+    // entre depuis hors-grille (translateX) et glisse vers sa position en
+    // même temps que le clip se déroule. Variante via data-img-reveal-offset
+    // ("left" = part de la gauche, "right" = part de la droite). Default 0.
+    const offsetDir = el.dataset.imgRevealOffset; // "left" | "right" | undefined
+    const offsetAmp = parseFloat(el.dataset.imgRevealOffsetAmp || '40'); // px
+    const startX = offsetDir === 'left' ? -offsetAmp : offsetDir === 'right' ? offsetAmp : 0;
+    el.style.willChange = startX !== 0 ? 'clip-path, transform' : 'clip-path';
     el.style.clipPath = 'inset(100% 0 0 0)';
+    if (startX !== 0) el.style.transform = `translate3d(${startX}px, 0, 0)`;
     scroll(
       (progress: number) => {
         const linear = Math.max(0, Math.min(1, progress / speed));
@@ -530,6 +538,10 @@ function setupImageReveals(root: ParentNode) {
         const eased = 1 - Math.pow(1 - linear, 3);
         const inset = (1 - eased) * 100;
         el.style.clipPath = `inset(${inset}% 0 0 0)`;
+        if (startX !== 0) {
+          const x = (1 - eased) * startX;
+          el.style.transform = `translate3d(${x}px, 0, 0)`;
+        }
       },
       { target: el, offset: ['start end', 'end start'] as never },
     );

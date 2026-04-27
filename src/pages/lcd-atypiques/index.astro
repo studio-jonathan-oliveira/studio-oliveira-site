@@ -9,6 +9,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs, service } from '@/lib/schema-org';
 
@@ -293,14 +294,7 @@ const schema = jsonLdGraph([
         transforme votre location en expérience.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/contact"
-          data-magnetic="0.3"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-forest)]"
-        >
-          Démarrer un projet
-          <span aria-hidden="true">→</span>
-        </a>
+        <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0} />
       </div>
     </div>
   </Section>

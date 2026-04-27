@@ -13,6 +13,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import {
@@ -259,7 +260,15 @@ const schema = jsonLdGraph([
     {
       chapitres.map((ch, i) => (
         <article class="ap-chapter" data-ap-chapter aria-labelledby={`chapter-${ch.num}`}>
-          <div class="ap-chapter-visual" data-ap-chapter-visual data-img-reveal>
+          {/* offset alterné par parité — pattern designbyad asymétrique :
+              chapitre pair entre depuis la gauche, impair depuis la droite. */}
+          <div
+            class="ap-chapter-visual"
+            data-ap-chapter-visual
+            data-img-reveal
+            data-img-reveal-offset={i % 2 === 0 ? 'left' : 'right'}
+            data-img-reveal-offset-amp="60"
+          >
             <Image
               src={ch.image}
               alt=""
@@ -519,14 +528,7 @@ const schema = jsonLdGraph([
         Un appel de 15 à 25 minutes pour qualifier le projet. Sans devis préalable, sans formalisme.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/contact"
-          data-magnetic="0.3"
-          class="inline-flex items-center gap-3 rounded-full border border-current px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-cream)]"
-        >
-          Prendre contact
-          <span aria-hidden="true">→</span>
-        </a>
+        <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
           class="text-sm underline underline-offset-4 hover:text-[var(--color-laterite)]"

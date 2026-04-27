@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 import { Picture } from 'astro:assets';
 import { fetch } from '@/lib/sanity';
 import { projectSlugsQuery } from '@/lib/queries';
@@ -199,6 +200,8 @@ const schema = jsonLdGraph([
             {project.gallery.map((img, i) => (
               <figure
                 data-img-reveal
+                data-img-reveal-offset={i % 2 === 0 ? 'left' : 'right'}
+                data-img-reveal-offset-amp="40"
                 data-scroll-rise
                 data-scroll-rise-amp={String(130 + (i % 2) * 40)}
               >
@@ -237,13 +240,7 @@ const schema = jsonLdGraph([
         <span aria-hidden="true">←</span>
         Toutes les réalisations
       </a>
-      <a
-        href="/contact"
-        class="inline-flex items-center gap-3 border-b border-[var(--color-forest)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
-      >
-        Discuter de votre projet
-        <span aria-hidden="true">→</span>
-      </a>
+      <CtaLink href="/contact" label="Discuter de votre projet" tone="light" />
     </div>
   </Section>
 
