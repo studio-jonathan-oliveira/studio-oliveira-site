@@ -346,22 +346,22 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Sortie — fondu + léger blur (spec vidéo designbyad : effet distorsion
-     douce en sortie, pas simple reverse). */
+  /* Sortie — Morgan 2026-04-27 : « la même animation à l'envers ».
+     Open = clip-path inset(0 0 100% 0) → inset(0 0 0 0) (rideau qui
+     descend d'en haut). Close = inset(0 0 0 0) → inset(0 0 100% 0)
+     (rideau qui se rétracte vers le haut). Symétrique strict. */
   .primary-menu.is-closing .primary-menu__inner {
-    animation: primary-menu-panel-exit 0.5s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+    animation: primary-menu-panel-exit 0.65s cubic-bezier(0.7, 0, 0.3, 1) forwards;
   }
   .primary-menu.is-closing::backdrop {
-    animation: primary-menu-backdrop-exit 0.4s var(--ease-in-out-editorial) forwards;
+    animation: primary-menu-backdrop-exit 0.5s var(--ease-out-editorial) forwards;
   }
   @keyframes primary-menu-panel-exit {
     from {
-      opacity: 1;
-      filter: blur(0);
+      clip-path: inset(0 0 0 0);
     }
     to {
-      opacity: 0;
-      filter: blur(8px);
+      clip-path: inset(0 0 100% 0);
     }
   }
   @keyframes primary-menu-backdrop-exit {
@@ -886,13 +886,14 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       dialog.classList.add('is-closing');
       moveCursorInto(document.body);
       dialog.classList.remove('has-cursor');
+      // Aligné sur la durée de l'animation primary-menu-panel-exit (650ms).
       window.setTimeout(() => {
         dialog.close();
         dialog.classList.remove('is-closing');
         trigger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
         window.__lenis?.start();
-      }, 300);
+      }, 650);
     };
 
     trigger.addEventListener(

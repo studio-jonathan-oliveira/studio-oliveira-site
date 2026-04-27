@@ -296,6 +296,13 @@ function setupJustifiedScroll(root: ParentNode) {
     const rawAmp = parseFloat(el.dataset.justifySpread || el.dataset.justifyAmp || '20');
     // Si valeur > 1, on suppose ancien format px → ratio (px/40 cap 0.95)
     const intensity = rawAmp > 1 ? Math.min(0.95, rawAmp / 40) : Math.min(0.95, rawAmp);
+    // Window custom : data-justify-window="0.0,0.45" (start,end progress)
+    // → spread atteint l'état final à 45% du scroll au lieu de 75%.
+    // Default = "0.1,0.75" (spread déployé tranquillement).
+    const winAttr = el.dataset.justifyWindow || '0.1,0.75';
+    const winParts = winAttr.split(',').map((s) => parseFloat(s.trim()));
+    const wStart = Number.isFinite(winParts[0]) ? (winParts[0] as number) : 0.1;
+    const wEnd = Number.isFinite(winParts[1]) ? (winParts[1] as number) : 0.75;
 
     if (getComputedStyle(el).textAlign !== 'justify') {
       el.style.textAlign = 'justify';
@@ -354,10 +361,8 @@ function setupJustifiedScroll(root: ParentNode) {
 
     scroll(
       (progress: number) => {
-        // Window 0.1 → 0.75 (Morgan 2026-04-27 : « on peut le ralentir
-        // encore un peu »). Le spread se déroule tranquillement pendant
-        // toute la traversée du viewport.
-        const t = Math.max(0, Math.min(1, (progress - 0.1) / 0.65));
+        // Window paramétrable via data-justify-window (default 0.1 → 0.75).
+        const t = Math.max(0, Math.min(1, (progress - wStart) / Math.max(0.01, wEnd - wStart)));
         const closure = (1 - t) * intensity;
         words.forEach((w, i) => {
           const dx = (leftLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
@@ -517,10 +522,10 @@ function setupImageReveals(root: ParentNode) {
   nodes.forEach((el) => {
     if (el.dataset.imgRevealDone) return;
     el.dataset.imgRevealDone = 'true';
-    // Threshold custom possible via data-img-reveal-speed (default 0.55).
-    // Plus la valeur est haute, plus le déroulé est lent et visible — Morgan
-    // 2026-04-27 : « augmenter qu'on voit encore mieux ce dérouler ».
-    const speed = parseFloat(el.dataset.imgRevealSpeed || '0.55');
+    // Threshold custom possible via data-img-reveal-speed (default 0.75).
+    // Morgan 2026-04-27 (passe 2) : « retarder un peu encore pour que ce
+    // soit encore plus frappant ».
+    const speed = parseFloat(el.dataset.imgRevealSpeed || '0.75');
     // Pattern designbyad asymétrique (frames scroll_projet f_006) : l'image
     // entre depuis hors-grille (translateX) et glisse vers sa position en
     // même temps que le clip se déroule. Variante via data-img-reveal-offset
@@ -905,6 +910,11 @@ function setupHorizontalTypologies(root: ParentNode) {
         ticks.forEach((tick, i) => {
           tick.classList.toggle('is-active', i === activeIndex);
           tick.classList.toggle('is-passed', i < activeIndex);
+        });
+        // Marque aussi le panel actif pour que la card visuelle puisse
+        // s'agrandir (CSS .htypo-panel.is-active .htypo-visual).
+        panels.forEach((panel, i) => {
+          panel.classList.toggle('is-active', i === activeIndex);
         });
       },
       { target: section, offset: ['start start', 'end end'] as never },

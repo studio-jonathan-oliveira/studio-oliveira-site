@@ -169,9 +169,15 @@ const vitrine = [
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
-    class="hero-immersive hero-sticky relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="hero-immersive hero-sticky relative overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
   >
-    <div class="absolute inset-0 -z-10" data-hero-slideshow>
+    {
+      /* Stacking explicite (Morgan 2026-04-27 « tout noir le fond ») :
+        slideshow z-0 par-dessus le bg ink de la section, contenu z-10
+        par-dessus. On retire isolate sur la section qui scopait -z-10
+        en dessous du paint background. */
+    }
+    <div class="absolute inset-0 z-0" data-hero-slideshow>
       {
         heroSlides.map((slide, i) => (
           <Image
@@ -204,7 +210,7 @@ const vitrine = [
         décalé bas-droite (déborde la grille), manifesto bas-gauche, CTA + cue
         à des coins différents. Le H1 se lit en diagonale → narration spatiale. */
     }
-    <div class="hero-asymmetric relative min-h-[100svh] w-full" data-hero-sequence>
+    <div class="hero-asymmetric relative z-10 min-h-[100svh] w-full" data-hero-sequence>
       {/* Eyebrow — haut-droit, vertical signature */}
       <p
         data-hero="eyebrow"
@@ -245,8 +251,11 @@ const vitrine = [
         <CtaLink href="/studio" label="À propos du studio" tone="dark" size="sm" magnetic={0.18} />
       </div>
 
-      {/* Index — référence designbyad, gros chiffre filigrane */}
-      <span class="hero-index-mark" aria-hidden="true">/01</span>
+      {
+        /* /01 retiré 2026-04-27 (Morgan : « se balade en haut à gauche »).
+          Le marqueur faisait artefact visuel sans valeur — pas de référence
+          designbyad réelle. */
+      }
 
       <div
         data-hero="cue"
@@ -593,14 +602,29 @@ const vitrine = [
           </h2>
         </div>
         <div class="md:col-span-5 md:self-end" data-parallax="0.38">
+          {
+            /* Pattern designbyad : phrase courte CAPS + justify-spread.
+              Le contenu original (3 phrases longues) est résumé en deux
+              lignes uppercase pour permettre un justify lisible. La phrase
+              complète devient ce qui suit, en plus petit. */
+          }
           <p
-            class="max-w-md text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/75"
+            class="methode-tagline"
             data-reveal="up"
             data-reveal-delay="0.15"
+            data-justify-scroll
+            data-justify-amp="0.6"
+            data-justify-window="0.05,0.55"
+          >
+            Écouter avant de proposer · qualifier avant de chiffrer
+          </p>
+          <p
+            class="mt-6 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/65"
+            data-reveal="up"
+            data-reveal-delay="0.25"
           >
             Avant toute étude, le studio vous engage dans un parcours en trois étapes — découvrir le
-            projet, lire le lieu, cadrer les attentes. Pensé pour écouter avant de proposer,
-            qualifier avant de chiffrer.
+            projet, lire le lieu, cadrer les attentes.
           </p>
         </div>
       </div>
@@ -714,17 +738,33 @@ const vitrine = [
         position dans le rail horizontal. JS dans <script> ci-dessous écoute
         le scroll du rail et toggle .is-active sur le dot correspondant. */
     }
-    <div class="vitrine-dots" data-vitrine-dots>
-      {
-        vitrine.map((_, i) => (
-          <button
-            type="button"
-            class="vitrine-dot"
-            data-dot-index={i}
-            aria-label={`Aller au projet ${i + 1}`}
-          />
-        ))
-      }
+    {
+      /* Contrôles vitrine — boutons prev/next + dots de pagination centrés.
+        Demande Morgan 2026-04-27 : « petits boutons pour faire défiler aussi ». */
+    }
+    <div class="vitrine-controls">
+      <button type="button" class="vitrine-arrow" data-vitrine-prev aria-label="Projet précédent">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M10 2 L4 8 L10 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </button>
+      <div class="vitrine-dots" data-vitrine-dots>
+        {
+          vitrine.map((_, i) => (
+            <button
+              type="button"
+              class="vitrine-dot"
+              data-dot-index={i}
+              aria-label={`Aller au projet ${i + 1}`}
+            />
+          ))
+        }
+      </div>
+      <button type="button" class="vitrine-arrow" data-vitrine-next aria-label="Projet suivant">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </button>
     </div>
 
     {/* CTA "Voir tous les projets" — accès vers le listing complet */}
@@ -742,7 +782,13 @@ const vitrine = [
     aria-label="Citation Jonathan Oliveira"
   >
     <div class="pull-quote-sticky">
-      <div class="mx-auto flex min-h-[100vh] max-w-6xl flex-col justify-center px-6 py-24 md:px-10">
+      {
+        /* Bloc élargi (Morgan 2026-04-27) : max-w-6xl → max-w-[1700px] pour
+          que le justify designbyad s'étende quasi pleine largeur. */
+      }
+      <div
+        class="mx-auto flex min-h-[100vh] max-w-[1700px] flex-col justify-center px-6 py-24 md:px-10"
+      >
         <p
           class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
@@ -753,10 +799,17 @@ const vitrine = [
             justify CSS natif. data-slide-x → glide latéral du bloc entier
             pendant la traversée viewport, sans déformer le texte. */
         }
+        {
+          /* Window 0,0.4 (Morgan 2026-04-27) : le spread atteint l'état
+            quasi-déployé à 40% du scroll, bien plus tôt que default
+            (0.1→0.75). Le bloc est presque au max quand on arrive à la
+            moitié de la zone sticky. */
+        }
         <blockquote
           class="manifeste-justify"
           data-justify-scroll
           data-justify-amp="32"
+          data-justify-window="0,0.4"
           data-justify-seed="11"
         >
           JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
@@ -820,9 +873,10 @@ const vitrine = [
        (déborde côté droit), manifesto bas-gauche, CTA bas-centre-droit,
        trait vertical au centre qui relie les deux mots du titre.
        Mobile : retombe sur grille classique (lisibilité avant style). */
-    .hero-asymmetric {
-      isolation: isolate;
-    }
+    /* PAS d'isolation ici (Morgan 2026-04-27 : « tout noir le fond ») —
+       isolate créait un stacking context qui plaçait le contenu hero
+       AU-DESSUS du slideshow -z-10 du parent .hero-sticky → image masquée
+       par le bg ink de la section. Même piège que documenté ligne ~870. */
     .hero-eyebrow {
       position: absolute;
       top: 7.5rem;
@@ -1030,6 +1084,28 @@ const vitrine = [
       }
     }
 
+    /* Méthode tagline — phrase courte CAPS justify-spread (Morgan 2026-04-27).
+       Même mécanique que studio-keywords, taille moyenne, signature design. */
+    .methode-tagline {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1rem, 1.4vw, 1.35rem);
+      line-height: 1.35;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      hyphens: none;
+      max-width: 100%;
+    }
+    @media (max-width: 767px) {
+      .methode-tagline {
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+
     /* Bloc keywords studio-lead — pattern designbyad section 2 (scroll_home.mp4
        frame 2) : mots-clés UPPERCASE en justify pleine largeur, juste avant le
        paragraphe long. text-align: justify natif → espaces s'écartent
@@ -1128,12 +1204,49 @@ const vitrine = [
       object-fit: cover;
       object-position: center;
     }
-    /* Pagination dots vitrine — designbyad pattern f_012. Centré sous le rail. */
+    /* Contrôles vitrine — wrapper qui contient prev/next + dots, alignés. */
+    .vitrine-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 1.5rem 2rem;
+    }
+    .vitrine-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
+      color: var(--color-cream);
+      cursor: pointer;
+      padding: 0;
+      transition:
+        border-color 0.3s ease,
+        color 0.3s ease,
+        background-color 0.3s ease,
+        opacity 0.3s ease,
+        transform 0.4s var(--ease-out-editorial);
+    }
+    .vitrine-arrow:hover,
+    .vitrine-arrow:focus-visible {
+      border-color: var(--color-cream);
+      background-color: color-mix(in oklab, var(--color-cream) 8%, transparent);
+      outline: none;
+    }
+    .vitrine-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Pagination dots vitrine — designbyad pattern f_012. */
     .vitrine-dots {
       display: flex;
       justify-content: center;
       gap: 10px;
-      padding: 0 1.5rem 2rem;
     }
     .vitrine-dot {
       width: 7px;
@@ -1212,8 +1325,18 @@ const vitrine = [
     /* Archi-intro — section immersive intro architecture paysagère (mail Jonathan) */
     .archi-intro-visual {
       position: relative;
-      aspect-ratio: 4 / 3;
+      /* Image agrandie sur la quasi-totalité de la hauteur de section
+         (Morgan 2026-04-27) → ratio 3/4 portrait + min-h 70vh sur desktop
+         pour augmenter l'immersion. */
+      aspect-ratio: 4 / 5;
+      min-height: 60vh;
       overflow: hidden;
+    }
+    @media (min-width: 1024px) {
+      .archi-intro-visual {
+        aspect-ratio: 3 / 4;
+        min-height: 75vh;
+      }
     }
     .archi-intro-img {
       display: block;
@@ -1615,12 +1738,24 @@ const vitrine = [
     .htypo-visual {
       position: relative;
       width: 100%;
-      max-width: 520px;
-      height: clamp(280px, 52vh, 620px);
+      /* Image agrandie (Morgan 2026-04-27) : max-width 520→680 et hauteur
+         52vh→70vh pour combler l'espace entre typologies et augmenter
+         l'immersion. La card "active" grossit en plus via .is-active
+         appliqué par le JS du scroll horizontal. */
+      max-width: 680px;
+      height: clamp(320px, 70vh, 760px);
       margin-inline: auto;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
       will-change: transform;
+      transition:
+        max-width 0.7s var(--ease-out-editorial),
+        height 0.7s var(--ease-out-editorial);
+    }
+    /* Active : panel courant — image encore plus large */
+    .htypo-panel.is-active .htypo-visual {
+      max-width: 820px;
+      height: clamp(380px, 78vh, 820px);
     }
     /* Image wider que son cadre → margin négative + width calc pour permettre
        le translate latéral sans trou. */
@@ -1929,15 +2064,34 @@ const vitrine = [
         dots.forEach((d, i) => d.classList.toggle('is-active', i === bestIndex));
       };
 
+      const goToCard = (i: number) => {
+        const target = cards[Math.max(0, Math.min(cards.length - 1, i))];
+        if (!target) return;
+        const targetLeft = target.offsetLeft - (rail.clientWidth - target.clientWidth) / 2;
+        rail.scrollTo({ left: targetLeft, behavior: 'smooth' });
+      };
+
       // Click sur dot → scroll smooth vers la card correspondante
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          const target = cards[i];
-          if (!target) return;
-          const targetLeft = target.offsetLeft - (rail.clientWidth - target.clientWidth) / 2;
-          rail.scrollTo({ left: targetLeft, behavior: 'smooth' });
+      dots.forEach((dot, i) => dot.addEventListener('click', () => goToCard(i)));
+
+      // Boutons prev/next (Morgan 2026-04-27)
+      const prevBtn = document.querySelector<HTMLButtonElement>('[data-vitrine-prev]');
+      const nextBtn = document.querySelector<HTMLButtonElement>('[data-vitrine-next]');
+      const currentIndex = () => {
+        let idx = 0;
+        dots.forEach((d, i) => {
+          if (d.classList.contains('is-active')) idx = i;
         });
-      });
+        return idx;
+      };
+      prevBtn?.addEventListener('click', () => goToCard(currentIndex() - 1));
+      nextBtn?.addEventListener('click', () => goToCard(currentIndex() + 1));
+      const updateArrowsState = () => {
+        const idx = currentIndex();
+        if (prevBtn) prevBtn.disabled = idx <= 0;
+        if (nextBtn) nextBtn.disabled = idx >= cards.length - 1;
+      };
+      updateArrowsState();
 
       // Drag-to-scroll souris (Morgan 2026-04-27 : "pouvoir cliquer pour
       // swiper dans les projets"). On suit le pointeur en X et on translate
@@ -1991,9 +2145,13 @@ const vitrine = [
       rail.addEventListener('pointercancel', endDrag);
       rail.addEventListener('pointerleave', endDrag);
 
-      update();
-      rail.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
+      const updateAll = () => {
+        update();
+        updateArrowsState();
+      };
+      updateAll();
+      rail.addEventListener('scroll', updateAll, { passive: true });
+      window.addEventListener('resize', updateAll);
     }
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initVitrineDots, { once: true });

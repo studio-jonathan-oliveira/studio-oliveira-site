@@ -214,11 +214,17 @@
         const target = e.target as HTMLElement | null;
         const labeledAncestor = target?.closest?.('[data-cursor-label]') as HTMLElement | null;
         const interactive = target?.closest?.(hoverSelectors);
+        // [data-cursor-skip] : éléments où le ring NE doit PAS s'élargir.
+        // Cas typique : CtaLink size="lg" dont le label long est rendu
+        // illisible quand le ring 32px en mix-blend difference le recouvre
+        // (Morgan 2026-04-27 : « le CTA Démarrer un projet devient tout
+        // blanc »). Le cursor reste en mode normal (dot + ring petit).
+        const cursorSkip = target?.closest?.('[data-cursor-skip]');
         if (labeledAncestor && labelEl) {
           labelEl.textContent = labeledAncestor.dataset.cursorLabel || '→';
           cursor.classList.add('is-labeled');
           cursor.classList.remove('is-hover');
-        } else if (interactive) {
+        } else if (interactive && !cursorSkip) {
           cursor.classList.add('is-hover');
         }
       },

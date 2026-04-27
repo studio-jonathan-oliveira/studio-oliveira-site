@@ -402,10 +402,17 @@
 
     if (counterTotal) counterTotal.textContent = pad(sections.length);
 
-    // Smooth scroll au clic
-    Object.entries(items).forEach(([id, { link }]) => {
+    // Smooth scroll au clic. Pour le 1er item (Accueil/hero), on force
+    // window.scrollTo(0) car scrollIntoView sur une section sticky top:0
+    // ne ramenait pas tout en haut de la page (Morgan 2026-04-27).
+    Object.entries(items).forEach(([id, { link }], i) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
+        if (i === 0) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          history.replaceState(null, '', window.location.pathname);
+          return;
+        }
         const target = document.getElementById(id);
         if (!target) return;
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });

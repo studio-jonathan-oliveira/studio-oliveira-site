@@ -51,6 +51,7 @@ const rel = external ? 'noopener noreferrer' : undefined;
   href={href}
   class:list={['cta-link', `cta-link--${tone}`, `cta-link--${size}`, className]}
   data-magnetic={magnetic > 0 ? String(magnetic) : undefined}
+  data-cursor-skip={size === 'lg' ? '' : undefined}
   target={target}
   rel={rel}
   aria-label={ariaLabel}
