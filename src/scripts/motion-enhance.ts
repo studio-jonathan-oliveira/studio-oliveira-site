@@ -335,6 +335,12 @@ function setupJustifiedScroll(root: ParentNode) {
     }
 
     measure();
+    // Re-measure une fois les fonts custom (Jost Variable, Gloock) chargées —
+    // sinon les mesures initiales sont basées sur la fallback system-ui et
+    // le translate inverse devient incorrect quand la vraie fonte arrive.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => measure());
+    }
 
     // Re-measure on resize (debounced)
     let resizeT = 0;

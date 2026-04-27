@@ -219,14 +219,7 @@ const vitrine = [
           <span data-mask-line class="hero-line block">Designer</span>
         </span>
         <span class="hero-word-paysagiste" data-hero-mask>
-          <span
-            data-mask-line
-            data-char-drift
-            data-char-drift-amp="14"
-            class="hero-line display block"
-          >
-            paysagiste
-          </span>
+          <span data-mask-line class="hero-line block">Paysagiste</span>
         </span>
       </h1>
 
@@ -674,7 +667,12 @@ const vitrine = [
       </h2>
     </header>
 
-    <div class="vitrine-rail" role="list" data-wheel-horizontal>
+    {
+      /* data-wheel-horizontal retiré 2026-04-27 — interceptait le scroll
+        vertical de la page et donnait une sensation de bug. Scroll horizontal
+        natif uniquement (trackpad / shift+wheel / drag tactile). */
+    }
+    <div class="vitrine-rail" role="list">
       {
         vitrine.map((p, i) => (
           <a
@@ -707,8 +705,6 @@ const vitrine = [
                 format="webp"
                 class="vitrine-img"
                 loading={i < 2 ? 'eager' : 'lazy'}
-                data-reveal="image-rise"
-                data-reveal-delay={String(0.15 + i * 0.08)}
               />
             </div>
             <p class="vitrine-meta">
@@ -858,8 +854,11 @@ const vitrine = [
     .hero-word-paysagiste {
       display: block;
       overflow: hidden;
-      padding-bottom: 0.12em;
-      line-height: 1.05;
+      /* padding-bottom large pour que les descendantes (j, p, g, y) ne
+         soient pas coupées par overflow:hidden — fix Y "trop haut" sur
+         "Paysagiste" 2026-04-27. */
+      padding-bottom: 0.28em;
+      line-height: 1.1;
     }
     @media (min-width: 1024px) {
       .hero-title-asym {
@@ -882,10 +881,14 @@ const vitrine = [
       }
       .hero-word-paysagiste {
         position: absolute;
-        top: 50vh;
+        top: 48vh;
         right: clamp(2rem, 4vw, 4rem);
+        /* Jost regular (font par défaut) — pas de Gloock italic ici, le Y
+           italique avait un design qui faisait artefact visuel. */
+        font-family: var(--font-heading), sans-serif;
+        font-weight: 300;
         font-size: clamp(4.5rem, 9vw, 9.5rem);
-        line-height: 0.95;
+        line-height: 1.05;
         letter-spacing: -0.03em;
         text-align: right;
         max-width: 92vw;
@@ -1051,7 +1054,9 @@ const vitrine = [
       /* Padding-end large pour que la 4e card soit entièrement scrollable
          et pas tronquée par le bord viewport (feedback Morgan 2026-04-27). */
       padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
-      padding-right: clamp(4rem, 12vw, 14rem);
+      /* Padding-right augmenté à 18vw (2026-04-27) pour que la 4e card soit
+         toujours entièrement visible quand on snap dessus. */
+      padding-right: clamp(6rem, 18vw, 20rem);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
