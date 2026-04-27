@@ -89,7 +89,7 @@ const schema = jsonLdGraph([
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                <a href={b.item} class="hover:text-[var(--color-cream)]">
                   {b.name}
                 </a>
               ) : (
@@ -106,7 +106,7 @@ const schema = jsonLdGraph([
   <!-- HERO ───────────────────────────────────────────────── -->
   <Section variant="forest" tight class="pt-0">
     <div class="max-w-4xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
         Typologie · {typologie.nomProprietaire}
       </p>
       <h1
@@ -142,7 +142,7 @@ const schema = jsonLdGraph([
       <Section variant="forest" topDivider aria-labelledby="gallery-title">
         <div class="mb-12 grid gap-10 md:mb-16 md:grid-cols-[1fr_2fr] md:items-start md:gap-16">
           <div>
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
               Projet exemplaire · {projet.statut}
             </p>
             <h2
@@ -159,19 +159,19 @@ const schema = jsonLdGraph([
             </p>
             <dl class="mt-8 grid grid-cols-2 gap-6 border-t border-[var(--color-cream)]/10 pt-6 md:grid-cols-3">
               <div>
-                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
                   Typologie
                 </dt>
                 <dd class="mt-1 text-sm">{typologie.nomProprietaire}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
                   Surface
                 </dt>
                 <dd class="mt-1 text-sm">{typologie.surface}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+                <dt class="font-mono text-[10px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
                   Budget travaux
                 </dt>
                 <dd class="mt-1 text-sm">{typologie.budgetTravaux}</dd>
@@ -192,7 +192,7 @@ const schema = jsonLdGraph([
     <h2 id="cles-title" class="sr-only">Chiffres-clés de la typologie</h2>
     <dl class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
       <div>
-        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
           Surface
         </dt>
         <dd
@@ -202,7 +202,7 @@ const schema = jsonLdGraph([
         </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
           Budget travaux
         </dt>
         <dd
@@ -212,7 +212,7 @@ const schema = jsonLdGraph([
         </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
           Étude (TTC)
         </dt>
         <dd
@@ -222,7 +222,7 @@ const schema = jsonLdGraph([
         </dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-moss)] uppercase">
+        <dt class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/55 uppercase">
           Suivi chantier
         </dt>
         <dd
@@ -278,7 +278,7 @@ const schema = jsonLdGraph([
         faq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-moss)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-cream)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -314,13 +314,13 @@ const schema = jsonLdGraph([
   <!-- CTA ─────────────────────────────────────────────── -->
   <Section variant="forest" topDivider>
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-moss)] uppercase">
+      <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
         Étude · {typologie.prixEtude}
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05]"
       >
-        Votre <em class="text-[var(--color-gold)] italic"
+        Votre <em class="text-[var(--color-cream)]/55 italic"
           >{typologie.nomProprietaire.toLowerCase()}</em
         >,<br />
         étudié précisément.
@@ -333,7 +333,7 @@ const schema = jsonLdGraph([
         <CtaLink href="/contact" label="Démarrer mon étude" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-gold)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-cream)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
