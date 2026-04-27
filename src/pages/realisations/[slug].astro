@@ -127,13 +127,7 @@ const schema = jsonLdGraph([
         /* Image couverture full-width éditorial — pattern designbyad
          (scroll_projet.mp4) : clip-reveal bas→haut + image-rise translate+scale. */
       }
-      <figure
-        class="mb-16 md:mb-24"
-        data-clip-reveal="top"
-        data-clip-duration="1.6"
-        data-scroll-rise
-        data-scroll-rise-amp="200"
-      >
+      <figure class="mb-16 md:mb-24" data-img-reveal data-scroll-rise data-scroll-rise-amp="200">
         <Picture
           src={project.cover}
           alt={project.title}
@@ -204,9 +198,7 @@ const schema = jsonLdGraph([
           <div class="mt-24 grid grid-cols-1 gap-6 md:mt-32 md:grid-cols-2">
             {project.gallery.map((img, i) => (
               <figure
-                data-clip-reveal="top"
-                data-clip-duration="1.4"
-                data-clip-delay={String(0.05 + (i % 2) * 0.1)}
+                data-img-reveal
                 data-scroll-rise
                 data-scroll-rise-amp={String(130 + (i % 2) * 40)}
               >

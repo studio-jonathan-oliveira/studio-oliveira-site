@@ -499,23 +499,33 @@ function setupWheelHorizontal(root: ParentNode) {
 }
 
 /**
- * Image reveal — wipe clip-path bottom→top sur toute image ou figure qui porte
- * [data-img-reveal] (ou tag <img> dans [data-gallery-auto-reveal]). Signature
- * designbyad.com.au : images qui apparaissent masque-balayé à l'entrée viewport.
+ * Image reveal — pattern designbyad.com.au (vidéo scroll_home f_007→f_009) :
+ * l'image se "déroule du haut" plus vite que le scroll. Quand l'image entre
+ * en bas du viewport, son clip-path inset(100% 0 0 0) s'ouvre vers 0%
+ * sur une fenêtre courte (progress / 0.32) → l'image est ENTIÈREMENT visible
+ * bien avant d'avoir atteint le centre du viewport. Sensation "elle arrive
+ * plus vite que le scroll".
+ *
+ * Réversible : se referme si on remonte. Easing ease-out pour atteindre vite
+ * l'état révélé puis ralentir.
+ *
+ * Le wrapper doit avoir overflow:hidden pour que le clip soit visible.
  */
 function setupImageReveals(root: ParentNode) {
   const nodes = root.querySelectorAll<HTMLElement>('[data-img-reveal]');
   nodes.forEach((el) => {
     if (el.dataset.imgRevealDone) return;
     el.dataset.imgRevealDone = 'true';
-    // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24) : clip-path piloté
-    // par progress directement. Se referme si on remonte, se rouvre si on
-    // redescend — sensation de vie dans toutes les directions.
+    // Threshold custom possible via data-img-reveal-speed (default 0.32)
+    const speed = parseFloat(el.dataset.imgRevealSpeed || '0.32');
     el.style.willChange = 'clip-path';
+    el.style.clipPath = 'inset(100% 0 0 0)';
     scroll(
       (progress: number) => {
-        const local = Math.max(0, Math.min(1, progress / 0.45));
-        const inset = (1 - local) * 100;
+        const linear = Math.max(0, Math.min(1, progress / speed));
+        // Ease-out cubic : se révèle vite au début, achève doucement
+        const eased = 1 - Math.pow(1 - linear, 3);
+        const inset = (1 - eased) * 100;
         el.style.clipPath = `inset(${inset}% 0 0 0)`;
       },
       { target: el, offset: ['start end', 'end start'] as never },

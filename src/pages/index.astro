@@ -314,10 +314,16 @@ const vitrine = [
         </a>
       </header>
 
+      {
+        /* Pattern designbyad (frames scroll_home f_007→f_009) : image qui
+          se déroule du haut plus vite que le scroll. data-img-reveal pilote
+          un clip-path scroll-driven, threshold 0.32 → image entièrement
+          visible bien avant le centre du viewport. scroll-rise garde un
+          léger mouvement vertical derrière. */
+      }
       <div
         class="archi-intro-visual relative md:col-span-7"
-        data-clip-reveal="top"
-        data-clip-duration="1.6"
+        data-img-reveal
         data-scroll-rise
         data-scroll-rise-amp="120"
       >
@@ -690,16 +696,9 @@ const vitrine = [
             <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
               {p.nom}
             </p>
-            {/* scroll-rise retiré 2026-04-27 (feedback Morgan : "scroll en
-                haut/bas change la disposition + 4e card crop"). On garde
-                clip-reveal one-shot pour l'entrée cinématique, mais plus
-                de translate continu qui sortait les cards de leur cadre. */}
-            <div
-              class="vitrine-frame"
-              data-clip-reveal="top"
-              data-clip-duration="1.4"
-              data-clip-delay={String(0.1 + i * 0.08)}
-            >
+            {/* Pattern designbyad : image qui se déroule du haut plus vite
+                que le scroll (data-img-reveal scroll-driven). Réversible. */}
+            <div class="vitrine-frame" data-img-reveal>
               <Image
                 src={p.image}
                 alt={`${p.nom} — ${p.lieu}`}

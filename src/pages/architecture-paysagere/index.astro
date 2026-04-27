@@ -259,7 +259,7 @@ const schema = jsonLdGraph([
     {
       chapitres.map((ch, i) => (
         <article class="ap-chapter" data-ap-chapter aria-labelledby={`chapter-${ch.num}`}>
-          <div class="ap-chapter-visual" data-ap-chapter-visual>
+          <div class="ap-chapter-visual" data-ap-chapter-visual data-img-reveal>
             <Image
               src={ch.image}
               alt=""
@@ -322,7 +322,7 @@ const schema = jsonLdGraph([
             <li class="ap-typo-card group bg-[var(--color-cream)]">
               <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
                 {img && (
-                  <div class="ap-typo-card-visual overflow-hidden">
+                  <div class="ap-typo-card-visual overflow-hidden" data-img-reveal>
                     <Image
                       src={img}
                       alt=""
