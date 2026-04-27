@@ -132,34 +132,37 @@ const { darkHero = false } = Astro.props;
     isolation: isolate;
   }
 
-  /* Dark hero NON scrolled (Morgan 2026-04-27 — passe relisibilité) :
-     mix-blend-difference sur photo bruyante du hero était imprévisible
-     (slideshow qui change + vignette non opaque → couleur fond variable).
-     On bascule en mode "transparent + cream + text-shadow" uniquement sur
-     le hero, et on reprend mix-blend-difference dès que .is-scrolled
-     (header au-dessus de section unie cream/ink). text-shadow assez fort
-     pour résister aux zones claires de l'image (highlights jardin nocturne). */
+  /* Dark hero NON scrolled (Morgan 2026-04-27 — passe relisibilité 3) :
+     passes 1 et 2 (mix-blend-normal + text-shadow + vignette renforcée)
+     jugées encore insuffisantes. Bascule sur effet "verre dépoli" pattern
+     Aesop/Polestar : fond semi-opaque + backdrop-filter blur isole les
+     éléments du fond bruyant du slideshow sans créer un bandeau brut.
+     Text-shadow renforcés en complément pour assurance maximum. */
   .site-header--dark-hero:not(.is-scrolled) {
     mix-blend-mode: normal;
+    background-color: rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
   .site-header--dark-hero:not(.is-scrolled) .logo-cream,
   .site-header--dark-hero:not(.is-scrolled) .menu-trigger,
   .site-header--dark-hero:not(.is-scrolled) .site-header__topbar {
     text-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.7),
-      0 2px 14px rgba(0, 0, 0, 0.4);
+      0 1px 4px rgba(0, 0, 0, 0.85),
+      0 2px 14px rgba(0, 0, 0, 0.5);
   }
   .site-header--dark-hero:not(.is-scrolled) .menu-bars > span {
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.7),
-      0 2px 8px rgba(0, 0, 0, 0.4);
+      0 1px 3px rgba(0, 0, 0, 0.85),
+      0 2px 8px rgba(0, 0, 0, 0.5);
   }
   /* CTA pill : background cream opaque déjà très visible sur fond sombre,
-     juste un drop-shadow pour le détacher du fond mouvant. */
+     drop-shadow plus marqué pour le détacher franchement du verre dépoli. */
   .site-header--dark-hero:not(.is-scrolled) .cta-pill {
     box-shadow:
-      0 4px 16px rgba(0, 0, 0, 0.35),
-      0 1px 4px rgba(0, 0, 0, 0.25);
+      0 6px 24px rgba(0, 0, 0, 0.45),
+      0 2px 6px rgba(0, 0, 0, 0.35);
   }
 
   /* Dark hero — transparent, logo crème, texte crème */
