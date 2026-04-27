@@ -235,21 +235,21 @@ const vitrine = [
           />
         ))
       }
-      <!-- Overlay lisibilité (Morgan 2026-04-27 — passe relisibilité hero) :
-           - Vignette top renforcée (0-20%) → fond uniforme et très sombre
-             derrière le Header pour stabiliser le rendu mix-blend-difference
-             (sans cette zone stable, le difference sur photo bruyante donne
-             un Header illisible).
-           - Baseline 0.22 sur 28-60% → contraste minimum garanti pour les
-             textes hero (eyebrow, H1, manifesto) quelle que soit la zone
-             de l'image qui passe derrière.
-           - Vignette bottom → fade vers la section suivante.
-           Style inline (Tailwind 4 color-mix sur var() peu fiable cf. note
+      <!-- Overlay lisibilité (Morgan 2026-04-27 — passe 2 relisibilité hero) :
+           1ère passe (vignette 0.70 + baseline 0.22) insuffisante sur photo
+           jardin nocturne avec highlights blancs. Overlay renforcé :
+           - Vignette top 0.85 → 0.50 sur 0-15% : fond très sombre derrière
+             Header (passe en mix-blend-mode: normal en dark-hero, le
+             difference n'opère plus ici).
+           - Baseline 0.30 sur 28-65% : contraste fiable pour textes hero
+             quelles que soient les zones lumineuses de l'image.
+           - Vignette bottom 0.50 → 0.85 sur 80-100% : fade vers section.
+           Style inline pour bypass Tailwind 4 color-mix sur var() (cf. note
            au-dessus). -->
       <div
         class="absolute inset-0"
         aria-hidden="true"
-        style="background: linear-gradient(to bottom, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.50) 7%, rgba(0,0,0,0.32) 16%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.42) 80%, rgba(0,0,0,0.85) 100%);"
+        style="background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 8%, rgba(0,0,0,0.45) 18%, rgba(0,0,0,0.30) 28%, rgba(0,0,0,0.30) 65%, rgba(0,0,0,0.50) 82%, rgba(0,0,0,0.90) 100%);"
       >
       </div>
     </div>
@@ -1147,16 +1147,18 @@ const vitrine = [
       opacity: 1;
     }
 
-    /* Lisibilité hero (Morgan 2026-04-27) — text-shadow universel hérité par
-       cascade naturelle (text-shadow est héritable). Sur photo bruyante, le
-       seul overlay sombre ne suffit pas à garantir le contraste de la typo
-       fine ; l'ombre subtile cale le contraste sans assombrir l'image. Ne
-       s'applique pas au Header (rendu en mix-blend-mode: difference, qui
-       inverserait l'ombre). */
+    /* Lisibilité hero (Morgan 2026-04-27 passe 2) — text-shadow universel
+       hérité par cascade. Renforcé suite test passe 1 jugée insuffisante
+       sur jardin nocturne avec highlights blancs (ombre 0.55 invisible
+       sur zones claires). Maintenant 0.70 + halo 0.40 → résiste aux pires
+       zones de contraste. Le Header en dark-hero passe désormais en
+       mix-blend: normal (cf. Header.astro), donc text-shadow n'est plus
+       inversé là-bas — tout le top est en mode "transparent + cream +
+       text-shadow direct". */
     .hero-immersive {
       text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.55),
-        0 2px 14px rgba(0, 0, 0, 0.28);
+        0 1px 3px rgba(0, 0, 0, 0.7),
+        0 2px 16px rgba(0, 0, 0, 0.4);
     }
     /* Transition douce du background-image quand le swap LQIP → WebP a lieu.
        Sans transition, le swap est instantané : pas de saute visuel grâce
