@@ -359,13 +359,14 @@ const schema = jsonLdGraph([
     </div>
 
     {
-      /* data-reveal/-stagger retirés 2026-04-27 — Morgan : « cards typologies
-        invisibles, écran tout noir ». Le combo data-reveal+stagger met les
-        enfants à opacity:0 initial et l'observer ne déclenche pas (cause
-        encore non identifiée, sans doute lié à aspect-ratio 4/5 + grid).
-        Affichage direct prioritaire — animation à rebrancher après debug. */
+      /* Animation cards : CSS pure avec animation-delay nth-child + Intersection
+        Observer inline page-level pour trigger au scroll (Morgan 2026-04-27 :
+        « je veux de l'animation sur ces cards, c'est mort »). Pas de
+        data-reveal/-stagger (qui buggaient sur cette grid avec aspect-ratio
+        4/5). Approche bétonnée : observer simple, classe .is-revealed
+        qui démarre l'animation par card avec stagger. */
     }
-    <ul class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+    <ul data-typo-cards class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
       {
         typologies.map((t) => {
           const img = typoImageMap[t.slug];
@@ -386,32 +387,32 @@ const schema = jsonLdGraph([
                     />
                   </div>
                 )}
-                <div class="flex flex-1 flex-col justify-between p-8 md:p-12">
+                <div class="flex flex-1 flex-col justify-between p-8 text-[var(--color-forest)] md:p-12">
                   <div>
-                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
+                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/65 uppercase">
                       {t.surface} · {t.exemple}
                     </p>
                     <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
                       <em class="italic">{t.nomProprietaire}</em>
                     </h3>
-                    <p class="mt-3 text-sm text-[var(--color-cream)]/60">{t.h1Seo}</p>
+                    <p class="mt-3 text-sm text-[var(--color-forest)]/70">{t.h1Seo}</p>
 
-                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-cream)]/10 pt-6 text-xs">
+                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/15 pt-6 text-xs">
                       <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                           Budget travaux
                         </dt>
                         <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
                       </div>
                       <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                           Étude
                         </dt>
-                        <dd class="mt-1 text-sm text-[var(--color-cream)]/55">{t.prixEtude}</dd>
+                        <dd class="mt-1 text-sm text-[var(--color-forest)]/70">{t.prixEtude}</dd>
                       </div>
                     </dl>
                   </div>
-                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1 group-hover:text-[var(--color-cream)]">
+                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1">
                     Explorer
                     <span aria-hidden="true">→</span>
                   </span>
@@ -425,11 +426,11 @@ const schema = jsonLdGraph([
 
     <style>
       /* Cards typologies — aspect-ratio plus haut sur desktop pour l'immersion
-         (Morgan 2026-04-27 « images presque pleine hauteur »). 4/5 portrait
-         desktop = vertical élégant qui occupe 60-70vh sur grand écran. */
+         (Morgan 2026-04-27). 4/5 portrait desktop = vertical élégant. */
       .ap-typo-card-visual {
         aspect-ratio: 4 / 3;
         background-color: var(--color-forest);
+        overflow: hidden;
       }
       @media (min-width: 768px) {
         .ap-typo-card-visual {
@@ -444,7 +445,90 @@ const schema = jsonLdGraph([
       .ap-typo-card:focus-within .ap-typo-card-img {
         transform: scale(1.1);
       }
+
+      /* Animation reveal — pre-state + classe .is-revealed posée par observer
+         inline (script en bas du fichier). Stagger via nth-child : card 1
+         apparait sans delay, puis +0.15s par card. Image sur clip-path qui
+         se révèle, contenu qui fade-up légèrement. */
+      .ap-typo-card {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 1s var(--ease-out-editorial),
+          transform 1s var(--ease-out-editorial);
+      }
+      .ap-typo-card-visual .ap-typo-card-img {
+        clip-path: inset(100% 0 0 0);
+        transition:
+          clip-path 1.2s var(--ease-out-editorial),
+          transform 1.2s var(--ease-out-editorial);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card-img {
+        clip-path: inset(0 0 0 0);
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) {
+        transition-delay: 0s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) .ap-typo-card-img {
+        transition-delay: 0s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) {
+        transition-delay: 0.12s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) .ap-typo-card-img {
+        transition-delay: 0.12s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) {
+        transition-delay: 0.24s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) .ap-typo-card-img {
+        transition-delay: 0.24s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) {
+        transition-delay: 0.36s;
+      }
+      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) .ap-typo-card-img {
+        transition-delay: 0.36s;
+      }
     </style>
+
+    <script>
+      // Observer simple page-level pour déclencher l'animation des cards
+      // typologies (data-reveal-stagger ne fonctionnait pas sur cette grid,
+      // cause non identifiée). Pattern bétonné : add class .is-revealed dès
+      // que l'élément entre dans le viewport.
+      function initTypoCardsObserver() {
+        const ul = document.querySelector<HTMLElement>('[data-typo-cards]');
+        if (!ul) return;
+        if (ul.dataset.observerWired === 'true') return;
+        ul.dataset.observerWired = 'true';
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                ul.classList.add('is-revealed');
+                observer.disconnect();
+                break;
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+        observer.observe(ul);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTypoCardsObserver, { once: true });
+      } else {
+        initTypoCardsObserver();
+      }
+      document.addEventListener('astro:page-load', initTypoCardsObserver);
+    </script>
   </Section>
 
   {
