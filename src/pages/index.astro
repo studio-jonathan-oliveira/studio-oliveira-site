@@ -712,8 +712,17 @@ const vitrine = [
         position dans le rail horizontal. JS dans <script> ci-dessous écoute
         le scroll du rail et toggle .is-active sur le dot correspondant. */
     }
-    <div class="vitrine-dots" data-vitrine-dots aria-hidden="true">
-      {vitrine.map((_, i) => <span class="vitrine-dot" data-dot-index={i} />)}
+    <div class="vitrine-dots" data-vitrine-dots>
+      {
+        vitrine.map((_, i) => (
+          <button
+            type="button"
+            class="vitrine-dot"
+            data-dot-index={i}
+            aria-label={`Aller au projet ${i + 1}`}
+          />
+        ))
+      }
     </div>
 
     {/* CTA "Voir tous les projets" — accès vers le listing complet */}
@@ -786,7 +795,12 @@ const vitrine = [
         le site, le programme et les attentes.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0.3} />
+        {
+          /* Magnetic 0 (Morgan 2026-04-27) : avec magnetic 0.3, le bouton
+            suivait la souris et le ring custom-cursor en mix-blend-mode
+            difference effaçait visuellement le texte au hover. */
+        }
+        <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0} />
         <a
           href="tel:+33661088444"
           class="text-sm underline underline-offset-4 transition-opacity hover:opacity-60"
@@ -1049,16 +1063,16 @@ const vitrine = [
     .vitrine-rail {
       display: flex;
       gap: clamp(1.5rem, 3vw, 3rem);
-      /* Padding-end large pour que la 4e card soit entièrement scrollable
-         et pas tronquée par le bord viewport (feedback Morgan 2026-04-27). */
       padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
-      /* Padding-right augmenté à 18vw (2026-04-27) pour que la 4e card soit
-         toujours entièrement visible quand on snap dessus. */
       padding-right: clamp(6rem, 18vw, 20rem);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      /* Drag-to-swipe (Morgan 2026-04-27) : curseur grab signale qu'on
+         peut cliquer-glisser pour swiper. JS écoute pointer events. */
+      cursor: grab;
+      user-select: none;
     }
     .vitrine-rail::-webkit-scrollbar {
       display: none;
@@ -1125,10 +1139,20 @@ const vitrine = [
       border-radius: 50%;
       background-color: var(--color-cream);
       opacity: 0.25;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      /* Hit area généreux pour cliquer facilement (44px tap target) */
+      box-shadow: 0 0 0 18px transparent;
       transition:
         opacity 0.35s ease,
         transform 0.4s var(--ease-out-editorial),
         background-color 0.3s ease;
+    }
+    .vitrine-dot:hover,
+    .vitrine-dot:focus-visible {
+      opacity: 0.7;
+      outline: none;
     }
     .vitrine-dot.is-active {
       opacity: 1;
@@ -1880,8 +1904,10 @@ const vitrine = [
       if (rail.dataset.dotsWired === 'true') return;
       rail.dataset.dotsWired = 'true';
 
-      const dots = Array.from(dotsContainer.querySelectorAll<HTMLElement>('.vitrine-dot'));
-      const cards = Array.from(rail.children) as HTMLElement[];
+      const dots = Array.from(dotsContainer.querySelectorAll<HTMLButtonElement>('.vitrine-dot'));
+      const cards = Array.from(rail.children).filter((c) =>
+        (c as HTMLElement).classList.contains('vitrine-card'),
+      ) as HTMLElement[];
       if (cards.length === 0 || dots.length === 0) return;
 
       const update = () => {
@@ -1900,6 +1926,68 @@ const vitrine = [
         });
         dots.forEach((d, i) => d.classList.toggle('is-active', i === bestIndex));
       };
+
+      // Click sur dot → scroll smooth vers la card correspondante
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          const target = cards[i];
+          if (!target) return;
+          const targetLeft = target.offsetLeft - (rail.clientWidth - target.clientWidth) / 2;
+          rail.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        });
+      });
+
+      // Drag-to-scroll souris (Morgan 2026-04-27 : "pouvoir cliquer pour
+      // swiper dans les projets"). On suit le pointeur en X et on translate
+      // scrollLeft inversement. Threshold 5px pour distinguer drag vs click.
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartScroll = 0;
+      let movedDist = 0;
+
+      rail.addEventListener('pointerdown', (e) => {
+        // Skip si pointer sur un lien (laisser click agir)
+        if ((e.target as HTMLElement).closest('a')) {
+          // On laisse le click natif passer, mais on track quand même pour
+          // pouvoir prevent en cas de drag réel.
+        }
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartScroll = rail.scrollLeft;
+        movedDist = 0;
+        rail.style.scrollSnapType = 'none';
+        rail.style.cursor = 'grabbing';
+      });
+
+      rail.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - dragStartX;
+        movedDist = Math.abs(dx);
+        rail.scrollLeft = dragStartScroll - dx;
+      });
+
+      const endDrag = (e: PointerEvent) => {
+        if (!isDragging) return;
+        isDragging = false;
+        rail.style.scrollSnapType = '';
+        rail.style.cursor = '';
+        // Si l'utilisateur a vraiment dragué (>5px), bloquer le click natif
+        // pour éviter d'ouvrir la card par accident.
+        if (movedDist > 5) {
+          const link = (e.target as HTMLElement).closest('a');
+          if (link) {
+            const blocker = (ev: Event) => {
+              ev.preventDefault();
+              ev.stopPropagation();
+              link.removeEventListener('click', blocker, true);
+            };
+            link.addEventListener('click', blocker, true);
+          }
+        }
+      };
+      rail.addEventListener('pointerup', endDrag);
+      rail.addEventListener('pointercancel', endDrag);
+      rail.addEventListener('pointerleave', endDrag);
 
       update();
       rail.addEventListener('scroll', update, { passive: true });

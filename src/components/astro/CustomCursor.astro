@@ -95,12 +95,14 @@
 
     /* État hover : ring se gonfle. Pas de changement de couleur —
        en mix-blend-mode: difference, le ring garde sa magie d'inversion.
-       L'accent latérite se lit déjà sur les CTA eux-mêmes. */
+       Taille réduite 44 → 32px (Morgan 2026-04-27) : le ring trop large
+       en difference effaçait visuellement le texte des liens longs (CTA
+       contact). 32px reste visible sans recouvrir un mot entier. */
     .custom-cursor.is-hover .cursor-ring {
-      width: 44px;
-      height: 44px;
-      top: -22px;
-      left: -22px;
+      width: 32px;
+      height: 32px;
+      top: -16px;
+      left: -16px;
     }
     .custom-cursor.is-hover .cursor-dot {
       opacity: 0;

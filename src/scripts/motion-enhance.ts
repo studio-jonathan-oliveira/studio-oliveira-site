@@ -354,9 +354,10 @@ function setupJustifiedScroll(root: ParentNode) {
 
     scroll(
       (progress: number) => {
-        // Window 0.1 → 0.55 : spread se déclenche à l'entrée viewport et
-        // atteint l'état justify final avant la sortie. Au-delà, stable.
-        const t = Math.max(0, Math.min(1, (progress - 0.1) / 0.45));
+        // Window 0.1 → 0.75 (Morgan 2026-04-27 : « on peut le ralentir
+        // encore un peu »). Le spread se déroule tranquillement pendant
+        // toute la traversée du viewport.
+        const t = Math.max(0, Math.min(1, (progress - 0.1) / 0.65));
         const closure = (1 - t) * intensity;
         words.forEach((w, i) => {
           const dx = (leftLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
@@ -516,8 +517,10 @@ function setupImageReveals(root: ParentNode) {
   nodes.forEach((el) => {
     if (el.dataset.imgRevealDone) return;
     el.dataset.imgRevealDone = 'true';
-    // Threshold custom possible via data-img-reveal-speed (default 0.32)
-    const speed = parseFloat(el.dataset.imgRevealSpeed || '0.32');
+    // Threshold custom possible via data-img-reveal-speed (default 0.55).
+    // Plus la valeur est haute, plus le déroulé est lent et visible — Morgan
+    // 2026-04-27 : « augmenter qu'on voit encore mieux ce dérouler ».
+    const speed = parseFloat(el.dataset.imgRevealSpeed || '0.55');
     el.style.willChange = 'clip-path';
     el.style.clipPath = 'inset(100% 0 0 0)';
     scroll(
