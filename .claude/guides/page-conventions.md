@@ -40,6 +40,8 @@ Conventions visuelles et techniques imposées par Morgan sur les pages `/studio`
 
 **Couleurs OK** : `cream` (avec opacités), `forest`, `ink`. Ces 3 forment la palette monochrome du site.
 
+> ⚠️ **Attention contexte de fond** : avant de remplacer `text-laterite/moss` par `text-cream/55`, vérifier le fond de l'élément. Sur **fond cream** (cards bg-cream, sections cream-accent), le texte doit être **forest** (pas cream — sinon invisible). Cf. §13.1 pour le pattern complet.
+
 ---
 
 ## 2. H1 cassé designbyad — pattern signature
@@ -281,18 +283,153 @@ Avant de commit une nouvelle page propagée, vérifier :
 - [ ] Tous les H2 en `data-mask-reveal` avec `<span data-mask-line>` par ligne
 - [ ] Au moins une bande keywords `data-justify-scroll`
 - [ ] `id` + `sectionLabel` sur toutes les sections visibles (hero, sections principales, CTA final)
+- [ ] Numérotation eyebrows alignée sur la sidebar (commence à 02 — hero=01 implicite)
 - [ ] Hero `min-h-[100svh]` si page sombre
 - [ ] `data-scroll-rise` sur bloc texte hero
-- [ ] Pas de `data-img-reveal` sur cards en grid
+- [ ] Pas de `data-img-reveal` sur cards en grid (utiliser pattern reveal CSS pure §14)
+- [ ] **Cards/zones avec `bg-cream` → textes en `text-forest` (pas cream — invisible)**
 - [ ] `data-img-reveal-speed="1"` sur images full-bleed et chapitres pinned
 - [ ] Bande respiration full-bleed entre sections lourdes consécutives (si pertinent)
+- [ ] Format prix études : `À partir de {prix}` (préfixe dans le template, valeur brute en config)
 - [ ] Aucun mot inventé (tout vient du contenu existant)
 - [ ] `pnpm check` 0 error / 0 warning
 - [ ] `pnpm build` 28 pages OK
 
 ---
 
-## 13. Pages restantes à propager
+## 13. Apprentissages récents (passes 2026-04-27 sur archi-paysagere)
+
+### 13.1 Cards / zones sur fond cream → texte FOREST (pas cream)
+
+**Bug confirmé** : sur les cards typologies (fond `bg-cream`), un sweep monochrome global qui passe tout en `text-cream/55` rend les textes **invisibles** (cream sur cream). Les images en haut s'affichaient mais les zones texte en dessous étaient « des carrés blancs ».
+
+**Règle** : avant de remplacer `text-laterite/moss` par `text-cream/55`, **identifier le contexte de fond** :
+
+- Sur fond **forest / ink / sombre** → `text-cream/55` ✓
+- Sur fond **cream** (cards, sections cream-accent) → `text-forest/55-70` (ou `text-ink/55-70`)
+
+Exemple cards typologies (commit `cca92ed`) :
+
+```html
+<!-- Card avec bg-cream → texte forest -->
+<li class="bg-[var(--color-cream)]">
+  <div class="p-8 text-[var(--color-forest)]">
+    <p class="text-[var(--color-forest)]/65 uppercase">label</p>
+    <h3>Titre (forest hérité)</h3>
+    <p class="text-[var(--color-forest)]/70">description</p>
+    <dl class="border-[var(--color-forest)]/15">
+      <dt class="text-[var(--color-forest)]/55">Label</dt>
+      <dd>Valeur (forest hérité)</dd>
+    </dl>
+  </div>
+</li>
+```
+
+### 13.2 Numérotation eyebrows = sidebar ScrollNav (source de vérité)
+
+La sidebar ScrollNav auto-numérote les sections par ordre DOM, **incluant le hero comme 01**. Donc dans le corps :
+
+- Hero → pas de numéro (implicite 01)
+- 1ère section après hero → eyebrow `02`
+- 2ème → `03`
+- Etc.
+
+**Anti-pattern** : ne JAMAIS commencer la numérotation eyebrows à 01 si la sidebar comprend le hero. Ne pas utiliser de suffixes type `04b` (vu sur ancienne home « Sélection de projets »). Renuméroter proprement.
+
+### 13.3 Format prix études — "À partir de"
+
+Brief Morgan 2026-04-27 : « pour les coûts des études faut marquer "À partir de…" ça évite les confusions ».
+
+**Règle** : tout affichage de prix d'étude (`prixEtude` dans `site-config`, `t.prixEtude`, etc.) est préfixé "À partir de" **dans le template**, pas dans la config :
+
+```astro
+<dd>À partir de {t.prixEtude}</dd>
+```
+
+La config conserve la valeur brute formatée (`"1 200 €"`), le préfixe est éditorial.
+
+### 13.4 Pattern reveal CSS pure + IntersectionObserver inline (alternative)
+
+Quand `data-reveal-stagger` bug sur une grid (cause non identifiée — probablement aspect-ratio + ordre de mount), utiliser le pattern alternatif **CSS pure + observer page-level** :
+
+```html
+<ul data-typo-cards class="grid grid-cols-1 md:grid-cols-2">
+  <li class="ap-typo-card">…</li>
+  <li class="ap-typo-card">…</li>
+  …
+</ul>
+
+<style>
+  .ap-typo-card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 1s var(--ease-out-editorial),
+      transform 1s var(--ease-out-editorial);
+  }
+  [data-typo-cards].is-revealed .ap-typo-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) {
+    transition-delay: 0s;
+  }
+  [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+  [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) {
+    transition-delay: 0.24s;
+  }
+  [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) {
+    transition-delay: 0.36s;
+  }
+</style>
+
+<script>
+  function initTypoCardsObserver() {
+    const ul = document.querySelector < HTMLElement > '[data-typo-cards]';
+    if (!ul || ul.dataset.observerWired === 'true') return;
+    ul.dataset.observerWired = 'true';
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            ul.classList.add('is-revealed');
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+    );
+    observer.observe(ul);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypoCardsObserver, { once: true });
+  } else {
+    initTypoCardsObserver();
+  }
+  document.addEventListener('astro:page-load', initTypoCardsObserver);
+</script>
+```
+
+**Avantages** : prévisible, pas de dépendance Motion, blast radius local. **Inconvénient** : pas réversible (one-shot), pas de stagger ajustable au runtime.
+
+### 13.5 Crop image inadapté → object-position conditionnel
+
+Quand une image de la palette d'assets a un cadrage qui ne convient pas (ex: domaine-caractere avec « le toit qu'on voit à peine »), ajouter une classe `object-top` / `object-bottom` / `object-center` **conditionnelle au slug** plutôt que de regénérer un crop physique :
+
+```astro
+<Image
+  class={`h-full w-full object-cover ${t.slug === 'domaine-caractere' ? 'object-top' : 'object-center'}`}
+/>
+```
+
+Si le crop conditionnel ne suffit pas, regénérer via `sharp` dans un script — mais en dernier recours.
+
+---
+
+## 14. Pages restantes à propager
 
 Par ordre de priorité (audit + 3 passes : conservatrice → audace → immersion) :
 
