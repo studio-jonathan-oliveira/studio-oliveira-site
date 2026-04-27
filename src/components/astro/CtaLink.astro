@@ -1,0 +1,198 @@
+---
+/*
+ * CtaLink — composant universel d'appel à l'action, signature designbyad.
+ *
+ * Pattern : dot pulsant + label + arrow → avec hover qui scale le dot et
+ * translate l'arrow. Magnetic hover (curseur attire le bouton entier).
+ * Stack vertical par défaut, cohérent sur toutes les pages.
+ *
+ * Variantes :
+ *   - tone="dark"  → texte cream (sur fond ink)        ← défaut
+ *   - tone="light" → texte ink (sur fond cream)
+ *   - tone="accent" → dot et bordure latérite (rare, action primaire)
+ *
+ * Tailles :
+ *   - size="sm" → mono 11px (sous-titres, tertiaire)
+ *   - size="md" → sans 14px (défaut)
+ *   - size="lg" → sans 16px (CTA hero, contact-cta)
+ *
+ * Usage :
+ *   <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" />
+ *   <CtaLink href="#typologies" label="Découvrir les typologies" />
+ */
+
+interface Props {
+  href: string;
+  label: string;
+  tone?: 'dark' | 'light' | 'accent';
+  size?: 'sm' | 'md' | 'lg';
+  magnetic?: number; // intensité magnetic (default 0.25, 0 = désactivé)
+  external?: boolean;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  tone = 'dark',
+  size = 'md',
+  magnetic = 0.25,
+  external = false,
+  ariaLabel,
+  class: className = '',
+} = Astro.props as Props;
+
+const target = external ? '_blank' : undefined;
+const rel = external ? 'noopener noreferrer' : undefined;
+---
+
+<a
+  href={href}
+  class:list={['cta-link', `cta-link--${tone}`, `cta-link--${size}`, className]}
+  data-magnetic={magnetic > 0 ? String(magnetic) : undefined}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+>
+  <span class="cta-link__dot" aria-hidden="true"></span>
+  <span class="cta-link__label">{label}</span>
+  <span class="cta-link__arrow" aria-hidden="true">{external ? '↗' : '→'}</span>
+</a>
+
+<style>
+  /* Layout horizontal : dot · label · arrow.
+     Tout l'élément est magnetic (data-magnetic) → l'enfant ne bouge pas
+     individuellement, c'est le bouton entier qui se déplace vers la souris. */
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: inherit;
+    /* Bordure inférieure subtile, accentuée au hover */
+    border-bottom: 1px solid color-mix(in oklab, currentColor 30%, transparent);
+    padding-bottom: 0.45rem;
+    transition:
+      color 0.35s var(--ease-out-editorial),
+      border-color 0.35s var(--ease-out-editorial);
+    will-change: transform;
+  }
+
+  /* Dot pulsant — signature designbyad. Couleur dérivée de la tone. */
+  .cta-link__dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+    transition:
+      transform 0.4s var(--ease-out-editorial),
+      opacity 0.35s ease;
+    animation: cta-link-pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes cta-link-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+  }
+
+  .cta-link__label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .cta-link__arrow {
+    flex-shrink: 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    transition:
+      transform 0.45s var(--ease-out-editorial),
+      opacity 0.3s ease;
+  }
+
+  /* ───────── Variantes tone ───────── */
+  .cta-link--dark {
+    color: var(--color-cream);
+  }
+  .cta-link--light {
+    color: var(--color-ink);
+  }
+  .cta-link--accent {
+    color: var(--color-laterite);
+  }
+  .cta-link--accent .cta-link__dot {
+    background: var(--color-laterite);
+  }
+
+  /* ───────── Tailles ───────── */
+  .cta-link--sm .cta-link__label {
+    font-size: 10.5px;
+    letter-spacing: 0.24em;
+  }
+  .cta-link--sm .cta-link__arrow {
+    font-size: 12px;
+  }
+  .cta-link--sm {
+    gap: 0.7rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .cta-link--md .cta-link__label {
+    font-size: 11.5px;
+  }
+  .cta-link--md .cta-link__arrow {
+    font-size: 14px;
+  }
+
+  .cta-link--lg .cta-link__label {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+  }
+  .cta-link--lg .cta-link__arrow {
+    font-size: 16px;
+  }
+  .cta-link--lg {
+    gap: 1rem;
+    padding-bottom: 0.55rem;
+  }
+
+  /* ───────── Hover (souris uniquement) ───────── */
+  @media (hover: hover) {
+    .cta-link:hover,
+    .cta-link:focus-visible {
+      border-color: currentColor;
+    }
+    .cta-link:hover .cta-link__dot,
+    .cta-link:focus-visible .cta-link__dot {
+      transform: scale(1.6);
+      opacity: 1;
+      animation-play-state: paused;
+    }
+    .cta-link:hover .cta-link__arrow,
+    .cta-link:focus-visible .cta-link__arrow {
+      transform: translateX(6px);
+    }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cta-link__dot {
+      animation: none;
+    }
+    .cta-link,
+    .cta-link__dot,
+    .cta-link__arrow {
+      transition: none;
+    }
+  }
+</style>

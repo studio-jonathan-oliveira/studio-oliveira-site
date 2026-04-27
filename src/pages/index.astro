@@ -13,6 +13,7 @@
  * Tous les textes sont soit sourcés du PDF process Jonathan, soit marqués [À FOURNIR].
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
 // IntroBumper désactivé 2026-04-24 : couvrait l'écran en noir si la vidéo
 // logo ne jouait pas (fallback 3.5s + dismiss parfois laggy). Morgan
 // signalait « accueil toujours noir ». À réactiver quand Jonathan fournira
@@ -238,21 +239,10 @@ const vitrine = [
         > et l'<span class="display italic">humain</span>.
       </p>
 
-      {/* CTA bas-droite */}
+      {/* CTA bas-droite — composant universel CtaLink (dot+arrow+magnetic) */}
       <div data-hero="cta" class="hero-cta-asym">
-        <a
-          href="#typologies"
-          class="inline-flex items-center gap-3 border-b border-[var(--color-cream)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
-        >
-          Découvrir les typologies
-          <span aria-hidden="true">→</span>
-        </a>
-        <a
-          href="/studio"
-          class="text-sm text-[var(--color-cream)]/60 transition-colors hover:text-[var(--color-cream)]"
-        >
-          À propos du studio
-        </a>
+        <CtaLink href="#typologies" label="Découvrir les typologies" tone="dark" size="md" />
+        <CtaLink href="/studio" label="À propos du studio" tone="dark" size="sm" magnetic={0.18} />
       </div>
 
       {/* Index — référence designbyad, gros chiffre filigrane */}
@@ -305,13 +295,14 @@ const vitrine = [
           des jardins comme des <span class="hover-accent">pièces à vivre</span> — en dialogue avec le
           bâti, le sol, l'orientation, les usages.
         </p>
-        <a
-          href="/architecture-paysagere"
-          class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-ink)]/35 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)] uppercase transition-opacity hover:opacity-60"
-        >
-          Découvrir les typologies
-          <span aria-hidden="true">→</span>
-        </a>
+        <div class="mt-10">
+          <CtaLink
+            href="/architecture-paysagere"
+            label="Découvrir les typologies"
+            tone="light"
+            size="md"
+          />
+        </div>
       </header>
 
       {
@@ -413,13 +404,9 @@ const vitrine = [
             couplée à la <span class="hover-accent">technicité</span> architecturale, pour des espaces
             à vivre proches de ce que l'on ressent dans un lieu à l'état naturel.
           </p>
-          <a
-            href="/studio"
-            class="mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/30 pb-1 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)] uppercase transition-colors hover:opacity-60"
-          >
-            Lire le manifeste complet
-            <span aria-hidden="true">→</span>
-          </a>
+          <div class="mt-10">
+            <CtaLink href="/studio" label="Lire le manifeste complet" tone="dark" size="md" />
+          </div>
         </div>
 
         <aside
@@ -719,6 +706,20 @@ const vitrine = [
         ))
       }
     </div>
+
+    {
+      /* Pagination dots — pattern designbyad scroll_home f_012, signale la
+        position dans le rail horizontal. JS dans <script> ci-dessous écoute
+        le scroll du rail et toggle .is-active sur le dot correspondant. */
+    }
+    <div class="vitrine-dots" data-vitrine-dots aria-hidden="true">
+      {vitrine.map((_, i) => <span class="vitrine-dot" data-dot-index={i} />)}
+    </div>
+
+    {/* CTA "Voir tous les projets" — accès vers le listing complet */}
+    <div class="vitrine-cta-wrap">
+      <CtaLink href="/projets" label="Voir tous les projets" tone="dark" size="md" />
+    </div>
   </section>
 
   <!-- 05 · PULL-QUOTE SCROLL-PIN — fond uni ink (mail Jonathan 2026-04-24) -->
@@ -785,14 +786,7 @@ const vitrine = [
         le site, le programme et les attentes.
       </p>
       <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/contact"
-          data-magnetic="0.3"
-          class="inline-flex items-center gap-3 border border-[var(--color-cream)] px-7 py-3.5 text-sm tracking-wide transition-colors hover:bg-[var(--color-cream)] hover:text-[var(--color-ink)]"
-        >
-          Démarrer un projet
-          <span aria-hidden="true">→</span>
-        </a>
+        <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0.3} />
         <a
           href="tel:+33661088444"
           class="text-sm underline underline-offset-4 transition-opacity hover:opacity-60"
@@ -1118,6 +1112,42 @@ const vitrine = [
       object-fit: cover;
       object-position: center;
     }
+    /* Pagination dots vitrine — designbyad pattern f_012. Centré sous le rail. */
+    .vitrine-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 1.5rem 2rem;
+    }
+    .vitrine-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      opacity: 0.25;
+      transition:
+        opacity 0.35s ease,
+        transform 0.4s var(--ease-out-editorial),
+        background-color 0.3s ease;
+    }
+    .vitrine-dot.is-active {
+      opacity: 1;
+      transform: scale(1.4);
+      background-color: var(--color-laterite);
+    }
+
+    /* CTA "Voir tous les projets" — sous les dots, centré */
+    .vitrine-cta-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 0 1.5rem 4rem;
+    }
+    @media (min-width: 768px) {
+      .vitrine-cta-wrap {
+        padding-bottom: 6rem;
+      }
+    }
+
     .vitrine-meta {
       display: flex;
       gap: 0.6rem;
@@ -1840,5 +1870,46 @@ const vitrine = [
       initHeroSlideshow();
     }
     document.addEventListener('astro:page-load', initHeroSlideshow);
+
+    // Vitrine pagination dots — sync avec le scrollLeft du rail. Pattern
+    // designbyad scroll_home f_012 : dot actif suit la card centrée.
+    function initVitrineDots() {
+      const rail = document.querySelector<HTMLElement>('.vitrine-rail');
+      const dotsContainer = document.querySelector<HTMLElement>('[data-vitrine-dots]');
+      if (!rail || !dotsContainer) return;
+      if (rail.dataset.dotsWired === 'true') return;
+      rail.dataset.dotsWired = 'true';
+
+      const dots = Array.from(dotsContainer.querySelectorAll<HTMLElement>('.vitrine-dot'));
+      const cards = Array.from(rail.children) as HTMLElement[];
+      if (cards.length === 0 || dots.length === 0) return;
+
+      const update = () => {
+        const railRect = rail.getBoundingClientRect();
+        const center = railRect.left + railRect.width / 2;
+        let bestIndex = 0;
+        let bestDist = Infinity;
+        cards.forEach((card, i) => {
+          const r = card.getBoundingClientRect();
+          const cardCenter = r.left + r.width / 2;
+          const dist = Math.abs(cardCenter - center);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIndex = i;
+          }
+        });
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === bestIndex));
+      };
+
+      update();
+      rail.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVitrineDots, { once: true });
+    } else {
+      initVitrineDots();
+    }
+    document.addEventListener('astro:page-load', initVitrineDots);
   </script>
 </BaseLayout>
