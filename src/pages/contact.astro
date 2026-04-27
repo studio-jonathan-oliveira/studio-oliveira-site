@@ -25,16 +25,26 @@ const schema = jsonLdGraph([
   title="Contact"
   description="Contactez Jonathan Oliveira — Studio de design biophilique à Brive‑la‑Gaillarde. Appel de qualification 15-25 min, étude préliminaire, rendez-vous studio."
 >
-  <Section variant="cream" class="pt-40 md:pt-48">
+  <Section variant="cream" id="hero" sectionLabel="Contact" class="min-h-[80svh] pt-40 md:pt-48">
     <div class="grid gap-16 md:grid-cols-[3fr_2fr] md:gap-20">
       <div>
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           Contact
         </p>
         <h1
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+          data-mask-reveal
+          data-mask-stagger="0.14"
+          class="mt-6 font-[family-name:var(--font-heading)] leading-[1.02] tracking-tight"
         >
-          Engager la <em class="italic">conversation</em>.
+          <span data-mask-line class="block pb-[0.05em] text-[length:var(--text-4xl)] italic"
+            >Engager la</span
+          >
+          <span
+            data-mask-line
+            class="block pb-[0.18em] text-[length:var(--text-5xl)] md:text-[length:var(--text-hero)]"
+            style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;"
+            >CONVERSATION.</span
+          >
         </h1>
         <p
           class="mt-8 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
@@ -47,10 +57,12 @@ const schema = jsonLdGraph([
         <div class="mt-14 space-y-8">
           <a
             href={`tel:${SITE.contact.phone}`}
-            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-moss)]"
+            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-forest)]"
           >
             <div>
-              <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+              <p
+                class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+              >
                 Téléphone
               </p>
               <p
@@ -67,10 +79,12 @@ const schema = jsonLdGraph([
 
           <a
             href={`mailto:${SITE.contact.email}`}
-            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-moss)]"
+            class="group flex items-center justify-between border-t border-[var(--color-forest)]/10 py-6 transition-colors hover:border-[var(--color-forest)]"
           >
             <div>
-              <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+              <p
+                class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+              >
                 Email
               </p>
               <p
@@ -89,7 +103,9 @@ const schema = jsonLdGraph([
         <div
           class="mt-16 rounded-md border border-[var(--color-forest)]/10 bg-[var(--color-forest)]/5 p-8"
         >
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+          <p
+            class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+          >
             Formulaire qualifié
           </p>
           <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">
@@ -101,7 +117,9 @@ const schema = jsonLdGraph([
 
       <aside class="md:sticky md:top-32 md:self-start">
         <div class="border border-[var(--color-forest)]/10 p-8">
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+          <p
+            class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+          >
             Siège social
           </p>
           <address class="mt-4 space-y-1 text-[length:var(--text-base)] leading-relaxed not-italic">
@@ -111,7 +129,9 @@ const schema = jsonLdGraph([
           </address>
 
           <div class="mt-8 border-t border-[var(--color-forest)]/10 pt-6">
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+            <p
+              class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+            >
               Horaires
             </p>
             <p class="mt-3 text-sm text-[var(--color-forest)]/80">
@@ -121,7 +141,9 @@ const schema = jsonLdGraph([
           </div>
 
           <div class="mt-8 border-t border-[var(--color-forest)]/10 pt-6">
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-moss)] uppercase">
+            <p
+              class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+            >
               Territoires
             </p>
             <ul class="mt-3 space-y-1 text-sm text-[var(--color-forest)]/80">
