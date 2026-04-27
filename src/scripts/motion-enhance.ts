@@ -344,6 +344,68 @@ function setupJustifiedScroll(root: ParentNode) {
 }
 
 /**
+ * Char drift — variante char-by-char de data-justify-scroll. Chaque LETTRE
+ * d'un mot oscille indépendamment autour de sa position naturelle pendant
+ * le scroll. Utilisé sur le H1 hero "paysagiste" en Gloock italic — sensation
+ * de typographie vivante, pas figée. Première et dernière lettre ancrées
+ * pour préserver la silhouette du mot.
+ *
+ * Usage : <span data-char-drift data-char-drift-amp="14">paysagiste</span>
+ */
+function setupCharDrift(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-char-drift]');
+  nodes.forEach((el) => {
+    if (el.dataset.charDriftDone) return;
+    el.dataset.charDriftDone = 'true';
+
+    const ampX = parseFloat(el.dataset.charDriftAmp || '12');
+    const ampY = parseFloat(el.dataset.charDriftAmpY || '8');
+    const seed = parseInt(el.dataset.charDriftSeed || '23', 10);
+
+    const split = new SplitType(el, { types: 'chars' });
+    const chars = split.chars;
+    if (!chars || chars.length < 3) return;
+
+    function mulberry32(a: number) {
+      return () => {
+        let t = (a += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rng = mulberry32(seed);
+    const offsetsX = chars.map(() => (rng() - 0.5) * 2);
+    const offsetsY = chars.map(() => (rng() - 0.5) * 2);
+    const phases = chars.map(() => rng() * 0.5);
+
+    chars.forEach((c) => {
+      (c as HTMLElement).style.display = 'inline-block';
+      (c as HTMLElement).style.willChange = 'transform';
+    });
+
+    scroll(
+      (progress: number) => {
+        chars.forEach((c, i) => {
+          if (i === 0 || i === chars.length - 1) {
+            (c as HTMLElement).style.transform = '';
+            return;
+          }
+          const phase = phases[i] ?? 0;
+          const t = Math.max(0, Math.min(1, (progress - 0.05 + phase * 0.3) / 0.85));
+          const eased = Math.sin(t * Math.PI);
+          const ox = offsetsX[i] ?? 0;
+          const oy = offsetsY[i] ?? 0;
+          (c as HTMLElement).style.transform =
+            `translate3d(${eased * ampX * ox}px, ${eased * ampY * oy}px, 0)`;
+        });
+      },
+      { target: el, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
+/**
  * Scroll rise — pattern designbyad (vidéo scroll_home.mp4) : un élément se
  * déplace continuellement vers le haut pendant sa traversée du viewport
  * (translate Y de +amp à -amp). Sensation que l'image « monte plus tôt que
@@ -823,6 +885,7 @@ function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
+  setupCharDrift(root);
   setupWheelHorizontal(root);
   setupScrollRise(root);
   setupImageReveals(root);

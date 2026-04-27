@@ -196,62 +196,77 @@ const vitrine = [
       </div>
     </div>
 
-    <div class="relative flex min-h-[100svh] flex-col" data-hero-sequence>
-      <div
-        class="mx-auto mt-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32"
+    {
+      /* Hero asymétrique — refonte 2026-04-27 (brief Morgan : « le texte n'est
+        pas obligé d'être à gauche »). Layout cassé inspiré designbyad : eyebrow
+        en haut-droit, "Designer" en milieu-gauche, "paysagiste" Gloock énorme
+        décalé bas-droite (déborde la grille), manifesto bas-gauche, CTA + cue
+        à des coins différents. Le H1 se lit en diagonale → narration spatiale. */
+    }
+    <div class="hero-asymmetric relative min-h-[100svh] w-full" data-hero-sequence>
+      {/* Eyebrow — haut-droit, vertical signature */}
+      <p
+        data-hero="eyebrow"
+        class="hero-eyebrow font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
       >
-        <p
-          data-hero="eyebrow"
-          class="hero-eyebrow font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
-        >
-          Studio · Brive-la-Gaillarde · Aquitaine · Est. 2021
-        </p>
+        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+        Brive-la-Gaillarde &nbsp;·&nbsp; Aquitaine &nbsp;·&nbsp; Est. 2021
+      </p>
 
-        <h1
-          class="hero-title mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.05] tracking-tight text-[var(--color-cream)]"
-        >
-          <span data-hero-mask class="hero-mask block pb-[0.05em] leading-[1.05]">
-            <span data-mask-line class="hero-line block">Designer</span>
-          </span>
-          <span data-hero-mask class="hero-mask block pb-[0.12em] leading-[1.08]">
-            <span data-mask-line class="hero-line display block">paysagiste</span>
-          </span>
-        </h1>
-
-        <p
-          data-hero="manifesto"
-          class="hero-manifesto mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
-        >
-          J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
-          l'humain. Une démarche biophilique, scientifique et sensible.
-        </p>
-
-        <div
-          data-hero="cta"
-          class="hero-cta mt-14 flex flex-col items-start gap-6 md:flex-row md:items-center md:gap-10"
-        >
-          <a
-            href="#typologies"
-            class="inline-flex items-center gap-3 border-b border-[var(--color-cream)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+      {/* H1 éclaté en deux blocs positionnés indépendamment */}
+      <h1 class="hero-title-asym text-[var(--color-cream)]">
+        <span class="hero-word-designer" data-hero-mask>
+          <span data-mask-line class="hero-line block">Designer</span>
+        </span>
+        <span class="hero-word-paysagiste" data-hero-mask>
+          <span
+            data-mask-line
+            data-char-drift
+            data-char-drift-amp="14"
+            class="hero-line display block"
           >
-            Découvrir les typologies
-            <span aria-hidden="true">→</span>
-          </a>
-          <a
-            href="/studio"
-            class="text-sm text-[var(--color-cream)]/60 transition-colors hover:text-[var(--color-cream)]"
-          >
-            À propos du studio
-          </a>
-        </div>
+            paysagiste
+          </span>
+        </span>
+      </h1>
+
+      {/* Trait vertical signature qui relie les deux mots du H1 (designbyad-like) */}
+      <span class="hero-rule" aria-hidden="true"></span>
+
+      {/* Manifesto bas-gauche, max-w court, mêlé Jost + Gloock */}
+      <p data-hero="manifesto" class="hero-manifesto-asym text-[var(--color-cream)]/85">
+        J'étudie et conçois des espaces à vivre — en dialogue avec le
+        <span class="display italic"> bâti</span>, l'<span class="display italic"
+          >environnement</span
+        > et l'<span class="display italic">humain</span>.
+      </p>
+
+      {/* CTA bas-droite */}
+      <div data-hero="cta" class="hero-cta-asym">
+        <a
+          href="#typologies"
+          class="inline-flex items-center gap-3 border-b border-[var(--color-cream)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+        >
+          Découvrir les typologies
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="/studio"
+          class="text-sm text-[var(--color-cream)]/60 transition-colors hover:text-[var(--color-cream)]"
+        >
+          À propos du studio
+        </a>
       </div>
+
+      {/* Index — référence designbyad, gros chiffre filigrane */}
+      <span class="hero-index-mark" aria-hidden="true">/01</span>
 
       <div
         data-hero="cue"
-        class="scroll-cue pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[var(--color-cream)]/60"
+        class="scroll-cue pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-[var(--color-cream)]/60"
       >
         <div class="flex flex-col items-center gap-3">
-          <span class="font-mono text-[10px] tracking-[0.32em] uppercase">Explorer</span>
+          <span class="font-mono text-[10px] tracking-[0.32em] uppercase">Scroll</span>
           <span class="scroll-cue-line block h-10 w-px bg-[var(--color-cream)]/40"></span>
         </div>
       </div>
@@ -306,7 +321,8 @@ const vitrine = [
         class="archi-intro-visual relative md:col-span-7"
         data-clip-reveal="top"
         data-clip-duration="1.6"
-        data-parallax="0.15"
+        data-scroll-rise
+        data-scroll-rise-amp="120"
       >
         <Image
           src={hero02}
@@ -359,7 +375,7 @@ const vitrine = [
         class="studio-keywords mb-20 md:mb-28"
         data-reveal="up"
         data-justify-scroll
-        data-justify-amp="14"
+        data-justify-amp="22"
         data-justify-seed="7"
       >
         Architecture paysagère <span aria-hidden="true">·</span>
@@ -383,7 +399,11 @@ const vitrine = [
             <span data-mask-line class="block pb-[0.05em]">
               Design <span class="display">végétal</span> en
             </span>
-            <span data-mask-line class="display block pb-[0.12em]">Aquitaine, Limousin.</span>
+            <span data-mask-line class="display block pb-[0.12em]">
+              <span data-char-drift data-char-drift-amp="10" data-char-drift-amp-y="6"
+                >Aquitaine, Limousin.</span
+              >
+            </span>
           </h2>
           <p
             class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
@@ -727,7 +747,7 @@ const vitrine = [
         <blockquote
           class="manifeste-justify"
           data-justify-scroll
-          data-justify-amp="18"
+          data-justify-amp="32"
           data-justify-seed="11"
         >
           JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
@@ -787,6 +807,181 @@ const vitrine = [
   </section>
 
   <style>
+    /* Hero asymétrique — refonte 2026-04-27 (brief Morgan : casser la grille
+       à la designbyad). Layout absolu sur fullscreen : eyebrow haut-droit,
+       "Designer" milieu-gauche, "paysagiste" Gloock énorme bas-droit
+       (déborde côté droit), manifesto bas-gauche, CTA bas-centre-droit,
+       trait vertical au centre qui relie les deux mots du titre.
+       Mobile : retombe sur grille classique (lisibilité avant style). */
+    .hero-asymmetric {
+      isolation: isolate;
+    }
+    .hero-eyebrow {
+      position: absolute;
+      top: 7.5rem;
+      right: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      z-index: 2;
+      max-width: 80vw;
+    }
+    @media (min-width: 768px) {
+      .hero-eyebrow {
+        top: 8.5rem;
+        right: 3rem;
+      }
+    }
+    .hero-eyebrow-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-laterite);
+      animation: bifurc-pulse 2.6s ease-in-out infinite;
+    }
+
+    /* Titre H1 éclaté — bloc fluide en mobile, layout asymétrique en desktop */
+    .hero-title-asym {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 11rem 1.5rem 9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-family: var(--font-heading), sans-serif;
+      font-size: var(--text-hero);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      z-index: 1;
+    }
+    .hero-word-designer,
+    .hero-word-paysagiste {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.12em;
+      line-height: 1.05;
+    }
+    @media (min-width: 1024px) {
+      .hero-title-asym {
+        padding: 0;
+      }
+      .hero-word-designer {
+        position: absolute;
+        top: 30vh;
+        left: clamp(2rem, 6vw, 6rem);
+        font-size: clamp(4rem, 9vw, 9rem);
+        font-weight: 400;
+        letter-spacing: -0.04em;
+      }
+      .hero-word-paysagiste {
+        position: absolute;
+        top: 50vh;
+        right: clamp(0rem, -2vw, 1rem);
+        font-size: clamp(6rem, 16vw, 17rem);
+        line-height: 0.92;
+        letter-spacing: -0.045em;
+        /* Léger débord à droite — sensation que le mot "sort" du cadre */
+        translate: 4vw 0;
+        max-width: 95vw;
+      }
+    }
+
+    /* Trait vertical signature qui traverse le hero entre les 2 mots du H1 */
+    .hero-rule {
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .hero-rule {
+        display: block;
+        position: absolute;
+        top: 35vh;
+        left: 50%;
+        width: 1px;
+        height: 22vh;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          color-mix(in oklab, var(--color-cream) 40%, transparent) 30%,
+          color-mix(in oklab, var(--color-cream) 40%, transparent) 70%,
+          transparent
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+    }
+
+    /* Manifesto — bas-gauche en desktop, bloc court avec serifs italiques */
+    .hero-manifesto-asym {
+      position: absolute;
+      bottom: 8rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      max-width: 28rem;
+      font-family: var(--font-body), sans-serif;
+      font-size: var(--text-base);
+      line-height: 1.55;
+      z-index: 2;
+    }
+    @media (min-width: 768px) {
+      .hero-manifesto-asym {
+        bottom: 6rem;
+        left: clamp(2rem, 6vw, 6rem);
+        right: auto;
+        font-size: var(--text-lg);
+        max-width: 22rem;
+      }
+    }
+    .hero-manifesto-asym .display {
+      font-family: var(--font-display), serif;
+      font-style: italic;
+      color: var(--color-cream);
+    }
+
+    /* CTA — bas-droite, retire de la zone du manifesto */
+    .hero-cta-asym {
+      position: absolute;
+      bottom: 2rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.25rem;
+      z-index: 2;
+    }
+    @media (min-width: 768px) {
+      .hero-cta-asym {
+        bottom: 6rem;
+        right: clamp(2rem, 6vw, 6rem);
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+      }
+    }
+
+    /* Index marker /01 — référence designbyad coin haut-gauche, vertical */
+    .hero-index-mark {
+      position: absolute;
+      top: 8.5rem;
+      left: 1.5rem;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      z-index: 2;
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .hero-index-mark {
+        display: block;
+        top: 10rem;
+        left: 2rem;
+      }
+    }
+
     /* Hero slideshow — 4 créations Jonathan qui crossfadent en boucle
        (brief Morgan 2026-04-24 : « plusieurs créations de Jonathan en fond
        au lieu d'une seule photo »). Toutes les images absolute stack,
