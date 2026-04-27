@@ -89,7 +89,7 @@ const schema = jsonLdGraph([
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-moss)]">
+                <a href={b.item} class="hover:text-[var(--color-forest)]">
                   {b.name}
                 </a>
               ) : (
@@ -109,7 +109,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" tight class="pt-0 pb-0">
     <article>
       <header class="mb-16 max-w-3xl">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
           Réalisation · {project.typologyLabel} · {project.year}
         </p>
         <h1
@@ -174,7 +174,7 @@ const schema = jsonLdGraph([
                     project.typologySlug ? (
                       <a
                         href={`/architecture-paysagere/${project.typologySlug}`}
-                        class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-moss)]"
+                        class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
                       >
                         {project.typologyLabel}
                       </a>
@@ -235,7 +235,7 @@ const schema = jsonLdGraph([
     <div class="flex items-center justify-between gap-6">
       <a
         href="/realisations"
-        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-moss)]"
+        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-forest)]"
       >
         <span aria-hidden="true">←</span>
         Toutes les réalisations
