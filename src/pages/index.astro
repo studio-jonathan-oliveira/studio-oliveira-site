@@ -24,6 +24,7 @@ import hero01 from '@/assets/home/hero-01.jpg';
 import hero02 from '@/assets/home/hero-02.jpg';
 import hero03 from '@/assets/home/hero-03.jpg';
 import hero04 from '@/assets/home/hero-04.jpg';
+import { HERO_LQIP_DATA_URI } from '@/data/hero-lqip';
 const heroSlides = [
   { src: hero01, alt: 'Jardin nocturne — Parenthèse exotique, Cœur urbain' },
   { src: hero02, alt: 'Terrasse méditerranéenne — Restanque corrézienne' },
@@ -163,10 +164,19 @@ const vitrine = [
   {
     /* Preload de l'image hero (Morgan 2026-04-27 : « l'image met un temps
       à s'afficher, on voit d'abord du noir »). fetchpriority="high" pour
-      qu'elle charge en parallèle des fonts dès le 1er paint. */
+      qu'elle charge en parallèle des fonts dès le 1er paint.
+      WebP 749 KB (vs 13 MB JPG d'origine) + LQIP base64 inliné en
+      background-image initial sur la section → affichage instantané (0 RTT)
+      puis swap vers la WebP via JS dès qu'elle est chargée. */
   }
   <Fragment slot="head">
-    <link rel="preload" as="image" href="/hero-fallback.jpg" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="/hero-fallback.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
   </Fragment>
   {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
 
@@ -182,16 +192,20 @@ const vitrine = [
        vient se superposer au scroll (pas un défilement classique). -->
   {
     /* FALLBACK 2026-04-27 : background-image CSS direct sur la section,
-      garanti d'apparaître même si le slideshow ne render pas. Utilise
-      hero01 comme image de base. Le slideshow par-dessus ajoute le
-      crossfade quand il fonctionne. */
+      garanti d'apparaître même si le slideshow ne render pas.
+      LQIP 2026-04-27 : data URI base64 inliné comme background-image initial
+      (~0.5 KB, 0 RTT réseau, affichage instantané dès le HTML parse). Le
+      `<script>` en bas de section swap vers /hero-fallback.webp dès qu'elle
+      est chargée. Anticipe le passage en vidéo (le LQIP servira alors de
+      poster instantané). */
   }
   <section
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
     class="hero-immersive hero-sticky relative overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
-    style="background-image: url(/hero-fallback.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;"
+    style={`background-image: url("${HERO_LQIP_DATA_URI}"); background-size: cover; background-position: center; background-repeat: no-repeat;`}
+    data-hero-bg
   >
     {
       /* Stacking explicite (Morgan 2026-04-27 « tout noir le fond ») :
@@ -221,12 +235,21 @@ const vitrine = [
           />
         ))
       }
-      <!-- Gradient overlay : style inline pour bypass d'éventuel souci Tailwind 4
-           color-mix sur les modifiers /92 sur var(). -->
+      <!-- Overlay lisibilité (Morgan 2026-04-27 — passe relisibilité hero) :
+           - Vignette top renforcée (0-20%) → fond uniforme et très sombre
+             derrière le Header pour stabiliser le rendu mix-blend-difference
+             (sans cette zone stable, le difference sur photo bruyante donne
+             un Header illisible).
+           - Baseline 0.22 sur 28-60% → contraste minimum garanti pour les
+             textes hero (eyebrow, H1, manifesto) quelle que soit la zone
+             de l'image qui passe derrière.
+           - Vignette bottom → fade vers la section suivante.
+           Style inline (Tailwind 4 color-mix sur var() peu fiable cf. note
+           au-dessus). -->
       <div
         class="absolute inset-0"
         aria-hidden="true"
-        style="background: linear-gradient(to bottom, rgba(29,31,27,0.55) 0%, rgba(29,31,27,0.10) 18%, rgba(29,31,27,0) 35%, rgba(29,31,27,0) 60%, rgba(29,31,27,0.30) 80%, rgba(29,31,27,0.85) 100%);"
+        style="background: linear-gradient(to bottom, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.50) 7%, rgba(0,0,0,0.32) 16%, rgba(0,0,0,0.22) 28%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.42) 80%, rgba(0,0,0,0.85) 100%);"
       >
       </div>
     </div>
@@ -1122,6 +1145,25 @@ const vitrine = [
     }
     .hero-slide.is-active {
       opacity: 1;
+    }
+
+    /* Lisibilité hero (Morgan 2026-04-27) — text-shadow universel hérité par
+       cascade naturelle (text-shadow est héritable). Sur photo bruyante, le
+       seul overlay sombre ne suffit pas à garantir le contraste de la typo
+       fine ; l'ombre subtile cale le contraste sans assombrir l'image. Ne
+       s'applique pas au Header (rendu en mix-blend-mode: difference, qui
+       inverserait l'ombre). */
+    .hero-immersive {
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.55),
+        0 2px 14px rgba(0, 0, 0, 0.28);
+    }
+    /* Transition douce du background-image quand le swap LQIP → WebP a lieu.
+       Sans transition, le swap est instantané : pas de saute visuel grâce
+       au LQIP (même cadrage, même teinte dominante). On garde une fade
+       discrète pour adoucir le passage de la version floutée à nette. */
+    .hero-immersive {
+      transition: background-image 0.4s var(--ease-out-editorial);
     }
 
     /* Hero sticky — transition "recouvrement" style Polestar 5 (mail Jonathan).
@@ -2160,6 +2202,29 @@ const vitrine = [
   </style>
 
   <script>
+    // Swap background-image hero : LQIP (data URI inliné) → /hero-fallback.webp.
+    // Le LQIP donne un affichage instantané (0 RTT) dès le HTML parse ; on
+    // précharge la WebP en parallèle (link rel=preload) et on substitue dès
+    // qu'elle est décodée. Pas de flash noir, pas de couture visible (LQIP
+    // = même cadrage, même teinte dominante).
+    function swapHeroBackground() {
+      const sec = document.querySelector<HTMLElement>('[data-hero-bg]');
+      if (!sec) return;
+      if (sec.dataset.bgSwapped === 'true') return;
+      const img = new Image();
+      img.onload = () => {
+        sec.style.backgroundImage = 'url("/hero-fallback.webp")';
+        sec.dataset.bgSwapped = 'true';
+      };
+      img.src = '/hero-fallback.webp';
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', swapHeroBackground, { once: true });
+    } else {
+      swapHeroBackground();
+    }
+    document.addEventListener('astro:page-load', swapHeroBackground);
+
     // Hero slideshow rotation — crossfade toutes les 6s (brief Morgan 2026-04-24).
     // Pause si prefers-reduced-motion. Respecte view transitions Astro.
     function initHeroSlideshow() {
