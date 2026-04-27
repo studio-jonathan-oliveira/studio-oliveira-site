@@ -94,6 +94,17 @@
 }
 
 /*
+ * Aucune coupure de mot automatique nulle part (feedback Morgan 2026-04-27 :
+ * « micro-urbain coupé en deux est illisible »). hyphens:none désactive
+ * l'hyphenation auto + soft hyphens. Les compounds avec trait d'union littéral
+ * doivent utiliser U+2011 (non-breaking hyphen) ou white-space:nowrap.
+ */
+html {
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+
+/*
  * Motion fallback — masque les éléments avant que motion-enhance.ts ne tourne,
  * pour éviter un flash de contenu visible puis caché. Les styles inline écrits
  * par Motion prennent le pas dès que le script joue.

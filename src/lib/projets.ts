@@ -19,7 +19,7 @@ export interface ProjetMeta {
 export const PROJETS_PAR_SLUG: Record<string, ProjetMeta> = {
   'coeur-urbain': {
     nom: 'Parenthèse exotique',
-    lieu: 'Cœur de Brive-la-Gaillarde',
+    lieu: 'Cœur de Brive‑la‑Gaillarde',
     typologieSlug: 'coeur-urbain',
     statut: 'Étude',
     resume:
@@ -52,7 +52,7 @@ export const PROJETS_PAR_SLUG: Record<string, ProjetMeta> = {
   // Verticales
   restauration: {
     nom: 'Café de Paris',
-    lieu: 'Brive-la-Gaillarde',
+    lieu: 'Brive‑la‑Gaillarde',
     typologieSlug: 'restauration',
     statut: 'Livré',
     resume:

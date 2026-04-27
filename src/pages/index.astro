@@ -41,7 +41,7 @@ const typologies = [
   {
     slug: 'micro-urbain',
     index: '01',
-    nom: 'Micro-urbain',
+    nom: 'Micro‑urbain',
     requete: 'Aménagement de petit jardin en ville',
     surface: '< 50 m²',
     budget: '< 20 000 €',
@@ -52,7 +52,7 @@ const typologies = [
     image: typoMicroUrbain,
     // object-position : centrer l'intérêt visuel (moitié basse pour terrasse)
     imagePosition: 'center 65%',
-    imageNote: '[À FOURNIR — image définitive Micro-urbain, placeholder actuel évocateur]',
+    imageNote: '[À FOURNIR — image définitive Micro‑urbain, placeholder actuel évocateur]',
   },
   {
     slug: 'coeur-urbain',
@@ -125,7 +125,7 @@ const methode = [
 ];
 
 // Zones d'intervention — cf. site-config.ts (sourcé)
-const zones = ['Brive-la-Gaillarde', 'Bordeaux', 'Limoges'];
+const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
 
 // Vitrine projets — pattern designbyad (scroll_home.mp4 frame 7-9) :
 // portraits 70vh + name UPPERCASE au-dessus + scroll horizontal natif touch.
@@ -156,7 +156,7 @@ const vitrine = [
 
 <BaseLayout
   title="Studio J Oliveira — Designer paysagiste & design biophilique"
-  description="Studio de design paysagiste biophilique à Brive-la-Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine et Limousin. Architectures vivantes, bâti × environnement × humain."
+  description="Studio de design paysagiste biophilique à Brive‑la‑Gaillarde. Études et conceptions d'espaces à vivre en Aquitaine et Limousin. Architectures vivantes, bâti × environnement × humain."
   darkHero
 >
   {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
@@ -210,16 +210,20 @@ const vitrine = [
         class="hero-eyebrow font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
       >
         <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        Brive-la-Gaillarde &nbsp;·&nbsp; Aquitaine &nbsp;·&nbsp; Est. 2021
+        Brive‑la‑Gaillarde &nbsp;·&nbsp; Aquitaine &nbsp;·&nbsp; Est. 2021
       </p>
 
-      {/* H1 éclaté en deux blocs positionnés indépendamment */}
+      {
+        /* H1 éclaté — refonte 2026-04-27 : passage en CAPS pour gain de poids
+          visuel (style designbyad). Plus de jambages descendants problématiques
+          (Y, p, g, j). Letter-spacing resserré pour cohésion du bloc. */
+      }
       <h1 class="hero-title-asym text-[var(--color-cream)]">
         <span class="hero-word-designer" data-hero-mask>
-          <span data-mask-line class="hero-line block">Designer</span>
+          <span data-mask-line class="hero-line block">DESIGNER</span>
         </span>
         <span class="hero-word-paysagiste" data-hero-mask>
-          <span data-mask-line class="hero-line block">Paysagiste</span>
+          <span data-mask-line class="hero-line block">PAYSAGISTE</span>
         </span>
       </h1>
 
@@ -373,7 +377,7 @@ const vitrine = [
       >
         Architecture paysagère <span aria-hidden="true">·</span>
         Design biophilique <span aria-hidden="true">·</span>
-        Études sur-mesure <span aria-hidden="true">·</span>
+        Études sur‑mesure <span aria-hidden="true">·</span>
         Studio indépendant
       </p>
 
@@ -448,7 +452,7 @@ const vitrine = [
             }
           </ul>
           <p class="mt-6 text-sm leading-relaxed text-[var(--color-cream)]/70">
-            Studio basé à Brive-la-Gaillarde. Déplacements réguliers vers Bordeaux et Limoges —
+            Studio basé à Brive‑la‑Gaillarde. Déplacements réguliers vers Bordeaux et Limoges —
             aucun bureau satellite, le studio vient au projet.
           </p>
         </aside>
@@ -870,26 +874,27 @@ const vitrine = [
          italic juste en dessous, alignés DROITE, avec léger décalage
          horizontal pour casser la rigidité (Designer rentré, Paysagiste
          qui touche le bord droit). Pas de débord viewport. */
+      /* CAPS : letter-spacing positif (tracking aéré pour caps) + weight
+         400/500. "DESIGNER" plus petit aligné droite, "PAYSAGISTE" en
+         dessous plus large mais sans déborder. */
       .hero-word-designer {
         position: absolute;
-        top: 38vh;
-        right: clamp(8rem, 14vw, 14rem);
-        font-size: clamp(3rem, 6vw, 6rem);
+        top: 36vh;
+        right: clamp(2rem, 4vw, 4rem);
+        font-size: clamp(2.5rem, 5vw, 5rem);
         font-weight: 400;
-        letter-spacing: -0.035em;
+        letter-spacing: 0.02em;
         text-align: right;
       }
       .hero-word-paysagiste {
         position: absolute;
-        top: 48vh;
+        top: 47vh;
         right: clamp(2rem, 4vw, 4rem);
-        /* Jost regular (font par défaut) — pas de Gloock italic ici, le Y
-           italique avait un design qui faisait artefact visuel. */
         font-family: var(--font-heading), sans-serif;
-        font-weight: 300;
-        font-size: clamp(4.5rem, 9vw, 9.5rem);
+        font-weight: 500;
+        font-size: clamp(4rem, 8.5vw, 9rem);
         line-height: 1.05;
-        letter-spacing: -0.03em;
+        letter-spacing: 0.005em;
         text-align: right;
         max-width: 92vw;
       }

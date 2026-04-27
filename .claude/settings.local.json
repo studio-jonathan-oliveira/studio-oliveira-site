@@ -60,7 +60,9 @@
       "PowerShell(claude mcp add magic --scope user --env API_KEY=\"19fe5ce9afd9de333037f6f23857386163de33d6cc3573d3db10dbc891755cf9\" -- npx -y \"@21st-dev/magic@latest\")",
       "Bash(node -e \"const fs=require\\('fs'\\);const p='C:/Users/Morgan/.claude.json';const c=JSON.parse\\(fs.readFileSync\\(p,'utf8'\\)\\);console.log\\('mcpServers keys:',Object.keys\\(c.mcpServers||{}\\)\\);console.log\\('has magic:', !!\\(c.mcpServers&&c.mcpServers.magic\\)\\);\")",
       "Bash(node -e ' *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(xargs -I {} sh -c \"sed -i 's/Micro-urbain/Micro\\\\xe2\\\\x80\\\\x91urbain/g; s/Brive-la-Gaillarde/Brive\\\\xe2\\\\x80\\\\x91la\\\\xe2\\\\x80\\\\x91Gaillarde/g' {}\")",
+      "Bash(git -C . diff src/lib/site-config.ts)"
     ]
   }
 }

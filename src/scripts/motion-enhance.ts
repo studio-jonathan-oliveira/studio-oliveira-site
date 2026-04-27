@@ -308,6 +308,9 @@ function setupJustifiedScroll(root: ParentNode) {
     words.forEach((w) => {
       w.style.display = 'inline-block';
       w.style.willChange = 'transform';
+      // Empêche le navigateur de couper un mot à un hyphen littéral
+      // (ex: "sur-mesure", "micro-urbain") — feedback Morgan 2026-04-27.
+      w.style.whiteSpace = 'nowrap';
     });
 
     // Mesure des positions justify naturelles (état final).

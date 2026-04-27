@@ -24,6 +24,9 @@ export const SITE = {
   address: {
     street: '41 rue Général Souham',
     postalCode: '19100',
+    // Hyphen canonique (U+002D) ici car la valeur est sérialisée en JSON-LD
+    // Schema.org Place — on évite d'introduire des caractères Unicode non
+    // standard dans les structured data destinées aux crawlers.
     city: 'Brive-la-Gaillarde',
     region: 'Corrèze',
     country: 'France',
@@ -43,7 +46,7 @@ export const SITE = {
   zones: [
     {
       slug: 'brive-la-gaillarde',
-      ville: 'Brive-la-Gaillarde',
+      ville: 'Brive‑la‑Gaillarde',
       region: 'Corrèze',
       role: 'Siège social',
     },
@@ -60,7 +63,7 @@ export const SITE = {
   typologies: [
     {
       slug: 'micro-urbain',
-      nomProprietaire: 'Micro-urbain',
+      nomProprietaire: 'Micro‑urbain',
       h1Seo: 'Aménagement de petit jardin en ville',
       surface: '< 50 m²',
       budgetTravaux: '< 20 k€',
