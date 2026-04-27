@@ -187,17 +187,15 @@ const vitrine = [
     <div class="absolute inset-0 z-0" data-hero-slideshow>
       {
         heroSlides.map((slide, i) => (
-          <Image
-            src={slide.src}
+          <img
+            src={slide.src.src}
+            width={slide.src.width}
+            height={slide.src.height}
             alt={i === 0 ? slide.alt : ''}
-            widths={[640, 960, 1280, 1600, 1920, 2560]}
-            sizes="100vw"
-            quality={82}
-            format="webp"
             class={`hero-slide h-full w-full object-cover object-center ${i === 0 ? 'is-active' : ''}`}
             loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
             data-hero-slide-index={i}
-            style={i === 0 ? 'opacity:1;visibility:visible' : undefined}
           />
         ))
       }
@@ -294,7 +292,11 @@ const vitrine = [
     <div
       class="mx-auto grid max-w-[1500px] grid-cols-1 gap-12 px-6 py-24 md:grid-cols-12 md:gap-16 md:px-10 md:py-32 lg:pl-24 xl:pl-32"
     >
-      <header class="md:col-span-5" data-reveal="up" data-parallax="-0.25">
+      {
+        /* Parallax positif (Morgan 2026-04-27) : header descend par rapport
+          au scroll → reste visible plus longtemps avant la fin de section. */
+      }
+      <header class="md:col-span-5" data-reveal="up" data-parallax="0.35">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
           <span class="text-[var(--color-ink)]/40">01</span> &nbsp;·&nbsp; Architecture paysagère
         </p>
@@ -492,9 +494,16 @@ const vitrine = [
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
           <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Typologies
         </p>
+        {
+          /* Titre typologies agrandi (Morgan 2026-04-27) : il occupe désormais
+            une large bande visible tout au long du scroll horizontal grâce au
+            sticky du header. Taille passée de text-2xl à hero, line-height
+            serré pour compacité éditoriale. Mots clés "habiter" en italic
+            display pour ancrage visuel. */
+        }
         <h2
           id="typologies-title"
-          class="mt-4 max-w-md pb-[0.12em] font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.15] text-[var(--color-cream)] md:text-[length:var(--text-2xl)]"
+          class="htypo-title mt-4 max-w-3xl pb-[0.12em] font-[family-name:var(--font-heading)] leading-[0.95] text-[var(--color-cream)]"
         >
           Quatre manières <span class="display">d'habiter</span>
           un jardin.
@@ -642,7 +651,33 @@ const vitrine = [
         </div>
       </div>
 
-      {/* Cards méthode avec parallax vertical staggered — plus fluide (brief Jonathan) */}
+      {
+        /* Bandeau résumé visuel (Morgan 2026-04-27 : remplir espace vide).
+          Trois durées + un total signature, séparés par chevrons. Pure
+          composition à partir des données existantes (pas d'invention). */
+      }
+      <div class="methode-summary" data-reveal="up" data-reveal-delay="0.2" aria-hidden="true">
+        <span class="methode-summary-step">
+          <span class="methode-summary-num">01</span>
+          <span class="methode-summary-time">15–25 min</span>
+        </span>
+        <span class="methode-summary-arrow">→</span>
+        <span class="methode-summary-step">
+          <span class="methode-summary-num">02</span>
+          <span class="methode-summary-time">1 h 45–2 h</span>
+        </span>
+        <span class="methode-summary-arrow">→</span>
+        <span class="methode-summary-step">
+          <span class="methode-summary-num">03</span>
+          <span class="methode-summary-time">15 min</span>
+        </span>
+        <span class="methode-summary-total"><em>≈ 2 h 30</em> au total</span>
+      </div>
+
+      {
+        /* Cards méthode — min-height augmenté pour remplir verticalement,
+          numéro filigrane plus grand. */
+      }
       <ol
         data-reveal-stagger="0.14"
         data-reveal="up"
@@ -651,13 +686,11 @@ const vitrine = [
         {
           methode.map((step, i) => (
             <li
-              class="bg-[var(--color-ink)] p-10 md:p-14"
+              class="methode-card flex flex-col bg-[var(--color-ink)] p-10 md:p-14"
               data-parallax={i === 0 ? '0.12' : i === 1 ? '-0.08' : '0.1'}
             >
-              <p class="display text-[length:var(--text-hero)] leading-[0.85] text-[var(--color-cream)]/22 italic">
-                {step.num}
-              </p>
-              <p class="mt-8 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
+              <p class="display methode-num text-[var(--color-cream)]/22 italic">{step.num}</p>
+              <p class="mt-10 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
                 {step.duree}
               </p>
               <h3
@@ -671,6 +704,7 @@ const vitrine = [
               <p class="mt-5 text-sm leading-relaxed text-[var(--color-cream)]/70">
                 {step.description}
               </p>
+              <span class="methode-card-line" aria-hidden="true" />
             </li>
           ))
         }
@@ -796,12 +830,11 @@ const vitrine = [
   >
     <div class="pull-quote-sticky">
       {
-        /* Bloc élargi (Morgan 2026-04-27) : max-w-6xl → max-w-[1700px] pour
-          que le justify designbyad s'étende quasi pleine largeur. */
+        /* Largeur réduite (Morgan 2026-04-27 passe 2) : on resserre à
+          max-w-3xl pour étaler le texte sur plus de lignes (effet stance
+          verticale, le manifeste se déploie en hauteur). */
       }
-      <div
-        class="mx-auto flex min-h-[100vh] max-w-[1700px] flex-col justify-center px-6 py-24 md:px-10"
-      >
+      <div class="mx-auto flex min-h-[100vh] max-w-3xl flex-col justify-center px-6 py-24 md:px-10">
         <p
           class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
@@ -1095,6 +1128,90 @@ const vitrine = [
         position: relative;
         height: auto;
       }
+    }
+
+    /* Méthode summary — bandeau visuel entre header et cards (Morgan 2026-04-27 :
+       remplir l'espace vide). Trois étapes + total avec chevrons. */
+    .methode-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: clamp(1rem, 2.5vw, 2.5rem);
+      margin: 4rem auto 5rem;
+      padding: 2.5rem clamp(1rem, 3vw, 3rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 12%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 12%, transparent);
+      max-width: 1100px;
+      color: var(--color-cream);
+    }
+    .methode-summary-step {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .methode-summary-num {
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    }
+    .methode-summary-time {
+      font-family: var(--font-heading), sans-serif;
+      font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+    .methode-summary-arrow {
+      font-family: var(--font-mono), ui-monospace, monospace;
+      color: var(--color-laterite);
+      font-size: 1.25rem;
+    }
+    .methode-summary-total {
+      margin-left: auto;
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 65%, transparent);
+    }
+    .methode-summary-total em {
+      font-family: var(--font-display), serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--color-cream);
+      letter-spacing: 0;
+      margin-right: 0.5rem;
+    }
+    @media (max-width: 767px) {
+      .methode-summary {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .methode-summary-arrow {
+        display: none;
+      }
+      .methode-summary-total {
+        margin: 1rem 0 0;
+      }
+    }
+
+    /* Cards méthode — min-height + line décorative bas pour remplir verticalement */
+    .methode-card {
+      min-height: clamp(360px, 42vh, 520px);
+      position: relative;
+    }
+    .methode-num {
+      font-size: clamp(4rem, 9vw, 9rem);
+      line-height: 0.85;
+    }
+    .methode-card-line {
+      margin-top: auto;
+      display: block;
+      width: 40px;
+      height: 1px;
+      background-color: color-mix(in oklab, var(--color-laterite) 80%, transparent);
+      padding-top: 1.5rem;
     }
 
     /* Méthode tagline — phrase courte CAPS justify-spread (Morgan 2026-04-27).
@@ -1682,6 +1799,13 @@ const vitrine = [
     /* Header en surimpression — décalé sous le Header site (fixed ~100px)
      * et à droite de la ScrollNav sidebar (fix 2026-04-23 : titre caché
      * derrière le Header). */
+    /* Titre typologies (Morgan 2026-04-27) : visible et imposant tout au
+       long du scroll horizontal. Utilise font-size large + max-w pour
+       occuper la moitié supérieure de la section comme une marque. */
+    .htypo-title {
+      font-size: clamp(2rem, 4.5vw, 4.5rem);
+      letter-spacing: -0.02em;
+    }
     .htypo-header {
       position: absolute;
       top: 7rem;
@@ -2060,21 +2184,15 @@ const vitrine = [
       ) as HTMLElement[];
       if (cards.length === 0 || dots.length === 0) return;
 
+      // Index actif basé sur scrollLeft / scrollMax → couvre toute la plage
+      // 0..1 quels que soient les paddings du rail. Évite le bug Morgan
+      // 2026-04-27 : dots 1 et 4 jamais actifs car les cards extrêmes ne
+      // pouvaient atteindre le centre du rail (padding-right énorme).
       const update = () => {
-        const railRect = rail.getBoundingClientRect();
-        const center = railRect.left + railRect.width / 2;
-        let bestIndex = 0;
-        let bestDist = Infinity;
-        cards.forEach((card, i) => {
-          const r = card.getBoundingClientRect();
-          const cardCenter = r.left + r.width / 2;
-          const dist = Math.abs(cardCenter - center);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestIndex = i;
-          }
-        });
-        dots.forEach((d, i) => d.classList.toggle('is-active', i === bestIndex));
+        const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
+        const ratio = Math.max(0, Math.min(1, rail.scrollLeft / maxScroll));
+        const idx = Math.min(cards.length - 1, Math.round(ratio * (cards.length - 1)));
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
       };
 
       const goToCard = (i: number) => {

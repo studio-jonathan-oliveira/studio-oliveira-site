@@ -825,8 +825,10 @@ function setupHorizontalTypologies(root: ParentNode) {
     // sticky sur le début et la fin »). On s'arrête 22% au début et 18% à la
     // fin → sensation d'immersion sur le 1er et le dernier panel. Pour
     // ralentir, la section fait aussi 550vh de scroll (CSS) vs 400vh.
-    const DWELL_START = 0.22;
-    const DWELL_END = 0.18;
+    // Dwell réduit (Morgan 2026-04-27 : « un tout petit peu moins sticky
+    // au début et à la fin »). 22→15% et 18→12%.
+    const DWELL_START = 0.15;
+    const DWELL_END = 0.12;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
     // Pré-split chars des noms de typologie pour stagger reveal par panel actif
