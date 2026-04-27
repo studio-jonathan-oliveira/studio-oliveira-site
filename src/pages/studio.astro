@@ -134,8 +134,13 @@ const etapesMethode = [
         </p>
       </div>
 
-      <div class="relative lg:col-span-5 lg:col-start-8" data-reveal="up" data-reveal-delay="0.2">
-        <div class="studio-portrait relative overflow-hidden">
+      <div class="relative lg:col-span-5 lg:col-start-8">
+        <div
+          class="studio-portrait relative overflow-hidden"
+          data-img-reveal
+          data-img-reveal-offset="right"
+          data-img-reveal-offset-amp="50"
+        >
           <Image
             src={portrait01}
             alt="Jonathan Oliveira, fondateur du Studio"
@@ -184,10 +189,14 @@ const etapesMethode = [
           </p>
           <h2
             id="demarche-title"
+            data-mask-reveal
+            data-mask-stagger="0.14"
             class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
           >
-            Trois piliers,<br />
-            un même <span class="display">écosystème</span>.
+            <span data-mask-line class="block pb-[0.05em]">Trois piliers,</span>
+            <span data-mask-line class="block pb-[0.12em]"
+              >un même <span class="display">écosystème</span>.</span
+            >
           </h2>
         </div>
 
@@ -245,10 +254,12 @@ const etapesMethode = [
         </p>
         <h2
           id="parcours-title"
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
         >
-          <em class="italic">Formation</em><br />
-          et trajectoire.
+          <span data-mask-line class="block pb-[0.05em]"><em class="italic">Formation</em></span>
+          <span data-mask-line class="block pb-[0.05em]">et trajectoire.</span>
         </h2>
 
         <ol class="mt-12 space-y-0" data-reveal-stagger="0.1" data-reveal="up">
@@ -272,12 +283,13 @@ const etapesMethode = [
         </ol>
       </div>
 
-      <aside
-        class="studio-parcours-aside flex flex-col gap-8"
-        data-reveal="up"
-        data-reveal-delay="0.2"
-      >
-        <div class="studio-parcours-portrait overflow-hidden">
+      <aside class="studio-parcours-aside flex flex-col gap-8">
+        <div
+          class="studio-parcours-portrait overflow-hidden"
+          data-img-reveal
+          data-img-reveal-offset="left"
+          data-img-reveal-offset-amp="40"
+        >
           <Image
             src={portrait02}
             alt="Jonathan Oliveira, portrait éditorial"
@@ -289,7 +301,11 @@ const etapesMethode = [
             loading="lazy"
           />
         </div>
-        <blockquote class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6">
+        <blockquote
+          class="studio-parcours-quote border-l border-[var(--color-laterite)]/40 pl-6"
+          data-reveal="up"
+          data-reveal-delay="0.3"
+        >
           <p
             class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/85 italic md:text-[length:var(--text-2xl)]"
           >
@@ -321,10 +337,14 @@ const etapesMethode = [
         </p>
         <h2
           id="methode-title"
+          data-mask-reveal
+          data-mask-stagger="0.14"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
         >
-          Je ne vends pas<br />
-          une <em class="text-[var(--color-laterite)] italic">étude</em>.
+          <span data-mask-line class="block pb-[0.05em]">Je ne vends pas</span>
+          <span data-mask-line class="block pb-[0.12em]"
+            >une <em class="text-[var(--color-laterite)] italic">étude</em>.</span
+          >
         </h2>
       </div>
 
@@ -383,9 +403,13 @@ const etapesMethode = [
         Étape suivante
       </p>
       <h2
+        data-mask-reveal
+        data-mask-stagger="0.14"
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-cream)]"
       >
-        Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.
+        <span data-mask-line class="block pb-[0.12em]"
+          >Engager la <em class="text-[var(--color-laterite)] italic">conversation</em>.</span
+        >
       </h2>
       <p
         class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
