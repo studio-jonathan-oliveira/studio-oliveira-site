@@ -165,11 +165,18 @@ const vitrine = [
   <!-- 01 · HERO IMMERSIF — sticky "recouvrement" style Polestar 5 (mail Jonathan).
        Le hero reste fixé en arrière-plan pendant que la section suivante
        vient se superposer au scroll (pas un défilement classique). -->
+  {
+    /* FALLBACK 2026-04-27 : background-image CSS direct sur la section,
+      garanti d'apparaître même si le slideshow ne render pas. Utilise
+      hero01 comme image de base. Le slideshow par-dessus ajoute le
+      crossfade quand il fonctionne. */
+  }
   <section
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
     class="hero-immersive hero-sticky relative overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    style="background-image: url(/hero-fallback.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;"
   >
     {
       /* Stacking explicite (Morgan 2026-04-27 « tout noir le fond ») :
@@ -296,7 +303,7 @@ const vitrine = [
         /* Parallax positif (Morgan 2026-04-27) : header descend par rapport
           au scroll → reste visible plus longtemps avant la fin de section. */
       }
-      <header class="md:col-span-5" data-reveal="up" data-parallax="0.35">
+      <header class="md:col-span-5" data-reveal="up" data-scroll-rise data-scroll-rise-amp="-130">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
           <span class="text-[var(--color-ink)]/40">01</span> &nbsp;·&nbsp; Architecture paysagère
         </p>
@@ -834,7 +841,7 @@ const vitrine = [
           max-w-3xl pour étaler le texte sur plus de lignes (effet stance
           verticale, le manifeste se déploie en hauteur). */
       }
-      <div class="mx-auto flex min-h-[100vh] max-w-3xl flex-col justify-center px-6 py-24 md:px-10">
+      <div class="mx-auto flex min-h-[100vh] max-w-4xl flex-col justify-center px-6 py-12 md:px-10">
         <p
           class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
@@ -1435,8 +1442,11 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(2.25rem, 5.5vw, 5rem);
-      line-height: 1.05;
+      /* Font-size réduit (Morgan 2026-04-27 passe 3 : « le mot résultat est
+         coupé à moitié »). 5rem → 3.5rem max pour tenir dans le sticky
+         100vh quand le bloc est resserré max-w-4xl et déborde sur 5+ lignes. */
+      font-size: clamp(1.75rem, 4vw, 3.5rem);
+      line-height: 1.1;
       letter-spacing: -0.02em;
       text-transform: uppercase;
       text-align: justify;
@@ -1799,12 +1809,13 @@ const vitrine = [
     /* Header en surimpression — décalé sous le Header site (fixed ~100px)
      * et à droite de la ScrollNav sidebar (fix 2026-04-23 : titre caché
      * derrière le Header). */
-    /* Titre typologies (Morgan 2026-04-27) : visible et imposant tout au
-       long du scroll horizontal. Utilise font-size large + max-w pour
-       occuper la moitié supérieure de la section comme une marque. */
+    /* Titre typologies (Morgan 2026-04-27 passe 2 : « beaucoup trop gros,
+       empiète sur les textes/images »). Réduit à clamp 1.5rem → 2.6rem,
+       max-width restreint pour ne pas chevaucher l'image à droite. */
     .htypo-title {
-      font-size: clamp(2rem, 4.5vw, 4.5rem);
-      letter-spacing: -0.02em;
+      font-size: clamp(1.5rem, 2.6vw, 2.6rem);
+      letter-spacing: -0.015em;
+      max-width: min(440px, 38vw);
     }
     .htypo-header {
       position: absolute;
