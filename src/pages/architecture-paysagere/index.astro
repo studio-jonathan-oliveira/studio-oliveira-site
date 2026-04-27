@@ -358,11 +358,14 @@ const schema = jsonLdGraph([
       </h2>
     </div>
 
-    <ul
-      data-reveal-stagger="0.12"
-      data-reveal="up"
-      class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
-    >
+    {
+      /* data-reveal/-stagger retirés 2026-04-27 — Morgan : « cards typologies
+        invisibles, écran tout noir ». Le combo data-reveal+stagger met les
+        enfants à opacity:0 initial et l'observer ne déclenche pas (cause
+        encore non identifiée, sans doute lié à aspect-ratio 4/5 + grid).
+        Affichage direct prioritaire — animation à rebrancher après debug. */
+    }
+    <ul class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
       {
         typologies.map((t) => {
           const img = typoImageMap[t.slug];
@@ -498,7 +501,11 @@ const schema = jsonLdGraph([
         </h2>
       </div>
 
-      <ol class="space-y-12" data-reveal-stagger="0.12" data-reveal="up">
+      {
+        /* data-reveal retiré 2026-04-27 — même bug que typologies (3 étapes
+         invisibles au load, observer ne déclenche pas). Affichage direct. */
+      }
+      <ol class="space-y-12">
         <li class="border-l border-[var(--color-cream)]/15 pl-6">
           <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
             Étape 1
