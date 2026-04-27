@@ -205,8 +205,12 @@ const schema = jsonLdGraph([
       </div>
     </div>
 
-    <div class="relative flex min-h-[92svh] flex-col justify-end">
-      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
+    <div class="relative flex min-h-[100svh] flex-col justify-end">
+      <div
+        class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32"
+        data-scroll-rise
+        data-scroll-rise-amp="-90"
+      >
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
           <span class="text-[var(--color-cream)]/40">Studio</span>
           &nbsp;·&nbsp; Architecture paysagère
@@ -360,7 +364,11 @@ const schema = jsonLdGraph([
             <li class="ap-typo-card group bg-[var(--color-cream)]">
               <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
                 {img && (
-                  <div class="ap-typo-card-visual overflow-hidden" data-img-reveal>
+                  <div
+                    class="ap-typo-card-visual overflow-hidden"
+                    data-img-reveal
+                    data-img-reveal-speed="0.92"
+                  >
                     <Image
                       src={img}
                       alt=""
@@ -411,13 +419,16 @@ const schema = jsonLdGraph([
     </ul>
 
     <style>
+      /* Cards typologies — aspect-ratio plus haut sur desktop pour l'immersion
+         (Morgan 2026-04-27 « images presque pleine hauteur »). 4/5 portrait
+         desktop = vertical élégant qui occupe 60-70vh sur grand écran. */
       .ap-typo-card-visual {
         aspect-ratio: 4 / 3;
         background-color: var(--color-forest);
       }
       @media (min-width: 768px) {
         .ap-typo-card-visual {
-          aspect-ratio: 5 / 3;
+          aspect-ratio: 4 / 5;
         }
       }
       .ap-typo-card-img {

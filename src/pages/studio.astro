@@ -91,17 +91,25 @@ const etapesMethode = [
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ───── HERO SPLIT : portrait Jonathan + texte éditorial ───── */}
+  {
+    /* ───── HERO SPLIT : portrait Jonathan PLEINE PAGE + texte éditorial ─────
+       Morgan 2026-04-27 « images presque pleine hauteur pour l'immersion ».
+       Section min-h 100svh, portrait droite étire sur la pleine hauteur. */
+  }
   <section
     id="hero"
     data-section-label="Studio"
     data-theme="dark"
-    class="studio-hero relative bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="studio-hero relative min-h-[100svh] bg-[var(--color-ink)] text-[var(--color-cream)]"
   >
-    <div class="mx-auto grid max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12">
+    <div
+      class="mx-auto grid min-h-[100svh] max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12"
+    >
       <div
         class="px-6 pt-8 pb-16 md:px-12 md:pt-16 md:pb-24 lg:col-span-7 lg:col-start-1"
         data-reveal="up"
+        data-scroll-rise
+        data-scroll-rise-amp="-80"
       >
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
           <span class="studio-dot" aria-hidden="true"></span>
@@ -142,10 +150,11 @@ const etapesMethode = [
         </p>
       </div>
 
-      <div class="relative lg:col-span-5 lg:col-start-8">
+      <div class="relative lg:col-span-5 lg:col-start-8 lg:h-full">
         <div
-          class="studio-portrait relative overflow-hidden"
+          class="studio-portrait relative h-full overflow-hidden"
           data-img-reveal
+          data-img-reveal-speed="0.95"
           data-img-reveal-offset="right"
           data-img-reveal-offset-amp="50"
         >
@@ -191,7 +200,7 @@ const etapesMethode = [
 
     <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
       <div class="grid gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
-        <div data-reveal="up">
+        <div data-reveal="up" data-parallax="-0.25">
           <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-laterite)] uppercase">
             <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
           </p>
@@ -212,6 +221,7 @@ const etapesMethode = [
           class="space-y-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
           data-reveal="up"
           data-reveal-delay="0.15"
+          data-parallax="0.18"
         >
           <p>
             La conception biophilique est un art de conception architecturale directement inspiré
@@ -277,7 +287,7 @@ const etapesMethode = [
   {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
   <Section variant="forest" aria-labelledby="parcours-title">
     <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
-      <div data-reveal="up">
+      <div data-reveal="up" data-parallax="-0.22">
         <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-moss)] uppercase">
           <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Parcours
         </p>
@@ -316,6 +326,7 @@ const etapesMethode = [
         <div
           class="studio-parcours-portrait overflow-hidden"
           data-img-reveal
+          data-img-reveal-speed="0.95"
           data-img-reveal-offset="left"
           data-img-reveal-offset-amp="40"
         >
@@ -380,6 +391,8 @@ const etapesMethode = [
       <blockquote
         class="studio-quote mx-auto max-w-4xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] italic md:text-[length:var(--text-4xl)]"
         data-reveal="up"
+        data-scroll-rise
+        data-scroll-rise-amp="60"
       >
         Je vends une <em class="text-[var(--color-laterite)] not-italic">vision</em>, une
         <em class="text-[var(--color-moss)] not-italic">méthode</em>, une
@@ -520,7 +533,8 @@ const etapesMethode = [
       }
     }
 
-    /* Portrait Jonathan */
+    /* Portrait Jonathan — pleine hauteur sur desktop (immersion Morgan
+       2026-04-27). Mobile : aspect-ratio classique pour préserver lisibilité. */
     .studio-portrait {
       aspect-ratio: 4 / 5;
       background-color: var(--color-forest);
@@ -528,7 +542,9 @@ const etapesMethode = [
     }
     @media (min-width: 1024px) {
       .studio-portrait {
-        aspect-ratio: 4 / 6;
+        aspect-ratio: auto;
+        height: 100%;
+        min-height: 100svh;
       }
     }
     .studio-portrait-caption {
