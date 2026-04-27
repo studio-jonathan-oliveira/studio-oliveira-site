@@ -251,7 +251,7 @@ const schema = jsonLdGraph([
   <Section variant="forest" tight>
     <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
+        <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Démarche
       </p>
       <p
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-cream)] md:text-[length:var(--text-4xl)]"
@@ -343,7 +343,7 @@ const schema = jsonLdGraph([
   <Section variant="forest" id="typologies" sectionLabel="Typologies" labelledBy="typologies-title">
     <div class="mb-16 max-w-3xl" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Les quatre typologies
+        <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Les quatre typologies
       </p>
       <h2
         id="typologies-title"
@@ -382,7 +382,7 @@ const schema = jsonLdGraph([
                       sizes="(min-width: 768px) 44vw, 92vw"
                       quality={80}
                       format="webp"
-                      class="ap-typo-card-img h-full w-full object-cover"
+                      class={`ap-typo-card-img h-full w-full object-cover ${t.slug === 'domaine-caractere' ? 'object-top' : 'object-center'}`}
                       loading="lazy"
                     />
                   </div>
@@ -408,7 +408,9 @@ const schema = jsonLdGraph([
                         <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
                           Étude
                         </dt>
-                        <dd class="mt-1 text-sm text-[var(--color-forest)]/70">{t.prixEtude}</dd>
+                        <dd class="mt-1 text-sm text-[var(--color-forest)]/70">
+                          À partir de {t.prixEtude}
+                        </dd>
                       </div>
                     </dl>
                   </div>
@@ -572,7 +574,7 @@ const schema = jsonLdGraph([
     <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
       <div data-reveal="up">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Le process
+          <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Le process
         </p>
         <h2
           id="process-title"
@@ -647,7 +649,7 @@ const schema = jsonLdGraph([
   <Section variant="forest" topDivider id="faq" sectionLabel="FAQ" labelledBy="faq-title">
     <div class="mb-12 max-w-3xl" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Questions fréquentes
+        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Questions fréquentes
       </p>
       <h2
         id="faq-title"
@@ -689,7 +691,7 @@ const schema = jsonLdGraph([
   <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
       <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Démarrer
+        <span class="text-[var(--color-cream)]/40">06</span> &nbsp;·&nbsp; Démarrer
       </p>
       <h2
         data-mask-reveal
