@@ -370,11 +370,7 @@ const schema = jsonLdGraph([
             <li class="ap-typo-card group bg-[var(--color-cream)]">
               <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
                 {img && (
-                  <div
-                    class="ap-typo-card-visual overflow-hidden"
-                    data-img-reveal
-                    data-img-reveal-speed="0.92"
-                  >
+                  <div class="ap-typo-card-visual overflow-hidden">
                     <Image
                       src={img}
                       alt=""
@@ -473,11 +469,15 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ───── PROCESS 3 ÉTAPES — compact ───── */}
+  {
+    /* ───── PROCESS 3 ÉTAPES ─────
+       Padding "default" (compact retiré 2026-04-27 — Morgan : « 3 étapes
+       n'apparaissaient pas, section super vide »). La bande respiration
+       full-bleed au-dessus assure désormais la transition visuelle. */
+  }
   <Section
     variant="forest"
     topDivider
-    space="compact"
     id="process"
     sectionLabel="Process"
     labelledBy="process-title"
