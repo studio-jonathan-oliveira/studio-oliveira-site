@@ -23,7 +23,6 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
-import ScrollCursorCta from '@/components/astro/ScrollCursorCta.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs, service } from '@/lib/schema-org';
 
@@ -59,8 +58,11 @@ const schema = jsonLdGraph([
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </Fragment>
 
-  <!-- CTA suiveur souris scroll-global (desktop, pattern mp4 Jonathan) -->
-  <ScrollCursorCta href="/contact" label={'Démarrer\nun projet'} />
+  {
+    /* ScrollCursorCta retiré 2026-04-28 (feedback Morgan : intrusif, clic dans
+     le vide envoie sur contact). À ré-évaluer plus tard avec Jonathan ; le
+     PDF l.801-804 le demandait mais l'expérience réelle ne convainc pas. */
+  }
 
   <Section variant="cream" id="hero" sectionLabel="Pros" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
@@ -118,8 +120,7 @@ const schema = jsonLdGraph([
     />
 
     <ul
-      data-reveal-stagger="0.12"
-      data-reveal="up"
+      data-pros-cards
       class="mt-16 grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2"
     >
       {
@@ -156,11 +157,7 @@ const schema = jsonLdGraph([
       title="[À FOURNIR — titre section garanties]"
       intro="[À FOURNIR — intro 2 lignes sur les garanties que Jonathan propose aux pros.]"
     />
-    <ul
-      data-reveal-stagger="0.12"
-      data-reveal="up"
-      class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3"
-    >
+    <ul data-pros-cards class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
       {
         [1, 2, 3].map((n) => (
           <li class="border-t border-[var(--color-forest)]/10 pt-6">
@@ -187,8 +184,8 @@ const schema = jsonLdGraph([
     </p>
   </Section>
 
-  <!-- CTA FINAL — zone de masquage du CTA suiveur souris (éviter doublon) -->
-  <div data-cta-hide>
+  <!-- CTA FINAL -->
+  <div>
     <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
       <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
         <p class="font-mono text-xs tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
@@ -222,4 +219,61 @@ const schema = jsonLdGraph([
       </div>
     </Section>
   </div>
+
+  <style>
+    /* Reveal CSS pure pour les cards verticales/garanties (alternative à
+       data-reveal-stagger qui bug sur grids — page-conventions.md §13.4). */
+    [data-pros-cards] > li {
+      opacity: 0;
+      transform: translateY(40px);
+      transition:
+        opacity 1s var(--ease-out-editorial),
+        transform 1s var(--ease-out-editorial);
+    }
+    [data-pros-cards].is-revealed > li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-pros-cards].is-revealed > li:nth-child(1) {
+      transition-delay: 0s;
+    }
+    [data-pros-cards].is-revealed > li:nth-child(2) {
+      transition-delay: 0.12s;
+    }
+    [data-pros-cards].is-revealed > li:nth-child(3) {
+      transition-delay: 0.24s;
+    }
+    [data-pros-cards].is-revealed > li:nth-child(4) {
+      transition-delay: 0.36s;
+    }
+  </style>
+
+  <script>
+    function initProsCardsObserver() {
+      const grids = document.querySelectorAll<HTMLElement>('[data-pros-cards]');
+      grids.forEach((grid) => {
+        if (grid.dataset.observerWired === 'true') return;
+        grid.dataset.observerWired = 'true';
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                grid.classList.add('is-revealed');
+                observer.disconnect();
+                break;
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+        observer.observe(grid);
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProsCardsObserver, { once: true });
+    } else {
+      initProsCardsObserver();
+    }
+    document.addEventListener('astro:page-load', initProsCardsObserver);
+  </script>
 </BaseLayout>
