@@ -71,6 +71,13 @@ const sections = [
   },
   {
     num: '06',
+    href: '/demarrer-un-projet',
+    label: 'Démarrer un projet',
+    tagline: 'Trois temps de qualification, du premier appel au cadrage.',
+    sub: [],
+  },
+  {
+    num: '07',
     href: '/contact',
     label: 'Contact',
     tagline: 'Engager la conversation.',
@@ -314,6 +321,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu[open] .primary-menu__item:nth-child(6) {
     animation-delay: 0.6s;
+  }
+  .primary-menu[open] .primary-menu__item:nth-child(7) {
+    animation-delay: 0.67s;
   }
   @keyframes primary-menu-item {
     to {
