@@ -62,16 +62,26 @@ const schema = jsonLdGraph([
   <!-- CTA suiveur souris scroll-global (desktop, pattern mp4 Jonathan) -->
   <ScrollCursorCta href="/contact" label={'Démarrer\nun projet'} />
 
-  <Section variant="cream" class="pt-40 md:pt-48">
+  <Section variant="cream" id="hero" sectionLabel="Pros" class="pt-40 md:pt-48">
     <div class="max-w-3xl" data-reveal="up">
       <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
         <span class="text-[var(--color-forest)]/40">PRO</span>
         &nbsp;·&nbsp; Hôtellerie · Restauration · Bureaux · Commerces
       </p>
       <h1
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
+        data-mask-reveal
+        data-mask-stagger="0.14"
+        class="mt-6 font-[family-name:var(--font-heading)] leading-[1.02] tracking-tight text-[var(--color-forest)]"
       >
-        Design biophilique pour <em class="italic">professionnels</em>.
+        <span data-mask-line class="block pb-[0.05em] text-[length:var(--text-4xl)] italic"
+          >Design biophilique pour</span
+        >
+        <span
+          data-mask-line
+          class="block pb-[0.18em] text-[length:var(--text-5xl)] md:text-[length:var(--text-hero)]"
+          style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;"
+          >PROFESSIONNELS.</span
+        >
       </h1>
       <p
         class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
@@ -81,6 +91,22 @@ const schema = jsonLdGraph([
       </p>
     </div>
   </Section>
+
+  {/* ───── BANDE KEYWORDS (4 verticales pros) ───── */}
+  <section class="bg-[var(--color-cream)] px-6 pb-20 md:px-10 md:pb-28" aria-hidden="true">
+    <p
+      class="page-keywords-band page-keywords-band--light"
+      data-reveal="up"
+      data-justify-scroll
+      data-justify-amp="20"
+      data-justify-seed="29"
+    >
+      Hôtellerie <span aria-hidden="true">·</span>
+      Restauration <span aria-hidden="true">·</span>
+      Bureaux <span aria-hidden="true">·</span>
+      Commerces
+    </p>
+  </section>
 
   <!-- VERTICALES — 4 segments -->
   <Section variant="cream" topDivider aria-labelledby="verticales-title">

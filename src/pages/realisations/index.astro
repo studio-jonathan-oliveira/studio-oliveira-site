@@ -65,6 +65,23 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
+  {/* ───── BANDE KEYWORDS (mots de la copy hero) ───── */}
+  <section class="bg-[var(--color-cream)] px-6 pb-20 md:px-10 md:pb-28" aria-hidden="true">
+    <p
+      class="page-keywords-band page-keywords-band--light"
+      data-reveal="up"
+      data-justify-scroll
+      data-justify-amp="20"
+      data-justify-seed="17"
+    >
+      Projets <span aria-hidden="true">·</span>
+      Aboutis <span aria-hidden="true">·</span>
+      Livrés <span aria-hidden="true">·</span>
+      Contexte <span aria-hidden="true">·</span>
+      Réel
+    </p>
+  </section>
+
   <Section variant="cream" topDivider id="projets" sectionLabel="Projets">
     {
       projects.length === 0 ? (
