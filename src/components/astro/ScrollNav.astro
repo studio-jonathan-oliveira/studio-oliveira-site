@@ -179,12 +179,17 @@
     transform: translateX(0);
   }
 
-  /* État actif : juste le numéro devient latérite, pas d'expansion du titre
-     par défaut (éviterait collision texte — le titre apparait au hover). */
+  /* État actif (refonte 2026-04-28 Jonathan) : numéro en bleu Klein
+     (signature, plus latérite), bold pour matérialiser la section courante.
+     Le titre n'apparait qu'au hover pour éviter la collision avec le
+     contenu de page. */
   .scroll-nav-item.is-active .scroll-nav-index {
     opacity: 1;
-    color: var(--color-laterite);
-    font-weight: 500;
+    color: var(--color-klein);
+    font-weight: 700;
+  }
+  .scroll-nav-item.is-active .scroll-nav-title {
+    font-weight: 700;
   }
   .scroll-nav-item.is-active:hover .scroll-nav-title,
   .scroll-nav-item.is-active:focus-within .scroll-nav-title {
