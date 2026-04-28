@@ -61,7 +61,7 @@ const schema = jsonLdGraph([
       </div>
     </div>
 
-    <div class="relative flex min-h-[80svh] flex-col justify-end">
+    <div class="relative flex min-h-[100svh] flex-col justify-end">
       <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-20 md:px-10 md:pt-48 md:pb-28">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/50">Portefeuille</span>
@@ -91,6 +91,8 @@ const schema = jsonLdGraph([
 
   {/* ───── 2 CARDS avec images de fond full-bleed ───── */}
   <section
+    id="portefeuille"
+    data-section-label="Portefeuille"
     class="projets-split relative bg-[var(--color-cream)]"
     aria-labelledby="portefeuille-title"
   >
@@ -174,7 +176,7 @@ const schema = jsonLdGraph([
   </section>
 
   {/* ───── Passerelle vers les 2 branches de services ───── */}
-  <Section variant="cream" topDivider>
+  <Section variant="cream" topDivider id="branches" sectionLabel="Branches">
     <div class="mx-auto max-w-3xl text-center" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-forest)]/55 uppercase">
         Les deux branches du studio
@@ -197,10 +199,10 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── CTA final ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
       <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Engager la conversation
+        <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
@@ -319,8 +321,8 @@ const schema = jsonLdGraph([
     }
     .projets-card:hover .projets-card-cta,
     .projets-card:focus-visible .projets-card-cta {
-      color: var(--color-laterite);
-      border-color: var(--color-laterite);
+      color: var(--color-cream);
+      border-color: var(--color-cream);
       transform: translateX(4px);
     }
   </style>

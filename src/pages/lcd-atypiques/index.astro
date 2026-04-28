@@ -107,7 +107,7 @@ const schema = jsonLdGraph([
       </div>
     </div>
 
-    <div class="relative flex min-h-[90svh] flex-col justify-end">
+    <div class="relative flex min-h-[100svh] flex-col justify-end">
       <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
           <span class="text-[var(--color-cream)]/50">Locations courte durée</span>
@@ -137,10 +137,10 @@ const schema = jsonLdGraph([
   </section>
 
   {/* ───── MANIFESTE court ───── */}
-  <Section variant="cream" tight>
+  <Section variant="cream" tight id="positionnement" sectionLabel="Positionnement">
     <div class="mx-auto max-w-3xl py-20 md:py-28" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-forest)]/55 uppercase">
-        <span class="text-[var(--color-forest)]/40">01</span> &nbsp;·&nbsp; Le positionnement
+        <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Le positionnement
       </p>
       <p
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-forest)] md:text-[length:var(--text-4xl)]"
@@ -162,11 +162,28 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
+  {/* ───── BANDE KEYWORDS (mots du manifeste) ───── */}
+  <section class="bg-[var(--color-cream)] px-6 pb-20 md:px-10 md:pb-28" aria-hidden="true">
+    <p
+      class="page-keywords-band page-keywords-band--light"
+      data-reveal="up"
+      data-justify-scroll
+      data-justify-amp="20"
+      data-justify-seed="11"
+    >
+      Univers <span aria-hidden="true">·</span>
+      Immersif <span aria-hidden="true">·</span>
+      Narratif <span aria-hidden="true">·</span>
+      Spectaculaire <span aria-hidden="true">·</span>
+      Habitable
+    </p>
+  </section>
+
   {/* ───── GALERIE projets réels (Jungle Room + Airbnb) ───── */}
-  <Section variant="cream" aria-labelledby="galerie-title">
+  <Section variant="cream" id="galerie" sectionLabel="Galerie" labelledBy="galerie-title">
     <div class="mb-12 max-w-3xl" data-reveal="up">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-forest)]/55 uppercase">
-        <span class="text-[var(--color-forest)]/40">02</span> &nbsp;·&nbsp; Galerie
+        <span class="text-[var(--color-forest)]/40">03</span> &nbsp;·&nbsp; Galerie
       </p>
       <h2
         id="galerie-title"
@@ -217,8 +234,30 @@ const schema = jsonLdGraph([
     </div>
   </Section>
 
-  {/* ───── 03 · DÉMARCHE forest immersif ───── */}
+  {/* ───── RESPIRATION full-bleed entre Galerie et Démarche ───── */}
   <section
+    class="page-respiration relative overflow-hidden bg-[var(--color-forest)]"
+    aria-hidden="true"
+    data-theme="dark"
+  >
+    <div data-img-reveal data-img-reveal-speed="1" class="page-respiration-frame">
+      <Image
+        src={imgAirbnb05}
+        alt=""
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={82}
+        format="webp"
+        class="h-full w-full object-cover object-center"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  {/* ───── 04 · DÉMARCHE forest immersif ───── */}
+  <section
+    id="demarche"
+    data-section-label="Démarche"
     class="lcd-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
     data-theme="dark"
     aria-labelledby="demarche-title"
@@ -241,7 +280,7 @@ const schema = jsonLdGraph([
     <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
       <div class="mb-16 max-w-3xl" data-reveal="up">
         <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Démarche
+          <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Démarche
         </p>
         <h2
           id="demarche-title"
@@ -277,10 +316,10 @@ const schema = jsonLdGraph([
   </section>
 
   {/* ───── CTA final forest ───── */}
-  <Section variant="forest" topDivider>
+  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
       <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Engager la conversation
+        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
@@ -306,7 +345,7 @@ const schema = jsonLdGraph([
       will-change: transform, filter;
     }
 
-    /* Halo latérite dans la section démarche */
+    /* Halo cream dans la section démarche (palette monochrome) */
     .lcd-demarche-halo {
       position: absolute;
       top: -20%;
@@ -315,7 +354,7 @@ const schema = jsonLdGraph([
       height: 70%;
       background: radial-gradient(
         circle at center,
-        color-mix(in oklab, var(--color-laterite) 30%, transparent) 0%,
+        color-mix(in oklab, var(--color-cream) 18%, transparent) 0%,
         transparent 65%
       );
       pointer-events: none;

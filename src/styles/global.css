@@ -385,3 +385,51 @@ header.intro-revealing {
     display: none;
   }
 }
+
+/*
+ * Patterns de page partagés — factorisation 2026-04-28.
+ * Cf. .claude/guides/page-conventions.md §4 (bandes keywords) et §10 (respiration).
+ */
+.page-keywords-band {
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.1rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  text-align: justify;
+  max-width: 90rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.page-keywords-band > span[aria-hidden] {
+  display: inline-block;
+  margin: 0 0.4em;
+  color: var(--color-cream);
+  opacity: 0.4;
+  font-weight: 400;
+}
+.page-keywords-band--light {
+  color: var(--color-forest);
+}
+.page-keywords-band--light > span[aria-hidden] {
+  color: var(--color-forest);
+  opacity: 0.4;
+}
+
+.page-respiration {
+  position: relative;
+  height: 60vh;
+  min-height: 320px;
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  .page-respiration {
+    height: 50vh;
+  }
+}
+.page-respiration-frame {
+  position: absolute;
+  inset: 0;
+}
