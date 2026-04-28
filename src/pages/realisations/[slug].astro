@@ -194,64 +194,73 @@ const schema = jsonLdGraph([
         </Prose>
       </div>
 
-      <!-- Galerie immersive — layout 12 cols, 4 patterns en rotation, quinconce vertical
-           via translate-y, clip-reveal bas→haut + image-rise + parallax léger.
-           Pattern designbyad (scroll_projet.mp4) appliqué pleinement. -->
+      {
+        /* Galerie quinconce 2 colonnes — vraie alternance verticale (col droite
+           décalée d'une demi-image), gap fin entre images, reveal cinématique
+           poussé (clip-reveal bas→haut + image-rise scale 1.12→1 + parallax fort).
+           Mobile : single column, pas de décalage. */
+      }
       {
         project.gallery.length > 0 && (
-          <div class="gallery-immersive mt-24 grid grid-cols-12 gap-y-20 md:mt-32 md:gap-y-32">
-            {project.gallery.map((img, i) => {
-              const layout = i % 4;
-              const colClass =
-                layout === 0
-                  ? 'col-span-12'
-                  : layout === 1
-                    ? 'col-span-12 md:col-start-5 md:col-span-8'
-                    : layout === 2
-                      ? 'col-span-12 md:col-start-1 md:col-span-7'
-                      : 'col-span-12 md:col-start-2 md:col-span-10';
-              const aspectClass =
-                layout === 0
-                  ? 'aspect-[16/10]'
-                  : layout === 1
-                    ? 'aspect-[4/5]'
-                    : layout === 2
-                      ? 'aspect-[3/4]'
-                      : 'aspect-[16/9]';
-              const offsetClass =
-                layout === 1
-                  ? 'md:translate-y-12'
-                  : layout === 2
-                    ? 'md:-translate-y-8'
-                    : layout === 3
-                      ? 'md:translate-y-6'
-                      : '';
-              return (
-                <figure
-                  class={`${colClass} ${offsetClass}`}
-                  data-clip-reveal="top"
-                  data-scroll-rise
-                  data-scroll-rise-amp={String(80 + (i % 3) * 30)}
-                >
-                  <Picture
-                    src={img.src}
-                    alt={img.alt}
-                    widths={[720, 1080, 1440, 1920, 2400]}
-                    sizes="(min-width: 1024px) 70vw, (min-width: 768px) 80vw, 92vw"
-                    formats={['avif', 'webp']}
-                    quality={85}
-                    class={`${aspectClass} w-full object-cover`}
-                    loading="lazy"
-                    data-reveal="image-rise"
-                  />
-                  {img.caption && (
-                    <figcaption class="mt-4 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
-                      {img.caption}
-                    </figcaption>
-                  )}
-                </figure>
-              );
-            })}
+          <div class="gallery-quinconce mt-24 md:mt-32" data-realisations-gallery>
+            <div class="gallery-col gallery-col-left">
+              {project.gallery
+                .filter((_, i) => i % 2 === 0)
+                .map((img, i) => (
+                  <figure
+                    class="gallery-figure"
+                    data-clip-reveal="top"
+                    data-scroll-rise
+                    data-scroll-rise-amp={String(120 + (i % 2) * 40)}
+                  >
+                    <Picture
+                      src={img.src}
+                      alt={img.alt}
+                      widths={[480, 720, 960, 1280]}
+                      sizes="(min-width: 768px) 49vw, 100vw"
+                      formats={['avif', 'webp']}
+                      quality={85}
+                      class="gallery-img aspect-[4/5] w-full object-cover"
+                      loading="lazy"
+                      data-reveal="image-rise"
+                    />
+                    {img.caption && (
+                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
+                        {img.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                ))}
+            </div>
+            <div class="gallery-col gallery-col-right">
+              {project.gallery
+                .filter((_, i) => i % 2 === 1)
+                .map((img, i) => (
+                  <figure
+                    class="gallery-figure"
+                    data-clip-reveal="top"
+                    data-scroll-rise
+                    data-scroll-rise-amp={String(140 + (i % 2) * 40)}
+                  >
+                    <Picture
+                      src={img.src}
+                      alt={img.alt}
+                      widths={[480, 720, 960, 1280]}
+                      sizes="(min-width: 768px) 49vw, 100vw"
+                      formats={['avif', 'webp']}
+                      quality={85}
+                      class="gallery-img aspect-[4/5] w-full object-cover"
+                      loading="lazy"
+                      data-reveal="image-rise"
+                    />
+                    {img.caption && (
+                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
+                        {img.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                ))}
+            </div>
           </div>
         )
       }
@@ -275,4 +284,49 @@ const schema = jsonLdGraph([
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
+
+  <style>
+    /* Galerie quinconce 2 colonnes — col droite décalée d'une demi-image
+       (50% du ratio 4/5 ≈ 30vw). Mobile : single column, pas de décalage. */
+    .gallery-quinconce {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .gallery-quinconce {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+    }
+    .gallery-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    @media (min-width: 768px) {
+      .gallery-col {
+        gap: 12px;
+      }
+      .gallery-col-right {
+        /* Décalage demi-image — ratio 4/5 sur 49vw donne ~30vw de hauteur,
+           décalage = ~15vw + une marge éditoriale. */
+        padding-top: 18vw;
+      }
+    }
+    .gallery-figure {
+      overflow: hidden;
+    }
+    /* Reveal cinématique poussé — hover scale léger pour vie supplémentaire. */
+    .gallery-img {
+      transition:
+        transform 1.2s var(--ease-out-editorial),
+        filter 1.2s var(--ease-out-editorial);
+    }
+    .gallery-figure:hover .gallery-img,
+    .gallery-figure:focus-within .gallery-img {
+      transform: scale(1.04);
+    }
+  </style>
 </BaseLayout>

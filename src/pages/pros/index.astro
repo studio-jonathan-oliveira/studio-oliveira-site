@@ -117,7 +117,9 @@ const schema = jsonLdGraph([
       title="Quatre univers, une même exigence."
       intro="[À FOURNIR — 2-3 lignes pour introduire les 4 verticales.]"
       id="verticales-title"
-    />
+    >
+      <Fragment slot="title" set:html="Quatre univers, une même exigence." />
+    </SectionHeader>
 
     <ul
       data-pros-cards
