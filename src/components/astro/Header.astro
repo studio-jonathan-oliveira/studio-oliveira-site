@@ -63,15 +63,12 @@ const { darkHero = false } = Astro.props;
       aria-label="Studio J Oliveira — accueil"
       data-header-logo
     >
-      <img
-        src="/brand/wordmark-moss.png?v=3"
-        alt=""
-        width="1200"
-        height="288"
-        class="logo-moss h-9 w-auto md:h-10 lg:h-11"
-        loading="eager"
-        decoding="async"
-      />
+      <!-- Logo bleu Klein — refonte 2026-04-28 (Jonathan) : remplace logo-moss
+           sur sections cream. Réutilise le PNG black comme alpha-mask, teinté
+           via background-color → swap couleur sans nouveau fichier. -->
+      <span
+        class="logo-klein block h-9 w-[150px] md:h-10 md:w-[167px] lg:h-11 lg:w-[183px]"
+        aria-hidden="true"></span>
       <img
         src="/brand/wordmark-cream.png?v=3"
         alt=""
@@ -178,7 +175,7 @@ const { darkHero = false } = Astro.props;
       0 2px 6px rgba(0, 0, 0, 0.35);
   }
   /* Logo swap sur sections sombres */
-  :global(body.is-dark-section) .logo-moss {
+  :global(body.is-dark-section) .logo-klein {
     opacity: 0;
   }
   :global(body.is-dark-section) .logo-cream {
@@ -190,7 +187,7 @@ const { darkHero = false } = Astro.props;
     background-color: transparent;
     color: var(--color-cream);
   }
-  .site-header--dark-hero .logo-moss {
+  .site-header--dark-hero .logo-klein {
     opacity: 0;
   }
   .site-header--dark-hero .logo-cream {
@@ -205,23 +202,31 @@ const { darkHero = false } = Astro.props;
     color: var(--color-cream);
     border-bottom: none;
   }
-  .site-header.is-scrolled .logo-moss {
+  .site-header.is-scrolled .logo-klein {
     opacity: 1;
   }
   .site-header.is-scrolled .logo-cream {
     opacity: 0;
   }
 
-  .site-header:not(.site-header--dark-hero) .logo-moss {
+  .site-header:not(.site-header--dark-hero) .logo-klein {
     opacity: 1;
   }
   .site-header:not(.site-header--dark-hero) .logo-cream {
     opacity: 0;
   }
 
-  .logo-swap .logo-moss,
+  .logo-swap .logo-klein,
   .logo-swap .logo-cream {
     transition: opacity 0.4s var(--ease-out-editorial);
+  }
+
+  /* Logo Klein — silhouette du wordmark via mask + teinte par background.
+     Évite la création d'un nouveau PNG : le wordmark-black sert d'alpha. */
+  .logo-klein {
+    background-color: var(--color-klein);
+    -webkit-mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
+    mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
   /* CTA pill — fond plein editorial, inversion au hover */
@@ -339,7 +344,7 @@ const { darkHero = false } = Astro.props;
 
   @media (prefers-reduced-motion: reduce) {
     .site-header,
-    .logo-swap .logo-moss,
+    .logo-swap .logo-klein,
     .logo-swap .logo-cream,
     .status-dot,
     .menu-trigger .menu-bars > span {
