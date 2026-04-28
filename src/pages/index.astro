@@ -738,37 +738,14 @@ const vitrine = [
           <span class="text-[var(--color-cream)]/40">07</span> &nbsp;·&nbsp; Manifeste
         </p>
         {
-          /* Pattern designbyad (vidéo scroll_home.mp4) : texte uppercase
-            justify CSS natif. data-slide-x → glide latéral du bloc entier
-            pendant la traversée viewport, sans déformer le texte. */
+          /* Refonte 2026-04-28 (Jonathan) : retrait du justify qu'il n'aimait
+            pas. Manifeste simple, fade-in mot par mot au scroll
+            (data-words-fade — setupWordsFade dans motion-enhance.ts).
+            Texte Jonathan inchangé. */
         }
-        {
-          /* Window 0,0.4 (Morgan 2026-04-27) : le spread atteint l'état
-            quasi-déployé à 40% du scroll, bien plus tôt que default
-            (0.1→0.75). Le bloc est presque au max quand on arrive à la
-            moitié de la zone sticky. */
-        }
-        {
-          /* Découpage 4-3-4-3-4 (Morgan 2026-04-28 #6 : « moins d'écart de
-            nb de mots ») dans un seul blockquote piloté par setupJustifyMulti
-            (motion-enhance.ts) avec target=.pull-quote-section pour scroll
-            global du sticky parent → vraie cascade ligne par ligne au scroll.
-            Easing cubic-out pour rendu smooth (vs linéaire de l'ancien pattern).
-            Texte Jonathan inchangé, juste re-agencé visuellement. */
-        }
-        <blockquote
-          class="manifeste-justify"
-          data-justify-multi
-          data-justify-target=".pull-quote-section"
-          data-justify-amp="50"
-          data-justify-line-step="0.1"
-          data-justify-line-window="0.35"
-        >
-          <p class="manifeste-line" data-justify-line>JE NE VENDS PAS</p>
-          <p class="manifeste-line" data-justify-line>UNE ÉTUDE, JE</p>
-          <p class="manifeste-line" data-justify-line>VENDS UNE VISION, UNE</p>
-          <p class="manifeste-line" data-justify-line>MÉTHODE, UNE EXPÉRIENCE,</p>
-          <p class="manifeste-line" data-justify-line>UNE SÉCURITÉ DE RÉSULTAT.</p>
+        <blockquote class="manifeste-fade" data-words-fade>
+          Je ne vends pas une étude, je vends une vision, une méthode, une expérience, une sécurité
+          de résultat.
         </blockquote>
         <footer
           class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase"
@@ -1346,38 +1323,27 @@ const vitrine = [
       padding-left: 0.25rem;
     }
 
-    /* Manifeste text-align justify uppercase (pattern designbyad video :
-       scroll_home.mp4 frame 5 — texte CAPS bold justify, les espaces
-       s'écartent naturellement pour remplir chaque ligne = effet "irrégulier"
-       visuel pur CSS, pas de JS). */
-    .manifeste-justify {
+    /* Manifeste — refonte 2026-04-28 (Jonathan) : retrait du justify CSS
+       (Jonathan n'aimait pas l'écartement irrégulier). Bloc compact, casse
+       naturelle, fade-in mot par mot piloté par setupWordsFade. */
+    .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 700;
-      font-size: clamp(2.1rem, 4.9vw, 4.4rem);
-      line-height: 1.18;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.4vw, 3.2rem);
+      line-height: 1.25;
+      letter-spacing: -0.005em;
       color: inherit;
       hyphens: none;
-    }
-    /* Chaque ligne du manifeste = un block indépendant (Morgan 2026-04-28 #5).
-       text-align: justify + text-align-last: justify → les espaces inter-mots
-       s'étalent dans CHAQUE ligne pour remplir la largeur, ce qui donne un
-       espacement visible différent par ligne (selon le nb de mots). */
-    .manifeste-line {
-      display: block;
-      width: 100%;
-      text-align: justify;
-      text-align-last: justify;
+      max-width: 60rem;
       margin: 0;
-      word-spacing: 0;
     }
-    /* Mobile : on désactive le justify-last (les lignes courtes resteraient
-       éparpillées sur toute la largeur, illisible en portrait). */
-    @media (max-width: 767px) {
-      .manifeste-line {
-        text-align-last: left;
-      }
+    /* Mots animés — chaque mot inline-block, opacity 0 + translateY 10px
+       par défaut, animé par setupWordsFade au scroll. */
+    .manifeste-fade .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
     }
 
     /* Archi-intro constellation — refonte 2026-04-28 (Jonathan).

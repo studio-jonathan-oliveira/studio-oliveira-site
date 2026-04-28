@@ -1052,11 +1052,70 @@ function setupHorizontalTypologies(root: ParentNode) {
   });
 }
 
+/**
+ * Words fade — pattern simple : chaque mot d'un [data-words-fade] entre en
+ * fade-in stagger au scroll quand la cible passe dans le viewport.
+ * Refonte manifeste home 2026-04-28 (Jonathan : « plutôt un texte qui
+ * apparait finalement »). Remplace setupJustifyMulti sur le manifeste.
+ *
+ * Usage : <p data-words-fade>Mon texte…</p>
+ *
+ * Options :
+ *   - data-words-fade-stagger="0.05"  (s, pas entre mots)
+ *   - data-words-fade-window="0.0,0.55"  (start,end progress)
+ */
+function setupWordsFade(root: ParentNode) {
+  const nodes = root.querySelectorAll<HTMLElement>('[data-words-fade]');
+  nodes.forEach((el) => {
+    if (el.dataset.wordsFadeDone) return;
+    el.dataset.wordsFadeDone = 'true';
+
+    const split = new SplitType(el, { types: 'words' });
+    const words = (split.words as HTMLElement[] | null) || [];
+    if (words.length === 0) return;
+
+    words.forEach((w) => {
+      w.style.display = 'inline-block';
+      w.style.opacity = '0';
+      w.style.transform = 'translateY(10px)';
+      w.style.willChange = 'opacity, transform';
+    });
+
+    const winRaw = (el.dataset.wordsFadeWindow || '0.0,0.55').split(',');
+    const winStart = parseFloat(winRaw[0] ?? '0') || 0;
+    const winEnd = parseFloat(winRaw[1] ?? '0.55') || 0.55;
+    const stagger = parseFloat(el.dataset.wordsFadeStagger || '0.04');
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    scroll(
+      (progress: number) => {
+        const count = words.length;
+        words.forEach((w, i) => {
+          const localStart = winStart + i * stagger;
+          const localEnd = Math.min(winEnd, localStart + 0.18);
+          const t = Math.max(
+            0,
+            Math.min(1, (progress - localStart) / Math.max(0.01, localEnd - localStart)),
+          );
+          const eased = easeOutCubic(t);
+          w.style.opacity = String(eased);
+          w.style.transform = `translateY(${(1 - eased) * 10}px)`;
+        });
+        // Avoid out-of-bound when many words: clip stagger to fit window
+        void count;
+      },
+      { target: el, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
 function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
   setupJustifyMulti(root);
+  setupWordsFade(root);
   setupCharDrift(root);
   setupWheelHorizontal(root);
   setupScrollRise(root);
