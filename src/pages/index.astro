@@ -270,11 +270,21 @@ const vitrine = [
           visuel (style designbyad). Plus de jambages descendants problématiques
           (Y, p, g, j). Letter-spacing resserré pour cohésion du bloc. */
       }
-      <h1 class="hero-title-asym text-[var(--color-cream)]">
+      {
+        /* H1 inverse vidéo (refonte 2026-04-28 Jonathan) :
+          chaque mot est posé sur un bandeau bleu Klein, et le H1 a
+          mix-blend-mode: difference. Effet : sur la photo le texte prend
+          la couleur inverse (vraie inverse vidéo), sur les bandes Klein le
+          texte vire en gold-amber par différence chromatique. La silhouette
+          du H1 « casse » la photo de manière signature. */
+      }
+      <h1 class="hero-title-asym hero-title-cutout text-[var(--color-cream)]">
         <span class="hero-word-designer" data-hero-mask>
+          <span class="hero-band" aria-hidden="true"></span>
           <span data-mask-line class="hero-line block">DESIGNER</span>
         </span>
         <span class="hero-word-paysagiste" data-hero-mask>
+          <span class="hero-band" aria-hidden="true"></span>
           <span data-mask-line class="hero-line block">PAYSAGISTE</span>
         </span>
       </h1>
@@ -282,19 +292,10 @@ const vitrine = [
       {/* Trait vertical signature qui relie les deux mots du H1 (designbyad-like) */}
       <span class="hero-rule" aria-hidden="true"></span>
 
-      {/* Manifesto bas-gauche, max-w court, mêlé Jost + Gloock */}
-      <p data-hero="manifesto" class="hero-manifesto-asym text-[var(--color-cream)]/85">
-        J'étudie et conçois des espaces à vivre — en dialogue avec le
-        <span class="display italic"> bâti</span>, l'<span class="display italic"
-          >environnement</span
-        > et l'<span class="display italic">humain</span>.
-      </p>
-
-      {/* CTA bas-droite — composant universel CtaLink (dot+arrow+magnetic) */}
-      <div data-hero="cta" class="hero-cta-asym">
-        <CtaLink href="#typologies" label="Découvrir les typologies" tone="dark" size="md" />
-        <CtaLink href="/studio" label="À propos du studio" tone="dark" size="sm" magnetic={0.18} />
-      </div>
+      {
+        /* Manifesto bas-gauche + 2 CTAs hero retirés 2026-04-28 (Jonathan) :
+          le hero respire désormais autour du seul H1 inverse vidéo. */
+      }
 
       {
         /* /01 retiré 2026-04-27 (Morgan : « se balade en haut à gauche »).
@@ -1033,6 +1034,7 @@ const vitrine = [
     }
     .hero-word-designer,
     .hero-word-paysagiste {
+      position: relative;
       display: block;
       overflow: hidden;
       /* padding-bottom large pour que les descendantes (j, p, g, y) ne
@@ -1040,6 +1042,29 @@ const vitrine = [
          "Paysagiste" 2026-04-27. */
       padding-bottom: 0.28em;
       line-height: 1.1;
+    }
+
+    /* Inverse vidéo (refonte 2026-04-28 Jonathan) :
+       - .hero-band : bandeau bleu Klein opaque absolu derrière chaque mot.
+       - .hero-line : texte blanc en mix-blend-mode: difference. Effet :
+           - sur le bandeau Klein → diff(white, klein) = warm gold/amber
+           - sur la photo en dehors du bandeau → diff(white, photo) = inverse
+             chromatique de la photo (la définition technique « inverse vidéo »).
+         Le bandeau ne casse pas la photo (lui ne blend pas). Le texte oui.
+       - .hero-title-cutout n'applique PAS de blend global (sinon le bandeau
+         lui-même participerait à la diff et perdrait son aplat Klein). */
+    .hero-band {
+      position: absolute;
+      inset: 0;
+      background-color: var(--color-klein);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-title-cutout .hero-line {
+      position: relative;
+      z-index: 1;
+      mix-blend-mode: difference;
+      color: #ffffff;
     }
     @media (min-width: 1024px) {
       .hero-title-asym {
