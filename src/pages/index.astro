@@ -1577,20 +1577,19 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      /* Font légèrement réduite + word-spacing très positif (Morgan 2026-04-28
-         #3 : « j'aimerais que les mots bougent encore plus »). word-spacing
-         poussé à 0.22em → mots plus écartés, donc moins de mots par ligne,
-         donc gaps inter-mots plus dramatiques quand le data-justify-scroll
-         (amp 55) écarte davantage au scroll. */
-      font-size: clamp(2rem, 4.6vw, 4rem);
-      line-height: 1.15;
+      /* Étalement sur plus de lignes (Morgan 2026-04-28 #4) : word-spacing
+         poussé à 0.5em + font légèrement augmentée → encore moins de mots
+         par ligne, le bloc se déploie en hauteur dans le sticky 100vh.
+         Combiné à data-justify-amp=55, l'effet de mouvement est très marqué. */
+      font-size: clamp(2.1rem, 4.9vw, 4.4rem);
+      line-height: 1.18;
       letter-spacing: -0.01em;
       text-transform: uppercase;
       text-align: justify;
       text-align-last: justify;
       color: inherit;
       hyphens: none;
-      word-spacing: 0.22em;
+      word-spacing: 0.5em;
     }
     /* text-align-last: justify → la dernière ligne aussi s'écarte pour remplir */
     @media (max-width: 767px) {
