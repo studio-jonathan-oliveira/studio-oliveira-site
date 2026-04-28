@@ -377,6 +377,113 @@ function setupJustifiedScroll(root: ParentNode) {
 }
 
 /**
+ * Justify multi-line — variante de setupJustifiedScroll pour un BLOC composé
+ * de plusieurs lignes indépendantes qui s'animent EN CASCADE selon le scroll
+ * d'un target externe (utile quand le bloc lui-même est dans un sticky parent).
+ *
+ * Usage :
+ *   <blockquote data-justify-multi data-justify-target=".pull-quote-section">
+ *     <p data-justify-line>LIGNE 1</p>
+ *     <p data-justify-line>LIGNE 2</p>
+ *   </blockquote>
+ *
+ * Options :
+ *   - data-justify-target="..."        sélecteur du parent scroll (défaut : el)
+ *   - data-justify-amp="55"            intensité (1-100, default 55)
+ *   - data-justify-line-step="0.12"    décalage de window entre lignes
+ *   - data-justify-line-window="0.3"   taille de window par ligne
+ *
+ * Easing cubic-out → mouvement smooth, jamais brutal (Morgan 2026-04-28).
+ */
+function setupJustifyMulti(root: ParentNode) {
+  const groups = root.querySelectorAll<HTMLElement>('[data-justify-multi]');
+  groups.forEach((group) => {
+    if (group.dataset.justifyMultiDone) return;
+    group.dataset.justifyMultiDone = 'true';
+
+    const targetSel = group.dataset.justifyTarget;
+    const target = targetSel ? document.querySelector<HTMLElement>(targetSel) : group;
+    if (!target) return;
+
+    const rawAmp = parseFloat(group.dataset.justifyAmp || '55');
+    const intensity = rawAmp > 1 ? Math.min(0.85, rawAmp / 65) : Math.min(0.85, rawAmp);
+    const lineStep = parseFloat(group.dataset.justifyLineStep || '0.12');
+    const lineWindow = parseFloat(group.dataset.justifyLineWindow || '0.3');
+
+    const lines = Array.from(group.querySelectorAll<HTMLElement>('[data-justify-line]'));
+    if (lines.length === 0) return;
+
+    interface LineData {
+      words: HTMLElement[];
+      justifyLefts: number[];
+      leftLefts: number[];
+      measure: () => void;
+    }
+
+    const linesData: LineData[] = lines.map((line) => {
+      if (getComputedStyle(line).textAlign !== 'justify') {
+        line.style.textAlign = 'justify';
+      }
+      const split = new SplitType(line, { types: 'words' });
+      const words = (split.words as HTMLElement[] | null) || [];
+      words.forEach((w) => {
+        w.style.display = 'inline-block';
+        w.style.willChange = 'transform';
+        w.style.whiteSpace = 'nowrap';
+      });
+
+      const data: LineData = { words, justifyLefts: [], leftLefts: [], measure: () => {} };
+
+      data.measure = () => {
+        line.style.textAlignLast = 'justify';
+        void line.offsetHeight;
+        data.justifyLefts = words.map((w) => w.offsetLeft);
+        const prevAlign = line.style.textAlign;
+        const prevLast = line.style.textAlignLast;
+        line.style.textAlign = 'left';
+        line.style.textAlignLast = 'left';
+        void line.offsetHeight;
+        data.leftLefts = words.map((w) => w.offsetLeft);
+        line.style.textAlign = prevAlign || 'justify';
+        line.style.textAlignLast = prevLast || 'justify';
+        void line.offsetHeight;
+      };
+
+      data.measure();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => data.measure());
+      }
+      return data;
+    });
+
+    let resizeT = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeT);
+      resizeT = window.setTimeout(() => linesData.forEach((d) => d.measure()), 200);
+    });
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    scroll(
+      (progress: number) => {
+        linesData.forEach(({ words, justifyLefts, leftLefts }, idx) => {
+          const wStart = idx * lineStep;
+          const wEnd = wStart + lineWindow;
+          const t = Math.max(0, Math.min(1, (progress - wStart) / Math.max(0.01, wEnd - wStart)));
+          const eased = easeOutCubic(t);
+          const closure = (1 - eased) * intensity;
+          words.forEach((w, i) => {
+            const dx = (leftLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
+            w.style.transform = `translate3d(${dx * closure}px, 0, 0)`;
+          });
+        });
+      },
+      { target: target, offset: ['start end', 'end start'] as never },
+    );
+  });
+}
+
+/**
  * Char drift — variante char-by-char de data-justify-scroll. Chaque LETTRE
  * d'un mot oscille indépendamment autour de sa position naturelle pendant
  * le scroll. Utilisé sur le H1 hero "paysagiste" en Gloock italic — sensation
@@ -949,6 +1056,7 @@ function enhance(root: ParentNode = document) {
   setupHeroSequence(root);
   setupSplitReveals(root);
   setupJustifiedScroll(root);
+  setupJustifyMulti(root);
   setupCharDrift(root);
   setupWheelHorizontal(root);
   setupScrollRise(root);
