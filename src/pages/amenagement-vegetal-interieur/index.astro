@@ -179,8 +179,7 @@ const schema = jsonLdGraph([
     </div>
 
     <ul
-      data-reveal-stagger="0.1"
-      data-reveal="up"
+      data-avi-cards
       class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2 lg:grid-cols-3"
     >
       {
@@ -371,5 +370,61 @@ const schema = jsonLdGraph([
     .avi-card:focus-within .avi-card-img {
       transform: scale(1.1);
     }
+
+    /* Reveal CSS pure pour les cards verticales (alternative à data-reveal-stagger
+       qui bug sur grids avec aspect-ratio — cf. page-conventions.md §13.4). */
+    [data-avi-cards] .avi-card {
+      opacity: 0;
+      transform: translateY(40px);
+      transition:
+        opacity 1s var(--ease-out-editorial),
+        transform 1s var(--ease-out-editorial);
+    }
+    [data-avi-cards].is-revealed .avi-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-avi-cards].is-revealed .avi-card:nth-child(1) {
+      transition-delay: 0s;
+    }
+    [data-avi-cards].is-revealed .avi-card:nth-child(2) {
+      transition-delay: 0.1s;
+    }
+    [data-avi-cards].is-revealed .avi-card:nth-child(3) {
+      transition-delay: 0.2s;
+    }
+    [data-avi-cards].is-revealed .avi-card:nth-child(4) {
+      transition-delay: 0.3s;
+    }
+    [data-avi-cards].is-revealed .avi-card:nth-child(5) {
+      transition-delay: 0.4s;
+    }
   </style>
+
+  <script>
+    function initAviCardsObserver() {
+      const grid = document.querySelector<HTMLElement>('[data-avi-cards]');
+      if (!grid || grid.dataset.observerWired === 'true') return;
+      grid.dataset.observerWired = 'true';
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              grid.classList.add('is-revealed');
+              observer.disconnect();
+              break;
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+      );
+      observer.observe(grid);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAviCardsObserver, { once: true });
+    } else {
+      initAviCardsObserver();
+    }
+    document.addEventListener('astro:page-load', initAviCardsObserver);
+  </script>
 </BaseLayout>
