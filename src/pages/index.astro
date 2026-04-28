@@ -910,7 +910,7 @@ const vitrine = [
         <blockquote
           class="manifeste-justify"
           data-justify-scroll
-          data-justify-amp="32"
+          data-justify-amp="55"
           data-justify-window="0,0.4"
           data-justify-seed="11"
         >
@@ -1577,19 +1577,20 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      /* Font légèrement réduite + word-spacing positif (Morgan 2026-04-28 #2)
-         pour avoir moins de mots par ligne malgré l'élargissement du container.
-         L'effet justify s'amplifie visuellement par les gaps inter-mots qui
-         s'écartent davantage. */
+      /* Font légèrement réduite + word-spacing très positif (Morgan 2026-04-28
+         #3 : « j'aimerais que les mots bougent encore plus »). word-spacing
+         poussé à 0.22em → mots plus écartés, donc moins de mots par ligne,
+         donc gaps inter-mots plus dramatiques quand le data-justify-scroll
+         (amp 55) écarte davantage au scroll. */
       font-size: clamp(2rem, 4.6vw, 4rem);
-      line-height: 1.12;
+      line-height: 1.15;
       letter-spacing: -0.01em;
       text-transform: uppercase;
       text-align: justify;
       text-align-last: justify;
       color: inherit;
       hyphens: none;
-      word-spacing: 0.08em;
+      word-spacing: 0.22em;
     }
     /* text-align-last: justify → la dernière ligne aussi s'écarte pour remplir */
     @media (max-width: 767px) {
