@@ -34,6 +34,9 @@
   --color-moss: #70725b;
   --color-laterite: #a94930;
   --color-ink: #1d1f1b;
+  /* Bleu Klein (IKB) — refonte 2026-04-28, demande Jonathan.
+     Fond signature pour MenuPrimary plein, section studio home, accents H1. */
+  --color-klein: #002fa7;
 
   /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
      Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */
@@ -246,6 +249,16 @@ header.intro-revealing {
     line-height: 0.98;
     text-wrap: balance;
   }
+  /* Refonte 2026-04-28 (Jonathan) : tous les titres en MAJUSCULES.
+     Appliqué via CSS plutôt qu'en HTML pour préserver le contenu rédigé.
+     h5/h6 exclus (souvent utilisés comme petits labels intra-cards où l'uppercase
+     redoublerait avec .eyebrow/.meta déjà uppercase). */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-transform: uppercase;
+  }
   h1 {
     line-height: 0.95;
   }
@@ -333,6 +346,27 @@ header.intro-revealing {
   }
   .hover-accent:hover {
     opacity: 0.55;
+  }
+
+  /* Keyword swap — refonte 2026-04-28 (Jonathan) :
+     les mots-clés survolés dans titres/textes importants basculent de
+     Jost (heading) à Gloock (display). Effet typographique éditorial qui
+     remplace l'usage permanent de .display dans les titres. Bascule sec —
+     les fonts ne transitionnent pas, donc on stabilise via transitions
+     letter-spacing + font-style pour adoucir le changement. */
+  .kw-swap {
+    cursor: pointer;
+    font-family: var(--font-heading);
+    transition:
+      letter-spacing 0.35s var(--ease-out-editorial),
+      font-style 0.35s var(--ease-out-editorial);
+  }
+  .kw-swap:hover,
+  .kw-swap:focus-visible {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0;
   }
 
   /* Link underline slide — signature designbyad.com.au :
