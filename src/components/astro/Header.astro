@@ -264,10 +264,14 @@ const { darkHero = false } = Astro.props;
     color: var(--color-forest);
     border-color: var(--color-cream);
   }
+  /* Bug fix 2026-04-28 #B2 : sur dark-hero, le hover faisait color cream sur
+     fond cream → texte invisible. On garde le fond cream et on assombrit
+     le texte en forest + bold pour rester lisible. */
   .site-header--dark-hero:not(.is-scrolled) .cta-pill:hover {
     background-color: var(--color-cream);
     border-color: var(--color-cream);
-    color: var(--color-cream);
+    color: var(--color-forest);
+    font-weight: 700;
   }
 
   /* Burger ↔ X — polish 2026-04-24 (brief Jonathan/Morgan, référence designbyad).

@@ -249,20 +249,17 @@ const vitrine = [
           (Y, p, g, j). Letter-spacing resserré pour cohésion du bloc. */
       }
       {
-        /* H1 inverse vidéo (refonte 2026-04-28 Jonathan) :
-          chaque mot est posé sur un bandeau bleu Klein, et le H1 a
-          mix-blend-mode: difference. Effet : sur la photo le texte prend
-          la couleur inverse (vraie inverse vidéo), sur les bandes Klein le
-          texte vire en gold-amber par différence chromatique. La silhouette
-          du H1 « casse » la photo de manière signature. */
+        /* H1 inverse vidéo permanent (refonte 2026-04-28 #2 Jonathan) :
+          texte blanc + mix-blend-mode: difference au niveau de chaque ligne.
+          Pas de bandeau coloré — la couleur inverse se fait directement
+          contre la photo / le fond, en permanence. Lisible sur n'importe
+          quel arrière-plan, vidéo comprise. */
       }
       <h1 class="hero-title-asym hero-title-cutout text-[var(--color-cream)]">
         <span class="hero-word-designer" data-hero-mask>
-          <span class="hero-band" aria-hidden="true"></span>
           <span data-mask-line class="hero-line block">DESIGNER</span>
         </span>
         <span class="hero-word-paysagiste" data-hero-mask>
-          <span class="hero-band" aria-hidden="true"></span>
           <span data-mask-line class="hero-line block">PAYSAGISTE</span>
         </span>
       </h1>
@@ -304,21 +301,17 @@ const vitrine = [
        vocabulaire, pas en image. Trame cream + texte ink. -->
   <section
     id="archi-intro"
-    data-section-label="Architecture paysagère"
+    data-section-label="Identité"
     class="archi-intro relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="archi-intro-title"
   >
     <div class="mx-auto max-w-[1500px] px-6 py-32 md:px-10 md:py-44 lg:py-56">
-      <header class="mb-16 max-w-3xl md:mb-24" data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/65 uppercase">
-          Architecture paysagère
-        </p>
+      <header class="mb-16 md:mb-24" data-reveal="up">
         <h2
           id="archi-intro-title"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98] md:text-[length:var(--text-hero)]"
+          class="archi-intro-title font-[family-name:var(--font-heading)] leading-[1]"
         >
-          <span class="block">Le jardin,</span>
-          <span class="block">une architecture.</span>
+          Le jardin, une architecture.
         </h2>
       </header>
 
@@ -352,15 +345,6 @@ const vitrine = [
         <p class="archi-constellation-line" data-justify-line>
           RÉALISATION VALEUR DISTINCTION AUTHENTICITÉ PARCOURS
         </p>
-      </div>
-
-      <div class="mt-16 flex justify-end md:mt-24">
-        <CtaLink
-          href="/architecture-paysagere"
-          label="Découvrir les typologies"
-          tone="light"
-          size="md"
-        />
       </div>
     </div>
   </section>
@@ -398,10 +382,7 @@ const vitrine = [
 
       <div class="grid gap-16 md:grid-cols-12 md:gap-20">
         <div class="md:col-span-7" data-reveal="up" data-parallax="-0.3">
-          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-            <span class="studio-zones-dot" aria-hidden="true"></span>
-            Studio biophilique
-          </p>
+          {/* Eyebrow de section retiré 2026-04-28 #B8 — labels uniquement dans ScrollNav. */}
           <h2
             id="studio-lead-title"
             data-mask-reveal
@@ -483,9 +464,7 @@ const vitrine = [
     <div class="htypo-sticky">
       <!-- Header fixe -->
       <header class="htypo-header">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-          Typologies
-        </p>
+        {/* Eyebrow Typologies retiré 2026-04-28 #B8. */}
         {
           /* Titre typologies agrandi (Morgan 2026-04-27) : il occupe désormais
             une large bande visible tout au long du scroll horizontal grâce au
@@ -608,9 +587,7 @@ const vitrine = [
        déjà py-36, on ne ajoute plus que 12-16 ici (vs 28-36 avant). */
     }
     <header class="vitrine-header mx-auto max-w-[1500px] px-6 pt-12 md:px-10 md:pt-16">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-        Sélection de projets
-      </p>
+      {/* Eyebrow Sélection de projets retiré 2026-04-28 #B8. */}
       <h2
         id="vitrine-title"
         data-mask-reveal
@@ -732,18 +709,19 @@ const vitrine = [
       <div
         class="mx-auto flex min-h-[100vh] max-w-[76rem] flex-col justify-center px-6 py-12 md:pr-10 md:pl-28"
       >
-        <p
-          class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
-        >
-          Manifeste
-        </p>
+        {/* Eyebrow Manifeste retiré 2026-04-28 #B8. */}
         {
           /* Refonte 2026-04-28 (Jonathan) : retrait du justify qu'il n'aimait
             pas. Manifeste simple, fade-in mot par mot au scroll
             (data-words-fade — setupWordsFade dans motion-enhance.ts).
             Texte Jonathan inchangé. */
         }
-        <blockquote class="manifeste-fade" data-words-fade>
+        <blockquote
+          class="manifeste-fade"
+          data-words-fade
+          data-words-fade-stagger="0.02"
+          data-words-fade-window="0,0.42"
+        >
           Je ne vends pas une étude, je vends une vision, une méthode, une expérience, une sécurité
           de résultat.
         </blockquote>
@@ -764,16 +742,14 @@ const vitrine = [
     class="border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
   >
     <div class="mx-auto max-w-4xl px-6 py-32 text-center md:px-10 md:py-48" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-        Engager la conversation
-      </p>
+      {/* Eyebrow Engager la conversation retiré 2026-04-28 #B8. */}
       <h2
         data-mask-reveal
         data-mask-stagger="0.18"
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
       >
-        <span data-mask-line class="block">Un projet,</span>
-        <span data-mask-line class="display block">une étude.</span>
+        <span data-mask-line class="block">Un projet</span>
+        <span data-mask-line class="block">une étude.</span>
       </h2>
       <p
         class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
@@ -867,25 +843,12 @@ const vitrine = [
       line-height: 1.1;
     }
 
-    /* Inverse vidéo (refonte 2026-04-28 Jonathan) :
-       - .hero-band : bandeau bleu Klein opaque absolu derrière chaque mot.
-       - .hero-line : texte blanc en mix-blend-mode: difference. Effet :
-           - sur le bandeau Klein → diff(white, klein) = warm gold/amber
-           - sur la photo en dehors du bandeau → diff(white, photo) = inverse
-             chromatique de la photo (la définition technique « inverse vidéo »).
-         Le bandeau ne casse pas la photo (lui ne blend pas). Le texte oui.
-       - .hero-title-cutout n'applique PAS de blend global (sinon le bandeau
-         lui-même participerait à la diff et perdrait son aplat Klein). */
-    .hero-band {
-      position: absolute;
-      inset: 0;
-      background-color: var(--color-klein);
-      z-index: 0;
-      pointer-events: none;
-    }
+    /* Inverse vidéo permanent (refonte 2026-04-28 #2 Jonathan) :
+       chaque ligne du H1 est blanche + mix-blend-mode: difference. Pas de
+       bandeau. La couleur du texte se calcule comme l'inverse chromatique
+       de ce qui passe dessous (photo, vidéo, n'importe quoi) → toujours
+       lisible quel que soit le fond. */
     .hero-title-cutout .hero-line {
-      position: relative;
-      z-index: 1;
       mix-blend-mode: difference;
       color: #ffffff;
     }
@@ -1362,6 +1325,9 @@ const vitrine = [
       font-size: clamp(1.4rem, 3.6vw, 3rem);
       line-height: 1.2;
       letter-spacing: 0.02em;
+      /* Espacement inter-mots augmenté (Jonathan #B4) : la constellation
+         s'aère, les mots ont plus de place pour bouger au scroll. */
+      word-spacing: clamp(0.5rem, 2vw, 1.6rem);
       text-transform: uppercase;
       color: var(--color-ink);
       text-align: justify;
@@ -1369,6 +1335,15 @@ const vitrine = [
       hyphens: none;
       max-width: 100%;
       margin: 0;
+    }
+    /* Refonte 2026-04-28 #B4 : H2 « Le jardin, une architecture. » sur une
+       SEULE ligne — taille calculée au viewport pour rester contenu mais
+       toujours imposant. white-space: nowrap force le rendu en ligne unique. */
+    .archi-intro-title {
+      letter-spacing: -0.025em;
+      font-size: clamp(1.4rem, 5vw, 4.5rem);
+      white-space: nowrap;
+      max-width: 100%;
     }
     @media (max-width: 767px) {
       .archi-constellation-line {

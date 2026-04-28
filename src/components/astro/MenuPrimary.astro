@@ -570,21 +570,19 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     gap: 0.3rem;
     min-width: 0;
   }
-  /* Refonte 2026-04-28 (Jonathan) : labels nav UPPERCASE, weight FIN (300)
-     par défaut, BOLD (700) au hover. Effet "menu épuré qui s'épaissit
-     quand on s'approche" — invitation au clic. */
+  /* Refonte 2026-04-28 #B3 (Jonathan) : labels plus petits + UPPERCASE +
+     fin (300). Au hover, faux-bold via text-shadow (épaissit le glyph sans
+     changer la métrique → AUCUN layout shift, donc aucun saut de ligne). */
   .primary-menu__label-main {
     font-family: var(--font-heading), sans-serif;
-    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
-    line-height: 0.98;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
     font-weight: 300;
     text-transform: uppercase;
     transition:
-      font-weight 0.45s var(--ease-out-editorial),
-      letter-spacing 0.45s var(--ease-out-editorial),
-      color 0.4s var(--ease-out-editorial),
-      transform 0.5s var(--ease-out-editorial);
+      text-shadow 0.35s var(--ease-out-editorial),
+      color 0.4s var(--ease-out-editorial);
   }
   .primary-menu__tagline {
     font-family: var(--font-body), sans-serif;
@@ -615,13 +613,17 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     margin-top: 0.3em;
   }
 
-  /* Hover / active — refonte 2026-04-28 (Jonathan) :
-     hover = bascule weight 300 → 700 (label s'épaissit) + tagline visible. */
+  /* Hover / active — refonte 2026-04-28 #B3 (Jonathan) :
+     hover = faux-bold via text-shadow (épaissit le glyph sans modifier la
+     métrique → pas de saut de ligne). Tagline visible, arrow translaté. */
   @media (hover: hover) and (min-width: 768px) {
     .primary-menu__link:hover .primary-menu__label-main,
     .primary-menu__link:focus-visible .primary-menu__label-main {
-      font-weight: 700;
-      letter-spacing: -0.025em;
+      text-shadow:
+        0.04em 0 0 currentColor,
+        -0.04em 0 0 currentColor,
+        0 0.03em 0 currentColor,
+        0 -0.03em 0 currentColor;
     }
     .primary-menu__link:hover .primary-menu__tagline,
     .primary-menu__link:focus-visible .primary-menu__tagline {
@@ -639,10 +641,13 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* État actif : label en BOLD (cohérent avec le hover bold), num pleine opacité */
+  /* État actif : faux-bold permanent, num pleine opacité. */
   .primary-menu__item.is-active .primary-menu__label-main {
-    font-weight: 700;
-    letter-spacing: -0.025em;
+    text-shadow:
+      0.04em 0 0 currentColor,
+      -0.04em 0 0 currentColor,
+      0 0.03em 0 currentColor,
+      0 -0.03em 0 currentColor;
   }
   .primary-menu__item.is-active .primary-menu__num {
     opacity: 1;
@@ -652,19 +657,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     transform: translateY(0);
   }
 
-  /* Sous-liens */
+  /* Sous-liens — refonte 2026-04-28 #B3 : alignés à droite explicitement,
+     plus contre la gouttière (mobile : alignés gauche pour lisibilité). */
   .primary-menu__sub {
     list-style: none;
     margin: 0 0 1.2rem 0;
-    padding: 0 0 0 calc(11px + 1.75rem + 11px); /* aligné sur le label */
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem 1.2rem;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .primary-menu__sub {
-      padding-left: calc(11px + 2.5rem + 11px);
-      gap: 0.6rem 2rem;
+      justify-content: flex-end;
+      gap: 0.6rem 1.6rem;
     }
   }
   .primary-menu__sub a {
