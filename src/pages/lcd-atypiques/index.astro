@@ -116,11 +116,17 @@ const schema = jsonLdGraph([
         <h1
           data-mask-reveal
           data-mask-stagger="0.14"
-          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight"
+          class="mt-8 font-[family-name:var(--font-heading)] leading-[1.02] tracking-tight"
         >
-          <span data-mask-line class="block pb-[0.05em]">Locations</span>
-          <span data-mask-line class="block pb-[0.12em] text-[var(--color-cream)]/55 italic">
-            signature.
+          <span data-mask-line class="block pb-[0.05em] text-[length:var(--text-4xl)] italic">
+            Locations
+          </span>
+          <span
+            data-mask-line
+            class="block pb-[0.18em] text-[length:var(--text-5xl)] md:text-[length:var(--text-hero)]"
+            style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;"
+          >
+            SIGNATURE.
           </span>
         </h1>
         <p
@@ -194,11 +200,7 @@ const schema = jsonLdGraph([
       </h2>
     </div>
 
-    <div
-      class="lcd-gallery grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6"
-      data-reveal-stagger="0.08"
-      data-reveal="up"
-    >
+    <div class="lcd-gallery grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6" data-lcd-gallery>
       {
         galerie.map((item, i) => (
           <figure
@@ -240,13 +242,13 @@ const schema = jsonLdGraph([
     aria-hidden="true"
     data-theme="dark"
   >
-    <div data-img-reveal data-img-reveal-speed="1" class="page-respiration-frame">
+    <div class="page-respiration-frame">
       <Image
-        src={imgAirbnb05}
+        src={imgJungle03}
         alt=""
         widths={[960, 1440, 1920, 2560]}
         sizes="100vw"
-        quality={82}
+        quality={85}
         format="webp"
         class="h-full w-full object-cover object-center"
         loading="lazy"
@@ -387,5 +389,67 @@ const schema = jsonLdGraph([
     .lcd-gallery-item:focus-within .lcd-gallery-img {
       transform: scale(1.1);
     }
+
+    /* Reveal CSS pure (alternative à data-reveal-stagger qui bug sur grids
+       avec aspect-ratio — cf. .claude/guides/page-conventions.md §13.4). */
+    [data-lcd-gallery] .lcd-gallery-item {
+      opacity: 0;
+      transform: translateY(40px) scale(1);
+      transition:
+        opacity 1s var(--ease-out-editorial),
+        transform 1s var(--ease-out-editorial);
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(1) {
+      transition-delay: 0s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(2) {
+      transition-delay: 0.08s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(3) {
+      transition-delay: 0.16s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(4) {
+      transition-delay: 0.24s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(5) {
+      transition-delay: 0.32s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(6) {
+      transition-delay: 0.4s;
+    }
+    [data-lcd-gallery].is-revealed .lcd-gallery-item:nth-child(7) {
+      transition-delay: 0.48s;
+    }
   </style>
+
+  <script>
+    function initLcdGalleryObserver() {
+      const grid = document.querySelector<HTMLElement>('[data-lcd-gallery]');
+      if (!grid || grid.dataset.observerWired === 'true') return;
+      grid.dataset.observerWired = 'true';
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              grid.classList.add('is-revealed');
+              observer.disconnect();
+              break;
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+      );
+      observer.observe(grid);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLcdGalleryObserver, { once: true });
+    } else {
+      initLcdGalleryObserver();
+    }
+    document.addEventListener('astro:page-load', initLcdGalleryObserver);
+  </script>
 </BaseLayout>
