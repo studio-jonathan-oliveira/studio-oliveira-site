@@ -229,16 +229,25 @@ const { darkHero = false } = Astro.props;
     mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* CTA pill — fond plein editorial, inversion au hover */
+  /* CTA pill — fond plein editorial, inversion au hover.
+     Refonte 2026-04-28 (Jonathan) : weight 300 par défaut → 700 au hover,
+     bascule discrète qui invite au clic. */
   .cta-pill {
     background-color: var(--color-forest);
     color: var(--color-cream);
     border: 1px solid var(--color-forest);
+    font-weight: 300;
+    transition:
+      background-color 0.3s var(--ease-out-editorial),
+      border-color 0.3s var(--ease-out-editorial),
+      color 0.3s var(--ease-out-editorial),
+      font-weight 0.35s var(--ease-out-editorial);
   }
   .cta-pill:hover {
     background-color: var(--color-moss);
     border-color: var(--color-moss);
     color: var(--color-cream);
+    font-weight: 700;
   }
   .cta-pill .cta-dot {
     transition:

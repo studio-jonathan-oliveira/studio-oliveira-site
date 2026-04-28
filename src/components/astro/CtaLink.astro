@@ -105,12 +105,19 @@ const rel = external ? 'noopener noreferrer' : undefined;
     }
   }
 
+  /* Refonte 2026-04-28 (Jonathan) : CTAs en minuscule fine → bold au hover.
+     Plus de mono uppercase (réservé aux eyebrows/meta). Bascule de poids
+     pour signaler la cliquabilité. */
   .cta-link__label {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    line-height: 1;
+    font-family: var(--font-heading), sans-serif;
+    text-transform: none;
+    font-weight: 300;
+    letter-spacing: 0.005em;
+    line-height: 1.1;
     white-space: nowrap;
+    transition:
+      font-weight 0.35s var(--ease-out-editorial),
+      letter-spacing 0.35s var(--ease-out-editorial);
   }
 
   .cta-link__arrow {
@@ -137,8 +144,7 @@ const rel = external ? 'noopener noreferrer' : undefined;
 
   /* ───────── Tailles ───────── */
   .cta-link--sm .cta-link__label {
-    font-size: 10.5px;
-    letter-spacing: 0.24em;
+    font-size: 0.95rem;
   }
   .cta-link--sm .cta-link__arrow {
     font-size: 12px;
@@ -149,22 +155,24 @@ const rel = external ? 'noopener noreferrer' : undefined;
   }
 
   .cta-link--md .cta-link__label {
-    font-size: 11.5px;
+    font-size: 1.05rem;
   }
   .cta-link--md .cta-link__arrow {
     font-size: 14px;
   }
 
+  /* Lg : taille « marquée » pour les CTAs primaires (fin de home, contact-cta).
+     Plus de présence visuelle conformément à la demande Jonathan
+     (« CTA plus engageant »). */
   .cta-link--lg .cta-link__label {
-    font-size: 13px;
-    letter-spacing: 0.2em;
+    font-size: clamp(1.15rem, 1.5vw, 1.4rem);
   }
   .cta-link--lg .cta-link__arrow {
-    font-size: 16px;
+    font-size: 1.25rem;
   }
   .cta-link--lg {
     gap: 1rem;
-    padding-bottom: 0.55rem;
+    padding-bottom: 0.65rem;
   }
 
   /* ───────── Hover (souris uniquement) ───────── */
@@ -172,6 +180,11 @@ const rel = external ? 'noopener noreferrer' : undefined;
     .cta-link:hover,
     .cta-link:focus-visible {
       border-color: currentColor;
+    }
+    .cta-link:hover .cta-link__label,
+    .cta-link:focus-visible .cta-link__label {
+      font-weight: 700;
+      letter-spacing: 0;
     }
     .cta-link:hover .cta-link__dot,
     .cta-link:focus-visible .cta-link__dot {
