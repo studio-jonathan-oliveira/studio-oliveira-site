@@ -298,95 +298,69 @@ const vitrine = [
       paysagère seule. Remplacée par la section intro ci-dessous. */
   }
 
-  <!-- 01b · ARCHITECTURE PAYSAGÈRE — section RESPIRATION cream (option C
-       Morgan 2026-04-24 : alternance designbyad adaptée à palette Oliveira).
-       Première section après hero = cream clair pour rupture visuelle. -->
+  <!-- 01b · ARCHITECTURE PAYSAGÈRE — refonte 2026-04-28 (Jonathan) :
+       constellation typographique de 26 mots-clés répartis sur 5 lignes
+       qui bougent au scroll (setupJustifyMulti). Le studio s'écrit en
+       vocabulaire, pas en image. Trame cream + texte ink. -->
   <section
     id="archi-intro"
     data-section-label="Architecture paysagère"
     class="archi-intro relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="archi-intro-title"
   >
-    <div
-      class="mx-auto grid max-w-[1500px] grid-cols-1 gap-12 px-6 py-24 md:grid-cols-12 md:gap-16 md:px-10 md:py-32 lg:pl-24 xl:pl-32"
-    >
-      {
-        /* Parallax positif (Morgan 2026-04-27) : header descend par rapport
-          au scroll → reste visible plus longtemps avant la fin de section. */
-      }
-      <header class="md:col-span-5" data-reveal="up" data-scroll-rise data-scroll-rise-amp="-130">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
-          <span class="text-[var(--color-ink)]/40">02</span> &nbsp;·&nbsp; Architecture paysagère
+    <div class="mx-auto max-w-[1500px] px-6 py-32 md:px-10 md:py-44 lg:py-56">
+      <header class="mb-16 max-w-3xl md:mb-24" data-reveal="up">
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/65 uppercase">
+          Architecture paysagère
         </p>
         <h2
           id="archi-intro-title"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98] md:text-[length:var(--text-hero)]"
         >
           <span class="block">Le jardin,</span>
-          <span class="display block">une architecture.</span>
+          <span class="block">une architecture.</span>
         </h2>
-        <p
-          class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75"
-        >
-          Chaque lieu appelle une <span class="hover-accent">écriture</span> précise. Le studio conçoit
-          des jardins comme des <span class="hover-accent">pièces à vivre</span> — en dialogue avec le
-          bâti, le sol, l'orientation, les usages.
-        </p>
-        <div class="mt-10">
-          <CtaLink
-            href="/architecture-paysagere"
-            label="Découvrir les typologies"
-            tone="light"
-            size="md"
-          />
-        </div>
       </header>
 
       {
-        /* Pattern designbyad (frames scroll_home f_007→f_009) : image qui
-          se déroule du haut plus vite que le scroll. data-img-reveal pilote
-          un clip-path scroll-driven, threshold 0.32 → image entièrement
-          visible bien avant le centre du viewport. scroll-rise garde un
-          léger mouvement vertical derrière. */
-      }
-      {
-        /* md:ml-12 / lg:ml-20 (Morgan 2026-04-27) : décalage de l'image vers
-          la droite pour ne plus masquer le dot pulsant du CTA "Découvrir
-          les typologies" à gauche. */
+        /* Constellation : 5 lignes de 5 mots-clés extraits du verbe Jonathan
+          (cahier des charges + studio.astro). setupJustifyMulti pilote la
+          cascade — chaque ligne se déploie avec un décalage progressif
+          (lineStep) au scroll. Les rythmes par ligne pourront être
+          différenciés ultérieurement (Morgan 2026-04-28). */
       }
       <div
-        class="archi-intro-visual relative md:col-span-7 md:ml-12 lg:ml-20"
-        data-img-reveal
-        data-img-reveal-offset="right"
-        data-img-reveal-offset-amp="50"
-        data-scroll-rise
-        data-scroll-rise-amp="120"
+        class="archi-constellation"
+        data-justify-multi
+        data-justify-target="#archi-intro"
+        data-justify-amp="55"
+        data-justify-line-step="0.10"
+        data-justify-line-window="0.40"
       >
-        <Image
-          src={hero02}
-          alt="Projet architecture paysagère — Restanque corrézienne, terrasse méditerranéenne"
-          widths={[720, 1080, 1440, 1920]}
-          sizes="(min-width: 768px) 55vw, 100vw"
-          quality={82}
-          format="webp"
-          class="archi-intro-img"
-          loading="lazy"
-          data-reveal="image-rise"
+        <p class="archi-constellation-line" data-justify-line>
+          IMMERSION CONCEPTION TERRITOIRE DESIGN ARCHITECTURE
+        </p>
+        <p class="archi-constellation-line" data-justify-line>
+          BIOPHILIE ÉCOSYSTÈME ESSENCE VÉGÉTAL HARMONIE
+        </p>
+        <p class="archi-constellation-line" data-justify-line>
+          SCIENTIFIQUE SENSORIALITÉ EXPÉRIENCE MÉTHODE ÉTUDE
+        </p>
+        <p class="archi-constellation-line" data-justify-line>
+          INTÉRIEUR BÂTI HUMAIN EXTÉRIEUR ENVIRONNEMENT
+        </p>
+        <p class="archi-constellation-line" data-justify-line>
+          RÉALISATION VALEUR DISTINCTION AUTHENTICITÉ PARCOURS
+        </p>
+      </div>
+
+      <div class="mt-16 flex justify-end md:mt-24">
+        <CtaLink
+          href="/architecture-paysagere"
+          label="Découvrir les typologies"
+          tone="light"
+          size="md"
         />
-        <ul class="archi-intro-legendes" aria-label="Légendes du projet">
-          <li>
-            <span class="archi-legende-num">01</span>
-            <span>Ouvrages paysagers sur mesure</span>
-          </li>
-          <li>
-            <span class="archi-legende-num">02</span>
-            <span>Essences sélectionnées au site</span>
-          </li>
-          <li>
-            <span class="archi-legende-num">03</span>
-            <span>Éclairage architectural nocturne</span>
-          </li>
-        </ul>
       </div>
     </div>
   </section>
@@ -1406,56 +1380,35 @@ const vitrine = [
       }
     }
 
-    /* Archi-intro — section immersive intro architecture paysagère (mail Jonathan) */
-    .archi-intro-visual {
-      position: relative;
-      /* Image agrandie sur la quasi-totalité de la hauteur de section
-         (Morgan 2026-04-27) → ratio 3/4 portrait + min-h 70vh sur desktop
-         pour augmenter l'immersion. */
-      aspect-ratio: 4 / 5;
-      min-height: 60vh;
-      overflow: hidden;
-    }
-    @media (min-width: 1024px) {
-      .archi-intro-visual {
-        aspect-ratio: 3 / 4;
-        min-height: 75vh;
-      }
-    }
-    .archi-intro-img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    /* Hover scale retiré 2026-04-25 : conflit avec inline transform de
-       data-reveal="image-rise" (Motion garde le translateY(0)/scale(1) inline
-       après animation, ce qui empêche tout :hover CSS de s'appliquer). */
-    .archi-intro-legendes {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      padding: 1.5rem 1.75rem;
+    /* Archi-intro constellation — refonte 2026-04-28 (Jonathan).
+       5 lignes de mots-clés UPPERCASE light qui se déploient au scroll
+       (setupJustifyMulti). Chaque ligne en text-align: justify CSS natif :
+       JS lit cette pose comme baseline, puis joue avec le leftLefts/
+       justifyLefts pour produire la cascade. */
+    .archi-constellation {
       display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem 2rem;
-      background: linear-gradient(to top, rgba(29, 31, 27, 0.85), transparent);
-      font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 10.5px;
-      letter-spacing: 0.22em;
+      flex-direction: column;
+      gap: clamp(0.6rem, 1.2vw, 1.4rem);
+    }
+    .archi-constellation-line {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.4rem, 3.6vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: var(--color-cream);
+      color: var(--color-ink);
+      text-align: justify;
+      text-align-last: justify;
+      hyphens: none;
+      max-width: 100%;
+      margin: 0;
     }
-    .archi-intro-legendes li {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .archi-legende-num {
-      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
-      font-weight: 500;
+    @media (max-width: 767px) {
+      .archi-constellation-line {
+        text-align: left;
+        text-align-last: left;
+      }
     }
 
     /* Halo radial latérite dans la section Studio biophilique (forest sombre) */
