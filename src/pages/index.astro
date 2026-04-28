@@ -882,13 +882,14 @@ const vitrine = [
   >
     <div class="pull-quote-sticky">
       {
-        /* Largeur élargie (Morgan 2026-04-28) : max-w-[70rem] (vs max-w-4xl
-          = 56rem, +25%). Font-size augmenté du même ratio (cf. CSS plus bas)
-          pour garder le même nombre de mots par ligne — l'effet justify
-          s'amplifie visuellement avec le bloc plus large. */
+        /* Bloc élargi vers la droite (Morgan 2026-04-28 #2) : max-w-[76rem]
+          + padding asymétrique (md:pl-28 vs md:pr-10) → contenu décalé à
+          droite pour libérer la sidebar ScrollNav à gauche. Font légèrement
+          réduite + word-spacing positif (cf. CSS) → moins de mots par ligne,
+          effet justify amplifié. */
       }
       <div
-        class="mx-auto flex min-h-[100vh] max-w-[70rem] flex-col justify-center px-6 py-12 md:px-10"
+        class="mx-auto flex min-h-[100vh] max-w-[76rem] flex-col justify-center px-6 py-12 md:pr-10 md:pl-28"
       >
         <p
           class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
@@ -1576,18 +1577,19 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      /* Font-size augmenté de +25% en sync avec l'élargissement du container
-         max-w-4xl → max-w-[70rem] (Morgan 2026-04-28). Ratio préservé →
-         même nombre de mots par ligne, effet justify amplifié. */
-      font-size: clamp(2.2rem, 5vw, 4.4rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      /* Font légèrement réduite + word-spacing positif (Morgan 2026-04-28 #2)
+         pour avoir moins de mots par ligne malgré l'élargissement du container.
+         L'effet justify s'amplifie visuellement par les gaps inter-mots qui
+         s'écartent davantage. */
+      font-size: clamp(2rem, 4.6vw, 4rem);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
       text-transform: uppercase;
       text-align: justify;
       text-align-last: justify;
       color: inherit;
       hyphens: none;
-      word-spacing: 0;
+      word-spacing: 0.08em;
     }
     /* text-align-last: justify → la dernière ligne aussi s'écarte pour remplir */
     @media (max-width: 767px) {
