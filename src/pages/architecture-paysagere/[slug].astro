@@ -4,6 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import Prose from '@/components/astro/Prose.astro';
+import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
 import Gallery from '@/components/astro/Gallery.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { SITE } from '@/lib/site-config';
@@ -109,14 +110,11 @@ const schema = jsonLdGraph([
       <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
         Typologie · {typologie.nomProprietaire}
       </p>
-      <h1
-        data-split
-        data-split-stagger="0.018"
-        data-split-duration="1.1"
+      <MaskRevealHeading
+        text={`${typologie.h1Seo}.`}
+        as="h1"
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-      >
-        {typologie.h1Seo}.
-      </h1>
+      />
       <p
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic"
       >

@@ -1,0 +1,42 @@
+---
+/**
+ * MaskRevealHeading — titre éditorial avec effet mask-reveal mot par mot.
+ *
+ * Pourquoi : les pages [slug] reçoivent leurs titres depuis Sanity (CMS), donc
+ * impossible de hardcoder les `<span data-mask-line>` ligne par ligne comme on le
+ * fait sur les pages statiques (on ignore où les retours à la ligne tomberont).
+ *
+ * Comportement : split par mot — chaque mot devient un span inline-block
+ * `[data-mask-line]`, ce qui permet au CSS global (`overflow:hidden` sur
+ * `[data-mask-reveal]`) de clipper et au JS (`setupMaskReveals`) de translater
+ * chaque mot translateY 110% → 0 avec stagger. Les mots se ré-arrangent
+ * naturellement sur 1, 2 ou N lignes selon le viewport.
+ */
+
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'h3';
+  id?: string;
+  class?: string;
+  stagger?: number;
+  delay?: number;
+}
+
+const { text, as: Tag = 'h2', id, class: className = '', stagger = 0.06, delay = 0 } = Astro.props;
+
+const words: string[] = text.split(/\s+/).filter(Boolean);
+---
+
+<Tag id={id} data-mask-reveal data-mask-stagger={stagger} data-mask-delay={delay} class={className}>
+  {
+    words.map((word: string, i: number) => (
+      <span
+        data-mask-line
+        class="inline-block"
+        style={i < words.length - 1 ? 'margin-right: 0.25em' : ''}
+      >
+        {word}
+      </span>
+    ))
+  }
+</Tag>

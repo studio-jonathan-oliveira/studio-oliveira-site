@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
+import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { fetch } from '@/lib/sanity';
 import { projectSlugsQuery, projectBySlugQuery } from '@/lib/queries';
@@ -110,11 +111,11 @@ const schema = jsonLdGraph([
           Conception · {project.typology?.title}
           {project.year && ` · ${project.year}`}
         </p>
-        <h1
+        <MaskRevealHeading
+          text={project.title}
+          as="h1"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-        >
-          {project.title}
-        </h1>
+        />
         {
           project.location && (
             <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic">

@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
+import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
 import { fetch } from '@/lib/sanity';
 import { articleSlugsQuery, articleBySlugQuery } from '@/lib/queries';
 import {
@@ -115,11 +116,11 @@ const formatDate = (iso: string) =>
           {article.tags?.[0] && ` · ${article.tags[0]}`}
           {article.readingTime && ` · ${article.readingTime} min`}
         </p>
-        <h1
+        <MaskRevealHeading
+          text={article.title}
+          as="h1"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-        >
-          {article.title}
-        </h1>
+        />
         {
           article.excerpt && (
             <p class="mt-8 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80">
