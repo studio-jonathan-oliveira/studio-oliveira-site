@@ -433,3 +433,25 @@ header.intro-revealing {
   position: absolute;
   inset: 0;
 }
+
+/*
+ * Breadcrumbs (Fil d'Ariane) — feedback Morgan 2026-04-28 : « j'aimerai
+ * pouvoir revenir à Réalisations / Accueil en cliquant sur ça ». Les liens
+ * existent déjà côté HTML mais étaient quasi invisibles (opacity 50%).
+ * Ce sélecteur global rehausse le contraste et ajoute un underline subtil
+ * pour signaler la cliquabilité, sur toutes les pages [slug].
+ */
+nav[aria-label="Fil d'Ariane"] a {
+  position: relative;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  opacity: 0.85;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
+}
+nav[aria-label="Fil d'Ariane"] a:hover,
+nav[aria-label="Fil d'Ariane"] a:focus-visible {
+  opacity: 1;
+  color: var(--color-forest);
+}

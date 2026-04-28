@@ -806,12 +806,13 @@ const vitrine = [
               <Image
                 src={p.image}
                 alt={`${p.nom} — ${p.lieu}`}
-                widths={[480, 720, 960]}
-                sizes="(min-width: 1024px) 32vw, (min-width: 640px) 60vw, 80vw"
+                widths={[480, 720, 960, 1200]}
+                sizes="(min-width: 1280px) 42vw, (min-width: 768px) 45vw, 86vw"
                 quality={82}
                 format="webp"
                 class="vitrine-img"
                 loading={i < 2 ? 'eager' : 'lazy'}
+                draggable="false"
               />
             </div>
             <p class="vitrine-meta">
@@ -1339,7 +1340,7 @@ const vitrine = [
        data-reveal="image-rise" sur img enfant). */
     .vitrine-rail {
       display: flex;
-      gap: clamp(1.5rem, 3vw, 3rem);
+      gap: clamp(1rem, 2vw, 2rem);
       padding: 3rem clamp(1.5rem, 4vw, 4rem) 5rem;
       padding-right: clamp(6rem, 18vw, 20rem);
       overflow-x: auto;
@@ -1350,6 +1351,10 @@ const vitrine = [
          peut cliquer-glisser pour swiper. JS écoute pointer events. */
       cursor: grab;
       user-select: none;
+      /* touch-action pan-x : sur mobile, autorise uniquement le geste
+         horizontal natif (swipe), neutralise le drag d'image qui « sélectionne
+         la photo comme pour la déplacer » (Morgan 2026-04-28). */
+      touch-action: pan-x;
     }
     .vitrine-rail::-webkit-scrollbar {
       display: none;
@@ -1362,7 +1367,8 @@ const vitrine = [
     }
     .vitrine-card {
       flex: 0 0 auto;
-      width: clamp(260px, 80vw, 320px);
+      /* Mobile : 1 card quasi pleine largeur, swipable (pas de drag image). */
+      width: clamp(280px, 86vw, 360px);
       scroll-snap-align: start;
       display: flex;
       flex-direction: column;
@@ -1372,12 +1378,14 @@ const vitrine = [
     }
     @media (min-width: 768px) {
       .vitrine-card {
-        width: clamp(320px, 38vw, 460px);
+        /* Tablet : 2 cards entières + 3e cropée (Morgan 2026-04-28). */
+        width: clamp(360px, 45vw, 540px);
       }
     }
     @media (min-width: 1280px) {
       .vitrine-card {
-        width: clamp(380px, 28vw, 520px);
+        /* Desktop : 2 cards entières + 3e cropée à droite + 4e cachée. */
+        width: clamp(440px, 42vw, 660px);
       }
     }
     .vitrine-name {
@@ -1402,6 +1410,10 @@ const vitrine = [
       height: 100%;
       object-fit: cover;
       object-position: center;
+      /* Empêche le drag-ghost de l'image qui parasite le swipe (Morgan 2026-04-28). */
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
     }
     /* Contrôles vitrine — wrapper qui contient prev/next + dots, alignés. */
     .vitrine-controls {
@@ -2280,20 +2292,29 @@ const vitrine = [
       ) as HTMLElement[];
       if (cards.length === 0 || dots.length === 0) return;
 
-      // Index actif basé sur scrollLeft / scrollMax → couvre toute la plage
-      // 0..1 quels que soient les paddings du rail. Évite le bug Morgan
-      // 2026-04-27 : dots 1 et 4 jamais actifs car les cards extrêmes ne
-      // pouvaient atteindre le centre du rail (padding-right énorme).
+      // State interne — index actif tracké explicitement pour éviter de relire
+      // les dots pendant un smooth scroll en cours (Morgan 2026-04-28 : « bouton
+      // flèches ne fonctionne pas » — symptôme du stale read).
+      let activeIdx = 0;
+
+      // Sync l'index actif depuis le scroll réel (scroll natif drag/swipe).
       const update = () => {
         const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
         const ratio = Math.max(0, Math.min(1, rail.scrollLeft / maxScroll));
         const idx = Math.min(cards.length - 1, Math.round(ratio * (cards.length - 1)));
+        activeIdx = idx;
         dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
       };
 
       const goToCard = (i: number) => {
-        const target = cards[Math.max(0, Math.min(cards.length - 1, i))];
+        const clamped = Math.max(0, Math.min(cards.length - 1, i));
+        const target = cards[clamped];
         if (!target) return;
+        // Maj synchrone du state pour que les clics rapides sur next/prev
+        // accumulent correctement (sinon currentIndex() lit le scroll en cours).
+        activeIdx = clamped;
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === clamped));
+        updateArrowsState();
         const targetLeft = target.offsetLeft - (rail.clientWidth - target.clientWidth) / 2;
         rail.scrollTo({ left: targetLeft, behavior: 'smooth' });
       };
@@ -2301,22 +2322,14 @@ const vitrine = [
       // Click sur dot → scroll smooth vers la card correspondante
       dots.forEach((dot, i) => dot.addEventListener('click', () => goToCard(i)));
 
-      // Boutons prev/next (Morgan 2026-04-27)
+      // Boutons prev/next (Morgan 2026-04-27 puis fix 2026-04-28)
       const prevBtn = document.querySelector<HTMLButtonElement>('[data-vitrine-prev]');
       const nextBtn = document.querySelector<HTMLButtonElement>('[data-vitrine-next]');
-      const currentIndex = () => {
-        let idx = 0;
-        dots.forEach((d, i) => {
-          if (d.classList.contains('is-active')) idx = i;
-        });
-        return idx;
-      };
-      prevBtn?.addEventListener('click', () => goToCard(currentIndex() - 1));
-      nextBtn?.addEventListener('click', () => goToCard(currentIndex() + 1));
+      prevBtn?.addEventListener('click', () => goToCard(activeIdx - 1));
+      nextBtn?.addEventListener('click', () => goToCard(activeIdx + 1));
       const updateArrowsState = () => {
-        const idx = currentIndex();
-        if (prevBtn) prevBtn.disabled = idx <= 0;
-        if (nextBtn) nextBtn.disabled = idx >= cards.length - 1;
+        if (prevBtn) prevBtn.disabled = activeIdx <= 0;
+        if (nextBtn) nextBtn.disabled = activeIdx >= cards.length - 1;
       };
       updateArrowsState();
 
