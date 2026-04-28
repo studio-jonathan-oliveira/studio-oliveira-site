@@ -882,11 +882,14 @@ const vitrine = [
   >
     <div class="pull-quote-sticky">
       {
-        /* Largeur réduite (Morgan 2026-04-27 passe 2) : on resserre à
-          max-w-3xl pour étaler le texte sur plus de lignes (effet stance
-          verticale, le manifeste se déploie en hauteur). */
+        /* Largeur élargie (Morgan 2026-04-28) : max-w-[70rem] (vs max-w-4xl
+          = 56rem, +25%). Font-size augmenté du même ratio (cf. CSS plus bas)
+          pour garder le même nombre de mots par ligne — l'effet justify
+          s'amplifie visuellement avec le bloc plus large. */
       }
-      <div class="mx-auto flex min-h-[100vh] max-w-4xl flex-col justify-center px-6 py-12 md:px-10">
+      <div
+        class="mx-auto flex min-h-[100vh] max-w-[70rem] flex-col justify-center px-6 py-12 md:px-10"
+      >
         <p
           class="mb-12 font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
         >
@@ -1573,10 +1576,10 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      /* Font-size réduit (Morgan 2026-04-27 passe 3 : « le mot résultat est
-         coupé à moitié »). 5rem → 3.5rem max pour tenir dans le sticky
-         100vh quand le bloc est resserré max-w-4xl et déborde sur 5+ lignes. */
-      font-size: clamp(1.75rem, 4vw, 3.5rem);
+      /* Font-size augmenté de +25% en sync avec l'élargissement du container
+         max-w-4xl → max-w-[70rem] (Morgan 2026-04-28). Ratio préservé →
+         même nombre de mots par ligne, effet justify amplifié. */
+      font-size: clamp(2.2rem, 5vw, 4.4rem);
       line-height: 1.1;
       letter-spacing: -0.02em;
       text-transform: uppercase;
