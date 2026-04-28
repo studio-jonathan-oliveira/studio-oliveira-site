@@ -63,22 +63,12 @@ const { darkHero = false } = Astro.props;
       aria-label="Studio J Oliveira — accueil"
       data-header-logo
     >
-      <!-- Logo bleu Klein — refonte 2026-04-28 (Jonathan) : remplace logo-moss
-           sur sections cream. Réutilise le PNG black comme alpha-mask, teinté
-           via background-color → swap couleur sans nouveau fichier. -->
+      <!-- Logo bleu Klein TOUJOURS (refonte 2026-04-28 itération 3 — Jonathan) :
+           plus de bascule cream/klein selon section. Sur dark-section le verre
+           dépoli + drop-shadow assurent la lisibilité. Mask sur PNG black. -->
       <span
         class="logo-klein block h-9 w-[150px] md:h-10 md:w-[167px] lg:h-11 lg:w-[183px]"
         aria-hidden="true"></span>
-      <img
-        src="/brand/wordmark-cream.png?v=3"
-        alt=""
-        width="1200"
-        height="288"
-        class="logo-cream absolute inset-0 h-9 w-auto md:h-10 lg:h-11"
-        loading="eager"
-        decoding="async"
-        aria-hidden="true"
-      />
       <span class="sr-only">Studio J Oliveira</span>
     </a>
 
@@ -147,15 +137,19 @@ const { darkHero = false } = Astro.props;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .logo-cream,
   :global(body.is-dark-section) .menu-trigger,
   :global(body.is-dark-section) .site-header__topbar,
-  .site-header--dark-hero:not(.is-scrolled) .logo-cream,
   .site-header--dark-hero:not(.is-scrolled) .menu-trigger,
   .site-header--dark-hero:not(.is-scrolled) .site-header__topbar {
     text-shadow:
       0 1px 4px rgba(0, 0, 0, 0.85),
       0 2px 14px rgba(0, 0, 0, 0.5);
+  }
+  /* Logo Klein toujours visible : sur dark-section, ajout d'un drop-shadow
+     pour le détacher du verre dépoli (refonte 2026-04-28 itération 3). */
+  :global(body.is-dark-section) .logo-klein,
+  .site-header--dark-hero:not(.is-scrolled) .logo-klein {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55)) drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
   }
   :global(body.is-dark-section) .menu-bars > span,
   .site-header--dark-hero:not(.is-scrolled) .menu-bars > span {
@@ -174,51 +168,20 @@ const { darkHero = false } = Astro.props;
       0 6px 24px rgba(0, 0, 0, 0.45),
       0 2px 6px rgba(0, 0, 0, 0.35);
   }
-  /* Logo swap sur sections sombres */
-  :global(body.is-dark-section) .logo-klein {
-    opacity: 0;
-  }
-  :global(body.is-dark-section) .logo-cream {
-    opacity: 1;
-  }
+  /* Refonte 2026-04-28 itération 3 : logo Klein TOUJOURS visible. Plus de
+     swap cream/klein. La logique d'opacité est retirée. */
 
-  /* Dark hero — transparent, logo crème, texte crème */
+  /* Dark hero — transparent, texte crème (le logo reste Klein) */
   .site-header--dark-hero {
     background-color: transparent;
     color: var(--color-cream);
   }
-  .site-header--dark-hero .logo-klein {
-    opacity: 0;
-  }
-  .site-header--dark-hero .logo-cream {
-    opacity: 1;
-  }
 
-  /* Scrolled — garde mix-blend-difference (pattern designbyad/Morgan) :
-     pas de fond solide cream, la couleur s'inverse selon le contenu derrière.
-     Le backdrop-filter blur est incompatible avec mix-blend, on s'en passe. */
+  /* Scrolled — mix-blend-difference, texte crème, logo Klein conservé. */
   .site-header.is-scrolled {
     background-color: transparent;
     color: var(--color-cream);
     border-bottom: none;
-  }
-  .site-header.is-scrolled .logo-klein {
-    opacity: 1;
-  }
-  .site-header.is-scrolled .logo-cream {
-    opacity: 0;
-  }
-
-  .site-header:not(.site-header--dark-hero) .logo-klein {
-    opacity: 1;
-  }
-  .site-header:not(.site-header--dark-hero) .logo-cream {
-    opacity: 0;
-  }
-
-  .logo-swap .logo-klein,
-  .logo-swap .logo-cream {
-    transition: opacity 0.4s var(--ease-out-editorial);
   }
 
   /* Logo Klein — silhouette du wordmark via mask + teinte par background.
@@ -358,7 +321,6 @@ const { darkHero = false } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .site-header,
     .logo-swap .logo-klein,
-    .logo-swap .logo-cream,
     .status-dot,
     .menu-trigger .menu-bars > span {
       transition: none;

@@ -181,7 +181,7 @@ const vitrine = [
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
-    class="hero-immersive hero-sticky relative overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="hero-immersive hero-sticky relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
     style={`background-image: url("${HERO_LQIP_DATA_URI}"); background-size: cover; background-position: center; background-repeat: no-repeat;`}
     data-hero-bg
   >
@@ -233,7 +233,7 @@ const vitrine = [
         décalé bas-droite (déborde la grille), manifesto bas-gauche, CTA + cue
         à des coins différents. Le H1 se lit en diagonale → narration spatiale. */
     }
-    <div class="hero-asymmetric relative z-10 min-h-[100svh] w-full" data-hero-sequence>
+    <div class="hero-asymmetric relative min-h-[100svh] w-full" data-hero-sequence>
       {/* Eyebrow — haut-droit, vertical signature */}
       <p
         data-hero="eyebrow"
@@ -457,8 +457,7 @@ const vitrine = [
     id="typologies"
     data-section-label="Typologies"
     data-hscroll-typologies
-    data-theme="dark"
-    class="htypo-section relative border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="htypo-section relative border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
@@ -474,7 +473,7 @@ const vitrine = [
         }
         <h2
           id="typologies-title"
-          class="htypo-title mt-4 max-w-3xl pb-[0.12em] font-[family-name:var(--font-heading)] leading-[0.95] text-[var(--color-cream)]"
+          class="htypo-title mt-4 max-w-3xl pb-[0.12em] font-[family-name:var(--font-heading)] leading-[0.95] text-[var(--color-ink)]"
         >
           Quatre manières <span class="display">d'habiter</span>
           un jardin.
@@ -514,10 +513,10 @@ const vitrine = [
               </div>
 
               <div class="htypo-copy" data-parallax-layer="text">
-                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
+                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
                   {t.index} &nbsp;·&nbsp; Typologie
                 </p>
-                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-cream)] md:text-[length:var(--text-6xl)]">
+                <h3 class="htypo-name mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] text-[var(--color-ink)] md:text-[length:var(--text-6xl)]">
                   <span class="display">{t.nom}</span>
                 </h3>
                 <p
@@ -525,30 +524,30 @@ const vitrine = [
                   data-split-types="words"
                   data-split-stagger="0.06"
                   data-split-duration="1.05"
-                  class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/75 md:text-[length:var(--text-2xl)]"
+                  class="htypo-phrase mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-ink)]/75 md:text-[length:var(--text-2xl)]"
                 >
                   {t.phrase}
                 </p>
 
                 {/* Meta sans prix étude — brief Jonathan 2026-04-24. Surface + budget travaux + exemples. */}
-                <dl class="htypo-meta mt-10 grid max-w-md grid-cols-2 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/70 uppercase">
+                <dl class="htypo-meta mt-10 grid max-w-md grid-cols-2 gap-x-6 gap-y-4 font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/70 uppercase">
                   <div>
-                    <dt class="text-[var(--color-cream)]/45">Surface</dt>
-                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.surface}</dd>
+                    <dt class="text-[var(--color-ink)]/45">Surface</dt>
+                    <dd class="mt-1.5 text-[var(--color-ink)]">{t.surface}</dd>
                   </div>
                   <div>
-                    <dt class="text-[var(--color-cream)]/45">Budget travaux</dt>
-                    <dd class="mt-1.5 text-[var(--color-cream)]">{t.budget}</dd>
+                    <dt class="text-[var(--color-ink)]/45">Budget travaux</dt>
+                    <dd class="mt-1.5 text-[var(--color-ink)]">{t.budget}</dd>
                   </div>
                   <div class="col-span-2">
-                    <dt class="text-[var(--color-cream)]/45">Exemples</dt>
-                    <dd class="mt-1.5 tracking-[0.05em] text-[var(--color-cream)] normal-case">
+                    <dt class="text-[var(--color-ink)]/45">Exemples</dt>
+                    <dd class="mt-1.5 tracking-[0.05em] text-[var(--color-ink)] normal-case">
                       {t.exemples}
                     </dd>
                   </div>
                 </dl>
 
-                <span class="htypo-cta-static mt-10 inline-flex items-center gap-3 border-b border-[var(--color-cream)]/35 pb-1 text-sm tracking-wide text-[var(--color-cream)]/85 transition-opacity group-hover:opacity-60">
+                <span class="htypo-cta-static mt-10 inline-flex items-center gap-3 border-b border-[var(--color-ink)]/35 pb-1 text-sm tracking-wide text-[var(--color-ink)]/85 transition-opacity group-hover:opacity-60">
                   Explorer la typologie
                   <span aria-hidden="true">→</span>
                 </span>
@@ -577,8 +576,7 @@ const vitrine = [
   <section
     id="vitrine"
     data-section-label="Projets"
-    data-theme="dark"
-    class="vitrine-section relative isolate overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="vitrine-section relative isolate overflow-hidden border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="vitrine-title"
   >
     {
@@ -657,7 +655,7 @@ const vitrine = [
               <p class="vitrine-meta">
                 <span>{p.lieu}</span>
                 <span aria-hidden="true">—</span>
-                <span class="text-[var(--color-cream)]/50">{p.statut}</span>
+                <span class="text-[var(--color-ink)]/50">{p.statut}</span>
               </p>
             </a>
           ))
@@ -694,8 +692,7 @@ const vitrine = [
   <section
     id="manifeste"
     data-section-label="Manifeste"
-    data-theme="dark"
-    class="pull-quote-section relative overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="pull-quote-section relative overflow-hidden border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Citation Jonathan Oliveira"
   >
     <div class="pull-quote-sticky">
@@ -726,7 +723,7 @@ const vitrine = [
           de résultat.
         </blockquote>
         <footer
-          class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase"
+          class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-ink)]/50 uppercase"
         >
           Jonathan Oliveira — Fondateur du studio
         </footer>
@@ -738,8 +735,7 @@ const vitrine = [
   <section
     id="contact-cta"
     data-section-label="Contact"
-    data-theme="dark"
-    class="border-t border-[var(--color-cream)]/10 bg-[var(--color-ink)] text-[var(--color-cream)]"
+    class="border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
   >
     <div class="mx-auto max-w-4xl px-6 py-32 text-center md:px-10 md:py-48" data-reveal="slow">
       {/* Eyebrow Engager la conversation retiré 2026-04-28 #B8. */}
@@ -752,7 +748,7 @@ const vitrine = [
         <span data-mask-line class="block">une étude.</span>
       </h2>
       <p
-        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/70"
       >
         Chaque projet commence par un appel de découverte de 15 à 25 minutes. On qualifie ensemble
         le site, le programme et les attentes.
