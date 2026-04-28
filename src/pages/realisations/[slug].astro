@@ -220,7 +220,7 @@ const schema = jsonLdGraph([
                       sizes="(min-width: 768px) 49vw, 100vw"
                       formats={['avif', 'webp']}
                       quality={85}
-                      class="gallery-img aspect-[4/5] w-full object-cover"
+                      class="gallery-img aspect-[3/4] w-full object-cover"
                       loading="lazy"
                       data-reveal="image-rise"
                     />
@@ -249,7 +249,7 @@ const schema = jsonLdGraph([
                       sizes="(min-width: 768px) 49vw, 100vw"
                       formats={['avif', 'webp']}
                       quality={85}
-                      class="gallery-img aspect-[4/5] w-full object-cover"
+                      class="gallery-img aspect-[3/4] w-full object-cover"
                       loading="lazy"
                       data-reveal="image-rise"
                     />
@@ -286,33 +286,30 @@ const schema = jsonLdGraph([
   </Fragment>
 
   <style>
-    /* Galerie quinconce 2 colonnes — col droite décalée d'une demi-image
-       (50% du ratio 4/5 ≈ 30vw). Mobile : single column, pas de décalage. */
+    /* Galerie quinconce 2 colonnes — gap visuellement uniforme entre lignes
+       et colonnes (Morgan 2026-04-28 : « pas plus d'espace au milieu qu'entre
+       elle sur la hauteur »). Aspect 3/4 pour images plus hautes. */
     .gallery-quinconce {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 8px;
+      gap: 6px;
       align-items: start;
     }
     @media (min-width: 768px) {
       .gallery-quinconce {
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 6px;
       }
     }
     .gallery-col {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
     @media (min-width: 768px) {
-      .gallery-col {
-        gap: 12px;
-      }
       .gallery-col-right {
-        /* Décalage demi-image — ratio 4/5 sur 49vw donne ~30vw de hauteur,
-           décalage = ~15vw + une marge éditoriale. */
-        padding-top: 18vw;
+        /* Décalage demi-image (ratio 3/4 sur 49vw ≈ 33vw de hauteur). */
+        padding-top: 16vw;
       }
     }
     .gallery-figure {

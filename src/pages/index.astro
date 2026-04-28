@@ -766,7 +766,7 @@ const vitrine = [
        sélection de projets, remonter sélection »). Méthode au-dessus a
        déjà py-36, on ne ajoute plus que 12-16 ici (vs 28-36 avant). */
     }
-    <header class="mx-auto max-w-[1500px] px-6 pt-12 md:px-10 md:pt-16">
+    <header class="vitrine-header mx-auto max-w-[1500px] px-6 pt-12 md:px-10 md:pt-16">
       <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
         <span class="text-[var(--color-cream)]/40">06</span> &nbsp;·&nbsp; Sélection de projets
       </p>
@@ -782,64 +782,76 @@ const vitrine = [
     </header>
 
     {
-      /* data-wheel-horizontal retiré 2026-04-27 — interceptait le scroll
-        vertical de la page et donnait une sensation de bug. Scroll horizontal
-        natif uniquement (trackpad / shift+wheel / drag tactile). */
+      /* Wrapper outer — permet de positionner les arrows en overlay absolute
+        centred verticalement sur le rail (Morgan 2026-04-28 : « proposer à
+        gauche et à droite directement dans la timeline »). */
     }
-    <div class="vitrine-rail" role="list">
-      {
-        vitrine.map((p, i) => (
-          <a
-            href={p.href}
-            class="vitrine-card group"
-            role="listitem"
-            data-cursor-cta-host
-            data-cursor-label="OUVRIR"
-            aria-label={`Ouvrir la typologie ${p.typologieSlug} — projet ${p.nom}`}
-          >
-            <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
-              {p.nom}
-            </p>
-            {/* Pattern designbyad : image qui se déroule du haut plus vite
-                que le scroll (data-img-reveal scroll-driven). Réversible. */}
-            <div class="vitrine-frame" data-img-reveal>
-              <Image
-                src={p.image}
-                alt={`${p.nom} — ${p.lieu}`}
-                widths={[480, 720, 960, 1200]}
-                sizes="(min-width: 1280px) 42vw, (min-width: 768px) 45vw, 86vw"
-                quality={82}
-                format="webp"
-                class="vitrine-img"
-                loading={i < 2 ? 'eager' : 'lazy'}
-                draggable="false"
-              />
-            </div>
-            <p class="vitrine-meta">
-              <span>{p.lieu}</span>
-              <span aria-hidden="true">—</span>
-              <span class="text-[var(--color-cream)]/50">{p.statut}</span>
-            </p>
-          </a>
-        ))
-      }
-    </div>
-
-    {
-      /* Pagination dots — pattern designbyad scroll_home f_012, signale la
-        position dans le rail horizontal. JS dans <script> ci-dessous écoute
-        le scroll du rail et toggle .is-active sur le dot correspondant. */
-    }
-    {
-      /* Contrôles vitrine — boutons prev/next + dots de pagination centrés.
-        Demande Morgan 2026-04-27 : « petits boutons pour faire défiler aussi ». */
-    }
-    <div class="vitrine-controls">
-      <button type="button" class="vitrine-arrow" data-vitrine-prev aria-label="Projet précédent">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+    <div class="vitrine-rail-outer">
+      <button
+        type="button"
+        class="vitrine-arrow vitrine-arrow--overlay vitrine-arrow--prev"
+        data-vitrine-prev
+        aria-label="Projet précédent"
+      >
+        <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true">
           <path d="M10 2 L4 8 L10 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
         </svg>
       </button>
+      <button
+        type="button"
+        class="vitrine-arrow vitrine-arrow--overlay vitrine-arrow--next"
+        data-vitrine-next
+        aria-label="Projet suivant"
+      >
+        <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </button>
+      <div class="vitrine-rail" role="list">
+        {
+          vitrine.map((p, i) => (
+            <a
+              href={p.href}
+              class="vitrine-card group"
+              role="listitem"
+              data-cursor-cta-host
+              data-cursor-label="OUVRIR"
+              aria-label={`Ouvrir la typologie ${p.typologieSlug} — projet ${p.nom}`}
+            >
+              <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
+                {p.nom}
+              </p>
+              {/* Pattern designbyad : image qui se déroule du haut plus vite
+                que le scroll (data-img-reveal scroll-driven). Réversible. */}
+              <div class="vitrine-frame" data-img-reveal>
+                <Image
+                  src={p.image}
+                  alt={`${p.nom} — ${p.lieu}`}
+                  widths={[480, 720, 960, 1200]}
+                  sizes="(min-width: 1280px) 42vw, (min-width: 768px) 45vw, 86vw"
+                  quality={82}
+                  format="webp"
+                  class="vitrine-img"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  draggable="false"
+                />
+              </div>
+              <p class="vitrine-meta">
+                <span>{p.lieu}</span>
+                <span aria-hidden="true">—</span>
+                <span class="text-[var(--color-cream)]/50">{p.statut}</span>
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    {
+      /* Pagination dots — pattern designbyad scroll_home f_012. Les arrows
+        ont été déplacées en overlay sur le rail (Morgan 2026-04-28). */
+    }
+    <div class="vitrine-controls">
       <div class="vitrine-dots" data-vitrine-dots>
         {
           vitrine.map((_, i) => (
@@ -852,11 +864,6 @@ const vitrine = [
           ))
         }
       </div>
-      <button type="button" class="vitrine-arrow" data-vitrine-next aria-label="Projet suivant">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
-        </svg>
-      </button>
     </div>
 
     {/* CTA "Voir tous les projets" — accès vers le listing complet */}
@@ -1338,6 +1345,22 @@ const vitrine = [
        portraits ~70vh, name UPPERCASE au-dessus, scroll horizontal natif
        avec snap mandatory. Cards image-rise au reveal (data-clip-reveal +
        data-reveal="image-rise" sur img enfant). */
+    /* Header sticky : reste visible pendant qu'on scroll dans la section
+       (Morgan 2026-04-28 : « faire en sorte qu'on voit ce titre au dessus
+       même quand on a descendu pour voir l'image entière »). */
+    .vitrine-header {
+      position: sticky;
+      top: var(--header-height, 80px);
+      z-index: 5;
+      background-color: var(--color-ink);
+      padding-bottom: 1rem;
+    }
+
+    /* Wrapper outer du rail — relatif pour positionner les arrows en overlay. */
+    .vitrine-rail-outer {
+      position: relative;
+    }
+
     .vitrine-rail {
       display: flex;
       gap: clamp(1rem, 2vw, 2rem);
@@ -1449,8 +1472,42 @@ const vitrine = [
       outline: none;
     }
     .vitrine-arrow:disabled {
-      opacity: 0.3;
+      opacity: 0.15;
       cursor: not-allowed;
+    }
+
+    /* Arrows en overlay — centred verticalement sur le rail, position fixed
+       horizontalement aux bords de la section (Morgan 2026-04-28). Plus
+       grands et plus visibles que la version controls en bas. */
+    .vitrine-arrow--overlay {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      z-index: 10;
+      background-color: color-mix(in oklab, var(--color-ink) 75%, transparent);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-color: color-mix(in oklab, var(--color-cream) 50%, transparent);
+    }
+    .vitrine-arrow--overlay:hover,
+    .vitrine-arrow--overlay:focus-visible {
+      background-color: color-mix(in oklab, var(--color-ink) 90%, transparent);
+      border-color: var(--color-cream);
+      transform: translateY(-50%) scale(1.06);
+    }
+    .vitrine-arrow--prev {
+      left: clamp(0.5rem, 1.5vw, 1.5rem);
+    }
+    .vitrine-arrow--next {
+      right: clamp(0.5rem, 1.5vw, 1.5rem);
+    }
+    /* Mobile : on cache les arrows overlay (le swipe natif suffit). */
+    @media (max-width: 767px) {
+      .vitrine-arrow--overlay {
+        display: none;
+      }
     }
 
     /* Pagination dots vitrine — designbyad pattern f_012. */
