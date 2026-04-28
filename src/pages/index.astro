@@ -907,15 +907,61 @@ const vitrine = [
             (0.1→0.75). Le bloc est presque au max quand on arrive à la
             moitié de la zone sticky. */
         }
-        <blockquote
-          class="manifeste-justify"
-          data-justify-scroll
-          data-justify-amp="55"
-          data-justify-window="0,0.4"
-          data-justify-seed="11"
-        >
-          JE NE VENDS PAS UNE ÉTUDE, JE VENDS UNE VISION, UNE MÉTHODE, UNE EXPÉRIENCE, UNE SÉCURITÉ
-          DE RÉSULTAT.
+        {
+          /* Découpage manuel en 5 lignes (Morgan 2026-04-28 #5) avec nb de mots
+            irrégulier (6-3-3-2-4) → text-align: justify natif distribue les
+            espaces inter-mots de manière variable selon la longueur de chaque
+            ligne. Chaque ligne est un block <p> indépendant avec sa propre
+            data-justify-scroll + window décalée → cascade au scroll plutôt
+            que tout d'un coup. Texte de Jonathan inchangé, juste re-agencé
+            visuellement (CLAUDE.md §5 respecté). */
+        }
+        <blockquote class="manifeste-justify">
+          <p
+            class="manifeste-line"
+            data-justify-scroll
+            data-justify-amp="55"
+            data-justify-window="0,0.18"
+            data-justify-seed="3"
+          >
+            JE NE VENDS PAS UNE ÉTUDE,
+          </p>
+          <p
+            class="manifeste-line"
+            data-justify-scroll
+            data-justify-amp="55"
+            data-justify-window="0.08,0.26"
+            data-justify-seed="11"
+          >
+            JE VENDS UNE
+          </p>
+          <p
+            class="manifeste-line"
+            data-justify-scroll
+            data-justify-amp="55"
+            data-justify-window="0.16,0.34"
+            data-justify-seed="17"
+          >
+            VISION, UNE MÉTHODE,
+          </p>
+          <p
+            class="manifeste-line"
+            data-justify-scroll
+            data-justify-amp="55"
+            data-justify-window="0.24,0.42"
+            data-justify-seed="23"
+          >
+            UNE EXPÉRIENCE,
+          </p>
+          <p
+            class="manifeste-line"
+            data-justify-scroll
+            data-justify-amp="55"
+            data-justify-window="0.32,0.5"
+            data-justify-seed="29"
+          >
+            UNE SÉCURITÉ DE RÉSULTAT.
+          </p>
         </blockquote>
         <footer
           class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-cream)]/50 uppercase"
@@ -1577,23 +1623,29 @@ const vitrine = [
     .manifeste-justify {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      /* Étalement sur plus de lignes (Morgan 2026-04-28 #4) : word-spacing
-         poussé à 0.5em + font légèrement augmentée → encore moins de mots
-         par ligne, le bloc se déploie en hauteur dans le sticky 100vh.
-         Combiné à data-justify-amp=55, l'effet de mouvement est très marqué. */
       font-size: clamp(2.1rem, 4.9vw, 4.4rem);
       line-height: 1.18;
       letter-spacing: -0.01em;
       text-transform: uppercase;
-      text-align: justify;
-      text-align-last: justify;
       color: inherit;
       hyphens: none;
-      word-spacing: 0.5em;
     }
-    /* text-align-last: justify → la dernière ligne aussi s'écarte pour remplir */
+    /* Chaque ligne du manifeste = un block indépendant (Morgan 2026-04-28 #5).
+       text-align: justify + text-align-last: justify → les espaces inter-mots
+       s'étalent dans CHAQUE ligne pour remplir la largeur, ce qui donne un
+       espacement visible différent par ligne (selon le nb de mots). */
+    .manifeste-line {
+      display: block;
+      width: 100%;
+      text-align: justify;
+      text-align-last: justify;
+      margin: 0;
+      word-spacing: 0;
+    }
+    /* Mobile : on désactive le justify-last (les lignes courtes resteraient
+       éparpillées sur toute la largeur, illisible en portrait). */
     @media (max-width: 767px) {
-      .manifeste-justify {
+      .manifeste-line {
         text-align-last: left;
       }
     }
