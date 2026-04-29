@@ -50,10 +50,23 @@
       padding-left: var(--sidebar-gutter);
     }
   }
-  /* Sections plein-écran qui ignorent le gutter sidebar — fond et contenu
-     ramenés en pleine largeur du viewport. */
+  /* Sections plein-écran qui ignorent le gutter sidebar — fond ET contenu
+     ramenés en pleine largeur du viewport. À utiliser pour le hero où la
+     vidéo doit s'étendre bord à bord. */
   .full-bleed {
     margin-left: calc(-1 * var(--sidebar-gutter));
+    width: calc(100% + var(--sidebar-gutter));
+  }
+
+  /* Variante : étend uniquement le FOND sur 100vw (le contenu reste dans
+     la zone gutter via padding-left compensé). À utiliser sur les sections
+     cream/Klein qui suivent le hero — le fond couvre la marge sidebar et
+     masque le hero sticky qui reste en arrière-plan. Morgan 2026-04-29 :
+     « la marge doit avoir la couleur de la section en cours, la vidéo du
+     hero ne doit plus déborder dans la marge sur le reste de la page ». */
+  .full-bleed-bg {
+    margin-left: calc(-1 * var(--sidebar-gutter));
+    padding-left: var(--sidebar-gutter);
     width: calc(100% + var(--sidebar-gutter));
   }
 </style>
