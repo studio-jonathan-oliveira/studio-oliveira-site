@@ -102,8 +102,7 @@
     width: 1.5px;
     background-color: color-mix(in oklab, var(--color-klein) 45%, transparent);
   }
-  :global(body.is-dark-section) .scroll-nav-rail,
-  :global(html[data-theme='dark']) .scroll-nav-rail {
+  .scroll-nav.is-on-dark .scroll-nav-rail {
     background-color: color-mix(in oklab, var(--color-cream) 40%, transparent);
   }
 
@@ -125,8 +124,7 @@
   .scroll-nav.is-visible .scroll-nav-thumb {
     opacity: 1;
   }
-  :global(body.is-dark-section) .scroll-nav-thumb,
-  :global(html[data-theme='dark']) .scroll-nav-thumb {
+  .scroll-nav.is-on-dark .scroll-nav-thumb {
     background-color: var(--color-cream);
   }
 
@@ -175,8 +173,7 @@
       'opsz' 144,
       'SOFT' 80;
   }
-  :global(body.is-dark-section) .scroll-nav-title,
-  :global(html[data-theme='dark']) .scroll-nav-title {
+  .scroll-nav.is-on-dark .scroll-nav-title {
     color: var(--color-cream) !important;
   }
   .scroll-nav-item:hover .scroll-nav-title,
@@ -264,15 +261,15 @@
     width: 0;
     transition: width 0.3s linear;
   }
-  :global(body.is-dark-section) .scroll-nav-mobile {
+  .scroll-nav-mobile.is-on-dark {
     background-color: color-mix(in srgb, var(--color-klein) 88%, transparent);
     color: var(--color-cream);
     border-bottom-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
   }
-  :global(body.is-dark-section) .scroll-nav-mobile-label {
+  .scroll-nav-mobile.is-on-dark .scroll-nav-mobile-label {
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .scroll-nav-mobile-fill {
+  .scroll-nav-mobile.is-on-dark .scroll-nav-mobile-fill {
     background-color: var(--color-cream);
   }
 </style>
@@ -396,6 +393,16 @@
       });
 
       positionThumb(activeIndex);
+
+      // Bascule la couleur de la sidebar selon le data-theme de la section
+      // active (Morgan 2026-04-29 : « la sidebar reste gris sombre quand on
+      // survole une section bleu »). On bascule directement sur la section
+      // active du sommaire — pas sur body.is-dark-section qui dépend du
+      // mid viewport et a un délai.
+      const sec = sections[activeIndex];
+      const isDark = sec?.dataset.theme === 'dark';
+      nav.classList.toggle('is-on-dark', isDark);
+      if (mobile) mobile.classList.toggle('is-on-dark', isDark);
 
       const section = sections[activeIndex];
       if (!section) return;
