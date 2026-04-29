@@ -93,29 +93,31 @@
     pointer-events: auto;
   }
 
-  /* Rail vertical continu — Klein/45% sur cream, cream/40% sur dark. */
+  /* Refonte 2026-04-29 (Morgan persistance « sidebar reste gris sombre ») :
+     couleur sidebar pilotée par CSS variables --sn-color (titres + thumb)
+     et --sn-rail-color (rail), set DIRECTEMENT par le JS via element.style.
+     Bypass complet de la cascade scoped Astro / problèmes de spécificité. */
+  .scroll-nav {
+    --sn-color: var(--color-klein);
+  }
+
   .scroll-nav-rail {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 1.5px;
-    background-color: color-mix(in oklab, var(--color-klein) 45%, transparent);
-  }
-  .scroll-nav.is-on-dark .scroll-nav-rail,
-  :global(html[data-theme='dark']) .scroll-nav-rail,
-  :global(body.is-dark-section) .scroll-nav-rail {
-    background-color: color-mix(in oklab, var(--color-cream) 40%, transparent);
+    background-color: color-mix(in oklab, var(--sn-color) 45%, transparent);
   }
 
-  /* Thumb — TOUJOURS Klein sur cream, cream sur dark (Morgan 2026-04-29). */
+  /* Thumb */
   .scroll-nav-thumb {
     position: absolute;
     left: -1px;
     top: 0;
     width: 3px;
     height: 36px;
-    background-color: var(--color-klein);
+    background-color: var(--sn-color);
     transform: translateY(0);
     transition:
       transform 0.8s var(--ease-out-editorial),
@@ -125,11 +127,6 @@
   }
   .scroll-nav.is-visible .scroll-nav-thumb {
     opacity: 1;
-  }
-  .scroll-nav.is-on-dark .scroll-nav-thumb,
-  :global(html[data-theme='dark']) .scroll-nav-thumb,
-  :global(body.is-dark-section) .scroll-nav-thumb {
-    background-color: var(--color-cream);
   }
 
   /* Liste items */
@@ -157,8 +154,8 @@
     padding: 0.2rem 0;
   }
 
-  /* Titre — italique serif, couleur Klein explicite (visible sur cream).
-     Sur dark-section : cream. Opacité par défaut élevée pour rester visible. */
+  /* Titre — couleur via --sn-color (Klein par défaut, swap par JS en cream
+     sur dark). Pas d'override de cascade : la var change, le titre suit. */
   .scroll-nav-title {
     font-family: var(--font-heading), serif;
     font-size: 14px;
@@ -166,7 +163,7 @@
     font-weight: 500;
     line-height: 1;
     white-space: nowrap;
-    color: var(--color-klein);
+    color: var(--sn-color);
     opacity: 0.7;
     transform: translateX(0);
     transition:
@@ -176,11 +173,6 @@
     font-variation-settings:
       'opsz' 144,
       'SOFT' 80;
-  }
-  .scroll-nav.is-on-dark .scroll-nav-title,
-  :global(html[data-theme='dark']) .scroll-nav-title,
-  :global(body.is-dark-section) .scroll-nav-title {
-    color: var(--color-cream) !important;
   }
   .scroll-nav-item:hover .scroll-nav-title,
   .scroll-nav-item:focus-within .scroll-nav-title {
@@ -375,23 +367,23 @@
         mobileFill.style.width = `${pct}%`;
       }
 
-      // Bascule cream/Klein de la sidebar : la section est considérée
-      // « traversée » dès qu'elle couvre une portion centrale du viewport
-      // (zone 30-70%). Plus permissif que le mid strict, sinon les sections
-      // courtes (bandeau Klein épuré) ne sont jamais détectées comme actives
-      // pendant un scroll fluide. Morgan 2026-04-29 : « quand on TRAVERSE
-      // une section bleu, le texte de la sidebar doit être crème aussi ».
+      // Bascule cream/Klein de la sidebar via CSS variable inline (Morgan
+      // 2026-04-29 : retours en boucle « la sidebar reste gris sombre »).
+      // Variable --sn-color set DIRECTEMENT sur l'élément nav — bypass la
+      // cascade scoped Astro qui n'appliquait pas correctement les overrides.
       const vh = window.innerHeight;
       const upper = vh * 0.3;
       const lower = vh * 0.7;
       let isDark = false;
       for (const s of sections) {
         const rect = s.getBoundingClientRect();
-        // Section intersecte la zone centrale 30-70% du viewport
         if (rect.top <= lower && rect.bottom >= upper) {
           isDark = s.dataset.theme === 'dark';
         }
       }
+      const snColor = isDark ? 'var(--color-cream)' : 'var(--color-klein)';
+      nav.style.setProperty('--sn-color', snColor);
+      if (mobile) mobile.style.setProperty('--sn-color', snColor);
       nav.classList.toggle('is-on-dark', isDark);
       if (mobile) mobile.classList.toggle('is-on-dark', isDark);
     };
