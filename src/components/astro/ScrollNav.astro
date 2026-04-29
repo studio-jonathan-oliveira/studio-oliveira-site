@@ -102,7 +102,9 @@
     width: 1.5px;
     background-color: color-mix(in oklab, var(--color-klein) 45%, transparent);
   }
-  .scroll-nav.is-on-dark .scroll-nav-rail {
+  .scroll-nav.is-on-dark .scroll-nav-rail,
+  :global(html[data-theme='dark']) .scroll-nav-rail,
+  :global(body.is-dark-section) .scroll-nav-rail {
     background-color: color-mix(in oklab, var(--color-cream) 40%, transparent);
   }
 
@@ -124,7 +126,9 @@
   .scroll-nav.is-visible .scroll-nav-thumb {
     opacity: 1;
   }
-  .scroll-nav.is-on-dark .scroll-nav-thumb {
+  .scroll-nav.is-on-dark .scroll-nav-thumb,
+  :global(html[data-theme='dark']) .scroll-nav-thumb,
+  :global(body.is-dark-section) .scroll-nav-thumb {
     background-color: var(--color-cream);
   }
 
@@ -173,7 +177,9 @@
       'opsz' 144,
       'SOFT' 80;
   }
-  .scroll-nav.is-on-dark .scroll-nav-title {
+  .scroll-nav.is-on-dark .scroll-nav-title,
+  :global(html[data-theme='dark']) .scroll-nav-title,
+  :global(body.is-dark-section) .scroll-nav-title {
     color: var(--color-cream) !important;
   }
   .scroll-nav-item:hover .scroll-nav-title,
