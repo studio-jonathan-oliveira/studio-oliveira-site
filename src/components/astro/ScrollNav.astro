@@ -367,10 +367,10 @@
         mobileFill.style.width = `${pct}%`;
       }
 
-      // Bascule cream/Klein de la sidebar via CSS variable inline (Morgan
-      // 2026-04-29 : retours en boucle « la sidebar reste gris sombre »).
-      // Variable --sn-color set DIRECTEMENT sur l'élément nav — bypass la
-      // cascade scoped Astro qui n'appliquait pas correctement les overrides.
+      // Bascule cream/Klein de la sidebar — STYLE INLINE !important direct
+      // sur chaque élément (Morgan 2026-04-29 retours en boucle malgré
+      // CSS variables/scoped/cascade : la couleur restait gris sombre).
+      // L'inline !important bat absolument toute cascade CSS.
       const vh = window.innerHeight;
       const upper = vh * 0.3;
       const lower = vh * 0.7;
@@ -381,9 +381,18 @@
           isDark = s.dataset.theme === 'dark';
         }
       }
-      const snColor = isDark ? 'var(--color-cream)' : 'var(--color-klein)';
-      nav.style.setProperty('--sn-color', snColor);
-      if (mobile) mobile.style.setProperty('--sn-color', snColor);
+      const fg = isDark ? '#f5f1ea' /* cream */ : '#002fa7'; /* klein */
+      const titles = nav.querySelectorAll<HTMLElement>('.scroll-nav-title');
+      titles.forEach((t) => t.style.setProperty('color', fg, 'important'));
+      if (thumb) thumb.style.setProperty('background-color', fg, 'important');
+      const rail = nav.querySelector<HTMLElement>('.scroll-nav-rail');
+      if (rail) {
+        rail.style.setProperty(
+          'background-color',
+          `color-mix(in oklab, ${fg} 45%, transparent)`,
+          'important',
+        );
+      }
       nav.classList.toggle('is-on-dark', isDark);
       if (mobile) mobile.classList.toggle('is-on-dark', isDark);
     };
