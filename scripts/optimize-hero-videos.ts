@@ -4,10 +4,13 @@
  * compacts pour usage en fond hero, avec poster JPEG première frame.
  *
  * Cible :
- *   - 1280×720 @ 30fps (suffisant pour un fond, gain de poids majeur vs 1080p)
- *   - H.264 CRF 25 + preset slow + faststart (qualité visuelle transparente
- *     à ~2-3 Mbps, moov atom au début pour streaming progressif)
- *   - Audio strippé (pas d'audio sur un hero muted, économise du poids)
+ *   - 1920×1080 @ 30fps (sources 4K Jonathan, on conserve 1080p pour la netteté
+ *     sur écrans Retina/2K)
+ *   - H.264 CRF 23 + maxrate 4M / bufsize 8M — cap les pics de bitrate sur le
+ *     feuillage et le scintillement, sinon CRF 21-23 produit du quasi-master
+ *     (~30 MB/clip) à partir de sources 4K. Cible : 3-6 MB par clip.
+ *   - preset slow + faststart (moov atom au début pour streaming progressif)
+ *   - Audio strippé (hero muted)
  *
  * Note : WebM VP9 désactivé après benchmark — CRF 33 produit des fichiers
  * PLUS lourds que H.264 CRF 25 sur ce type de footage architectural lent.
@@ -44,19 +47,23 @@ function optimize(input: string, baseName: string) {
   console.log(`  source : ${fmtMB(statSync(input).size)}`);
 
   // MP4 H.264 — compat universelle, autoplay garanti partout
-  console.log('  → MP4 H.264 720p CRF 25...');
+  console.log('  → MP4 H.264 1080p CRF 23 (maxrate 4M)...');
   run([
     '-y',
     '-i',
     input,
     '-vf',
-    'scale=1280:720:flags=lanczos',
+    'scale=1920:1080:flags=lanczos',
     '-c:v',
     'libx264',
     '-preset',
     'slow',
     '-crf',
-    '25',
+    '23',
+    '-maxrate',
+    '4M',
+    '-bufsize',
+    '8M',
     '-pix_fmt',
     'yuv420p',
     '-profile:v',
@@ -79,11 +86,11 @@ function optimize(input: string, baseName: string) {
     '-i',
     input,
     '-vf',
-    'scale=1280:720:flags=lanczos',
+    'scale=1920:1080:flags=lanczos',
     '-vframes',
     '1',
     '-q:v',
-    '4',
+    '3',
     posterOut,
   ]);
   console.log(`    ${fmtMB(statSync(posterOut).size)}`);

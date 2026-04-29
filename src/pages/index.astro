@@ -28,6 +28,7 @@ const heroVideos = [
   { src: '/hero/hero-01.mp4', poster: '/hero/hero-01-poster.jpg' },
   { src: '/hero/hero-02.mp4', poster: '/hero/hero-02-poster.jpg' },
   { src: '/hero/hero-03.mp4', poster: '/hero/hero-03-poster.jpg' },
+  { src: '/hero/hero-04.mp4', poster: '/hero/hero-04-poster.jpg' },
 ];
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
@@ -789,7 +790,7 @@ const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
     }
 
     /* Hero slideshow — 4 créations Jonathan qui crossfadent en boucle
-       (refonte 2026-04-29 : passage en VIDÉO — 3 clips Jonathan en boucle
+       (refonte 2026-04-29 : passage en VIDÉO — 4 clips Jonathan en boucle
        continue avec cross-fade 800 ms entre chaque clip). Deux <video> qui
        alternent : un actif (visible), un en preload du clip suivant. Le
        cross-fade se déclenche ~800 ms avant la fin du clip actif.
@@ -1842,7 +1843,7 @@ const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
   <script>
     // Hero slideshow VIDÉO — refonte 2026-04-29.
     //
-    // 3 vidéos Jonathan jouent en boucle continue avec cross-fade 800 ms
+    // 4 vidéos Jonathan jouent en boucle continue avec cross-fade 800 ms
     // entre chaque clip. Architecture : 2 éléments <video> qui alternent
     // (stage 0 et stage 1). Pendant qu'un stage joue, l'autre précharge le
     // clip suivant (src = next URL, video.load(), reste invisible). À 800 ms
