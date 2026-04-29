@@ -355,7 +355,9 @@
       });
     });
 
-    // Visibilité : apparait après 40% du 1er viewport
+    // Visibilité + détection theme de la section au mid viewport (Morgan
+    // 2026-04-29 : sections Klein parfois pas détectées par IntersectionObserver
+    // → on bascule sur du geometry direct pour la couleur sidebar).
     const onScroll = () => {
       const show = window.scrollY > window.innerHeight * 0.4;
       nav.classList.toggle('is-visible', show);
@@ -366,6 +368,20 @@
         const pct = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
         mobileFill.style.width = `${pct}%`;
       }
+
+      // Bascule cream/Klein de la sidebar selon la section qui intersecte
+      // le centre du viewport. On itère et garde la DERNIÈRE match (= section
+      // visible la plus récente dans l'ordre DOM, gère hero sticky).
+      const mid = window.innerHeight / 2;
+      let isDark = false;
+      for (const s of sections) {
+        const rect = s.getBoundingClientRect();
+        if (rect.top <= mid && rect.bottom >= mid) {
+          isDark = s.dataset.theme === 'dark';
+        }
+      }
+      nav.classList.toggle('is-on-dark', isDark);
+      if (mobile) mobile.classList.toggle('is-on-dark', isDark);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
