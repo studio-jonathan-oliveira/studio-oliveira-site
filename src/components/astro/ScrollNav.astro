@@ -31,14 +31,16 @@
 </div>
 
 <style is:global>
-  /* Marge réservée pour la sidebar (Morgan 2026-04-29 retours bloc 2 :
-     « la marge doit être presque invisible, juste si des informations
-     doivent y passer elles doivent disparaître à travers ; au passage
-     la marge doit être légèrement augmentée pour faire la taille du
-     texte affiché sur la sidebar »).
-     → Variable globale --sidebar-gutter accessible partout. Body padding
-        gauche = ce gutter. Sections qui veulent déborder (hero, accents
-        plein-écran) appliquent .full-bleed. */
+  /* Layout sidebar — refonte 2026-04-29 (Morgan retours bloc 3) :
+     « toutes les sections doivent être en largeur totale, l'histoire de
+     la marge c'est juste pour les informations dans les sections, on
+     veut commencer à afficher les textes etc légèrement décalés afin
+     de laisser toujours la marge pour la sidebar ».
+     → Toutes les sections sont en pleine largeur du viewport (fond bord
+        à bord), et reçoivent un padding-left = --sidebar-gutter qui pousse
+        leur contenu vers la droite pour libérer la zone sidebar.
+     → Le hero (id=hero) est exempté car la vidéo doit s'étendre bord à
+        bord sans aucun décalage de contenu. */
   :root {
     --sidebar-gutter: 0px;
   }
@@ -46,28 +48,20 @@
     :root {
       --sidebar-gutter: 11rem;
     }
-    body {
+    main > section {
       padding-left: var(--sidebar-gutter);
     }
+    main > section#hero,
+    main > section.no-gutter {
+      padding-left: 0;
+    }
   }
-  /* Sections plein-écran qui ignorent le gutter sidebar — fond ET contenu
-     ramenés en pleine largeur du viewport. À utiliser pour le hero où la
-     vidéo doit s'étendre bord à bord. */
-  .full-bleed {
-    margin-left: calc(-1 * var(--sidebar-gutter));
-    width: calc(100% + var(--sidebar-gutter));
-  }
-
-  /* Variante : étend uniquement le FOND sur 100vw (le contenu reste dans
-     la zone gutter via padding-left compensé). À utiliser sur les sections
-     cream/Klein qui suivent le hero — le fond couvre la marge sidebar et
-     masque le hero sticky qui reste en arrière-plan. Morgan 2026-04-29 :
-     « la marge doit avoir la couleur de la section en cours, la vidéo du
-     hero ne doit plus déborder dans la marge sur le reste de la page ». */
+  /* Classes legacy conservées pour compatibilité (inutiles désormais avec
+     le pattern « padding sur section » ci-dessus, mais référencées encore
+     dans certaines pages). */
+  .full-bleed,
   .full-bleed-bg {
-    margin-left: calc(-1 * var(--sidebar-gutter));
-    padding-left: var(--sidebar-gutter);
-    width: calc(100% + var(--sidebar-gutter));
+    /* Désactivé : le pattern par défaut couvre déjà le besoin. */
   }
 </style>
 
