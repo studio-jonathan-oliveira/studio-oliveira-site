@@ -62,7 +62,9 @@
       "Bash(node -e ' *)",
       "Bash(git restore *)",
       "Bash(xargs -I {} sh -c \"sed -i 's/Micro-urbain/Micro\\\\xe2\\\\x80\\\\x91urbain/g; s/Brive-la-Gaillarde/Brive\\\\xe2\\\\x80\\\\x91la\\\\xe2\\\\x80\\\\x91Gaillarde/g' {}\")",
-      "Bash(git -C . diff src/lib/site-config.ts)"
+      "Bash(git -C . diff src/lib/site-config.ts)",
+      "Bash(git pull *)",
+      "Bash(git reset *)"
     ]
   }
 }

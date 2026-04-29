@@ -107,16 +107,21 @@ const { darkHero = false } = Astro.props;
 </header>
 
 <style>
-  /* État par défaut — mix-blend-mode difference (brief Morgan 2026-04-24 :
-     les éléments de la page passent au travers de la topbar en couleur
-     inversée, comme l'intérieur du curseur). Plus de background opaque
-     sur la topbar — elle est transparente et le texte s'inverse selon
-     ce qui passe dessous au scroll. */
+  /* État par défaut — header transparent, logo Klein pur, texte qui s'inverse.
+     Refonte 2026-04-29 (Morgan : « quand on est tout au bout du scroll, le
+     logo dans la topbar passe en gold, il faut forcer le bleu tout le temps »).
+     Le mix-blend-mode: difference est désormais appliqué uniquement sur les
+     éléments texte (topbar + menu-trigger), pas sur le header entier. Le logo
+     Klein reste donc en bleu pur quel que soit le fond derrière (cream, ink,
+     image), et seuls les textes auto-inversent comme l'intérieur du curseur. */
   .site-header {
     background-color: transparent;
     color: var(--color-cream);
-    mix-blend-mode: difference;
     isolation: isolate;
+  }
+  .site-header__topbar,
+  .menu-trigger {
+    mix-blend-mode: difference;
   }
 
   /* Verre dépoli — appliqué sur (Morgan 2026-04-27 passe 4) :
@@ -130,17 +135,20 @@ const { darkHero = false } = Astro.props;
      mix-blend-mode: difference par défaut qui marche bien sur fond uni. */
   :global(body.is-dark-section) .site-header,
   .site-header--dark-hero:not(.is-scrolled) {
-    mix-blend-mode: normal;
     background-color: rgba(0, 0, 0, 0.28);
     backdrop-filter: blur(16px) saturate(120%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     color: var(--color-cream);
   }
+  /* Sur dark-section, le verre dépoli remplace l'inversion : on neutralise
+     le mix-blend-difference des textes pour qu'ils soient simplement crème
+     sur le verre dépoli (avec text-shadow pour détacher des images). */
   :global(body.is-dark-section) .menu-trigger,
   :global(body.is-dark-section) .site-header__topbar,
   .site-header--dark-hero:not(.is-scrolled) .menu-trigger,
   .site-header--dark-hero:not(.is-scrolled) .site-header__topbar {
+    mix-blend-mode: normal;
     text-shadow:
       0 1px 4px rgba(0, 0, 0, 0.85),
       0 2px 14px rgba(0, 0, 0, 0.5);

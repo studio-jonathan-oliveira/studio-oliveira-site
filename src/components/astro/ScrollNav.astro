@@ -179,21 +179,21 @@
     transform: translateX(0);
   }
 
-  /* État actif (refonte 2026-04-28 Jonathan) : numéro en bleu Klein
-     (signature, plus latérite), bold pour matérialiser la section courante.
-     Le titre n'apparait qu'au hover pour éviter la collision avec le
-     contenu de page. */
+  /* État actif (refonte 2026-04-29 #2 Morgan : « ne met pas en GRAS la
+     section sur laquelle on est ») : numéro Klein bold + titre TOUJOURS
+     visible en bold. Le bold n'était pas perçu auparavant car le titre
+     restait caché jusqu'au hover. Maintenant le titre actif s'affiche
+     en permanence pour matérialiser clairement la section courante. */
   .scroll-nav-item.is-active .scroll-nav-index {
     opacity: 1;
     color: var(--color-klein);
     font-weight: 700;
   }
   .scroll-nav-item.is-active .scroll-nav-title {
-    font-weight: 700;
-  }
-  .scroll-nav-item.is-active:hover .scroll-nav-title,
-  .scroll-nav-item.is-active:focus-within .scroll-nav-title {
     opacity: 1;
+    max-width: 220px;
+    transform: translateX(0);
+    font-weight: 700;
     color: var(--color-forest);
   }
 

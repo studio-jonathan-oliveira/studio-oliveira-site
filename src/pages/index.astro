@@ -213,15 +213,17 @@ const vitrine = [
           />
         ))
       }
-      <!-- Overlay lisibilité (Morgan 2026-04-27 — passe 3) : passes 1+2
-           insuffisantes sur photo nocturne avec highlights. Header passe en
-           verre dépoli (cf. Header.astro), donc on peut alléger légèrement
-           la vignette top (le Header se gère seul avec backdrop-blur). On
-           remonte la baseline pour assurer les textes hero. -->
+      <!-- Overlay lisibilité — refonte 2026-04-29 (Morgan : « le H1 n'est
+           pas en blended color comme dans le curseur »). Le voile noir 38%
+           du milieu noyait le mix-blend-difference du H1 contre la photo.
+           Zone H1 (top: 36-47vh) maintenue quasi transparente pour que le
+           texte blende directement sur les pixels de l'image, exactement
+           comme le custom cursor. Vignettes top/bottom conservées pour
+           lisibilité Header + scroll-cue. -->
       <div
         class="absolute inset-0"
         aria-hidden="true"
-        style="background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.42) 10%, rgba(0,0,0,0.38) 22%, rgba(0,0,0,0.38) 65%, rgba(0,0,0,0.55) 82%, rgba(0,0,0,0.92) 100%);"
+        style="background: linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.20) 10%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.45) 86%, rgba(0,0,0,0.92) 100%);"
       >
       </div>
     </div>
@@ -1068,7 +1070,7 @@ const vitrine = [
       position: sticky;
       top: var(--header-height, 80px);
       z-index: 5;
-      background-color: var(--color-ink);
+      background-color: var(--color-cream);
       padding-bottom: 1rem;
     }
 
@@ -1132,7 +1134,7 @@ const vitrine = [
       font-size: 11px;
       letter-spacing: 0.26em;
       text-transform: uppercase;
-      color: var(--color-cream);
+      color: var(--color-ink);
       padding-left: 0.25rem;
     }
     .vitrine-frame {
@@ -1236,7 +1238,7 @@ const vitrine = [
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background-color: var(--color-cream);
+      background-color: var(--color-ink);
       opacity: 0.25;
       border: 0;
       padding: 0;
@@ -1256,7 +1258,7 @@ const vitrine = [
     .vitrine-dot.is-active {
       opacity: 1;
       transform: scale(1.4);
-      background-color: var(--color-laterite);
+      background-color: var(--color-klein);
     }
 
     /* CTA "Voir tous les projets" — sous les dots, centré */
@@ -1278,7 +1280,7 @@ const vitrine = [
       font-size: 10.5px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      color: color-mix(in oklab, var(--color-ink) 75%, transparent);
       padding-left: 0.25rem;
     }
 
