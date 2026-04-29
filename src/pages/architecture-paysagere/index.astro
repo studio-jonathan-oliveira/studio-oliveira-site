@@ -188,8 +188,8 @@ const schema = jsonLdGraph([
   <section
     id="hero"
     data-section-label="Architecture paysagère"
-    data-theme="dark"
-    class="ap-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="ap-hero relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
   >
     <div class="absolute inset-0 -z-10">
       <Image
@@ -216,8 +216,8 @@ const schema = jsonLdGraph([
         data-scroll-rise
         data-scroll-rise-amp="-90"
       >
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-          <span class="text-[var(--color-cream)]/40">Studio</span>
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/70 uppercase">
+          <span class="text-[var(--color-ink)]/40">Studio</span>
           &nbsp;·&nbsp; Architecture paysagère
         </p>
         {
@@ -231,14 +231,12 @@ const schema = jsonLdGraph([
           class="ap-h1-broken mt-8 font-[family-name:var(--font-heading)] leading-[0.94] tracking-tight"
         >
           <span data-mask-line class="ap-h1-positioning block">ARCHITECTURE PAYSAGÈRE</span>
-          <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
-            sur mesure.
-          </span>
+          <span data-mask-line class="block text-[var(--color-ink)]/55 italic"> sur mesure. </span>
         </h1>
         <p
           data-reveal="up"
           data-reveal-delay="0.4"
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/85"
         >
           Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
           le chantier — sans jamais être juge et partie.
@@ -250,13 +248,13 @@ const schema = jsonLdGraph([
   {/* ───── MANIFESTE — court, éditorial, en cream ───── */}
   <Section variant="forest" tight>
     <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Démarche
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+        <span class="text-[var(--color-ink)]/40">02</span> &nbsp;·&nbsp; Démarche
       </p>
       <p
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-cream)] md:text-[length:var(--text-4xl)]"
+        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-ink)] md:text-[length:var(--text-4xl)]"
       >
-        Chaque lieu a son <em class="text-[var(--color-cream)]/55 italic">territoire</em>, ses
+        Chaque lieu a son <em class="text-[var(--color-ink)]/55 italic">territoire</em>, ses
         contraintes, son niveau d'étude. La méthode, elle, reste la même —
         <em class="italic">biophilique, rigoureuse, sensible</em>.
       </p>
@@ -286,8 +284,8 @@ const schema = jsonLdGraph([
   <section
     id="chapitres"
     data-section-label="Démarche"
-    data-theme="dark"
-    class="ap-chapters relative bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="ap-chapters relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Cinq dimensions de l'architecture paysagère"
   >
     {
@@ -318,7 +316,7 @@ const schema = jsonLdGraph([
           </div>
 
           <div class="ap-chapter-copy">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
+            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
               {ch.num} · Chapitre
             </p>
             <h2
@@ -327,10 +325,10 @@ const schema = jsonLdGraph([
             >
               <em class="italic">{ch.titre}</em>
             </h2>
-            <p class="mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.18] text-[var(--color-cream)]/90 italic">
+            <p class="mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.18] text-[var(--color-ink)]/90 italic">
               {ch.accroche}
             </p>
-            <p class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75">
+            <p class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
               {ch.phrase}
             </p>
           </div>
@@ -342,8 +340,8 @@ const schema = jsonLdGraph([
   {/* ───── 4 TYPOLOGIES — grille asymétrique éditoriale ───── */}
   <Section variant="forest" id="typologies" sectionLabel="Typologies" labelledBy="typologies-title">
     <div class="mb-16 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Les quatre typologies
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+        <span class="text-[var(--color-ink)]/40">03</span> &nbsp;·&nbsp; Les quatre typologies
       </p>
       <h2
         id="typologies-title"
@@ -352,8 +350,7 @@ const schema = jsonLdGraph([
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
       >
         <span data-mask-line class="block pb-[0.12em]"
-          >Chaque jardin a son <em class="text-[var(--color-cream)]/55 italic">territoire</em
-          >.</span
+          >Chaque jardin a son <em class="text-[var(--color-ink)]/55 italic">territoire</em>.</span
         >
       </h2>
     </div>
@@ -540,9 +537,9 @@ const schema = jsonLdGraph([
       effet cinématique. Pas de texte par-dessus — pure respiration visuelle. */
   }
   <section
-    class="ap-respiration relative overflow-hidden bg-[var(--color-forest)]"
+    class="ap-respiration relative overflow-hidden bg-[var(--color-cream)]"
     aria-hidden="true"
-    data-theme="dark"
+    data-theme="light"
   >
     <div data-img-reveal data-img-reveal-speed="1" class="ap-respiration-frame">
       <Image
@@ -573,8 +570,8 @@ const schema = jsonLdGraph([
   >
     <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
       <div data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Le process
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+          <span class="text-[var(--color-ink)]/40">04</span> &nbsp;·&nbsp; Le process
         </p>
         <h2
           id="process-title"
@@ -592,8 +589,8 @@ const schema = jsonLdGraph([
          invisibles au load, observer ne déclenche pas). Affichage direct. */
       }
       <ol class="space-y-12">
-        <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
+        <li class="border-l border-[var(--color-ink)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
             Étape 1
           </p>
           <h3
@@ -601,15 +598,13 @@ const schema = jsonLdGraph([
           >
             Étude préliminaire
           </h3>
-          <p
-            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
-          >
+          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
             Contextualisation, diagnostic de site, analyse réglementaire, synthèse graphique,
             fourchette budgétaire. Durée calibrée selon la typologie.
           </p>
         </li>
-        <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
+        <li class="border-l border-[var(--color-ink)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
             Étape 2
           </p>
           <h3
@@ -617,15 +612,13 @@ const schema = jsonLdGraph([
           >
             Étude projet
           </h3>
-          <p
-            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
-          >
+          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
             Conception approfondie, plan masse, plans d'exécution, palettes végétales et matériaux,
             DCE, budgétisation détaillée.
           </p>
         </li>
-        <li class="border-l border-[var(--color-cream)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-cream)]/55 uppercase">
+        <li class="border-l border-[var(--color-ink)]/15 pl-6">
+          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
             Étape 3
           </p>
           <h3
@@ -633,9 +626,7 @@ const schema = jsonLdGraph([
           >
             Suivi de chantier
           </h3>
-          <p
-            class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
-          >
+          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
             Coordination des artisans mis en concurrence, pilotage du planning, réunions de
             chantier, respect des intentions de projet jusqu'à la réception. Rémunération de 6 à 12
             % des travaux selon la typologie.
@@ -648,8 +639,8 @@ const schema = jsonLdGraph([
   {/* ───── FAQ — 8 questions étoffées ───── */}
   <Section variant="forest" topDivider id="faq" sectionLabel="FAQ" labelledBy="faq-title">
     <div class="mb-12 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Questions fréquentes
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+        <span class="text-[var(--color-ink)]/40">05</span> &nbsp;·&nbsp; Questions fréquentes
       </p>
       <h2
         id="faq-title"
@@ -663,12 +654,12 @@ const schema = jsonLdGraph([
         >
       </h2>
     </div>
-    <ul class="divide-y divide-[var(--color-cream)]/10 border-y border-[var(--color-cream)]/10">
+    <ul class="divide-y divide-[var(--color-ink)]/10 border-y border-[var(--color-ink)]/10">
       {
         pageFaq.map((item) => (
           <li>
             <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-cream)]">
+              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-ink)]">
                 <span>{item.question}</span>
                 <span
                   class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
@@ -677,7 +668,7 @@ const schema = jsonLdGraph([
                   +
                 </span>
               </summary>
-              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80">
+              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/80">
                 {item.answer}
               </p>
             </details>
@@ -690,8 +681,8 @@ const schema = jsonLdGraph([
   {/* ───── CTA FINAL forest ───── */}
   <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">06</span> &nbsp;·&nbsp; Démarrer
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+        <span class="text-[var(--color-ink)]/40">06</span> &nbsp;·&nbsp; Démarrer
       </p>
       <h2
         data-mask-reveal
@@ -699,7 +690,7 @@ const schema = jsonLdGraph([
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98]"
       >
         <span data-mask-line class="block">Votre jardin est</span>
-        <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
+        <span data-mask-line class="block text-[var(--color-ink)]/55 italic">
           une architecture.
         </span>
       </h2>
@@ -710,7 +701,7 @@ const schema = jsonLdGraph([
         <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
         <a
           href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-cream)]"
+          class="text-sm underline underline-offset-4 hover:text-[var(--color-ink)]"
         >
           {SITE.contact.phoneDisplay}
         </a>
@@ -737,13 +728,13 @@ const schema = jsonLdGraph([
       line-height: 1.1;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--color-cream);
+      color: var(--color-ink);
       text-align: justify;
     }
     .ap-keywords-band > span[aria-hidden] {
       display: inline-block;
       margin: 0 0.35em;
-      color: var(--color-cream);
+      color: var(--color-ink);
       opacity: 0.4;
       font-weight: 400;
     }
@@ -798,7 +789,7 @@ const schema = jsonLdGraph([
       }
     }
     .ap-chapter + .ap-chapter {
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 10%, transparent);
+      border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
     }
 
     .ap-chapter-visual {

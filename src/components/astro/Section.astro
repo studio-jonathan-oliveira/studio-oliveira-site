@@ -2,14 +2,19 @@
 /*
  * Section — V2 avec variants immersifs (refonte systémique 2026-04-23).
  *
- * 4 variants visuels × 4 rythmes d'espacement canoniques.
+ * 5 variants visuels × 4 rythmes d'espacement canoniques.
  * Règle dure : les pages ne doivent PLUS écrire `py-XX md:py-YY` en dur.
  *
  * Variants :
- *   cream        : fond cream, texte forest (default)
- *   forest       : fond forest sombre, texte cream, data-theme="dark" auto
+ *   cream        : fond cream, texte ink (default — DA all-cream 2026-04-29)
+ *   forest       : ALIAS de cream depuis 2026-04-29 (Morgan : « DA fond crème
+ *                  partout »). Conservé pour ne pas avoir à éditer toutes
+ *                  les pages, mais visuellement strictement équivalent à cream.
+ *   klein        : fond bleu Klein, texte cream, data-theme="dark" auto.
+ *                  Réservé aux sections d'accent intentionnelles (Morgan
+ *                  choisit où le placer page par page).
  *   cream-accent : cream avec ruban décoratif discret
- *   immersive    : forest + image de fond optionnelle + voile + data-theme="dark"
+ *   immersive    : Klein + image de fond optionnelle + voile + data-theme="dark"
  *
  * Espacement (space prop) :
  *   compact      : sections secondaires (manifeste court, transitions)
@@ -30,7 +35,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
-  variant?: 'cream' | 'forest' | 'cream-accent' | 'immersive';
+  variant?: 'cream' | 'forest' | 'klein' | 'cream-accent' | 'immersive';
   space?: 'compact' | 'default' | 'spacious' | 'hero';
   /** @deprecated utiliser `space="compact"` */
   tight?: boolean;
@@ -65,11 +70,15 @@ const {
 // Migration progressive : tight → space="compact"
 const effectiveSpace = space ?? (tight ? 'compact' : 'default');
 
+// 2026-04-29 — DA all-cream : forest aliasé sur cream (Morgan : « DA fond
+// crème partout »). Klein est le seul vrai accent sombre, à activer
+// intentionnellement par variant="klein" sur les sections retenues.
 const bgClass = {
-  cream: 'bg-[var(--color-cream)] text-[var(--color-forest)]',
-  forest: 'bg-[var(--color-forest)] text-[var(--color-cream)]',
-  'cream-accent': 'bg-[var(--color-cream)] text-[var(--color-forest)]',
-  immersive: 'bg-[var(--color-forest)] text-[var(--color-cream)] relative isolate overflow-hidden',
+  cream: 'bg-[var(--color-cream)] text-[var(--color-ink)]',
+  forest: 'bg-[var(--color-cream)] text-[var(--color-ink)]',
+  klein: 'bg-[var(--color-klein)] text-[var(--color-cream)]',
+  'cream-accent': 'bg-[var(--color-cream)] text-[var(--color-ink)]',
+  immersive: 'bg-[var(--color-klein)] text-[var(--color-cream)] relative isolate overflow-hidden',
 }[variant];
 
 // Espacement vertical via token canonique — pas de py-XX en dur
@@ -80,7 +89,8 @@ const spaceVar = {
   hero: 'var(--section-space-hero)',
 }[effectiveSpace];
 
-const isDark = variant === 'forest' || variant === 'immersive';
+// Forest aliasé en cream → theme: light. Seuls klein et immersive sont sombres.
+const isDark = variant === 'klein' || variant === 'immersive';
 const effectiveTheme = theme ?? (isDark ? 'dark' : 'light');
 
 const dividerClass = topDivider ? 'border-t border-current/10' : '';

@@ -85,8 +85,8 @@ const schema = jsonLdGraph([
   <section
     id="hero"
     data-section-label="Locations signature"
-    data-theme="dark"
-    class="lcd-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="lcd-hero relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
   >
     <div class="absolute inset-0 -z-10">
       <Image
@@ -109,8 +109,8 @@ const schema = jsonLdGraph([
 
     <div class="relative flex min-h-[100svh] flex-col justify-end">
       <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/50">Locations courte durée</span>
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+          <span class="text-[var(--color-ink)]/50">Locations courte durée</span>
           &nbsp;·&nbsp; Signature atypique
         </p>
         <h1
@@ -132,7 +132,7 @@ const schema = jsonLdGraph([
         <p
           data-reveal="up"
           data-reveal-delay="0.4"
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
+          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/85"
         >
           Un airbnb à forte identité n'est pas une location — c'est un univers. Le studio conçoit
           des décors végétalisés immersifs qui transforment un hébergement en expérience mémorable,
@@ -238,9 +238,9 @@ const schema = jsonLdGraph([
 
   {/* ───── RESPIRATION full-bleed entre Galerie et Démarche ───── */}
   <section
-    class="page-respiration relative overflow-hidden bg-[var(--color-forest)]"
+    class="page-respiration relative overflow-hidden bg-[var(--color-cream)]"
     aria-hidden="true"
-    data-theme="dark"
+    data-theme="light"
   >
     <div class="page-respiration-frame">
       <Image
@@ -260,8 +260,8 @@ const schema = jsonLdGraph([
   <section
     id="demarche"
     data-section-label="Démarche"
-    class="lcd-demarche relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
-    data-theme="dark"
+    class="lcd-demarche relative isolate overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="light"
     aria-labelledby="demarche-title"
   >
     <div class="absolute inset-0 -z-10">
@@ -275,39 +275,39 @@ const schema = jsonLdGraph([
         class="h-full w-full object-cover object-center"
         loading="lazy"
       />
-      <div class="absolute inset-0 bg-[var(--color-forest)]/92" aria-hidden="true"></div>
+      <div class="absolute inset-0 bg-[var(--color-cream)]/82" aria-hidden="true"></div>
       <div class="lcd-demarche-halo" aria-hidden="true"></div>
     </div>
 
     <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-32">
       <div class="mb-16 max-w-3xl" data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">04</span> &nbsp;·&nbsp; Démarche
+        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+          <span class="text-[var(--color-ink)]/40">04</span> &nbsp;·&nbsp; Démarche
         </p>
         <h2
           id="demarche-title"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
         >
           Un univers,<br />
-          pas une <em class="text-[var(--color-cream)]/55 italic">décoration</em>.
+          pas une <em class="text-[var(--color-ink)]/55 italic">décoration</em>.
         </h2>
       </div>
 
       <ol
-        class="grid grid-cols-1 gap-px bg-[var(--color-cream)]/10 md:grid-cols-3"
+        class="grid grid-cols-1 gap-px bg-[var(--color-ink)]/10 md:grid-cols-3"
         data-reveal-stagger="0.12"
         data-reveal="up"
       >
         {
           etapes.map((etape) => (
-            <li class="bg-[var(--color-forest)]/75 p-8 backdrop-blur-sm md:p-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
+            <li class="bg-[var(--color-cream)]/85 p-8 backdrop-blur-sm md:p-10">
+              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
                 Étape {etape.num}
               </p>
               <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
                 <em class="italic">{etape.titre}</em>
               </h3>
-              <p class="mt-4 text-sm leading-relaxed text-[var(--color-cream)]/80">
+              <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink)]/80">
                 {etape.description}
               </p>
             </li>
@@ -320,16 +320,16 @@ const schema = jsonLdGraph([
   {/* ───── CTA final forest ───── */}
   <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        <span class="text-[var(--color-cream)]/40">05</span> &nbsp;·&nbsp; Engager la conversation
+      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+        <span class="text-[var(--color-ink)]/40">05</span> &nbsp;·&nbsp; Engager la conversation
       </p>
       <h2
         class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
       >
-        Un projet de <em class="text-[var(--color-cream)]/55 italic">location signature</em> ?
+        Un projet de <em class="text-[var(--color-ink)]/55 italic">location signature</em> ?
       </h2>
       <p
-        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/70"
       >
         Décrivez votre lieu, son positionnement, vos envies — je propose une écriture végétale qui
         transforme votre location en expérience.
@@ -356,7 +356,7 @@ const schema = jsonLdGraph([
       height: 70%;
       background: radial-gradient(
         circle at center,
-        color-mix(in oklab, var(--color-cream) 18%, transparent) 0%,
+        color-mix(in oklab, var(--color-ink) 18%, transparent) 0%,
         transparent 65%
       );
       pointer-events: none;
