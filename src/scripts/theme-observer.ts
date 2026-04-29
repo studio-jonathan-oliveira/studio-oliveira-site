@@ -54,14 +54,20 @@ export function initThemeObserver() {
   }
 
   // Recompute global : cherche la section [data-theme] qui intersecte le
-  // milieu du viewport. Si aucune, fallback light (sinon on restait bloqué
-  // sur dark quand on scrollait dans le footer — bug 2026-04-24).
+  // milieu du viewport. Si plusieurs sections intersectent simultanément
+  // (cas des sections sticky comme le hero qui restent collées en haut
+  // pendant qu'on scroll dans la section suivante), on prend la DERNIÈRE
+  // dans l'ordre du DOM — c'est elle qui correspond au contenu visible
+  // « courant » (Morgan 2026-04-29 retours bloc 2 : le cursor + sidebar
+  // restaient en mode dark sur les sections cream après le hero sticky).
+  // Si aucune, fallback light.
   const recompute = () => {
     const mid = window.innerHeight / 2;
-    const active = sections.find((s) => {
+    let active: HTMLElement | undefined;
+    for (const s of sections) {
       const rect = s.getBoundingClientRect();
-      return rect.top <= mid && rect.bottom >= mid;
-    });
+      if (rect.top <= mid && rect.bottom >= mid) active = s;
+    }
     if (active) applyTheme(readTheme(active), active);
     else applyTheme('light', null);
   };

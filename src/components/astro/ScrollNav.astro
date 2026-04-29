@@ -31,20 +31,38 @@
 </div>
 
 <style is:global>
-  /* Marge réservée pour la sidebar à partir de 1400px (Morgan 2026-04-29 :
-     « la sidebar ne soit jamais empiétée par les visuels »). On pousse
-     l'ensemble du contenu de page de 5rem vers la droite quand la sidebar
-     est affichée — le Header fixed reste indépendant (ses propres marges). */
+  /* Marge réservée pour la sidebar (Morgan 2026-04-29 retours bloc 2 :
+     « la marge doit être presque invisible, juste si des informations
+     doivent y passer elles doivent disparaître à travers ; au passage
+     la marge doit être légèrement augmentée pour faire la taille du
+     texte affiché sur la sidebar »).
+     → Variable globale --sidebar-gutter accessible partout. Body padding
+        gauche = ce gutter. Sections qui veulent déborder (hero, accents
+        plein-écran) appliquent .full-bleed. */
+  :root {
+    --sidebar-gutter: 0px;
+  }
   @media (min-width: 1400px) {
-    body {
-      padding-left: 5rem;
+    :root {
+      --sidebar-gutter: 11rem;
     }
+    body {
+      padding-left: var(--sidebar-gutter);
+    }
+  }
+  /* Sections plein-écran qui ignorent le gutter sidebar — fond et contenu
+     ramenés en pleine largeur du viewport. */
+  .full-bleed {
+    margin-left: calc(-1 * var(--sidebar-gutter));
+    width: calc(100% + var(--sidebar-gutter));
   }
 </style>
 
 <style>
   /* ─────────── Sidebar desktop ───────────
-     Couleurs explicites Klein/cream selon contexte (plus de mix-blend). */
+     Refonte 2026-04-29 (Morgan « sidebar invisible blanc sur blanc ») :
+     couleurs explicites par sous-élément, pas d'héritage via currentColor.
+     Default = Klein (visible sur fond cream du site), cream sur dark-section. */
   .scroll-nav {
     position: fixed;
     left: 1.5rem;
@@ -54,7 +72,6 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.8s var(--ease-out-editorial);
-    color: var(--color-ink);
     display: none;
     padding: 0.5rem 0 0.5rem 1rem;
   }
@@ -69,22 +86,17 @@
     pointer-events: auto;
   }
 
-  /* Sur dark-section : tout passe en cream. */
-  :global(body.is-dark-section) .scroll-nav {
-    color: var(--color-cream);
-  }
-
-  /* Rail vertical continu — 1.5px Klein/40% sur cream, cream/30% sur dark. */
+  /* Rail vertical continu — Klein/45% sur cream, cream/40% sur dark. */
   .scroll-nav-rail {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 1.5px;
-    background-color: color-mix(in oklab, var(--color-klein) 35%, transparent);
+    background-color: color-mix(in oklab, var(--color-klein) 45%, transparent);
   }
   :global(body.is-dark-section) .scroll-nav-rail {
-    background-color: color-mix(in oklab, var(--color-cream) 30%, transparent);
+    background-color: color-mix(in oklab, var(--color-cream) 40%, transparent);
   }
 
   /* Thumb — TOUJOURS Klein sur cream, cream sur dark (Morgan 2026-04-29). */
@@ -134,17 +146,17 @@
     padding: 0.2rem 0;
   }
 
-  /* Titre — italique serif. Plus de numéro avant. Visible quand actif ou
-     au hover de la sidebar entière. */
+  /* Titre — italique serif, couleur Klein explicite (visible sur cream).
+     Sur dark-section : cream. Opacité par défaut élevée pour rester visible. */
   .scroll-nav-title {
     font-family: var(--font-heading), serif;
     font-size: 14px;
     font-style: italic;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1;
     white-space: nowrap;
-    color: currentColor;
-    opacity: 0.55;
+    color: var(--color-klein);
+    opacity: 0.7;
     transform: translateX(0);
     transition:
       opacity 0.5s var(--ease-out-editorial),
@@ -154,24 +166,23 @@
       'opsz' 144,
       'SOFT' 80;
   }
+  :global(body.is-dark-section) .scroll-nav-title {
+    color: var(--color-cream);
+  }
   .scroll-nav-item:hover .scroll-nav-title,
   .scroll-nav-item:focus-within .scroll-nav-title {
-    opacity: 0.85;
+    opacity: 1;
   }
 
-  /* État actif : bold + opacité pleine, couleur Klein (cream sur dark). */
+  /* État actif : bold + opacité pleine. */
   .scroll-nav-item.is-active .scroll-nav-title {
     opacity: 1;
     font-weight: 700;
-    color: var(--color-klein);
-  }
-  :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-title {
-    color: var(--color-cream);
   }
 
   /* Sections passées : opacité intermédiaire. */
   .scroll-nav-item.is-passed .scroll-nav-title {
-    opacity: 0.4;
+    opacity: 0.5;
   }
 
   @media (prefers-reduced-motion: reduce) {
