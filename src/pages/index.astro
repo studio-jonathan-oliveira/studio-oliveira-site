@@ -19,17 +19,15 @@ import CtaLink from '@/components/astro/CtaLink.astro';
 // signalait « accueil toujours noir ». À réactiver quand Jonathan fournira
 // une vidéo logo plus robuste + une seconde de fallback.
 import { Image } from 'astro:assets';
-// Slideshow hero — 4 créations Jonathan qui crossfadent en boucle (brief Morgan)
-import hero01 from '@/assets/home/hero-01.jpg';
-import hero02 from '@/assets/home/hero-02.jpg';
-import hero03 from '@/assets/home/hero-03.jpg';
-import hero04 from '@/assets/home/hero-04.jpg';
+// Slideshow hero VIDÉO — refonte 2026-04-29 (Morgan : 3 vidéos Jonathan
+// fournies en full HD, ré-encodées 720p H.264 via scripts/optimize-hero-videos.ts).
+// Cycle infini avec cross-fade 800 ms entre chaque clip.
+// Sources brutes hors repo : _assets/hero-source/ (gitignored).
 import { HERO_LQIP_DATA_URI } from '@/data/hero-lqip';
-const heroSlides = [
-  { src: hero01, alt: 'Jardin nocturne — Parenthèse exotique, Cœur urbain' },
-  { src: hero02, alt: 'Terrasse méditerranéenne — Restanque corrézienne' },
-  { src: hero03, alt: 'Demeure corrézienne — Provence intérieure' },
-  { src: hero04, alt: 'Entrée de jardin contemporain — Cœur urbain' },
+const heroVideos = [
+  { src: '/hero/hero-01.mp4', poster: '/hero/hero-01-poster.jpg' },
+  { src: '/hero/hero-02.mp4', poster: '/hero/hero-02-poster.jpg' },
+  { src: '/hero/hero-03.mp4', poster: '/hero/hero-03-poster.jpg' },
 ];
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
@@ -148,13 +146,19 @@ const vitrine = [
       puis swap vers la WebP via JS dès qu'elle est chargée. */
   }
   <Fragment slot="head">
+    {
+      /* Preload du poster de la 1re vidéo (paint instantané) + de la 1re vidéo
+        elle-même (commence à streamer dès le HTML parse). Le poster sert
+        de fallback si JS désactivé / prefers-reduced-motion. */
+    }
     <link
       rel="preload"
       as="image"
-      href="/hero-fallback.webp"
-      type="image/webp"
+      href="/hero/hero-01-poster.jpg"
+      type="image/jpeg"
       fetchpriority="high"
     />
+    <link rel="preload" as="video" href="/hero/hero-01.mp4" type="video/mp4" />
   </Fragment>
   {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
 
@@ -169,13 +173,11 @@ const vitrine = [
        Le hero reste fixé en arrière-plan pendant que la section suivante
        vient se superposer au scroll (pas un défilement classique). -->
   {
-    /* FALLBACK 2026-04-27 : background-image CSS direct sur la section,
-      garanti d'apparaître même si le slideshow ne render pas.
-      LQIP 2026-04-27 : data URI base64 inliné comme background-image initial
-      (~0.5 KB, 0 RTT réseau, affichage instantané dès le HTML parse). Le
-      `<script>` en bas de section swap vers /hero-fallback.webp dès qu'elle
-      est chargée. Anticipe le passage en vidéo (le LQIP servira alors de
-      poster instantané). */
+    /* LQIP base64 inliné comme background-image initial sur la section (~0.5 KB,
+      0 RTT réseau, affichage instantané dès le HTML parse). Sert de fond ultime
+      sous le slideshow vidéo : si la 1re vidéo n'a pas encore son poster décodé,
+      le LQIP empêche tout flash noir. Une fois la vidéo en lecture, le LQIP
+      est intégralement recouvert. */
   }
   <section
     id="hero"
@@ -198,28 +200,42 @@ const vitrine = [
         compiler le color-mix correctement), opacity 1 forcée inline sur le
         1er slide pour bypass tout CSS récalcitrant. */
     }
-    <div class="absolute inset-0 z-0" data-hero-slideshow>
-      {
-        heroSlides.map((slide, i) => (
-          <img
-            src={slide.src.src}
-            width={slide.src.width}
-            height={slide.src.height}
-            alt={i === 0 ? slide.alt : ''}
-            class={`hero-slide h-full w-full object-cover object-center ${i === 0 ? 'is-active' : ''}`}
-            loading={i === 0 ? 'eager' : 'lazy'}
-            decoding="async"
-            data-hero-slide-index={i}
-          />
-        ))
-      }
-      <!-- Overlay lisibilité — refonte 2026-04-29 (Morgan : « le H1 n'est
-           pas en blended color comme dans le curseur »). Le voile noir 38%
-           du milieu noyait le mix-blend-difference du H1 contre la photo.
-           Zone H1 (top: 36-47vh) maintenue quasi transparente pour que le
-           texte blende directement sur les pixels de l'image, exactement
-           comme le custom cursor. Vignettes top/bottom conservées pour
-           lisibilité Header + scroll-cue. -->
+    {
+      /* Slideshow VIDÉO — refonte 2026-04-29 (Morgan : 3 vidéos Jonathan en
+        fond, en boucle continue avec transition fluide entre chaque clip).
+        Architecture : 2 éléments <video> qui alternent (stage 0 / 1).
+        Pendant qu'un stage joue, l'autre précharge le clip suivant. À ~800 ms
+        de la fin du stage actif, on lance le suivant en cross-fade opacity.
+        Cycle infini sur les 3 clips. Chaque <video> a son poster JPG en
+        fallback (paint instantané + reduced-motion + JS désactivé). */
+    }
+    <div
+      class="absolute inset-0 z-0"
+      data-hero-slideshow
+      data-hero-videos={JSON.stringify(heroVideos.map((v) => v.src))}
+      data-hero-posters={JSON.stringify(heroVideos.map((v) => v.poster))}
+    >
+      <video
+        class="hero-video is-active"
+        data-hero-stage="0"
+        src={heroVideos[0]!.src}
+        poster={heroVideos[0]!.poster}
+        muted
+        playsinline
+        preload="auto"
+        autoplay
+        aria-hidden="true"></video>
+      <video
+        class="hero-video"
+        data-hero-stage="1"
+        poster={heroVideos[1]!.poster}
+        muted
+        playsinline
+        preload="auto"
+        aria-hidden="true"></video>
+      <!-- Overlay lisibilité — voile vignette top/bottom uniquement. La zone
+           H1 (top: 22-70%) reste totalement transparente : le mix-blend du
+           H1 voit la vidéo en direct → effet inverse exact comme le cursor. -->
       <div
         class="absolute inset-0"
         aria-hidden="true"
@@ -968,19 +984,25 @@ const vitrine = [
     }
 
     /* Hero slideshow — 4 créations Jonathan qui crossfadent en boucle
-       (brief Morgan 2026-04-24 : « plusieurs créations de Jonathan en fond
-       au lieu d'une seule photo »). Toutes les images absolute stack,
-       seule .is-active a opacity 1, crossfade 1.6s. */
+       (refonte 2026-04-29 : passage en VIDÉO — 3 clips Jonathan en boucle
+       continue avec cross-fade 800 ms entre chaque clip). Deux <video> qui
+       alternent : un actif (visible), un en preload du clip suivant. Le
+       cross-fade se déclenche ~800 ms avant la fin du clip actif. */
     [data-hero-slideshow] {
       position: relative;
     }
-    .hero-slide {
+    .hero-video {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
       opacity: 0;
-      transition: opacity 1.6s var(--ease-out-editorial);
+      transition: opacity 0.8s var(--ease-out-editorial);
+      pointer-events: none;
     }
-    .hero-slide.is-active {
+    .hero-video.is-active {
       opacity: 1;
     }
 
@@ -1986,63 +2008,146 @@ const vitrine = [
   </style>
 
   <script>
-    // Swap background-image hero : LQIP (data URI inliné) → /hero-fallback.webp.
-    // Le LQIP donne un affichage instantané (0 RTT) dès le HTML parse ; on
-    // précharge la WebP en parallèle (link rel=preload) et on substitue dès
-    // qu'elle est décodée. Pas de flash noir, pas de couture visible (LQIP
-    // = même cadrage, même teinte dominante).
-    function swapHeroBackground() {
-      const sec = document.querySelector<HTMLElement>('[data-hero-bg]');
-      if (!sec) return;
-      if (sec.dataset.bgSwapped === 'true') return;
-      const img = new Image();
-      img.onload = () => {
-        sec.style.backgroundImage = 'url("/hero-fallback.webp")';
-        sec.dataset.bgSwapped = 'true';
-      };
-      img.src = '/hero-fallback.webp';
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', swapHeroBackground, { once: true });
-    } else {
-      swapHeroBackground();
-    }
-    document.addEventListener('astro:page-load', swapHeroBackground);
-
-    // Hero slideshow rotation — crossfade toutes les 6s (brief Morgan 2026-04-24).
-    // Pause si prefers-reduced-motion. Respecte view transitions Astro.
-    function initHeroSlideshow() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Hero slideshow VIDÉO — refonte 2026-04-29.
+    //
+    // 3 vidéos Jonathan jouent en boucle continue avec cross-fade 800 ms
+    // entre chaque clip. Architecture : 2 éléments <video> qui alternent
+    // (stage 0 et stage 1). Pendant qu'un stage joue, l'autre précharge le
+    // clip suivant (src = next URL, video.load(), reste invisible). À 800 ms
+    // de la fin du clip actif, on déclenche le cross-fade : l'autre stage
+    // play() + classe .is-active → opacity 1, le stage actif perd .is-active
+    // → opacity 0. Quand l'animation est terminée, on prépare le clip d'après
+    // sur le stage qui vient d'être désactivé. Cycle infini.
+    //
+    // Reduced-motion : aucune vidéo ne joue, on affiche juste le poster du
+    // 1er clip (paint instantané, comportement statique respectueux).
+    function initHeroVideoSlideshow() {
       const container = document.querySelector<HTMLElement>('[data-hero-slideshow]');
       if (!container) return;
-      const slides = Array.from(container.querySelectorAll<HTMLElement>('.hero-slide'));
-      if (slides.length < 2) return;
       if (container.dataset.slideshowWired === 'true') return;
+
+      const stages = Array.from(
+        container.querySelectorAll<HTMLVideoElement>('video[data-hero-stage]'),
+      );
+      if (stages.length < 2) return;
+
+      let videos: string[] = [];
+      try {
+        videos = JSON.parse(container.dataset.heroVideos || '[]') as string[];
+      } catch {
+        videos = [];
+      }
+      if (videos.length < 1) return;
       container.dataset.slideshowWired = 'true';
 
-      let current = 0;
-      const interval = window.setInterval(() => {
-        slides[current]?.classList.remove('is-active');
-        current = (current + 1) % slides.length;
-        slides[current]?.classList.add('is-active');
-      }, 6000);
+      // Reduced-motion : on laisse le poster de la 1re vidéo, pas de play.
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        stages[0]!.classList.add('is-active');
+        return;
+      }
 
-      // Nettoyage au swap Astro pour éviter les timers orphelins
+      // Crossfade window : on enchaîne ~CROSSFADE_MS avant la fin pour cacher
+      // le swap dans la transition. Doit matcher la transition CSS opacity.
+      const CROSSFADE_MS = 800;
+
+      let activeIdx = 0; // 0 = stage 0 visible, 1 = stage 1 visible
+      let nextVideoIdx = 1 % videos.length; // prochain clip à charger
+      let switching = false;
+
+      // Précharge le clip suivant sur le stage inactif
+      const preload = () => {
+        const inactive = stages[1 - activeIdx]!;
+        const url = videos[nextVideoIdx]!;
+        if (inactive.src.endsWith(url)) return;
+        inactive.src = url;
+        inactive.load();
+      };
+
+      const swap = () => {
+        if (switching) return;
+        const active = stages[activeIdx]!;
+        const inactive = stages[1 - activeIdx]!;
+        // Le stage inactif doit avoir son src prêt (préchargé). On le lance
+        // muet (autoplay garanti) avant de basculer l'opacité pour éviter
+        // un flash noir si la frame n'est pas encore décodée.
+        switching = true;
+        const startNext = () => {
+          inactive.classList.add('is-active');
+          active.classList.remove('is-active');
+          activeIdx = 1 - activeIdx;
+          nextVideoIdx = (nextVideoIdx + 1) % videos.length;
+          // Au bout du fade-out (≥ CROSSFADE_MS), on remet l'ex-active à 0
+          // et on précharge le clip d'après dessus.
+          window.setTimeout(() => {
+            active.pause();
+            active.currentTime = 0;
+            preload();
+            switching = false;
+          }, CROSSFADE_MS + 50);
+        };
+        const playPromise = inactive.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.then(startNext).catch(startNext);
+        } else {
+          startNext();
+        }
+      };
+
+      // Polling de la position de lecture du stage actif via timeupdate
+      // (déclenché 4 fois/s en moyenne, suffisant pour viser 800 ms avant fin).
+      const onTimeUpdate = (e: Event) => {
+        const v = e.currentTarget as HTMLVideoElement;
+        if (!v.classList.contains('is-active')) return;
+        if (!isFinite(v.duration) || v.duration <= 0) return;
+        if (v.currentTime >= v.duration - CROSSFADE_MS / 1000 - 0.05) {
+          swap();
+        }
+      };
+
+      // Failsafe : si timeupdate ne déclenche pas (rare, ex. tab inactive),
+      // le ended event prend le relais et bascule immédiatement (sans fondu
+      // mais sans freeze).
+      const onEnded = () => {
+        if (!switching) swap();
+      };
+
+      stages.forEach((s) => {
+        s.addEventListener('timeupdate', onTimeUpdate);
+        s.addEventListener('ended', onEnded);
+      });
+
+      // Démarrage : stage 0 = clip 0 visible et en lecture, stage 1 = clip 1
+      // préchargé invisible.
+      stages[0]!.classList.add('is-active');
+      const initialPlay = stages[0]!.play();
+      if (initialPlay && typeof initialPlay.catch === 'function') {
+        // Si l'autoplay est refusé (rare, hors muted+playsinline), on garde
+        // le poster comme fallback. Pas de retry agressif.
+        initialPlay.catch(() => {});
+      }
+      preload();
+
+      // Nettoyage Astro view transitions
       document.addEventListener(
         'astro:before-swap',
         () => {
-          window.clearInterval(interval);
+          stages.forEach((s) => {
+            s.removeEventListener('timeupdate', onTimeUpdate);
+            s.removeEventListener('ended', onEnded);
+            s.pause();
+          });
           container.dataset.slideshowWired = '';
         },
         { once: true },
       );
     }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initHeroSlideshow, { once: true });
+      document.addEventListener('DOMContentLoaded', initHeroVideoSlideshow, { once: true });
     } else {
-      initHeroSlideshow();
+      initHeroVideoSlideshow();
     }
-    document.addEventListener('astro:page-load', initHeroSlideshow);
+    document.addEventListener('astro:page-load', initHeroVideoSlideshow);
 
     // Vitrine pagination dots — sync avec le scrollLeft du rail. Pattern
     // designbyad scroll_home f_012 : dot actif suit la card centrée.

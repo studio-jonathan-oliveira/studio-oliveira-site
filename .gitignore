@@ -38,6 +38,9 @@ public/scrollframes/
 # Références client locales (vidéos + frames extraites pour analyse)
 _brief/client-assets/references/
 
+# Sources vidéo brutes (hero, etc.) — ré-encodées vers public/ par scripts/
+_assets/
+
 # Fichiers temporaires
 *.tmp
 *.bak
