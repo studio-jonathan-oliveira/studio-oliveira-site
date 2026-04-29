@@ -814,7 +814,13 @@ const vitrine = [
       animation: bifurc-pulse 2.6s ease-in-out infinite;
     }
 
-    /* Titre H1 éclaté — bloc fluide en mobile, layout asymétrique en desktop */
+    /* Titre H1 éclaté — bloc fluide en mobile, layout asymétrique en desktop.
+       PAS de z-index ici (refonte 2026-04-29 — Morgan : « le H1 doit prendre
+       la couleur inverse du background »). Tout z-index crée un stacking
+       context qui ISOLE le mix-blend-mode: difference de .hero-line — le
+       blend ne voyait donc pas la photo du slideshow et le H1 restait
+       blanc plat. L'ordre source DOM (H1 placé après le slideshow) suffit
+       pour que le titre paraisse au-dessus du slideshow visuellement. */
     .hero-title-asym {
       position: relative;
       width: 100%;
@@ -827,7 +833,6 @@ const vitrine = [
       font-size: var(--text-hero);
       line-height: 1.02;
       letter-spacing: -0.025em;
-      z-index: 1;
     }
     .hero-word-designer,
     .hero-word-paysagiste {
