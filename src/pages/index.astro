@@ -1016,10 +1016,13 @@ const vitrine = [
        (refonte 2026-04-29 : passage en VIDÉO — 3 clips Jonathan en boucle
        continue avec cross-fade 800 ms entre chaque clip). Deux <video> qui
        alternent : un actif (visible), un en preload du clip suivant. Le
-       cross-fade se déclenche ~800 ms avant la fin du clip actif. */
-    [data-hero-slideshow] {
-      position: relative;
-    }
+       cross-fade se déclenche ~800 ms avant la fin du clip actif.
+       NOTE 2026-04-29 (Morgan « la vidéo n'est pas là, fond quasi noir »):
+       l'ancien `[data-hero-slideshow] { position: relative }` overridait
+       silencieusement la classe Tailwind `absolute inset-0 z-0` (même
+       spécificité, scoped chargé après) → div en flow, height 0 (videos
+       absolute hors flow), donc videos width/height 100% de 0×0 = invisibles.
+       La règle est supprimée — la classe Tailwind suffit. */
     .hero-video {
       display: block;
       position: absolute;
