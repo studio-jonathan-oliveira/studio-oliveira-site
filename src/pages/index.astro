@@ -1892,10 +1892,18 @@ const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
       // `currentSrc` (URL résolue, fonctionne avec <source> et avec src=)
       // pour éviter de recharger inutilement quand le stage a déjà le
       // bon clip (notamment au 1er appel — stage 1 a déjà clip 1 via SSR).
+      // IMPORTANT : on reset currentTime=0 même quand l'URL est déjà bonne,
+      // sinon au tour suivant du cycle (clip déjà joué une fois), play()
+      // reprend à la frame courante → "démarre en cours de route".
       const preload = () => {
         const inactive = stages[1 - activeIdx]!;
         const url = videos[nextVideoIdx]!;
-        if (inactive.currentSrc.endsWith(url)) return;
+        if (inactive.currentSrc.endsWith(url)) {
+          try {
+            inactive.currentTime = 0;
+          } catch {}
+          return;
+        }
         inactive.src = url;
         inactive.load();
       };
@@ -1908,6 +1916,12 @@ const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
         // muet (autoplay garanti) avant de basculer l'opacité pour éviter
         // un flash noir si la frame n'est pas encore décodée.
         switching = true;
+        // Garantie démarrage à zéro — si le clip a déjà été joué dans un
+        // tour précédent du cycle, son currentTime n'est pas remis à 0 par
+        // preload() (short-circuit URL identique). On force ici.
+        try {
+          inactive.currentTime = 0;
+        } catch {}
         const startNext = () => {
           inactive.classList.add('is-active');
           active.classList.remove('is-active');
