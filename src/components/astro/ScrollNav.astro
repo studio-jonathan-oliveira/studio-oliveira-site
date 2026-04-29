@@ -369,14 +369,20 @@
         mobileFill.style.width = `${pct}%`;
       }
 
-      // Bascule cream/Klein de la sidebar selon la section qui intersecte
-      // le centre du viewport. On itère et garde la DERNIÈRE match (= section
-      // visible la plus récente dans l'ordre DOM, gère hero sticky).
-      const mid = window.innerHeight / 2;
+      // Bascule cream/Klein de la sidebar : la section est considérée
+      // « traversée » dès qu'elle couvre une portion centrale du viewport
+      // (zone 30-70%). Plus permissif que le mid strict, sinon les sections
+      // courtes (bandeau Klein épuré) ne sont jamais détectées comme actives
+      // pendant un scroll fluide. Morgan 2026-04-29 : « quand on TRAVERSE
+      // une section bleu, le texte de la sidebar doit être crème aussi ».
+      const vh = window.innerHeight;
+      const upper = vh * 0.3;
+      const lower = vh * 0.7;
       let isDark = false;
       for (const s of sections) {
         const rect = s.getBoundingClientRect();
-        if (rect.top <= mid && rect.bottom >= mid) {
+        // Section intersecte la zone centrale 30-70% du viewport
+        if (rect.top <= lower && rect.bottom >= upper) {
           isDark = s.dataset.theme === 'dark';
         }
       }
@@ -410,16 +416,9 @@
 
       positionThumb(activeIndex);
 
-      // Bascule la couleur de la sidebar selon le data-theme de la section
-      // active (Morgan 2026-04-29 : « la sidebar reste gris sombre quand on
-      // survole une section bleu »). On bascule directement sur la section
-      // active du sommaire — pas sur body.is-dark-section qui dépend du
-      // mid viewport et a un délai.
-      const sec = sections[activeIndex];
-      const isDark = sec?.dataset.theme === 'dark';
-      nav.classList.toggle('is-on-dark', isDark);
-      if (mobile) mobile.classList.toggle('is-on-dark', isDark);
-
+      // Note : la bascule .is-on-dark est gérée dans onScroll (geometry-based)
+      // pour rester synchrone avec le scroll réel, pas avec l'IntersectionObserver
+      // qui peut rater les sections courtes (Morgan 2026-04-29).
       const section = sections[activeIndex];
       if (!section) return;
       const label = section.dataset.sectionLabel || section.id;
