@@ -570,19 +570,17 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     gap: 0.3rem;
     min-width: 0;
   }
-  /* Refonte 2026-04-28 #B3 (Jonathan) : labels plus petits + UPPERCASE +
-     fin (300). Au hover, faux-bold via text-shadow (épaissit le glyph sans
-     changer la métrique → AUCUN layout shift, donc aucun saut de ligne). */
+  /* Refonte 2026-04-29 (Morgan) : tous les noms d'onglets en GRAS DE BASE,
+     plus d'effet bold au hover (ressenti pas terrible). Le hover fait
+     juste apparaître la tagline + déplacer la flèche. */
   .primary-menu__label-main {
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(1.4rem, 3.4vw, 2.6rem);
     line-height: 1.05;
     letter-spacing: -0.01em;
-    font-weight: 300;
+    font-weight: 700;
     text-transform: uppercase;
-    transition:
-      text-shadow 0.35s var(--ease-out-editorial),
-      color 0.4s var(--ease-out-editorial);
+    transition: color 0.4s var(--ease-out-editorial);
   }
   .primary-menu__tagline {
     font-family: var(--font-body), sans-serif;
@@ -613,18 +611,10 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     margin-top: 0.3em;
   }
 
-  /* Hover / active — refonte 2026-04-28 #B3 (Jonathan) :
-     hover = faux-bold via text-shadow (épaissit le glyph sans modifier la
-     métrique → pas de saut de ligne). Tagline visible, arrow translaté. */
+  /* Hover / active — refonte 2026-04-29 (Morgan) : pas d'effet bold au hover
+     (les labels sont déjà en gras de base). Le hover fait juste apparaître
+     la tagline + déplacer la flèche. */
   @media (hover: hover) and (min-width: 768px) {
-    .primary-menu__link:hover .primary-menu__label-main,
-    .primary-menu__link:focus-visible .primary-menu__label-main {
-      text-shadow:
-        0.04em 0 0 currentColor,
-        -0.04em 0 0 currentColor,
-        0 0.03em 0 currentColor,
-        0 -0.03em 0 currentColor;
-    }
     .primary-menu__link:hover .primary-menu__tagline,
     .primary-menu__link:focus-visible .primary-menu__tagline {
       opacity: 1;
@@ -641,14 +631,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* État actif : faux-bold permanent, num pleine opacité. */
-  .primary-menu__item.is-active .primary-menu__label-main {
-    text-shadow:
-      0.04em 0 0 currentColor,
-      -0.04em 0 0 currentColor,
-      0 0.03em 0 currentColor,
-      0 -0.03em 0 currentColor;
-  }
+  /* État actif (refonte 2026-04-29) : labels déjà en gras de base, on
+     conserve juste la pleine opacité du num + tagline. Plus d'effet
+     text-shadow (double gras moche). */
   .primary-menu__item.is-active .primary-menu__num {
     opacity: 1;
   }

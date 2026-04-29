@@ -2,15 +2,16 @@
 /*
  * Header éditorial minimaliste — logo + topbar méta + bouton Menu + CTA pill.
  *
- * Décision audit DA/UX 2026-04-23 : suppression de la nav horizontale inline.
- * La navigation primaire vit désormais dans MenuPrimary.astro (overlay full
- * screen déclenché par le bouton Menu). Raisons :
- *  - Libellés Jonathan longs (« Aménagement végétalisé d'intérieur » = 32 car)
- *    forçaient le wrap entre 1024-1200px.
- *  - Hiérarchie à plat de 6 onglets = pas de sous-sections découvrables.
- *  - Spec PDF l.740 Jonathan : « menu déroulé latéral évolutif = LE MUST ».
- *
- * Le header reste fixed top, bascule transparent → cream au scroll de 80px.
+ * Refonte 2026-04-29 (Morgan, retours bloc) :
+ *  - Topbar (bandeau méta du haut) : fond cream solide, écritures bleu Klein.
+ *    Plus de verre dépoli, plus de mix-blend-difference.
+ *  - Logo : gris sombre (ink) sur fond cream (default), cream sur sections
+ *    sombres (Klein / forest hero immersifs) via body.is-dark-section.
+ *  - CTA pill « Démarrer un projet » : fond Klein + texte cream. Sur sections
+ *    sombres, inversion fond cream + texte Klein pour contraste.
+ *  - Menu/icônes : color ink default, cream sur dark-section.
+ *  - Pas d'effet bold au hover (rendu plus calme, conforme à la demande
+ *    parallèle sur le menu fullscreen).
  */
 
 interface Props {
@@ -21,31 +22,30 @@ const { darkHero = false } = Astro.props;
 
 <header
   class:list={[
-    'site-header fixed top-0 right-0 left-0 z-40 transition-[background-color,color,border-color,backdrop-filter] duration-[450ms] ease-[var(--ease-out-editorial)]',
+    'site-header fixed top-0 right-0 left-0 z-40 transition-[color] duration-[450ms] ease-[var(--ease-out-editorial)]',
     darkHero && 'site-header--dark-hero',
   ]}
   data-header
   data-dark-hero={darkHero ? 'true' : 'false'}
 >
-  <!-- Topbar méta (desktop only) ─────────────────────── -->
-  <div class="site-header__topbar hidden border-b border-current/5 lg:block">
+  <!-- Topbar méta (desktop only) ─ fond cream solide, écritures Klein ───── -->
+  <div class="site-header__topbar hidden lg:block">
     <div
-      class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] tracking-[0.26em] uppercase opacity-75"
+      class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] tracking-[0.26em] uppercase"
     >
       <p>Studio · Brive‑la‑Gaillarde · Aquitaine</p>
       <p class="flex items-center gap-2.5">
-        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-cream)]"
-        ></span>
+        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
         Calendrier 2026 ouvert
       </p>
       <p>
-        <a href="tel:+33661088444" class="transition-opacity hover:opacity-100">
+        <a href="tel:+33661088444" class="transition-opacity hover:opacity-70">
           +33 6 61 08 84 44
         </a>
         <span class="mx-3 opacity-40">·</span>
         <a
           href="mailto:contact.jonathanbiodesign@gmail.com"
-          class="transition-opacity hover:opacity-100"
+          class="transition-opacity hover:opacity-70"
         >
           Contact
         </a>
@@ -63,11 +63,8 @@ const { darkHero = false } = Astro.props;
       aria-label="Studio J Oliveira — accueil"
       data-header-logo
     >
-      <!-- Logo bleu Klein TOUJOURS (refonte 2026-04-28 itération 3 — Jonathan) :
-           plus de bascule cream/klein selon section. Sur dark-section le verre
-           dépoli + drop-shadow assurent la lisibilité. Mask sur PNG black. -->
       <span
-        class="logo-klein block h-9 w-[150px] md:h-10 md:w-[167px] lg:h-11 lg:w-[183px]"
+        class="site-logo block h-9 w-[150px] md:h-10 md:w-[167px] lg:h-11 lg:w-[183px]"
         aria-hidden="true"></span>
       <span class="sr-only">Studio J Oliveira</span>
     </a>
@@ -77,9 +74,7 @@ const { darkHero = false } = Astro.props;
         href="/demarrer-un-projet"
         class="cta-pill group hidden items-center gap-3 rounded-full px-5 py-3 text-[13px] tracking-[0.04em] transition-all md:inline-flex"
       >
-        <span
-          class="cta-dot inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-cream)]"
-          aria-hidden="true"></span>
+        <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
         Démarrer un projet
         <span
           aria-hidden="true"
@@ -107,146 +102,98 @@ const { darkHero = false } = Astro.props;
 </header>
 
 <style>
-  /* État par défaut — header transparent, logo Klein pur, texte qui s'inverse.
-     Refonte 2026-04-29 (Morgan : « quand on est tout au bout du scroll, le
-     logo dans la topbar passe en gold, il faut forcer le bleu tout le temps »).
-     Le mix-blend-mode: difference est désormais appliqué uniquement sur les
-     éléments texte (topbar + menu-trigger), pas sur le header entier. Le logo
-     Klein reste donc en bleu pur quel que soit le fond derrière (cream, ink,
-     image), et seuls les textes auto-inversent comme l'intérieur du curseur. */
+  /* Default (sur fond cream du site) — Header transparent, couleur ink. */
   .site-header {
     background-color: transparent;
-    color: var(--color-cream);
-    isolation: isolate;
-  }
-  .site-header__topbar,
-  .menu-trigger {
-    mix-blend-mode: difference;
+    color: var(--color-ink);
   }
 
-  /* Verre dépoli — appliqué sur (Morgan 2026-04-27 passe 4) :
-     1. body.is-dark-section : alimentée par theme-observer dès qu'on scroll
-        sur une section data-theme="dark". Couvre toutes les pages avec
-        sections sombres uniformément (studio, archi-paysagere, etc.).
-     2. dark-hero non scrolled : compatibilité avec l'ancienne logique pour
-        les pages qui posent darkHero sur BaseLayout sans avoir tagué leurs
-        sections en data-theme="dark".
-     Sur sections claires (cream / sans is-dark-section) : retour au
-     mix-blend-mode: difference par défaut qui marche bien sur fond uni. */
-  :global(body.is-dark-section) .site-header,
-  .site-header--dark-hero:not(.is-scrolled) {
-    background-color: rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(16px) saturate(120%);
-    -webkit-backdrop-filter: blur(16px) saturate(120%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    color: var(--color-cream);
-  }
-  /* Sur dark-section, le verre dépoli remplace l'inversion : on neutralise
-     le mix-blend-difference des textes pour qu'ils soient simplement crème
-     sur le verre dépoli (avec text-shadow pour détacher des images). */
-  :global(body.is-dark-section) .menu-trigger,
-  :global(body.is-dark-section) .site-header__topbar,
-  .site-header--dark-hero:not(.is-scrolled) .menu-trigger,
-  .site-header--dark-hero:not(.is-scrolled) .site-header__topbar {
-    mix-blend-mode: normal;
-    text-shadow:
-      0 1px 4px rgba(0, 0, 0, 0.85),
-      0 2px 14px rgba(0, 0, 0, 0.5);
-  }
-  /* Logo Klein toujours visible : sur dark-section, ajout d'un drop-shadow
-     pour le détacher du verre dépoli (refonte 2026-04-28 itération 3). */
-  :global(body.is-dark-section) .logo-klein,
-  .site-header--dark-hero:not(.is-scrolled) .logo-klein {
-    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.55)) drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
-  }
-  :global(body.is-dark-section) .menu-bars > span,
-  .site-header--dark-hero:not(.is-scrolled) .menu-bars > span {
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.85),
-      0 2px 8px rgba(0, 0, 0, 0.5);
-  }
-  /* CTA pill sur fond sombre : cream bg + forest text + drop-shadow franc
-     pour détacher du verre dépoli. */
-  :global(body.is-dark-section) .cta-pill,
-  .site-header--dark-hero:not(.is-scrolled) .cta-pill {
+  /* Topbar méta — fond cream solide en permanence, écritures Klein.
+     Plus de verre dépoli, plus de mix-blend. Toujours lisible quel que soit
+     le fond de la page derrière (cream comme Klein). */
+  .site-header__topbar {
     background-color: var(--color-cream);
-    color: var(--color-forest);
-    border-color: var(--color-cream);
-    box-shadow:
-      0 6px 24px rgba(0, 0, 0, 0.45),
-      0 2px 6px rgba(0, 0, 0, 0.35);
-  }
-  /* Refonte 2026-04-28 itération 3 : logo Klein TOUJOURS visible. Plus de
-     swap cream/klein. La logique d'opacité est retirée. */
-
-  /* Dark hero — transparent, texte crème (le logo reste Klein) */
-  .site-header--dark-hero {
-    background-color: transparent;
-    color: var(--color-cream);
+    color: var(--color-klein);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-klein) 10%, transparent);
   }
 
-  /* Scrolled — mix-blend-difference, texte crème, logo Klein conservé. */
-  .site-header.is-scrolled {
-    background-color: transparent;
-    color: var(--color-cream);
-    border-bottom: none;
-  }
-
-  /* Logo Klein — silhouette du wordmark via mask + teinte par background.
-     Évite la création d'un nouveau PNG : le wordmark-black sert d'alpha. */
-  .logo-klein {
-    background-color: var(--color-klein);
+  /* Logo — ink (gris sombre) par défaut, masque sur le PNG wordmark. */
+  .site-logo {
+    background-color: var(--color-ink);
     -webkit-mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
     mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* CTA pill — fond plein editorial, inversion au hover.
-     Refonte 2026-04-28 (Jonathan) : weight 300 par défaut → 700 au hover,
-     bascule discrète qui invite au clic. */
-  .cta-pill {
-    background-color: var(--color-forest);
+  /* Sur sections sombres (Klein / forest immersif via data-theme=dark) :
+     logo cream + menu cream. La topbar reste cream/Klein (rectangle
+     posé qui contraste sur la page). */
+  :global(body.is-dark-section) .site-header,
+  .site-header--dark-hero:not(.is-scrolled) {
     color: var(--color-cream);
-    border: 1px solid var(--color-forest);
-    font-weight: 300;
+  }
+  :global(body.is-dark-section) .site-logo,
+  .site-header--dark-hero:not(.is-scrolled) .site-logo {
+    background-color: var(--color-cream);
+  }
+
+  /* CTA pill — fond Klein, texte cream (default).
+     Pas d'effet bold au hover — assombrissement subtil du fond seulement. */
+  .cta-pill {
+    background-color: var(--color-klein);
+    color: var(--color-cream);
+    border: 1px solid var(--color-klein);
     transition:
       background-color 0.3s var(--ease-out-editorial),
-      border-color 0.3s var(--ease-out-editorial),
-      color 0.3s var(--ease-out-editorial),
-      font-weight 0.35s var(--ease-out-editorial);
+      border-color 0.3s var(--ease-out-editorial);
   }
   .cta-pill:hover {
-    background-color: var(--color-moss);
-    border-color: var(--color-moss);
-    color: var(--color-cream);
-    font-weight: 700;
+    background-color: color-mix(in oklab, var(--color-klein) 85%, black);
+    border-color: color-mix(in oklab, var(--color-klein) 85%, black);
   }
   .cta-pill .cta-dot {
-    transition:
-      transform 0.4s var(--ease-out-editorial),
-      background-color 0.3s;
+    background-color: var(--color-cream);
+    transition: transform 0.4s var(--ease-out-editorial);
   }
   .cta-pill:hover .cta-dot {
     transform: scale(1.4);
-    background-color: var(--color-cream);
-  }
-  /* Dark hero — pill crème contour, texte forest */
-  .site-header--dark-hero:not(.is-scrolled) .cta-pill {
-    background-color: var(--color-cream);
-    color: var(--color-forest);
-    border-color: var(--color-cream);
-  }
-  /* Bug fix 2026-04-28 #B2 : sur dark-hero, le hover faisait color cream sur
-     fond cream → texte invisible. On garde le fond cream et on assombrit
-     le texte en forest + bold pour rester lisible. */
-  .site-header--dark-hero:not(.is-scrolled) .cta-pill:hover {
-    background-color: var(--color-cream);
-    border-color: var(--color-cream);
-    color: var(--color-forest);
-    font-weight: 700;
   }
 
-  /* Burger ↔ X — polish 2026-04-24 (brief Jonathan/Morgan, référence designbyad).
-     Transitions explicites smooth + morph propre + hover non destructif. */
+  /* Sur dark-section : pill inversée — fond cream + texte Klein pour contraste
+     (le fond Klein du site rendrait un pill Klein invisible). */
+  :global(body.is-dark-section) .cta-pill,
+  .site-header--dark-hero:not(.is-scrolled) .cta-pill {
+    background-color: var(--color-cream);
+    color: var(--color-klein);
+    border-color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .cta-pill:hover,
+  .site-header--dark-hero:not(.is-scrolled) .cta-pill:hover {
+    background-color: color-mix(in oklab, var(--color-cream) 88%, var(--color-klein));
+    border-color: color-mix(in oklab, var(--color-cream) 88%, var(--color-klein));
+  }
+  :global(body.is-dark-section) .cta-pill .cta-dot,
+  .site-header--dark-hero:not(.is-scrolled) .cta-pill .cta-dot {
+    background-color: var(--color-klein);
+  }
+
+  /* Status dot topbar — Klein qui pulse. */
+  .status-dot {
+    background-color: var(--color-klein);
+    animation: status-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.3);
+    }
+  }
+
+  /* Burger ↔ X — animation préservée (refonte 2026-04-24 designbyad). */
   .menu-trigger {
     cursor: pointer;
     padding: 0.4rem 0;
@@ -276,7 +223,6 @@ const { darkHero = false } = Astro.props;
   .menu-bars > span:last-child {
     bottom: 0;
   }
-  /* Hover closed : les 2 barres se rétractent depuis la droite */
   .menu-trigger:hover .menu-bars > span:first-child {
     width: 65%;
     margin-left: auto;
@@ -284,7 +230,6 @@ const { darkHero = false } = Astro.props;
   .menu-trigger:hover .menu-bars > span:last-child {
     width: 85%;
   }
-  /* Open : les 2 barres se rejoignent au centre et tournent en X */
   .menu-trigger[aria-expanded='true'] .menu-bars > span {
     width: 100% !important;
     margin-left: 0;
@@ -297,7 +242,6 @@ const { darkHero = false } = Astro.props;
     bottom: 4px;
     transform: rotate(-45deg);
   }
-  /* Open + hover : léger scale pulse sans casser le X */
   .menu-trigger[aria-expanded='true']:hover .menu-bars > span:first-child {
     transform: rotate(45deg) scale(1.1);
   }
@@ -305,32 +249,12 @@ const { darkHero = false } = Astro.props;
     transform: rotate(-45deg) scale(1.1);
   }
 
-  /* Status dot — pulse discret */
-  .status-dot {
-    animation: status-pulse 2.5s ease-in-out infinite;
-  }
-  @keyframes status-pulse {
-    0%,
-    100% {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.3);
-    }
-  }
-
-  /* Topbar borderless subtle tint */
-  .site-header__topbar {
-    border-bottom-color: color-mix(in oklab, currentColor 10%, transparent);
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .site-header,
-    .logo-swap .logo-klein,
+    .site-logo,
     .status-dot,
-    .menu-trigger .menu-bars > span {
+    .menu-trigger .menu-bars > span,
+    .cta-pill {
       transition: none;
       animation: none;
     }
@@ -339,11 +263,8 @@ const { darkHero = false } = Astro.props;
 
 <script>
   /**
-   * Header wire — idempotent via flag module (évite empilage de listeners sur
-   * navigation par view transitions).
-   * Expose aussi la hauteur du Header en CSS custom property
-   * `--header-height` sur `<html>` pour que les pages puissent dériver leur
-   * offset hero / scroll-margin-top sans tâtonnement.
+   * Header wire — idempotent + expose --header-height en CSS custom property
+   * sur <html> pour offset hero / scroll-margin-top.
    */
   let headerWired = false;
   let scrollListener: (() => void) | null = null;
@@ -353,15 +274,12 @@ const { darkHero = false } = Astro.props;
     const header = document.querySelector<HTMLElement>('[data-header]');
     if (!header) return;
 
-    // Expose la hauteur du Header via ResizeObserver (topbar cachée sur mobile,
-    // logo scale selon breakpoint → height change dynamiquement).
     if (resizeObserver) resizeObserver.disconnect();
     resizeObserver = new ResizeObserver(() => {
       const h = header.getBoundingClientRect().height;
       document.documentElement.style.setProperty('--header-height', `${h}px`);
     });
     resizeObserver.observe(header);
-    // Set initial sync
     document.documentElement.style.setProperty(
       '--header-height',
       `${header.getBoundingClientRect().height}px`,

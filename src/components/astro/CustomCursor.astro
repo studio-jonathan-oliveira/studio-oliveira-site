@@ -28,12 +28,16 @@
       pointer-events: none;
       z-index: 9999;
       display: block;
-      /* mix-blend-mode: difference — le cursor s'inverse automatiquement
-         sur tout fond (cream, forest, image). Couleur base = blanc, la
-         différence donne le négatif visuel (feedback Morgan 2026-04-24 :
-         « avant ça faisait une couleur inversée de la surface c'était cool »). */
-      --cursor-color: #ffffff;
-      mix-blend-mode: difference;
+      /* Refonte 2026-04-29 (Morgan) : plus de mix-blend-difference. Couleurs
+         explicites Klein sur fond cream, cream sur fond Klein/dark.
+         La couleur du cursor (dot + ring + label) est pilotée par la variable
+         --cursor-fill / --cursor-text qui basculent via body.is-dark-section. */
+      --cursor-fill: var(--color-klein);
+      --cursor-text: var(--color-cream);
+    }
+    :global(body.is-dark-section) .custom-cursor {
+      --cursor-fill: var(--color-cream);
+      --cursor-text: var(--color-klein);
     }
 
     /* Masque le curseur natif uniquement en fine pointer. */
@@ -61,7 +65,7 @@
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      background-color: var(--cursor-color);
+      background-color: var(--cursor-fill);
       transition:
         transform 0.18s var(--ease-out-editorial),
         opacity 0.2s ease,
@@ -76,13 +80,9 @@
       left: -12px;
       width: 24px;
       height: 24px;
-      /* Disque BLANC 100% opaque + mix-blend-mode: difference sur le parent
-         = inversion exacte de la couleur du fond (|255 - R/G/B|).
-         Feedback Morgan 2026-04-24 : le semi-transparent précédent donnait
-         un gris moyen ; il faut 100% opaque pour que la différence soit nette.
-         Pas de border — la silhouette du disque inversé contre le fond est
-         déjà un « cercle » parfaitement lisible sur tout contexte. */
-      background-color: var(--cursor-color);
+      /* Refonte 2026-04-29 — disque Klein sur cream, cream sur Klein, via
+         --cursor-fill piloté par body.is-dark-section. */
+      background-color: var(--cursor-fill);
       border-radius: 50%;
       transition:
         width 0.35s var(--ease-out-editorial),
@@ -122,13 +122,12 @@
       font-size: 9px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--color-forest);
+      /* Texte cream sur ring Klein (default) ; sur dark-section : Klein sur cream. */
+      color: var(--cursor-text);
+      font-weight: 600;
       opacity: 0;
       transition: opacity 0.2s ease;
       pointer-events: none;
-      /* Le label doit être lisible malgré mix-blend: on le sort du blend
-         via isolation locale — le ring reste en difference, le texte en normal */
-      mix-blend-mode: normal;
     }
     .custom-cursor.is-labeled .cursor-ring {
       width: 96px;

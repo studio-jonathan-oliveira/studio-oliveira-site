@@ -33,7 +33,6 @@ import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaine from '@/assets/typologies/domaine-caractere.webp';
-import { PROJETS_PAR_SLUG } from '@/lib/projets';
 
 // Typologies — données sourcées du PDF PROCESS-ETUDES-STUDIO-2026 (lignes 29-306)
 // Les phrases courtes sont extraites des citations Jonathan (brief consolidé).
@@ -105,31 +104,8 @@ const typologies = [
 // Zones d'intervention — cf. site-config.ts (sourcé)
 const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
 
-// Vitrine projets — pattern designbyad (scroll_home.mp4 frame 7-9) :
-// portraits 70vh + name UPPERCASE au-dessus + scroll horizontal natif touch.
-// Sources sourcées : noms + lieux issus de src/lib/projets.ts (extraits PDF Jonathan).
-const vitrine = [
-  {
-    ...PROJETS_PAR_SLUG['coeur-urbain']!,
-    image: typoCoeurUrbain,
-    href: '/architecture-paysagere/coeur-urbain',
-  },
-  {
-    ...PROJETS_PAR_SLUG['frange-urbaine']!,
-    image: typoFrangeUrbaine,
-    href: '/architecture-paysagere/frange-urbaine',
-  },
-  {
-    ...PROJETS_PAR_SLUG['domaine-caractere']!,
-    image: typoDomaine,
-    href: '/architecture-paysagere/domaine-caractere',
-  },
-  {
-    ...PROJETS_PAR_SLUG['micro-urbain']!,
-    image: typoMicroUrbain,
-    href: '/architecture-paysagere/micro-urbain',
-  },
-];
+// Vitrine projets retirée 2026-04-29 (Morgan : suppression entière de la
+// section « Quelques études récentes »).
 ---
 
 <BaseLayout
@@ -302,17 +278,23 @@ const vitrine = [
           contre la photo / le fond, en permanence. Lisible sur n'importe
           quel arrière-plan, vidéo comprise. */
       }
-      <h1 class="hero-title-asym hero-title-cutout text-[var(--color-cream)]">
-        <span class="hero-word-designer" data-hero-mask>
-          <span data-mask-line class="hero-line block">DESIGNER</span>
-        </span>
-        <span class="hero-word-paysagiste" data-hero-mask>
-          <span data-mask-line class="hero-line block">PAYSAGISTE</span>
-        </span>
+      {
+        /* H1 hero — refonte 2026-04-29 (Morgan, retours bloc) :
+          - Position bas-droite (matched le pattern designbyad final)
+          - Taille réduite (text-5xl mobile, text-hero desktop comme le H2
+            studio biophilique « Design végétal en Aquitaine, Limousin »)
+          - Couleur cream pleine (plus de mix-blend-difference)
+          - DESIGNER en Jost gras (font-heading 700)
+          - PAYSAGISTE en Gloock gras (.display = font-display 700)
+          - Écart entre lignes pb-0.05/0.12em (match studio biophilique) */
+      }
+      <h1
+        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] font-bold text-[var(--color-cream)] md:text-[length:var(--text-hero)]"
+        data-hero-mask
+      >
+        <span data-mask-line class="block pb-[0.05em]">DESIGNER</span>
+        <span data-mask-line class="display block pb-[0.12em]">PAYSAGISTE</span>
       </h1>
-
-      {/* Trait vertical signature qui relie les deux mots du H1 (designbyad-like) */}
-      <span class="hero-rule" aria-hidden="true"></span>
 
       {
         /* Manifesto bas-gauche + 2 CTAs hero retirés 2026-04-28 (Jonathan) :
@@ -363,35 +345,22 @@ const vitrine = [
       </header>
 
       {
-        /* Constellation : 5 lignes de 5 mots-clés extraits du verbe Jonathan
-          (cahier des charges + studio.astro). setupJustifyMulti pilote la
-          cascade — chaque ligne se déploie avec un décalage progressif
-          (lineStep) au scroll. Les rythmes par ligne pourront être
-          différenciés ultérieurement (Morgan 2026-04-28). */
+        /* Constellation 2026-04-29 (Morgan, retours bloc) : épurée à 3 lignes
+          maximum, 2-3 mots par ligne, sélection des mots-piliers du verbe
+          Jonathan. Animation amplifiée (amp 55→110, line-step 0.10→0.16)
+          pour que les mots bougent visiblement au scroll. */
       }
       <div
         class="archi-constellation"
         data-justify-multi
         data-justify-target="#archi-intro"
-        data-justify-amp="55"
-        data-justify-line-step="0.10"
-        data-justify-line-window="0.40"
+        data-justify-amp="110"
+        data-justify-line-step="0.16"
+        data-justify-line-window="0.45"
       >
-        <p class="archi-constellation-line" data-justify-line>
-          IMMERSION CONCEPTION TERRITOIRE DESIGN ARCHITECTURE
-        </p>
-        <p class="archi-constellation-line" data-justify-line>
-          BIOPHILIE ÉCOSYSTÈME ESSENCE VÉGÉTAL HARMONIE
-        </p>
-        <p class="archi-constellation-line" data-justify-line>
-          SCIENTIFIQUE SENSORIALITÉ EXPÉRIENCE MÉTHODE ÉTUDE
-        </p>
-        <p class="archi-constellation-line" data-justify-line>
-          INTÉRIEUR BÂTI HUMAIN EXTÉRIEUR ENVIRONNEMENT
-        </p>
-        <p class="archi-constellation-line" data-justify-line>
-          RÉALISATION VALEUR DISTINCTION AUTHENTICITÉ PARCOURS
-        </p>
+        <p class="archi-constellation-line" data-justify-line>ARCHITECTURE TERRITOIRE BIOPHILIE</p>
+        <p class="archi-constellation-line" data-justify-line>HUMAIN ÉCOSYSTÈME</p>
+        <p class="archi-constellation-line" data-justify-line>MÉTHODE EXPÉRIENCE CONCEPTION</p>
       </div>
     </div>
   </section>
@@ -406,16 +375,17 @@ const vitrine = [
     class="studio-biophilique relative isolate overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-klein)] text-[var(--color-cream)]"
     aria-labelledby="studio-lead-title"
   >
-    <div class="relative mx-auto max-w-[1500px] px-6 py-28 md:px-10 md:py-40">
-      {
-        /* Pattern designbyad (scroll_home.mp4 frame 2) : bloc mots-clés UPPERCASE
-          calé gauche-droite par justify CSS natif. data-justify-scroll → chaque
-          mot oscille individuellement autour de sa position justify naturelle
-          au scroll (direction/amplitude/phase seedées par mot). Premier et
-          dernier mot ancrés → calage gauche-droite préservé. */
-      }
+    {
+      /* Section studio biophilique — refonte 2026-04-29 (Morgan, retours bloc) :
+        épurée en effet « bandeau », hauteur réduite. Padding compact, le
+        H2 « Design végétal en Aquitaine, Limousin » devient l'élément
+        central, encadré par les keywords (haut) et la liste compacte des
+        zones (bas). Paragraphe long + CTA retirés (le studio détaillé est
+        accessible via /studio). */
+    }
+    <div class="relative mx-auto max-w-[1500px] px-6 py-16 md:px-10 md:py-24">
       <p
-        class="studio-keywords mb-20 md:mb-28"
+        class="studio-keywords mb-10 md:mb-14"
         data-reveal="up"
         data-justify-scroll
         data-justify-amp="22"
@@ -427,39 +397,25 @@ const vitrine = [
         Studio indépendant
       </p>
 
-      <div class="grid gap-16 md:grid-cols-12 md:gap-20">
-        <div class="md:col-span-7" data-reveal="up" data-parallax="-0.3">
-          {/* Eyebrow de section retiré 2026-04-28 #B8 — labels uniquement dans ScrollNav. */}
+      <div class="grid items-center gap-10 md:grid-cols-12 md:gap-16">
+        <div class="md:col-span-7" data-reveal="up">
           <h2
             id="studio-lead-title"
             data-mask-reveal
             data-mask-stagger="0.14"
-            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
+            class="font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
           >
             <span data-mask-line class="block pb-[0.05em]">
               Design <span class="display">végétal</span> en
             </span>
             <span data-mask-line class="display block pb-[0.12em]">Aquitaine, Limousin.</span>
           </h2>
-          <p
-            class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
-          >
-            Art de conception architecturale inspiré des environnements naturels et de leurs effets
-            sur les humains. Une démarche
-            <span class="hover-accent">scientifique</span>
-            couplée à la <span class="hover-accent">technicité</span> architecturale, pour des espaces
-            à vivre proches de ce que l'on ressent dans un lieu à l'état naturel.
-          </p>
-          <div class="mt-10">
-            <CtaLink href="/studio" label="Lire le manifeste complet" tone="dark" size="md" />
-          </div>
         </div>
 
         <aside
           class="md:col-span-5"
           data-reveal="up"
           data-reveal-delay="0.15"
-          data-parallax="0.4"
           aria-labelledby="zones-title"
         >
           <p
@@ -469,31 +425,15 @@ const vitrine = [
             <span class="studio-zones-dot" aria-hidden="true"></span>
             Zones d'intervention
           </p>
-          <ul
-            class="mt-8 divide-y divide-[var(--color-cream)]/12 border-t border-b border-[var(--color-cream)]/12"
-          >
+          <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2">
             {
-              zones.map((zone, i) => (
-                <li class="studio-zone group flex items-baseline justify-between gap-4 py-5">
-                  <span class="flex items-baseline gap-5">
-                    <span class="w-7 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span class="font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-none text-[var(--color-cream)] transition-opacity group-hover:opacity-70">
-                      {zone}
-                    </span>
-                  </span>
-                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/40 transition-all group-hover:translate-x-1 group-hover:text-[var(--color-cream)]">
-                    →
-                  </span>
+              zones.map((zone) => (
+                <li class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-cream)] md:text-[length:var(--text-3xl)]">
+                  {zone}
                 </li>
               ))
             }
           </ul>
-          <p class="mt-6 text-sm leading-relaxed text-[var(--color-cream)]/70">
-            Studio basé à Brive‑la‑Gaillarde. Déplacements réguliers vers Bordeaux et Limoges —
-            aucun bureau satellite, le studio vient au projet.
-          </p>
         </aside>
       </div>
     </div>
@@ -617,123 +557,7 @@ const vitrine = [
 
   {/* Section méthode migrée vers /demarrer-un-projet (refonte 2026-04-28). */}
 
-  <!-- 04b · VITRINE PROJETS — pattern designbyad (scroll_home.mp4 frame 7-9) :
-       projets en portraits 70vh + name UPPERCASE au-dessus, scroll horizontal
-       natif touch-friendly (snap mandatory). Chaque card image-rise au reveal. -->
-  <section
-    id="vitrine"
-    data-section-label="Projets"
-    class="vitrine-section relative isolate overflow-hidden border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
-    aria-labelledby="vitrine-title"
-  >
-    {
-      /* pt réduit (Morgan 2026-04-27 : « espace vide entre méthode et
-       sélection de projets, remonter sélection »). Méthode au-dessus a
-       déjà py-36, on ne ajoute plus que 12-16 ici (vs 28-36 avant). */
-    }
-    <header class="vitrine-header mx-auto max-w-[1500px] px-6 pt-12 md:px-10 md:pt-16">
-      {/* Eyebrow Sélection de projets retiré 2026-04-28 #B8. */}
-      <h2
-        id="vitrine-title"
-        data-mask-reveal
-        data-mask-stagger="0.14"
-        class="mt-5 max-w-3xl font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] md:text-[length:var(--text-hero)]"
-      >
-        <span data-mask-line class="block pb-[0.05em]">Quelques</span>
-        <span data-mask-line class="display block pb-[0.12em]">études récentes.</span>
-      </h2>
-    </header>
-
-    {
-      /* Wrapper outer — permet de positionner les arrows en overlay absolute
-        centred verticalement sur le rail (Morgan 2026-04-28 : « proposer à
-        gauche et à droite directement dans la timeline »). */
-    }
-    <div class="vitrine-rail-outer">
-      <button
-        type="button"
-        class="vitrine-arrow vitrine-arrow--overlay vitrine-arrow--prev"
-        data-vitrine-prev
-        aria-label="Projet précédent"
-      >
-        <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M10 2 L4 8 L10 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
-        </svg>
-      </button>
-      <button
-        type="button"
-        class="vitrine-arrow vitrine-arrow--overlay vitrine-arrow--next"
-        data-vitrine-next
-        aria-label="Projet suivant"
-      >
-        <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="1.5"></path>
-        </svg>
-      </button>
-      <div class="vitrine-rail" role="list">
-        {
-          vitrine.map((p, i) => (
-            <a
-              href={p.href}
-              class="vitrine-card group"
-              role="listitem"
-              data-cursor-cta-host
-              data-cursor-label="OUVRIR"
-              aria-label={`Ouvrir la typologie ${p.typologieSlug} — projet ${p.nom}`}
-            >
-              <p class="vitrine-name" data-reveal="up" data-reveal-delay={String(i * 0.05)}>
-                {p.nom}
-              </p>
-              {/* Pattern designbyad : image qui se déroule du haut plus vite
-                que le scroll (data-img-reveal scroll-driven). Réversible. */}
-              <div class="vitrine-frame" data-img-reveal>
-                <Image
-                  src={p.image}
-                  alt={`${p.nom} — ${p.lieu}`}
-                  widths={[480, 720, 960, 1200]}
-                  sizes="(min-width: 1280px) 42vw, (min-width: 768px) 45vw, 86vw"
-                  quality={82}
-                  format="webp"
-                  class="vitrine-img"
-                  loading={i < 2 ? 'eager' : 'lazy'}
-                  draggable="false"
-                />
-              </div>
-              <p class="vitrine-meta">
-                <span>{p.lieu}</span>
-                <span aria-hidden="true">—</span>
-                <span class="text-[var(--color-ink)]/50">{p.statut}</span>
-              </p>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-
-    {
-      /* Pagination dots — pattern designbyad scroll_home f_012. Les arrows
-        ont été déplacées en overlay sur le rail (Morgan 2026-04-28). */
-    }
-    <div class="vitrine-controls">
-      <div class="vitrine-dots" data-vitrine-dots>
-        {
-          vitrine.map((_, i) => (
-            <button
-              type="button"
-              class="vitrine-dot"
-              data-dot-index={i}
-              aria-label={`Aller au projet ${i + 1}`}
-            />
-          ))
-        }
-      </div>
-    </div>
-
-    {/* CTA "Voir tous les projets" — accès vers le listing complet */}
-    <div class="vitrine-cta-wrap">
-      <CtaLink href="/projets" label="Voir tous les projets" tone="dark" size="md" />
-    </div>
-  </section>
+  {/* Section Vitrine « Quelques études récentes » supprimée 2026-04-29 (Morgan). */}
 
   <!-- 05 · PULL-QUOTE SCROLL-PIN — fond uni ink (mail Jonathan 2026-04-24) -->
   <section
@@ -766,8 +590,10 @@ const vitrine = [
           data-words-fade-stagger="0.02"
           data-words-fade-window="0,0.42"
         >
-          Je ne vends pas une étude, je vends une vision, une méthode, une expérience, une sécurité
-          de résultat.
+          Je ne vends pas une étude, je vends une <strong class="manifeste-bold">vision</strong>,
+          une <strong class="manifeste-bold">méthode</strong>, une
+          <strong class="manifeste-bold">expérience</strong>, une
+          <strong class="manifeste-bold">sécurité de résultat</strong>.
         </blockquote>
         <footer
           class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-ink)]/50 uppercase"
@@ -866,80 +692,26 @@ const vitrine = [
        blend ne voyait donc pas la photo du slideshow et le H1 restait
        blanc plat. L'ordre source DOM (H1 placé après le slideshow) suffit
        pour que le titre paraisse au-dessus du slideshow visuellement. */
-    .hero-title-asym {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      padding: 11rem 1.5rem 9rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      font-family: var(--font-heading), sans-serif;
-      font-size: var(--text-hero);
-      line-height: 1.02;
-      letter-spacing: -0.025em;
+    /* H1 hero — refonte 2026-04-29 (Morgan) :
+       Position bas-droite (style designbyad final), taille réduite alignée
+       sur le H2 studio biophilique (text-5xl mobile / text-hero desktop),
+       cream plein. DESIGNER en Jost gras (heading), PAYSAGISTE en Gloock
+       gras via .display. Écart pb-0.05/0.12em pour matcher la respiration
+       de « Design végétal en Aquitaine, Limousin ». */
+    .hero-title-bottom {
+      position: absolute;
+      right: clamp(1.5rem, 4vw, 4rem);
+      bottom: clamp(5rem, 10vh, 8rem);
+      text-align: right;
+      letter-spacing: -0.015em;
+      max-width: min(92vw, 56rem);
+      z-index: 2;
     }
-    .hero-word-designer,
-    .hero-word-paysagiste {
-      position: relative;
+    .hero-title-bottom [data-mask-line] {
       display: block;
       overflow: hidden;
-      /* padding-bottom large pour que les descendantes (j, p, g, y) ne
-         soient pas coupées par overflow:hidden — fix Y "trop haut" sur
-         "Paysagiste" 2026-04-27. */
-      padding-bottom: 0.28em;
-      line-height: 1.1;
-    }
-
-    /* Inverse vidéo permanent (refonte 2026-04-28 #2 Jonathan) :
-       chaque ligne du H1 est blanche + mix-blend-mode: difference. Pas de
-       bandeau. La couleur du texte se calcule comme l'inverse chromatique
-       de ce qui passe dessous (photo, vidéo, n'importe quoi) → toujours
-       lisible quel que soit le fond. */
-    .hero-title-cutout .hero-line {
-      mix-blend-mode: difference;
-      color: #ffffff;
-    }
-    @media (min-width: 1024px) {
-      .hero-title-asym {
-        padding: 0;
-      }
-      /* Pattern designbyad (frame scroll_home/f_001) : "DESIGN" / "BY AD"
-         empilés à droite, taille modeste, le mot tient dans le viewport.
-         Ici on garde la cadence "Designer" haut + "paysagiste" Gloock
-         italic juste en dessous, alignés DROITE, avec léger décalage
-         horizontal pour casser la rigidité (Designer rentré, Paysagiste
-         qui touche le bord droit). Pas de débord viewport. */
-      /* CAPS : letter-spacing positif (tracking aéré pour caps) + weight
-         400/500. "DESIGNER" plus petit aligné droite, "PAYSAGISTE" en
-         dessous plus large mais sans déborder. */
-      .hero-word-designer {
-        position: absolute;
-        top: 36vh;
-        right: clamp(2rem, 4vw, 4rem);
-        font-size: clamp(2.5rem, 5vw, 5rem);
-        font-weight: 400;
-        letter-spacing: 0.02em;
-        text-align: right;
-      }
-      .hero-word-paysagiste {
-        position: absolute;
-        top: 47vh;
-        right: clamp(2rem, 4vw, 4rem);
-        font-family: var(--font-heading), sans-serif;
-        font-weight: 500;
-        font-size: clamp(4rem, 8.5vw, 9rem);
-        line-height: 1.05;
-        letter-spacing: 0.005em;
-        text-align: right;
-        max-width: 92vw;
-      }
-    }
-
-    /* Trait vertical retiré — le hero designbyad est sobre, sans
-       décoration. Le rythme vient des positions et des tailles. */
-    .hero-rule {
-      display: none;
+      padding-bottom: 0.18em;
+      line-height: 1.05;
     }
 
     /* Manifesto — bas-gauche en desktop, bloc court avec serifs italiques */
@@ -1381,6 +1153,13 @@ const vitrine = [
       opacity: 0;
       transform: translateY(10px);
       will-change: opacity, transform;
+    }
+    /* Mots-clés en gras (refonte 2026-04-29 — Morgan) : vision / méthode /
+       expérience / sécurité de résultat. Le <strong> fournit le poids,
+       on désactive juste l'italique éventuel et on garde la même couleur. */
+    .manifeste-fade .manifeste-bold {
+      font-weight: 700;
+      font-style: normal;
     }
 
     /* Archi-intro constellation — refonte 2026-04-28 (Jonathan).

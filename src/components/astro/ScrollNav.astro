@@ -1,65 +1,60 @@
 ---
 /*
  * ScrollNav — mini-sommaire éditorial latéral qui évolue au scroll.
- * Refonte 2026-04-23 (feedback Morgan : « pas assez joli, barre mal placée »).
  *
- * Structure visuelle :
- *   - Ligne verticale fine continue à gauche (rail unifié, pas de bars séparées)
- *   - Thumb (segment coloré) qui se déplace fluidement le long du rail pour
- *     indiquer la section active — la barre ne « saute » plus d'un item à l'autre
- *   - Items : numéro mono + titre italique serif qui s'étend au hover/actif
- *   - Compteur stylé en bas (02 / 06, italique serif)
- *   - Auto-invert sur sections sombres, mobile = indicateur top
+ * Refonte 2026-04-29 (Morgan, retours bloc) :
+ *  - Plus de mix-blend-difference : le rail/thumb/text utilisent des
+ *    couleurs explicites (Klein sur fond cream, cream sur dark-section)
+ *    via body.is-dark-section.
+ *  - Plus de numéros : ni dans les items, ni dans le compteur. Le compteur
+ *    en bas est supprimé entièrement. Seuls les noms de sections restent.
+ *  - Marge réservée : à partir de 1400px (où la sidebar s'affiche), le
+ *    body reçoit un padding-left global pour empêcher tout visuel de page
+ *    d'empiéter sur la zone sidebar.
  *
  * Auto-alimenté via sections[id][data-section-label] au runtime.
  */
 ---
 
 <nav id="scroll-nav" class="scroll-nav" aria-label="Navigation des sections">
-  <!-- Rail vertical continu -->
   <span class="scroll-nav-rail" aria-hidden="true"></span>
-  <!-- Thumb mobile qui glisse -->
   <span class="scroll-nav-thumb" id="scroll-nav-thumb" aria-hidden="true"></span>
-
   <ol id="scroll-nav-list" class="scroll-nav-list" role="list"></ol>
-
-  <!-- Compteur éditorial -->
-  <p id="scroll-nav-counter" class="scroll-nav-counter" aria-hidden="true">
-    <span data-counter-current class="scroll-nav-counter-current">01</span>
-    <span class="scroll-nav-counter-sep">/</span>
-    <span data-counter-total>—</span>
-  </p>
 </nav>
 
 <!-- Indicateur mobile discret (≤1023px) -->
 <div id="scroll-nav-mobile" class="scroll-nav-mobile" aria-hidden="true">
-  <span class="scroll-nav-mobile-index" data-mobile-index>01</span>
   <span class="scroll-nav-mobile-label" data-mobile-label>Accueil</span>
   <span class="scroll-nav-mobile-bar">
     <span class="scroll-nav-mobile-fill" data-mobile-fill></span>
   </span>
 </div>
 
+<style is:global>
+  /* Marge réservée pour la sidebar à partir de 1400px (Morgan 2026-04-29 :
+     « la sidebar ne soit jamais empiétée par les visuels »). On pousse
+     l'ensemble du contenu de page de 5rem vers la droite quand la sidebar
+     est affichée — le Header fixed reste indépendant (ses propres marges). */
+  @media (min-width: 1400px) {
+    body {
+      padding-left: 5rem;
+    }
+  }
+</style>
+
 <style>
   /* ─────────── Sidebar desktop ───────────
-     Compacte par défaut (~32px de large) pour éviter de chevaucher le contenu
-     (feedback Morgan 2026-04-23 : « sidebar à cheval sur les écritures »).
-     Breakpoint 1400px car en dessous, le contenu max-w-7xl (1280px) touche
-     le bord gauche au centrage. Titres qui s'étendent au hover uniquement. */
+     Couleurs explicites Klein/cream selon contexte (plus de mix-blend). */
   .scroll-nav {
     position: fixed;
-    left: 1.25rem;
+    left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
     z-index: 40;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.8s var(--ease-out-editorial);
-    /* mix-blend-mode: difference — même principe que le cursor. La sidebar
-       s'inverse automatiquement selon le fond (cream -> sombre, forest ->
-       clair, images -> négatif). Couleur blanche = référence de différence. */
-    color: #ffffff;
-    mix-blend-mode: difference;
+    color: var(--color-ink);
     display: none;
     padding: 0.5rem 0 0.5rem 1rem;
   }
@@ -74,18 +69,25 @@
     pointer-events: auto;
   }
 
-  /* Rail vertical continu (ligne fine 1px)
-     Opacity 55% + 1.5px sur cream pour vraiment se lire (feedback 2026-04-24). */
+  /* Sur dark-section : tout passe en cream. */
+  :global(body.is-dark-section) .scroll-nav {
+    color: var(--color-cream);
+  }
+
+  /* Rail vertical continu — 1.5px Klein/40% sur cream, cream/30% sur dark. */
   .scroll-nav-rail {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 1.5px;
-    background-color: color-mix(in oklab, var(--color-forest) 55%, transparent);
+    background-color: color-mix(in oklab, var(--color-klein) 35%, transparent);
+  }
+  :global(body.is-dark-section) .scroll-nav-rail {
+    background-color: color-mix(in oklab, var(--color-cream) 30%, transparent);
   }
 
-  /* Thumb : segment coloré qui glisse sur le rail */
+  /* Thumb — TOUJOURS Klein sur cream, cream sur dark (Morgan 2026-04-29). */
   .scroll-nav-thumb {
     position: absolute;
     left: -1px;
@@ -94,12 +96,17 @@
     height: 36px;
     background-color: var(--color-klein);
     transform: translateY(0);
-    transition: transform 0.8s var(--ease-out-editorial);
+    transition:
+      transform 0.8s var(--ease-out-editorial),
+      background-color 0.4s ease;
     will-change: transform;
     opacity: 0;
   }
   .scroll-nav.is-visible .scroll-nav-thumb {
     opacity: 1;
+  }
+  :global(body.is-dark-section) .scroll-nav-thumb {
+    background-color: var(--color-cream);
   }
 
   /* Liste items */
@@ -121,29 +128,14 @@
   .scroll-nav-link {
     display: flex;
     align-items: baseline;
-    gap: 0.9rem;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
     padding: 0.2rem 0;
   }
 
-  /* Numéro mono — signature visible
-     Opacity pleine (était 0.45 puis 0.70) — feedback 2026-04-24 : encore
-     invisible sur cream. Les non-actifs vont à 0.85 par `.is-passed`. */
-  .scroll-nav-index {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    color: currentColor;
-    opacity: 0.85;
-    min-width: 22px;
-    transition:
-      opacity 0.4s var(--ease-out-editorial),
-      color 0.4s ease;
-  }
-
-  /* Titre italique serif qui apparait/s'étend */
+  /* Titre — italique serif. Plus de numéro avant. Visible quand actif ou
+     au hover de la sidebar entière. */
   .scroll-nav-title {
     font-family: var(--font-heading), serif;
     font-size: 14px;
@@ -152,114 +144,43 @@
     line-height: 1;
     white-space: nowrap;
     color: currentColor;
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    transform: translateX(-4px);
+    opacity: 0.55;
+    transform: translateX(0);
     transition:
       opacity 0.5s var(--ease-out-editorial),
-      max-width 0.7s var(--ease-out-editorial),
-      transform 0.5s var(--ease-out-editorial),
+      font-weight 0.4s ease,
       color 0.4s ease;
-    pointer-events: none;
     font-variation-settings:
       'opsz' 144,
       'SOFT' 80;
   }
-
-  /* États hover */
-  .scroll-nav-item:hover .scroll-nav-index,
-  .scroll-nav-item:focus-within .scroll-nav-index {
-    opacity: 0.85;
-  }
   .scroll-nav-item:hover .scroll-nav-title,
   .scroll-nav-item:focus-within .scroll-nav-title {
-    opacity: 0.7;
-    max-width: 220px;
-    transform: translateX(0);
+    opacity: 0.85;
   }
 
-  /* État actif (refonte 2026-04-29 #2 Morgan : « ne met pas en GRAS la
-     section sur laquelle on est ») : numéro Klein bold + titre TOUJOURS
-     visible en bold. Le bold n'était pas perçu auparavant car le titre
-     restait caché jusqu'au hover. Maintenant le titre actif s'affiche
-     en permanence pour matérialiser clairement la section courante. */
-  .scroll-nav-item.is-active .scroll-nav-index {
-    opacity: 1;
-    color: var(--color-klein);
-    font-weight: 700;
-  }
+  /* État actif : bold + opacité pleine, couleur Klein (cream sur dark). */
   .scroll-nav-item.is-active .scroll-nav-title {
     opacity: 1;
-    max-width: 220px;
-    transform: translateX(0);
     font-weight: 700;
-    color: var(--color-forest);
-  }
-
-  /* Sections passées : opacité intermédiaire */
-  .scroll-nav-item.is-passed .scroll-nav-index {
-    opacity: 0.55;
-  }
-
-  /* Au hover de la sidebar entière, les titres apparaissent tous en parallèle
-     pour permettre l'exploration visuelle sans avoir à survoler item par item. */
-  .scroll-nav:hover .scroll-nav-title {
-    opacity: 0.7;
-    max-width: 220px;
-    transform: translateX(0);
-  }
-  .scroll-nav:hover .scroll-nav-item.is-active .scroll-nav-title {
-    opacity: 1;
-    color: var(--color-forest);
-  }
-
-  /* Compteur bas */
-  .scroll-nav-counter {
-    margin: 2.5rem 0 0 0;
-    display: flex;
-    align-items: baseline;
-    gap: 0.35rem;
-    font-family: var(--font-heading), serif;
-    font-style: italic;
-    color: color-mix(in oklab, var(--color-forest) 55%, transparent);
-    line-height: 1;
-  }
-  .scroll-nav-counter-current {
-    font-size: 22px;
     color: var(--color-klein);
-    font-variation-settings:
-      'opsz' 144,
-      'SOFT' 70;
-  }
-  .scroll-nav-counter-sep {
-    font-size: 14px;
-    opacity: 0.5;
-    font-style: normal;
-  }
-  [data-counter-total] {
-    font-size: 13px;
-    font-style: normal;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    letter-spacing: 0.18em;
-    color: color-mix(in oklab, var(--color-forest) 50%, transparent);
-  }
-
-  /* Auto-invert sur sections sombres */
-  :global(body.is-dark-section) .scroll-nav {
-    color: var(--color-cream);
-  }
-  :global(body.is-dark-section) .scroll-nav-rail {
-    background-color: color-mix(in oklab, var(--color-cream) 22%, transparent);
   }
   :global(body.is-dark-section) .scroll-nav-item.is-active .scroll-nav-title {
     color: var(--color-cream);
   }
-  :global(body.is-dark-section) .scroll-nav-counter {
-    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+
+  /* Sections passées : opacité intermédiaire. */
+  .scroll-nav-item.is-passed .scroll-nav-title {
+    opacity: 0.4;
   }
-  :global(body.is-dark-section) [data-counter-total] {
-    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-nav,
+    .scroll-nav-mobile,
+    .scroll-nav-thumb,
+    .scroll-nav-title {
+      transition: none !important;
+    }
   }
 
   /* ─────────── Indicateur mobile (≤1023px) ─────────── */
@@ -276,13 +197,13 @@
     background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-forest) 10%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-klein) 12%, transparent);
     opacity: 0;
     transform: translateY(-100%);
     transition:
       opacity 0.5s var(--ease-out-editorial),
       transform 0.5s var(--ease-out-editorial);
-    color: var(--color-forest);
+    color: var(--color-ink);
   }
   @media (min-width: 1024px) {
     .scroll-nav-mobile {
@@ -293,19 +214,12 @@
     opacity: 1;
     transform: translateY(0);
   }
-  .scroll-nav-mobile-index {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    color: var(--color-klein);
-    flex-shrink: 0;
-  }
   .scroll-nav-mobile-label {
     font-family: var(--font-heading), serif;
     font-style: italic;
     font-size: 13px;
     line-height: 1;
-    color: var(--color-forest);
+    color: var(--color-klein);
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -315,7 +229,7 @@
     flex-shrink: 0;
     width: 80px;
     height: 1px;
-    background-color: color-mix(in srgb, var(--color-forest) 15%, transparent);
+    background-color: color-mix(in srgb, var(--color-klein) 18%, transparent);
     position: relative;
     overflow: hidden;
   }
@@ -330,18 +244,15 @@
     transition: width 0.3s linear;
   }
   :global(body.is-dark-section) .scroll-nav-mobile {
-    background-color: color-mix(in srgb, var(--color-forest) 85%, transparent);
+    background-color: color-mix(in srgb, var(--color-klein) 88%, transparent);
     color: var(--color-cream);
-    border-bottom-color: color-mix(in srgb, var(--color-cream) 10%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-nav,
-    .scroll-nav-mobile,
-    .scroll-nav-thumb,
-    .scroll-nav-title {
-      transition: none !important;
-    }
+  :global(body.is-dark-section) .scroll-nav-mobile-label {
+    color: var(--color-cream);
+  }
+  :global(body.is-dark-section) .scroll-nav-mobile-fill {
+    background-color: var(--color-cream);
   }
 </style>
 
@@ -351,18 +262,11 @@
     link: HTMLAnchorElement;
   };
 
-  function pad(n: number): string {
-    return n < 10 ? `0${n}` : String(n);
-  }
-
   function initScrollNav() {
     const nav = document.getElementById('scroll-nav');
     const list = document.getElementById('scroll-nav-list');
     const thumb = document.getElementById('scroll-nav-thumb');
-    const counterCurrent = document.querySelector<HTMLElement>('[data-counter-current]');
-    const counterTotal = document.querySelector<HTMLElement>('[data-counter-total]');
     const mobile = document.getElementById('scroll-nav-mobile');
-    const mobileIndex = document.querySelector<HTMLElement>('[data-mobile-index]');
     const mobileLabel = document.querySelector<HTMLElement>('[data-mobile-label]');
     const mobileFill = document.querySelector<HTMLElement>('[data-mobile-fill]');
 
@@ -379,53 +283,39 @@
       return;
     }
 
-    // Construction items
+    // Construction items — uniquement le titre, plus de numéro (Morgan 2026-04-29)
     list.innerHTML = '';
     const items: Record<string, NavItemRefs> = {};
-    sections.forEach((section, i) => {
+    sections.forEach((section) => {
       const id = section.id;
       const label = section.dataset.sectionLabel || id;
-      const index = pad(i + 1);
 
       const li = document.createElement('li');
       li.className = 'scroll-nav-item';
       li.dataset.target = id;
-      li.dataset.index = String(i);
 
       const link = document.createElement('a');
       link.href = `#${id}`;
       link.className = 'scroll-nav-link';
       link.setAttribute('aria-label', `Aller à la section ${label}`);
-      link.innerHTML = `
-        <span class="scroll-nav-index" aria-hidden="true">${index}</span>
-        <span class="scroll-nav-title">${label}</span>
-      `;
+      link.innerHTML = `<span class="scroll-nav-title">${label}</span>`;
       li.appendChild(link);
       items[id] = { li, link };
       list.appendChild(li);
     });
 
-    if (counterTotal) counterTotal.textContent = pad(sections.length);
-
-    // Smooth scroll au clic. Pour le 1er item (Accueil/hero) sur la home,
-    // le hero est en position:sticky → scrollIntoView ne suffit pas, il faut
-    // forcer scroll-to-top du body. Morgan 2026-04-27 (passes 1+2) : ça ne
-    // remontait toujours pas. Passe 3 : combo Lenis + native + failsafe
-    // instant à 1500 ms si scrollY n'est pas redescendu à 0.
+    // Smooth scroll au clic. Pour le 1er item (hero), force scroll-to-top
+    // robuste (sticky hero rend scrollIntoView insuffisant).
     Object.entries(items).forEach(([id, { link }], i) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const lenis = window.__lenis;
         if (i === 0) {
-          // Combo robuste : Lenis si dispo, sinon scroll natif smooth.
           if (lenis && typeof lenis.scrollTo === 'function') {
             lenis.scrollTo(0, { duration: 1.2, immediate: false, force: true });
           } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
-          // Failsafe instant : si après 1.5 s on n'est pas en haut, force
-          // scroll natif synchrone (cas où Lenis serait corrompu / scroll
-          // intercepté par autre chose).
           window.setTimeout(() => {
             if (window.scrollY > 8) {
               window.scrollTo(0, 0);
@@ -453,7 +343,6 @@
       nav.classList.toggle('is-visible', show);
       if (mobile) mobile.classList.toggle('is-visible', show);
 
-      // Progress mobile bar
       if (mobileFill) {
         const total = document.documentElement.scrollHeight - window.innerHeight;
         const pct = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
@@ -463,8 +352,7 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Positionne le thumb sur l'item actif — le thumb prend la hauteur de l'item
-    // et translate vers son offsetTop (aligné pile en face du texte).
+    // Positionne le thumb sur l'item actif
     const positionThumb = (activeIndex: number) => {
       if (!thumb) return;
       const targetLi = list.children[activeIndex] as HTMLElement | undefined;
@@ -474,7 +362,6 @@
       thumb.style.transform = `translateY(${targetLi.offsetTop}px)`;
     };
 
-    // IntersectionObserver pour section active (sélection = section la plus centrée)
     let activeId: string | null = null;
     const setActive = (id: string) => {
       if (activeId === id) return;
@@ -489,17 +376,10 @@
 
       positionThumb(activeIndex);
 
-      if (counterCurrent) counterCurrent.textContent = pad(activeIndex + 1);
-
-      // Mobile
       const section = sections[activeIndex];
       if (!section) return;
       const label = section.dataset.sectionLabel || section.id;
-      if (mobileIndex) mobileIndex.textContent = pad(activeIndex + 1);
       if (mobileLabel) mobileLabel.textContent = label;
-
-      // La détection dark-section est maintenant faite par le theme-observer
-      // unique (src/scripts/theme-observer.ts) via data-theme="dark".
     };
 
     const observer = new IntersectionObserver(
@@ -515,7 +395,6 @@
     );
     sections.forEach((s) => observer.observe(s));
 
-    // Initialisation thumb sur la première section + recalc au resize
     requestAnimationFrame(() => positionThumb(0));
     window.addEventListener('resize', () => {
       const i = sections.findIndex((s) => s.id === activeId);
