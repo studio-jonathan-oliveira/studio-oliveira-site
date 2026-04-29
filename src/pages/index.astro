@@ -217,6 +217,20 @@ const vitrine = [
       data-hero-posters={JSON.stringify(heroVideos.map((v) => v.poster))}
     >
       {
+        /* Fallback poster : <img> du 1er frame, toujours affiché derrière les
+          videos. Si autoplay/preload échoue ou si le browser refuse la lecture
+          pour une raison quelconque, on a au moins une image fixe qui couvre
+          le hero. Les videos passent par-dessus quand elles jouent. */
+      }
+      <img
+        src={heroVideos[0]!.poster}
+        alt=""
+        aria-hidden="true"
+        class="hero-video-fallback"
+        fetchpriority="high"
+        decoding="async"
+      />
+      {
         /* Stage 0 — visible et en lecture au démarrage. <source> enfant (plus
           robuste que src attribute pour autoplay sur Safari iOS notamment). */
       }
@@ -1021,6 +1035,18 @@ const vitrine = [
          sécurité contre un flash blanc (default <video> bg) avant que le
          poster décode. */
       background-color: var(--color-forest);
+    }
+    /* Fallback img — toujours affiché en arrière-plan, recouvert par les
+       videos quand elles jouent. Garantit qu'on voit AU MINIMUM une image
+       fixe du hero, peu importe ce qui se passe avec le tag <video>. */
+    .hero-video-fallback {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
     }
     .hero-video.is-active {
       opacity: 1;
