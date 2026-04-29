@@ -147,9 +147,11 @@ const vitrine = [
   }
   <Fragment slot="head">
     {
-      /* Preload du poster de la 1re vidéo (paint instantané) + de la 1re vidéo
-        elle-même (commence à streamer dès le HTML parse). Le poster sert
-        de fallback si JS désactivé / prefers-reduced-motion. */
+      /* Preload du poster de la 1re vidéo : paint instantané dès le HTML parse,
+        sert aussi de fallback (prefers-reduced-motion, JS désactivé, autoplay
+        refusé). Le streaming de la vidéo elle-même est piloté par l'attribut
+        preload="auto" sur le <video> (pas de link rel=preload as=video qui
+        peut causer des doubles téléchargements selon les heuristiques cache). */
     }
     <link
       rel="preload"
@@ -158,7 +160,6 @@ const vitrine = [
       type="image/jpeg"
       fetchpriority="high"
     />
-    <link rel="preload" as="video" href="/hero/hero-01.mp4" type="video/mp4" />
   </Fragment>
   {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
 
@@ -215,16 +216,27 @@ const vitrine = [
       data-hero-videos={JSON.stringify(heroVideos.map((v) => v.src))}
       data-hero-posters={JSON.stringify(heroVideos.map((v) => v.poster))}
     >
+      {
+        /* Stage 0 — visible et en lecture au démarrage. <source> enfant (plus
+          robuste que src attribute pour autoplay sur Safari iOS notamment). */
+      }
       <video
         class="hero-video is-active"
         data-hero-stage="0"
-        src={heroVideos[0]!.src}
         poster={heroVideos[0]!.poster}
         muted
         playsinline
         preload="auto"
         autoplay
-        aria-hidden="true"></video>
+        aria-hidden="true"
+      >
+        <source src={heroVideos[0]!.src} type="video/mp4" />
+      </video>
+      {
+        /* Stage 1 — préchargé invisible avec le 2ᵉ clip, devient visible quand
+          le stage 0 termine (cross-fade 800 ms). Le <source> est en place dès
+          le SSR pour que preload="auto" puisse commencer à streamer en background. */
+      }
       <video
         class="hero-video"
         data-hero-stage="1"
@@ -232,7 +244,10 @@ const vitrine = [
         muted
         playsinline
         preload="auto"
-        aria-hidden="true"></video>
+        aria-hidden="true"
+      >
+        <source src={heroVideos[1]!.src} type="video/mp4" />
+      </video>
       <!-- Overlay lisibilité — voile vignette top/bottom uniquement. La zone
            H1 (top: 22-70%) reste totalement transparente : le mix-blend du
            H1 voit la vidéo en direct → effet inverse exact comme le cursor. -->
@@ -992,6 +1007,7 @@ const vitrine = [
       position: relative;
     }
     .hero-video {
+      display: block;
       position: absolute;
       inset: 0;
       width: 100%;
@@ -1001,6 +1017,10 @@ const vitrine = [
       opacity: 0;
       transition: opacity 0.8s var(--ease-out-editorial);
       pointer-events: none;
+      /* Background sombre tant que la vidéo n'a pas chargé sa 1re frame :
+         sécurité contre un flash blanc (default <video> bg) avant que le
+         poster décode. */
+      background-color: var(--color-forest);
     }
     .hero-video.is-active {
       opacity: 1;
@@ -2055,11 +2075,14 @@ const vitrine = [
       let nextVideoIdx = 1 % videos.length; // prochain clip à charger
       let switching = false;
 
-      // Précharge le clip suivant sur le stage inactif
+      // Précharge le clip suivant sur le stage inactif. On compare
+      // `currentSrc` (URL résolue, fonctionne avec <source> et avec src=)
+      // pour éviter de recharger inutilement quand le stage a déjà le
+      // bon clip (notamment au 1er appel — stage 1 a déjà clip 1 via SSR).
       const preload = () => {
         const inactive = stages[1 - activeIdx]!;
         const url = videos[nextVideoIdx]!;
-        if (inactive.src.endsWith(url)) return;
+        if (inactive.currentSrc.endsWith(url)) return;
         inactive.src = url;
         inactive.load();
       };
