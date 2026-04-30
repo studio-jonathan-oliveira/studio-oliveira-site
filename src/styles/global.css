@@ -350,18 +350,18 @@ header.intro-revealing {
     opacity: 0.55;
   }
 
-  /* Keyword swap — refonte 2026-04-28 (Jonathan) :
+  /* Keyword swap — refonte 2026-04-28 (Jonathan), assoupli 2026-04-30 :
      les mots-clés survolés dans titres/textes importants basculent de
-     Jost (heading) à Gloock (display). Effet typographique éditorial qui
-     remplace l'usage permanent de .display dans les titres. Bascule sec —
-     les fonts ne transitionnent pas, donc on stabilise via transitions
-     letter-spacing + font-style pour adoucir le changement. */
+     Jost (heading) à Gloock (display). Bascule sec sur les fonts — on
+     stabilise visuellement via transitions plus longues (0.7s) + easing
+     plus doux pour rendre le hover plus discret et fluide. */
   .kw-swap {
     cursor: pointer;
     font-family: var(--font-heading);
     transition:
-      letter-spacing 0.35s var(--ease-out-editorial),
-      font-style 0.35s var(--ease-out-editorial);
+      letter-spacing 0.7s var(--ease-in-out-editorial),
+      font-style 0.7s var(--ease-in-out-editorial),
+      opacity 0.5s var(--ease-out-editorial);
   }
   .kw-swap:hover,
   .kw-swap:focus-visible {

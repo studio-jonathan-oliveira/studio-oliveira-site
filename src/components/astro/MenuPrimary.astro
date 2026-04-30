@@ -64,8 +64,8 @@ const currentPath = Astro.url.pathname;
 const isActive = (href: string) => currentPath === href || currentPath.startsWith(href + '/');
 ---
 
-<dialog id="primary-menu" class="primary-menu" aria-label="Menu principal">
-  <div class="primary-menu__inner" data-lenis-prevent>
+<dialog id="primary-menu" class="primary-menu" aria-label="Menu principal" data-theme="dark">
+  <div class="primary-menu__inner" data-lenis-prevent data-theme="dark">
     <!-- En-tête du menu : logo + close -->
     <header class="primary-menu__header">
       <a href="/" class="primary-menu__logo" aria-label="Accueil">

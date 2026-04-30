@@ -12,6 +12,10 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring">
     <span class="cursor-label" id="cursor-label"></span>
+    <!-- Tooltip flottant haut-droite du ring (refonte 2026-04-30 Jonathan).
+         Utilisation : <a data-cursor-tooltip="LIGNE1 / LIGNE2 / LIGNE3"> -
+         le séparateur " / " produit des sauts de ligne. Suit le ring (lerp). -->
+    <div class="cursor-tooltip" id="cursor-tooltip"></div>
   </div>
 </div>
 
@@ -142,6 +146,35 @@
       opacity: 1;
     }
 
+    /* Tooltip flottant — ajouté 2026-04-30 (Jonathan, typologies).
+       Affiche jusqu'à 3 lignes de texte courtes en haut-droite du curseur,
+       à ~24px de décalage. Apparait au hover d'un élément [data-cursor-tooltip]. */
+    .cursor-tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate3d(0, 0, 0);
+      margin: -64px 0 0 18px;
+      padding: 10px 14px;
+      max-width: 240px;
+      background-color: var(--cursor-fill, var(--color-cream));
+      color: var(--cursor-text, var(--color-laterite));
+      font-family: var(--font-mono), ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      line-height: 1.55;
+      text-transform: uppercase;
+      white-space: pre-line;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s var(--ease-out-editorial);
+      will-change: transform, opacity;
+      z-index: 1;
+    }
+    .custom-cursor.is-tooltipped .cursor-tooltip {
+      opacity: 1;
+    }
+
     /* État pressed */
     .custom-cursor.is-active .cursor-ring {
       width: 24px;
@@ -236,11 +269,13 @@
     // dans le ring agrandi. Fallback : 'LIRE' sur gallery-item, 'VOIR' sur les
     // liens vers /projets /realisations /conceptions, flèche '→' sinon.
     const labelEl = document.getElementById('cursor-label');
+    const tooltipEl = document.getElementById('cursor-tooltip');
     document.addEventListener(
       'pointerover',
       (e) => {
         const target = e.target as HTMLElement | null;
         const labeledAncestor = target?.closest?.('[data-cursor-label]') as HTMLElement | null;
+        const tooltipAncestor = target?.closest?.('[data-cursor-tooltip]') as HTMLElement | null;
         const interactive = target?.closest?.(hoverSelectors);
         // [data-cursor-skip] : éléments où le ring NE doit PAS s'élargir.
         // Cas typique : CtaLink size="lg" dont le label long est rendu
@@ -248,6 +283,13 @@
         // (Morgan 2026-04-27 : « le CTA Démarrer un projet devient tout
         // blanc »). Le cursor reste en mode normal (dot + ring petit).
         const cursorSkip = target?.closest?.('[data-cursor-skip]');
+        // Tooltip flottant 3 lignes (refonte 2026-04-30 typologies). Affiché
+        // au-dessus du ring sans agrandir ce dernier — coexiste avec is-labeled.
+        if (tooltipAncestor && tooltipEl) {
+          const raw = tooltipAncestor.dataset.cursorTooltip || '';
+          tooltipEl.textContent = raw.split(' / ').join('\n');
+          cursor.classList.add('is-tooltipped');
+        }
         if (labeledAncestor && labelEl) {
           labelEl.textContent = labeledAncestor.dataset.cursorLabel || '→';
           cursor.classList.add('is-labeled');
@@ -263,8 +305,10 @@
       (e) => {
         const target = e.target as HTMLElement | null;
         const labeledAncestor = target?.closest?.('[data-cursor-label]');
+        const tooltipAncestor = target?.closest?.('[data-cursor-tooltip]');
         const interactive = target?.closest?.(hoverSelectors);
         if (labeledAncestor) cursor.classList.remove('is-labeled');
+        if (tooltipAncestor) cursor.classList.remove('is-tooltipped');
         if (interactive) cursor.classList.remove('is-hover');
       },
       true,

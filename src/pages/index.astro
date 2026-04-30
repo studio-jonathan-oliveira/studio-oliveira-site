@@ -44,16 +44,18 @@ import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaine from '@/assets/typologies/domaine-caractere.webp';
 
 // Typologies — refonte 2026-04-30 (Jonathan, capture typologies-01.png).
-// Architecture publique ajoutée comme 5e typologie ; le carousel scrolle
-// horizontalement vers la gauche, la 5e n'apparaît que cropée à droite avant
-// scroll. Les tooltips affichés au hover sur l'image sont les `tagline` ;
-// le CTA est "Choisir" sauf pour Architecture publique ("Explorer", marché public).
+// Le carousel scrolle horizontalement vers la gauche, la 5e (Architecture
+// publique) n'apparaît que cropée à droite avant scroll.
+// Tooltip 3 lignes (`tagline` séparée par " / ") affiché en haut-droite du
+// curseur au hover de l'image, indépendamment de la bulle CTA "Choisir".
+// CTA = "Choisir" partout, sauf "Explorer" pour Architecture publique
+// (typologie marché public, parcours différent du parcours particulier).
 const typologies = [
   {
     slug: 'micro-urbain',
     index: '01',
     nom: 'Micro urbain',
-    tagline: 'ROOF TOPS, PATIOS, MICRO JARDINS',
+    tagline: 'ROOF TOPS / PATIOS / MICRO JARDINS',
     cta: 'Choisir',
     image: typoMicroUrbain,
     imagePosition: 'center 65%',
@@ -63,7 +65,7 @@ const typologies = [
     slug: 'coeur-urbain',
     index: '02',
     nom: 'Cœur urbain',
-    tagline: 'COURS, JARDINS CONFINÉS, JARDINS HYPER URBAINS',
+    tagline: 'COURS / JARDINS CONFINÉS / JARDINS HYPER URBAINS',
     cta: 'Choisir',
     image: typoCoeurUrbain,
     imagePosition: 'center 55%',
@@ -72,7 +74,7 @@ const typologies = [
     slug: 'frange-urbaine',
     index: '03',
     nom: 'Frange urbaine',
-    tagline: 'JARDINS RÉSIDENTIELS, PROPRIÉTÉS PRINCIPALES, PROPRIÉTÉS SECONDAIRES',
+    tagline: 'JARDINS RÉSIDENTIELS / PROPRIÉTÉS PRINCIPALES / PROPRIÉTÉS SECONDAIRES',
     cta: 'Choisir',
     image: typoFrangeUrbaine,
     imagePosition: 'center 50%',
@@ -81,7 +83,7 @@ const typologies = [
     slug: 'domaine-caractere',
     index: '04',
     nom: 'Domaine & Caractère',
-    tagline: 'CHÂTEAUX & MANOIRS, PROPRIÉTÉS FAMILIALES, PROPRIÉTÉS PATRIMONIALES',
+    tagline: 'CHÂTEAUX & MANOIRS / PROPRIÉTÉS FAMILIALES / PROPRIÉTÉS PATRIMONIALES',
     cta: 'Choisir',
     image: typoDomaine,
     imagePosition: 'center 40%',
@@ -90,8 +92,7 @@ const typologies = [
     slug: 'architecture-publique',
     index: '05',
     nom: 'Architecture publique',
-    tagline: 'GÉNIE VÉGÉTAL, DESIGN BIOPHILIQUE, SECTEUR PUBLIC',
-    // Architecture publique = marché public, signalée différemment via "Explorer".
+    tagline: 'GÉNIE VÉGÉTAL / DESIGN BIOPHILIQUE / SECTEUR PUBLIC',
     cta: 'Explorer',
     // Image temporaire (réutilise domaine-caractere) en attendant un visuel dédié.
     image: typoDomaine,
@@ -350,13 +351,19 @@ const typologies = [
     <div
       class="mx-auto max-w-[1500px] px-6 py-20 md:px-10 md:py-28"
       data-justify-multi
-      data-justify-amp="55"
+      data-justify-amp="80"
       data-justify-line-step="0.1"
-      data-justify-line-window="0.4"
+      data-justify-line-window="0.45"
     >
-      <p class="identite-line" data-justify-line>ARCHITECTURE PAYSAGE DESIGN</p>
-      <p class="identite-line" data-justify-line>ERGONOMIE BIOPHILIE PILOTAGE</p>
-      <p class="identite-line" data-justify-line>VEGETAL CONCEPTION</p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-right">
+        ARCHITECTURE PAYSAGE DESIGN
+      </p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-left">
+        ERGONOMIE BIOPHILIE PILOTAGE
+      </p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-left">
+        VEGETAL CONCEPTION
+      </p>
     </div>
   </section>
 
@@ -416,7 +423,10 @@ const typologies = [
         <h2 id="typologies-title" class="sr-only">Typologies de jardins & propriétés</h2>
       </header>
 
-      <!-- Rail horizontal : 5 panneaux (4 visibles + 5e cropée) -->
+      <!-- Rail horizontal : 5 panneaux (4 visibles + 5e cropée).
+           Bulle CTA "Choisir/Explorer" + tooltip 3 lignes attachés à htypo-visual
+           (donc visibles uniquement quand le curseur survole l'image, pas le
+           nom au-dessus ni le CTA en dessous). -->
       <div class="htypo-rail" data-hscroll-rail>
         {
           typologies.map((t, i) => (
@@ -424,12 +434,11 @@ const typologies = [
               href={`/architecture-paysagere/${t.slug}`}
               class="htypo-panel group"
               data-hscroll-panel
-              data-cursor-label={t.tagline}
               aria-label={`${t.cta} la typologie ${t.nom}`}
             >
               <div class="htypo-card">
                 <h3 class="htypo-name">{t.nom}</h3>
-                <div class="htypo-visual">
+                <div class="htypo-visual" data-cursor-label={t.cta} data-cursor-tooltip={t.tagline}>
                   <Image
                     src={t.image}
                     alt=""
@@ -742,14 +751,15 @@ const typologies = [
       }
     }
 
-    /* Bloc IDENTITÉ — refonte 2026-04-30 (Jonathan, capture).
-       3 lignes de mots Jost MAJ Gras justify scroll-driven via data-justify-multi.
-       Chaque ligne est un <p data-justify-line>, le wrapper porte data-justify-multi.
-       text-align: justify forcé (le JS gère l'animation, le natif gère le layout). */
+    /* Bloc IDENTITÉ — refonte 2026-04-30 (Jonathan, capture identite-studio).
+       3 lignes de mots Jost MAJ Gras avec animation directionnelle scroll-driven
+       (data-justify-multi + data-justify-direction par ligne).
+       white-space: nowrap force tous les mots d'une ligne à tenir sans wrap ;
+       on calibre la taille via clamp pour que ça rentre jusqu'en mobile. */
     .identite-line {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(2rem, 7vw, 6rem);
+      font-size: clamp(1.4rem, 5vw, 4.5rem);
       line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: uppercase;
@@ -758,28 +768,25 @@ const typologies = [
       color: var(--color-cream);
       margin: 0;
       hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .identite-line + .identite-line {
       margin-top: clamp(0.4rem, 1vw, 1rem);
     }
-    @media (max-width: 767px) {
-      .identite-line {
-        text-align: left;
-        text-align-last: left;
-      }
-    }
 
-    /* Bloc STUDIO (présentation) — texte court + CTA magnétique. */
+    /* Bloc STUDIO (présentation) — texte court + CTA magnétique.
+       Refonte 2026-04-30 : taille augmentée (Jonathan veut plus de présence). */
     .studio-presentation-text {
       font-family: var(--font-heading), sans-serif;
       font-weight: 500;
-      font-size: clamp(1.05rem, 1.6vw, 1.5rem);
-      line-height: 1.45;
+      font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+      line-height: 1.35;
       letter-spacing: 0.01em;
       text-transform: uppercase;
       text-align: center;
       color: var(--color-cream);
-      max-width: 75ch;
+      max-width: 60ch;
       margin: 0 auto;
     }
 
@@ -1359,11 +1366,11 @@ const typologies = [
       transition: opacity 60ms linear;
     }
 
-    /* Typologies — scroll horizontal pinned. Refonte 2026-04-24 :
-       550vh pour ralentir le défilement horizontal (feedback Morgan :
-       « scroll horizontal plus lent »). */
+    /* Typologies — scroll horizontal pinned. Refonte 2026-04-30 (Jonathan) :
+       hauteur réduite 550vh → 320vh pour accélérer le défilement
+       (« on doit trop scroll pour faire défiler »). */
     .htypo-section {
-      height: 550vh;
+      height: 320vh;
       position: relative;
     }
     .htypo-sticky {
@@ -1373,11 +1380,12 @@ const typologies = [
       overflow: hidden;
     }
 
-    /* Header — texte intro Jonathan, fixé en haut sous le Header site,
-       reste visible pendant tout le défilement horizontal. */
+    /* Header — texte intro Jonathan, plus gros + plus près des images
+       (refonte 2026-04-30 retours #2). Position rapprochée du rail
+       (top mid-viewport au lieu de juste sous le header site). */
     .htypo-header {
       position: absolute;
-      top: clamp(5rem, 9vh, 7rem);
+      top: clamp(7rem, 16vh, 11rem);
       left: 2rem;
       right: 2rem;
       z-index: 3;
@@ -1391,22 +1399,22 @@ const typologies = [
     }
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: clamp(0.95rem, 1.3vw, 1.25rem);
-      line-height: 1.45;
-      letter-spacing: 0.04em;
+      font-weight: 600;
+      font-size: clamp(1.2rem, 2.2vw, 2rem);
+      line-height: 1.3;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       color: var(--color-ink);
-      max-width: 60ch;
+      max-width: 50ch;
       margin: 0;
     }
 
-    /* Rail horizontal — 5 panneaux, ~28vw chacun + gap.
+    /* Rail horizontal — 5 panneaux, ~30vw + gap (4 visibles + 5e cropée).
        Travel auto = (rail width - viewport) géré par setupHorizontalTypologies. */
     .htypo-rail {
       display: flex;
       align-items: flex-end;
-      gap: clamp(0.5rem, 1vw, 1rem);
+      gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
       padding: 0 clamp(2rem, 4vw, 5rem);
@@ -1414,10 +1422,10 @@ const typologies = [
     }
 
     /* Panneau simplifié 2026-04-30 (Jonathan, capture typologies-01.png) :
-       carte simple = nom au-dessus + image en dessous + CTA. Plus de meta,
-       plus de phrase, plus d'index XL. Largeur ~28vw (4 visibles + 5e cropée). */
+       carte simple = nom au-dessus + image en dessous + CTA. Largeur ~30vw
+       pour avoir 4 visibles + 5e cropée à droite. */
     .htypo-panel {
-      flex: 0 0 clamp(280px, 28vw, 460px);
+      flex: 0 0 clamp(280px, 30vw, 480px);
       height: 100vh;
       display: flex;
       flex-direction: column;

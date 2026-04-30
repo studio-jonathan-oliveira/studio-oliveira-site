@@ -413,10 +413,20 @@ function setupJustifyMulti(root: ParentNode) {
     const lines = Array.from(group.querySelectorAll<HTMLElement>('[data-justify-line]'));
     if (lines.length === 0) return;
 
+    /*
+     * Direction par ligne (refonte 2026-04-30 IDENTITÉ Jonathan) :
+     *   data-justify-direction="from-left"  → mots compactés à gauche au début,
+     *                                         dernier mot s'écarte vers la droite.
+     *   data-justify-direction="from-right" → mots compactés à droite au début,
+     *                                         premier mot s'écarte vers la gauche.
+     *   défaut : from-left (comportement historique).
+     */
+    type Direction = 'from-left' | 'from-right';
     interface LineData {
       words: HTMLElement[];
       justifyLefts: number[];
-      leftLefts: number[];
+      compactLefts: number[];
+      direction: Direction;
       measure: () => void;
     }
 
@@ -432,18 +442,31 @@ function setupJustifyMulti(root: ParentNode) {
         w.style.whiteSpace = 'nowrap';
       });
 
-      const data: LineData = { words, justifyLefts: [], leftLefts: [], measure: () => {} };
+      const direction: Direction =
+        line.dataset.justifyDirection === 'from-right' ? 'from-right' : 'from-left';
+
+      const data: LineData = {
+        words,
+        justifyLefts: [],
+        compactLefts: [],
+        direction,
+        measure: () => {},
+      };
 
       data.measure = () => {
+        // Mesure justify (final)
         line.style.textAlignLast = 'justify';
         void line.offsetHeight;
         data.justifyLefts = words.map((w) => w.offsetLeft);
+
+        // Mesure compact selon direction (initial avant scroll)
         const prevAlign = line.style.textAlign;
         const prevLast = line.style.textAlignLast;
-        line.style.textAlign = 'left';
-        line.style.textAlignLast = 'left';
+        const compact = direction === 'from-right' ? 'right' : 'left';
+        line.style.textAlign = compact;
+        line.style.textAlignLast = compact;
         void line.offsetHeight;
-        data.leftLefts = words.map((w) => w.offsetLeft);
+        data.compactLefts = words.map((w) => w.offsetLeft);
         line.style.textAlign = prevAlign || 'justify';
         line.style.textAlignLast = prevLast || 'justify';
         void line.offsetHeight;
@@ -466,14 +489,14 @@ function setupJustifyMulti(root: ParentNode) {
 
     scroll(
       (progress: number) => {
-        linesData.forEach(({ words, justifyLefts, leftLefts }, idx) => {
+        linesData.forEach(({ words, justifyLefts, compactLefts }, idx) => {
           const wStart = idx * lineStep;
           const wEnd = wStart + lineWindow;
           const t = Math.max(0, Math.min(1, (progress - wStart) / Math.max(0.01, wEnd - wStart)));
           const eased = easeOutCubic(t);
           const closure = (1 - eased) * intensity;
           words.forEach((w, i) => {
-            const dx = (leftLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
+            const dx = (compactLefts[i] ?? 0) - (justifyLefts[i] ?? 0);
             w.style.transform = `translate3d(${dx * closure}px, 0, 0)`;
           });
         });
