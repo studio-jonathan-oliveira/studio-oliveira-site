@@ -181,4 +181,37 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 
 ---
 
+## Refonte Jonathan 30-04 (issue GitHub #3)
+
+### HOME-STUDIO-PRESENTATION
+
+**Type** : texte court
+**Emplacement** : `src/pages/index.astro` — section `#studio-presentation` (juste après IDENTITÉ).
+**Volume attendu** : 2 à 3 lignes max (60-100 mots).
+**Contexte** : présentation du studio, de son ADN, manière de travailler ses conceptions. Affiché sur fond latérite, texte crème centré, MAJ. Suivi d'un CTA magnétique « Découvrir le Studio J Oliveira » → `/studio`.
+**État** : placeholder visible « TEXTE EXPLICATIF ET PRESENTATION DU STUDIO… ».
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### ARCHITECTURE-PUBLIQUE-PAGE
+
+**Type** : texte structuré (hero + 3 piliers)
+**Emplacement** : `src/pages/architecture-paysagere/architecture-publique.astro`
+**Volume attendu** :
+
+- Hero intro : 3-4 lignes (positionnement marché public)
+- 3 piliers (Génie végétal / Design biophilique / Secteur public) : 2-3 lignes chacun
+  **Contexte** : nouvelle 5e typologie ajoutée le 30-04 (capture typologies-01.png). Page dédiée au marché public — collectivités, MOA publique, appels d'offres. Ton plus institutionnel que les autres typologies particuliers.
+  **État** : placeholders visibles dans la page.
+  **Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### ARCHITECTURE-PUBLIQUE-IMAGE
+
+**Type** : photo (visuel d'illustration carousel home + hero page)
+**Emplacement** : `src/assets/typologies/architecture-publique.webp` à créer ; référencé dans `src/pages/index.astro` (typologies array, 5e entrée).
+**Volume attendu** : photo paysage 1280×960 min, 4:3, optimisée WebP < 200 Ko.
+**Contexte** : actuellement le carousel home et la page utilisent `domaine-caractere.webp` comme placeholder. À remplacer par un visuel propre représentatif (espace public végétalisé, parc institutionnel, génie végétal).
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+---
+
 **Mise à jour** : à compléter à chaque nouveau placeholder inséré dans le code ou la doc.

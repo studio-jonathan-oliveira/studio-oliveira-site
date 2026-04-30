@@ -1,43 +1,33 @@
 ---
 /*
  * MenuPrimary — navigation primaire fullscreen overlay, déclenchée par le
- * bouton Menu du Header. Pattern « LE MUST » Jonathan (PDF l.740).
+ * bouton Menu du Header.
  *
- * Architecture :
- *   - <dialog> natif pour a11y gratuite (focus trap, Escape close, backdrop)
- *   - Slide-in from right + fade backdrop
- *   - 6 onglets Fraunces italique XL, chacun avec sous-sections découvrables
- *     (typologies / verticales / variants)
- *   - Panneau droit : NAP + tel + email + social + statut dispo
- *   - Numérotation 01-06 décorative en Fraunces swash
+ * Refonte 2026-04-30 (demande Jonathan, capture menu-01.png) :
+ *  - Suppression de l'aside latéral (NAP / tel / email / Instagram / calendrier).
+ *  - Suppression de la numérotation 01-07.
+ *  - Sous-liens cachés par défaut, apparaissent au hover du titre + flèche ↗.
+ *  - Lien CTA "Démarrer un projet" mis en avant en bas du menu.
+ *  - Labels alignés à droite, fond plein latérite, texte cream.
  *
  * Contrôlé par [data-menu-trigger] dans Header.astro via aria-controls.
- *
- * Inspirations visuelles : Acne Studios / Polestar / Maison Kitsuné.
  */
 
-import { SITE } from '@/lib/site-config';
-
-// Structure hiérarchique : chaque onglet peut avoir des sous-liens pour
-// améliorer la discoverability (audit UX 2026-04-23 §2).
 const sections = [
   {
-    num: '01',
     href: '/architecture-paysagere',
     label: 'Architecture paysagère',
-    tagline: 'Conception de jardin pour particuliers.',
     sub: [
-      { href: '/architecture-paysagere/micro-urbain', label: 'Micro‑urbain' },
+      { href: '/architecture-paysagere/micro-urbain', label: 'Micro urbain' },
       { href: '/architecture-paysagere/coeur-urbain', label: 'Cœur urbain' },
       { href: '/architecture-paysagere/frange-urbaine', label: 'Frange urbaine' },
-      { href: '/architecture-paysagere/domaine-caractere', label: 'Domaines & Caractère' },
+      { href: '/architecture-paysagere/domaine-caractere', label: 'Domaine & Caractère' },
+      { href: '/architecture-paysagere/architecture-publique', label: 'Architecture publique' },
     ],
   },
   {
-    num: '02',
     href: '/amenagement-vegetal-interieur',
-    label: "Aménagement végétalisé d'intérieur",
-    tagline: 'Décors végétaux pour espaces habités.',
+    label: "Architecture végétale d'intérieur",
     sub: [
       { href: '/amenagement-vegetal-interieur/hotellerie', label: 'Hôtellerie' },
       { href: '/amenagement-vegetal-interieur/restauration', label: 'Restauration' },
@@ -46,44 +36,29 @@ const sections = [
     ],
   },
   {
-    num: '03',
-    href: '/projets',
-    label: 'Projets',
-    tagline: 'Réalisations et conceptions.',
-    sub: [
-      { href: '/realisations', label: 'Réalisations' },
-      { href: '/conceptions', label: 'Conceptions' },
-    ],
-  },
-  {
-    num: '04',
     href: '/lcd-atypiques',
-    label: 'Locations signature',
-    tagline: 'Jungle Rooms, airbnb atypiques, locations courte durée.',
-    sub: [],
+    label: 'LCD atypique',
+    sub: [{ href: '/lcd-atypiques', label: 'Logements atypiques courte durée' }],
   },
   {
-    num: '05',
     href: '/pros',
     label: 'Pros',
-    tagline: 'Offre dédiée aux professionnels.',
     sub: [],
   },
   {
-    num: '06',
-    href: '/demarrer-un-projet',
-    label: 'Démarrer un projet',
-    tagline: 'Trois temps de qualification, du premier appel au cadrage.',
-    sub: [],
-  },
-  {
-    num: '07',
-    href: '/contact',
-    label: 'Contact',
-    tagline: 'Engager la conversation.',
-    sub: [],
+    href: '/projets',
+    label: 'Projets',
+    sub: [
+      { href: '/conceptions', label: 'Études & Conceptions' },
+      { href: '/realisations', label: 'Réalisations' },
+    ],
   },
 ];
+
+const cta = {
+  href: '/demarrer-un-projet',
+  label: 'Démarrer un projet',
+};
 
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => currentPath === href || currentPath.startsWith(href + '/');
@@ -110,25 +85,18 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       </button>
     </header>
 
-    <!-- Corps : nav primaire + panneau droit (NAP / contact) -->
+    <!-- Corps : nav primaire alignée droite, sous-liens révélés au hover -->
     <div class="primary-menu__body">
-      <!-- Nav primaire -->
       <nav aria-label="Navigation principale" class="primary-menu__nav">
         <ol>
           {
             sections.map((section) => (
               <li class:list={['primary-menu__item', isActive(section.href) && 'is-active']}>
                 <a href={section.href} class="primary-menu__link" data-menu-link>
-                  <span class="primary-menu__num" aria-hidden="true">
-                    {section.num}
-                  </span>
-                  <span class="primary-menu__label">
-                    <span class="primary-menu__label-main">{section.label}</span>
-                    <span class="primary-menu__tagline">{section.tagline}</span>
-                  </span>
                   <span class="primary-menu__arrow" aria-hidden="true">
-                    →
+                    ↗
                   </span>
+                  <span class="primary-menu__label-main">{section.label}</span>
                 </a>
 
                 {section.sub.length > 0 && (
@@ -145,65 +113,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
               </li>
             ))
           }
+
+          <li
+            class:list={[
+              'primary-menu__item primary-menu__item--cta',
+              isActive(cta.href) && 'is-active',
+            ]}
+          >
+            <a href={cta.href} class="primary-menu__link" data-menu-link>
+              <span class="primary-menu__arrow" aria-hidden="true"> ↗ </span>
+              <span class="primary-menu__label-main">{cta.label}</span>
+            </a>
+          </li>
         </ol>
       </nav>
-
-      <!-- Panneau latéral droit : NAP + contact + réseaux -->
-      <aside class="primary-menu__aside" aria-label="Coordonnées">
-        <div class="primary-menu__aside-block">
-          <p class="primary-menu__aside-eyebrow">Studio</p>
-          <p class="primary-menu__aside-address">
-            {SITE.address.street}<br />
-            {SITE.address.postalCode}
-            {SITE.address.city}<br />
-            <span class="opacity-60">{SITE.address.region}</span>
-          </p>
-        </div>
-
-        <div class="primary-menu__aside-block">
-          <p class="primary-menu__aside-eyebrow">Contact</p>
-          <p class="primary-menu__aside-contact">
-            <a href={`tel:${SITE.contact.phoneInternational}`} data-menu-link>
-              {SITE.contact.phoneDisplay}
-            </a>
-          </p>
-          <p class="primary-menu__aside-contact">
-            <a href={`mailto:${SITE.contact.email}`} data-menu-link>
-              {SITE.contact.email}
-            </a>
-          </p>
-        </div>
-
-        <div class="primary-menu__aside-block">
-          <p class="primary-menu__aside-eyebrow">Zones d'intervention</p>
-          <ul class="primary-menu__zones">
-            {SITE.zones.map((zone) => <li>{zone.ville}</li>)}
-          </ul>
-        </div>
-
-        {
-          SITE.social.instagram && (
-            <div class="primary-menu__aside-block">
-              <p class="primary-menu__aside-eyebrow">Suivre</p>
-              <a
-                href={SITE.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="primary-menu__social"
-                data-menu-link
-              >
-                Instagram
-                <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          )
-        }
-
-        <div class="primary-menu__aside-footer">
-          <span class="primary-menu__status-dot" aria-hidden="true"></span>
-          Calendrier 2026 ouvert
-        </div>
-      </aside>
     </div>
   </div>
 </dialog>
@@ -297,12 +220,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Stagger des items nav : chaque item entre par le bas avec fade
-     (refonte 2026-04-24 : plus prononcé, style designbyad). */
+  /* Stagger des items nav : chaque item entre par le bas avec fade. */
   .primary-menu[open] .primary-menu__item {
     opacity: 0;
     transform: translateY(60px);
-    animation: primary-menu-item 0.95s var(--ease-out-editorial) forwards;
+    animation: primary-menu-item 0.9s var(--ease-out-editorial) forwards;
   }
   .primary-menu[open] .primary-menu__item:nth-child(1) {
     animation-delay: 0.25s;
@@ -320,41 +242,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     animation-delay: 0.53s;
   }
   .primary-menu[open] .primary-menu__item:nth-child(6) {
-    animation-delay: 0.6s;
-  }
-  .primary-menu[open] .primary-menu__item:nth-child(7) {
-    animation-delay: 0.67s;
-  }
-  @keyframes primary-menu-item {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Stagger aside blocks : apparition après les items nav */
-  .primary-menu[open] .primary-menu__aside-block,
-  .primary-menu[open] .primary-menu__aside-footer {
-    opacity: 0;
-    transform: translateY(12px);
-    animation: primary-menu-aside 0.6s var(--ease-out-editorial) forwards;
-  }
-  .primary-menu[open] .primary-menu__aside-block:nth-child(1) {
-    animation-delay: 0.55s;
-  }
-  .primary-menu[open] .primary-menu__aside-block:nth-child(2) {
     animation-delay: 0.62s;
   }
-  .primary-menu[open] .primary-menu__aside-block:nth-child(3) {
-    animation-delay: 0.69s;
-  }
-  .primary-menu[open] .primary-menu__aside-block:nth-child(4) {
-    animation-delay: 0.76s;
-  }
-  .primary-menu[open] .primary-menu__aside-footer {
-    animation-delay: 0.83s;
-  }
-  @keyframes primary-menu-aside {
+  @keyframes primary-menu-item {
     to {
       opacity: 1;
       transform: translateY(0);
@@ -480,39 +370,22 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     transform: rotate(-45deg);
   }
 
-  /* ───────── Body : ASIDE gauche (NAP) + NAV droite (liens) — layout designbyad ───────── */
+  /* ───────── Body : nav pleine largeur, alignée droite ─────────
+     Refonte 2026-04-30 — suppression de l'aside latéral, nav prend tout. */
   .primary-menu__body {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-height: 0;
-  }
-  @media (min-width: 1024px) {
-    .primary-menu__body {
-      /* Aside gauche (NAP) + Nav droite (liens alignés droite) */
-      grid-template-columns: 380px 1fr;
-    }
-    /* Inverser l'ordre DOM : aside visuellement gauche, nav droite */
-    .primary-menu__nav {
-      order: 2;
-    }
-    .primary-menu__aside {
-      order: 1;
-    }
+    justify-content: center;
   }
 
-  /* ───────── Nav primaire — labels alignés droite (pattern designbyad) ───────── */
   .primary-menu__nav {
     padding: 2rem 1.5rem 3rem;
   }
   @media (min-width: 768px) {
     .primary-menu__nav {
       padding: 3rem 2.5rem 4rem;
-    }
-  }
-  @media (min-width: 1024px) {
-    .primary-menu__nav {
-      padding: 3rem 4rem 4rem 3rem;
       text-align: right;
     }
     .primary-menu__nav ol {
@@ -520,6 +393,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
     .primary-menu__link {
       justify-content: flex-end;
+    }
+  }
+  @media (min-width: 1024px) {
+    .primary-menu__nav {
+      padding: 3rem 5rem 4rem;
     }
   }
   .primary-menu__nav ol {
@@ -532,131 +410,115 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
 
   .primary-menu__item {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-  }
-  .primary-menu__item:last-child {
-    border-bottom: none;
+    /* Refonte 2026-04-30 : pas de bordure systématique entre items (capture
+       Jonathan menu-01.png) — épuration. */
   }
 
   .primary-menu__link {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: inline-flex;
     align-items: baseline;
-    gap: 1.75rem;
-    padding: 1.4rem 0;
+    gap: 1rem;
+    padding: 0.5rem 0;
     text-decoration: none;
     color: inherit;
     transition: color 0.35s ease;
   }
   @media (min-width: 768px) {
     .primary-menu__link {
-      gap: 2.5rem;
-      padding: 1.75rem 0;
+      gap: 1.4rem;
+      padding: 0.6rem 0;
     }
   }
 
-  .primary-menu__num {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    color: var(--color-cream);
-    opacity: 0.55;
-    margin-top: 0.55em;
-    transition: opacity 0.35s ease;
-  }
-
-  .primary-menu__label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    min-width: 0;
-  }
-  /* Refonte 2026-04-29 (Morgan) : tous les noms d'onglets en GRAS DE BASE,
-     plus d'effet bold au hover (ressenti pas terrible). Le hover fait
-     juste apparaître la tagline + déplacer la flèche. */
+  /* Label principal — Jost MAJ Gras, taille XL */
   .primary-menu__label-main {
     font-family: var(--font-heading), sans-serif;
-    font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+    font-size: clamp(1.6rem, 4vw, 3.2rem);
     line-height: 1.05;
     letter-spacing: -0.01em;
     font-weight: 700;
     text-transform: uppercase;
     transition: color 0.4s var(--ease-out-editorial);
   }
-  .primary-menu__tagline {
-    font-family: var(--font-body), sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.01em;
-    color: color-mix(in oklab, var(--color-cream) 60%, transparent);
-    opacity: 0;
-    transform: translateY(-4px);
-    transition:
-      opacity 0.4s var(--ease-out-editorial),
-      transform 0.5s var(--ease-out-editorial);
-  }
-  @media (max-width: 767px) {
-    .primary-menu__tagline {
-      opacity: 0.65;
-      transform: none;
-    }
-  }
 
+  /* Flèche ↗ devant le titre — cachée par défaut, apparaît au hover. */
   .primary-menu__arrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 14px;
+    font-family: var(--font-heading), sans-serif;
+    font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+    line-height: 1;
+    color: var(--color-cream);
     opacity: 0;
-    transform: translateX(-10px);
+    transform: translateX(8px);
     transition:
       opacity 0.4s var(--ease-out-editorial),
       transform 0.5s var(--ease-out-editorial);
-    margin-top: 0.3em;
   }
 
-  /* Hover / active — refonte 2026-04-29 (Morgan) : pas d'effet bold au hover
-     (les labels sont déjà en gras de base). Le hover fait juste apparaître
-     la tagline + déplacer la flèche. */
+  /* CTA "Démarrer un projet" — mis en avant, plus gros, gras. */
+  .primary-menu__item--cta {
+    margin-top: clamp(1rem, 3vw, 2.5rem);
+  }
+  .primary-menu__item--cta .primary-menu__label-main {
+    font-size: clamp(2rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .primary-menu__item--cta .primary-menu__arrow {
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
+    /* CTA principal : flèche visible par défaut pour signaler l'action. */
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+
+  /* Hover : flèche apparaît + sous-liens deviennent visibles. */
   @media (hover: hover) and (min-width: 768px) {
-    .primary-menu__link:hover .primary-menu__tagline,
-    .primary-menu__link:focus-visible .primary-menu__tagline {
-      opacity: 1;
-      transform: translateY(0);
-    }
     .primary-menu__link:hover .primary-menu__arrow,
-    .primary-menu__link:focus-visible .primary-menu__arrow {
+    .primary-menu__link:focus-visible .primary-menu__arrow,
+    .primary-menu__item:hover .primary-menu__arrow,
+    .primary-menu__item:focus-within .primary-menu__arrow {
       opacity: 1;
       transform: translateX(0);
     }
-    .primary-menu__link:hover .primary-menu__num,
-    .primary-menu__link:focus-visible .primary-menu__num {
-      opacity: 1;
-    }
   }
 
-  /* État actif (refonte 2026-04-29) : labels déjà en gras de base, on
-     conserve juste la pleine opacité du num + tagline. Plus d'effet
-     text-shadow (double gras moche). */
-  .primary-menu__item.is-active .primary-menu__num {
-    opacity: 1;
-  }
-  .primary-menu__item.is-active .primary-menu__tagline {
-    opacity: 1;
-    transform: translateY(0);
+  /* État actif : flèche fixe visible. */
+  .primary-menu__item.is-active .primary-menu__arrow {
+    opacity: 0.85;
+    transform: translateX(0);
   }
 
-  /* Sous-liens — refonte 2026-04-28 #B3 : alignés à droite explicitement,
-     plus contre la gouttière (mobile : alignés gauche pour lisibilité). */
+  /* Sous-liens — refonte 2026-04-30 (capture Jonathan) :
+     cachés par défaut sur desktop, apparaissent au hover du parent.
+     Sur mobile, toujours visibles (touch n'a pas de hover). */
   .primary-menu__sub {
     list-style: none;
-    margin: 0 0 1.2rem 0;
-    padding: 0;
+    margin: 0;
+    padding: 0.4rem 0 0.4rem 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem 1.2rem;
+    /* Mobile : visible direct. Desktop : reveal au hover. */
+    opacity: 0.7;
+    max-height: 200px;
+    transition:
+      opacity 0.4s var(--ease-out-editorial),
+      max-height 0.5s var(--ease-out-editorial);
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .primary-menu__sub {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0;
       justify-content: flex-end;
       gap: 0.6rem 1.6rem;
+    }
+    .primary-menu__item:hover .primary-menu__sub,
+    .primary-menu__item:focus-within .primary-menu__sub,
+    .primary-menu__item.is-active .primary-menu__sub {
+      opacity: 1;
+      max-height: 200px;
+      padding: 0.6rem 0 1rem 0;
     }
   }
   .primary-menu__sub a {
@@ -664,9 +526,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     font-size: 11px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: color-mix(in oklab, var(--color-cream) 65%, transparent);
+    color: color-mix(in oklab, var(--color-cream) 75%, transparent);
     text-decoration: none;
-    padding-bottom: 2px;
+    padding-bottom: 3px;
     border-bottom: 1px solid transparent;
     transition:
       color 0.3s ease,
@@ -675,160 +537,16 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   .primary-menu__sub a:hover,
   .primary-menu__sub a:focus-visible {
     color: var(--color-cream);
-    border-color: var(--color-cream);
-  }
-
-  /* ───────── Aside ─────────
-     Refonte 2026-04-28 (Jonathan) : menu plein couleur signature, donc l'aside
-     hérite simplement du fond (transparent). Suppression du fond forest, du
-     grain, et du radial-gradient → épuration. Contenu aligné à droite pour
-     créer une gouttière typographique avec la nav.
-     2026-04-30 : bascule de bleu Klein vers rouge latérite (demande Jonathan).
-     IMPORTANT : sur desktop, l'aside est en order: 1 (visuellement à gauche)
-     et la nav en order: 2 (à droite). Le text-align: right met le contenu de
-     l'aside contre son bord droit, qui touche la gouttière centrale. */
-  .primary-menu__aside {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem 1.5rem 3rem;
-    background: transparent;
-    color: var(--color-cream);
-  }
-  @media (min-width: 768px) {
-    .primary-menu__aside {
-      padding: 3rem 2.5rem;
-    }
-  }
-  @media (min-width: 1024px) {
-    .primary-menu__aside {
-      padding: 3rem;
-      gap: 2.5rem;
-      text-align: right;
-    }
-    /* Liste des zones — gouttière collée au bord droit en desktop */
-    .primary-menu__zones {
-      align-items: flex-end;
-    }
-    .primary-menu__social {
-      justify-content: flex-end;
-    }
-    .primary-menu__aside-footer {
-      justify-content: flex-end;
-    }
-  }
-
-  .primary-menu__aside-eyebrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--color-cream);
-    opacity: 1;
-    margin: 0 0 0.9rem 0;
-  }
-
-  .primary-menu__aside-address,
-  .primary-menu__aside-contact {
-    margin: 0;
-    line-height: 1.55;
-    font-size: 15px;
-    color: var(--color-cream);
-  }
-  .primary-menu__aside-address .opacity-60 {
-    opacity: 0.8 !important;
-  }
-
-  .primary-menu__aside-contact a {
-    color: var(--color-cream);
-    text-decoration: none;
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 30%, transparent);
-    transition:
-      color 0.3s ease,
-      border-color 0.3s ease;
-  }
-  .primary-menu__aside-contact a:hover,
-  .primary-menu__aside-contact a:focus-visible {
-    color: var(--color-cream);
-    border-color: var(--color-cream);
-  }
-
-  .primary-menu__zones {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    font-family: var(--font-heading), serif;
-    font-style: italic;
-    font-size: 19px;
-    color: var(--color-cream);
-    font-variation-settings:
-      'opsz' 144,
-      'SOFT' 70;
-  }
-
-  .primary-menu__social {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-cream);
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 30%, transparent);
-    padding-bottom: 2px;
-    transition:
-      color 0.3s ease,
-      border-color 0.3s ease;
-  }
-  .primary-menu__social:hover,
-  .primary-menu__social:focus-visible {
-    color: var(--color-cream);
-    border-color: var(--color-cream);
-  }
-
-  .primary-menu__aside-footer {
-    margin-top: auto;
-    padding-top: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: color-mix(in oklab, var(--color-cream) 80%, transparent);
-  }
-  .primary-menu__status-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--color-cream);
-    animation: status-pulse 2.5s ease-in-out infinite;
-  }
-  @keyframes status-pulse {
-    0%,
-    100% {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.3);
-    }
+    border-bottom-color: var(--color-cream);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .primary-menu[open],
     .primary-menu[open]::backdrop,
     .primary-menu.is-closing,
-    .primary-menu__status-dot,
     .primary-menu__label-main,
-    .primary-menu__tagline,
-    .primary-menu__arrow {
+    .primary-menu__arrow,
+    .primary-menu__sub {
       animation: none;
       transition: none;
     }

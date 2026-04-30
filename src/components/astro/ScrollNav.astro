@@ -31,6 +31,20 @@
 </div>
 
 <style is:global>
+  /* ScrollNav désactivé 2026-04-30 (demande Jonathan) — sidebar entièrement
+     masquée pour libérer toute la largeur. Code conservé en cas de retour
+     en arrière : il suffit de retirer ces 3 règles pour ré-activer.
+     Cf. _brief/feedback Jonathan 30-04. */
+  #scroll-nav,
+  #scroll-nav-mobile {
+    display: none !important;
+  }
+  :root {
+    --sidebar-gutter: 0px !important;
+  }
+</style>
+
+<style is:global>
   /* Layout sidebar — refonte 2026-04-29 (Morgan retours bloc 3) :
      « toutes les sections doivent être en largeur totale, l'histoire de
      la marge c'est juste pour les informations dans les sections, on

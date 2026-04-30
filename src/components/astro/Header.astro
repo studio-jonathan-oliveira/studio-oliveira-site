@@ -1,18 +1,17 @@
 ---
 /*
- * Header éditorial — bandeau cream solide englobant logo + topbar méta +
- * CTA pill + bouton Menu.
+ * Header éditorial — barre du haut avec 3 zones : logo · CTA centré · Menu.
  *
- * Refonte 2026-04-29 (Morgan, retours bloc 2) : le bandeau du Header occupe
- * toute la largeur, fond cream solide qui englobe topbar méta ET main row
- * (logo/CTA/menu). Plus de bascule cream/dark-section sur le Header — il
- * a son propre fond, donc le logo/menu/CTA gardent les mêmes couleurs sur
- * toute la navigation, peu importe le contenu de la page derrière.
+ * Refonte 2026-04-30 (demande Jonathan) :
+ *  - Topbar méta supprimée (tel/email/calendrier) → header simplifié.
+ *  - CTA "Démarrer un projet" recentré au milieu (grid 3 cols).
+ *  - Auto-hide au scroll : header caché par défaut sur darkHero (home),
+ *    réapparaît dès qu'on scroll vers le haut. Sur autres pages, hide
+ *    au scroll-down / show au scroll-up classique.
  *
  *   - Logo : ink (gris sombre) sur le fond cream du Header.
  *   - Menu trigger : ink.
  *   - CTA pill : latérite bg + cream texte, toujours.
- *   - Topbar méta : écritures latérite.
  */
 
 interface Props {
@@ -22,42 +21,21 @@ const { darkHero = false } = Astro.props;
 ---
 
 <header
-  class:list={['site-header fixed top-0 right-0 left-0 z-40', darkHero && 'site-header--dark-hero']}
+  class:list={[
+    'site-header fixed top-0 right-0 left-0 z-40',
+    darkHero && 'site-header--dark-hero',
+    darkHero && 'is-hidden',
+  ]}
   data-header
   data-dark-hero={darkHero ? 'true' : 'false'}
 >
-  <!-- Topbar méta (desktop only) ─ écritures latérite ───── -->
-  <div class="site-header__topbar hidden lg:block">
-    <div
-      class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] tracking-[0.26em] uppercase"
-    >
-      <p>Studio · Brive‑la‑Gaillarde · Aquitaine</p>
-      <p class="flex items-center gap-2.5">
-        <span class="status-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
-        Calendrier 2026 ouvert
-      </p>
-      <p>
-        <a href="tel:+33661088444" class="transition-opacity hover:opacity-70">
-          +33 6 61 08 84 44
-        </a>
-        <span class="mx-3 opacity-40">·</span>
-        <a
-          href="mailto:contact.jonathanbiodesign@gmail.com"
-          class="transition-opacity hover:opacity-70"
-        >
-          Contact
-        </a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Main row : logo · CTA · bouton Menu ─────────────── -->
+  <!-- Main row : logo · CTA centré · bouton Menu ─────────────── -->
   <div
-    class="site-header__main mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-6 py-5 md:px-10 md:py-6"
+    class="site-header__main mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-5 md:px-10 md:py-6"
   >
     <a
       href="/"
-      class="logo-swap relative flex shrink-0 items-center"
+      class="logo-swap relative flex shrink-0 items-center justify-self-start"
       aria-label="Studio J Oliveira — accueil"
       data-header-logo
     >
@@ -67,52 +45,49 @@ const { darkHero = false } = Astro.props;
       <span class="sr-only">Studio J Oliveira</span>
     </a>
 
-    <div class="flex items-center gap-4 md:gap-6">
-      <a
-        href="/demarrer-un-projet"
-        class="cta-pill group hidden items-center gap-3 rounded-full px-5 py-3 text-[13px] tracking-[0.04em] transition-all md:inline-flex"
+    <a
+      href="/demarrer-un-projet"
+      class="cta-pill group hidden items-center gap-3 justify-self-center rounded-full px-5 py-3 text-[13px] tracking-[0.04em] transition-all md:inline-flex"
+    >
+      <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
+      Démarrer un projet
+      <span
+        aria-hidden="true"
+        class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1"
+        >→</span
       >
-        <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
-        Démarrer un projet
-        <span
-          aria-hidden="true"
-          class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1"
-          >→</span
-        >
-      </a>
+    </a>
 
-      <button
-        type="button"
-        class="menu-trigger relative flex items-center gap-3 text-[12px] tracking-[0.24em] uppercase"
-        aria-label="Ouvrir le menu principal"
-        aria-expanded="false"
-        aria-controls="primary-menu"
-        data-menu-trigger
-      >
-        <span class="hidden sm:inline">Menu</span>
-        <span class="menu-bars flex flex-col gap-1.5" aria-hidden="true">
-          <span class="block h-px w-6 bg-current transition-transform"></span>
-          <span class="block h-px w-6 bg-current transition-transform"></span>
-        </span>
-      </button>
-    </div>
+    <button
+      type="button"
+      class="menu-trigger relative flex items-center gap-3 justify-self-end text-[12px] tracking-[0.24em] uppercase"
+      aria-label="Ouvrir le menu principal"
+      aria-expanded="false"
+      aria-controls="primary-menu"
+      data-menu-trigger
+    >
+      <span class="hidden sm:inline">Menu</span>
+      <span class="menu-bars flex flex-col gap-1.5" aria-hidden="true">
+        <span class="block h-px w-6 bg-current transition-transform"></span>
+        <span class="block h-px w-6 bg-current transition-transform"></span>
+      </span>
+    </button>
   </div>
 </header>
 
 <style>
-  /* Header — fond cream solide sur toute la zone (topbar méta + main row).
-     Le Header englobe tout en cream pour que logo/menu/CTA aient un fond
-     fixe et restent lisibles peu importe la section de page derrière. */
+  /* Header — fond cream solide.
+     Auto-hide via .is-hidden : translateY(-100%). Transition douce. */
   .site-header {
     background-color: var(--color-cream);
     color: var(--color-ink);
     border-bottom: 1px solid color-mix(in oklab, var(--color-laterite) 8%, transparent);
+    transform: translateY(0);
+    transition: transform 0.55s var(--ease-out-editorial);
+    will-change: transform;
   }
-
-  /* Topbar méta — séparée par un trait fin, écritures latérite. */
-  .site-header__topbar {
-    color: var(--color-laterite);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-laterite) 10%, transparent);
+  .site-header.is-hidden {
+    transform: translateY(-100%);
   }
 
   /* Logo — ink toujours (sur fond cream du Header). */
@@ -141,23 +116,6 @@ const { darkHero = false } = Astro.props;
   }
   .cta-pill:hover .cta-dot {
     transform: scale(1.4);
-  }
-
-  /* Status dot topbar — latérite qui pulse. */
-  .status-dot {
-    background-color: var(--color-laterite);
-    animation: status-pulse 2.5s ease-in-out infinite;
-  }
-  @keyframes status-pulse {
-    0%,
-    100% {
-      opacity: 0.5;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.3);
-    }
   }
 
   /* Burger ↔ X — animation préservée (refonte 2026-04-24 designbyad). */
@@ -219,7 +177,6 @@ const { darkHero = false } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .site-header,
     .site-logo,
-    .status-dot,
     .menu-trigger .menu-bars > span,
     .cta-pill {
       transition: none;
@@ -229,13 +186,26 @@ const { darkHero = false } = Astro.props;
 </style>
 
 <script>
+  /*
+   * Header auto-hide (refonte 2026-04-30 demande Jonathan) :
+   *  - Sur la home (data-dark-hero=true), header caché par défaut tant
+   *    qu'on est dans le hero. Réapparaît dès le premier scroll vers le haut.
+   *  - Sur autres pages : visible par défaut, hide au scroll-down (au-delà
+   *    de 100px), show au scroll-up. Toujours visible si scrollY < 80.
+   *  - Anti-bounce : seuil minimal de 6px de delta pour éviter les flickers.
+   */
   let headerWired = false;
-  let scrollListener: (() => void) | null = null;
   let resizeObserver: ResizeObserver | null = null;
+  let lastScrollY = 0;
+  const HIDE_DELTA_PX = 6;
+  const TOP_THRESHOLD_PX = 80;
+  const HIDE_THRESHOLD_PX = 100;
 
   function wireHeaderScroll() {
     const header = document.querySelector<HTMLElement>('[data-header]');
     if (!header) return;
+
+    const isDarkHero = header.dataset.darkHero === 'true';
 
     if (resizeObserver) resizeObserver.disconnect();
     resizeObserver = new ResizeObserver(() => {
@@ -250,11 +220,30 @@ const { darkHero = false } = Astro.props;
 
     if (headerWired) return;
     headerWired = true;
-    scrollListener = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 80);
+    lastScrollY = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastScrollY;
+      header.classList.toggle('is-scrolled', y > TOP_THRESHOLD_PX);
+
+      if (Math.abs(delta) < HIDE_DELTA_PX) return;
+
+      if (y < TOP_THRESHOLD_PX) {
+        // Tout en haut : caché si darkHero (zone hero), visible sinon.
+        header.classList.toggle('is-hidden', isDarkHero);
+      } else if (delta > 0 && y > HIDE_THRESHOLD_PX) {
+        // Scroll vers le bas : on cache.
+        header.classList.add('is-hidden');
+      } else if (delta < 0) {
+        // Scroll vers le haut : on montre.
+        header.classList.remove('is-hidden');
+      }
+
+      lastScrollY = y;
     };
-    scrollListener();
-    window.addEventListener('scroll', scrollListener, { passive: true });
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   wireHeaderScroll();

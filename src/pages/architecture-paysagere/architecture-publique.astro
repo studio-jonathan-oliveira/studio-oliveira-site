@@ -1,0 +1,151 @@
+---
+/*
+ * Architecture publique — page dédiée au marché public, génie végétal et
+ * design biophilique pour le secteur public.
+ *
+ * Refonte 2026-04-30 (demande Jonathan) : 5e typologie ajoutée au carousel
+ * home, page dédiée créée avec placeholders. À enrichir par Jonathan
+ * (positionnement, références, processus marché public).
+ *
+ * Voir _brief/contenus-manquants.md §architecture-publique.
+ */
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
+import { jsonLdGraph, breadcrumbs, localBusiness, organization } from '@/lib/schema-org';
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: 'Architecture publique', item: '/architecture-paysagere/architecture-publique' },
+];
+
+const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcrumbItems)]);
+---
+
+<BaseLayout
+  title="Architecture publique — génie végétal & design biophilique"
+  description="Studio J Oliveira intervient sur les marchés publics : génie végétal, design biophilique, conception paysagère pour le secteur public en Aquitaine et Limousin."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  <!-- 01 · HERO -->
+  <Section variant="cream" space="hero" id="hero" sectionLabel="Architecture publique">
+    <nav
+      aria-label="Fil d'Ariane"
+      class="mb-10 font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase"
+    >
+      <a href="/">Accueil</a>
+      <span aria-hidden="true">·</span>
+      <a href="/architecture-paysagere">Architecture paysagère</a>
+      <span aria-hidden="true">·</span>
+      <span aria-current="page">Architecture publique</span>
+    </nav>
+
+    <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-laterite)] uppercase">
+      Typologie · Marchés publics
+    </p>
+
+    <h1
+      class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98] text-[var(--color-ink)] md:text-[length:var(--text-hero)]"
+    >
+      Architecture <span class="display">publique</span>
+    </h1>
+
+    <p
+      class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/80"
+    >
+      {
+        /* [À FOURNIR PAR JONATHAN : positionnement studio sur le marché public —
+          quelles missions, quels donneurs d'ordre, quel périmètre territorial,
+          quelle approche biophilique. 3 à 4 lignes max. Voir
+          _brief/contenus-manquants.md §architecture-publique.] */
+      }
+      [À FOURNIR PAR JONATHAN — positionnement Architecture publique : missions type, donneurs d'ordre
+      cibles, périmètre territorial, approche biophilique en contexte marché public. 3 à 4 lignes.]
+    </p>
+  </Section>
+
+  <!-- 02 · TROIS PILIERS -->
+  <Section variant="cream" space="default" id="piliers" topDivider>
+    <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
+      Trois piliers
+    </p>
+    <h2
+      class="mt-6 max-w-2xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight md:text-[length:var(--text-4xl)]"
+    >
+      Génie végétal, design biophilique, secteur public.
+    </h2>
+
+    <div class="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
+      <article>
+        <h3
+          class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] font-bold uppercase"
+        >
+          Génie végétal
+        </h3>
+        <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+          {/* [À FOURNIR PAR JONATHAN : description génie végétal en MOA publique.] */}
+          [À FOURNIR — description du pilier Génie végétal en contexte marché public.]
+        </p>
+      </article>
+      <article>
+        <h3
+          class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] font-bold uppercase"
+        >
+          Design biophilique
+        </h3>
+        <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+          {/* [À FOURNIR PAR JONATHAN : description design biophilique appliqué au public.] */}
+          [À FOURNIR — description du pilier Design biophilique appliqué aux espaces publics.]
+        </p>
+      </article>
+      <article>
+        <h3
+          class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] font-bold uppercase"
+        >
+          Secteur public
+        </h3>
+        <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+          {
+            /* [À FOURNIR PAR JONATHAN : process marché public — réponse appel d'offres, accord-cadre, MOE…] */
+          }
+          [À FOURNIR — process spécifique au marché public : réponses aux appels d'offres, accord-cadres,
+          MOE, partenariats…]
+        </p>
+      </article>
+    </div>
+  </Section>
+
+  <!-- 03 · CTA -->
+  <Section variant="laterite" space="default" id="cta" topDivider>
+    <div class="text-center">
+      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/65 uppercase">
+        Engager un dialogue
+      </p>
+      <h2
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-cream)] md:text-[length:var(--text-4xl)]"
+      >
+        Vous êtes une collectivité<br />ou un MOA public ?
+      </h2>
+      <p
+        class="mx-auto mt-8 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80"
+      >
+        Le Studio J Oliveira répond aux appels d'offres et accord-cadres. Décrivez votre projet, on
+        regarde ensemble la pertinence d'une réponse.
+      </p>
+      <div class="mt-12 flex justify-center">
+        <CtaLink
+          href="/demarrer-un-projet"
+          label="Démarrer un projet"
+          tone="dark"
+          size="lg"
+          magnetic={0.3}
+        />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
