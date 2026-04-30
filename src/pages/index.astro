@@ -1366,11 +1366,13 @@ const typologies = [
       transition: opacity 60ms linear;
     }
 
-    /* Typologies — scroll horizontal pinned. Refonte 2026-04-30 (Jonathan) :
-       hauteur réduite 550vh → 320vh pour accélérer le défilement
-       (« on doit trop scroll pour faire défiler »). */
+    /* Typologies — scroll horizontal pinned. Refonte 2026-04-30 v3 :
+       hauteur encore réduite 320vh → 200vh (Jonathan : « grandement
+       accélérer encore »). Avec padding-right rail 70vw, le travel
+       horizontal couvre maintenant ~125vw (panel 5 arrive à la position
+       initiale de panel 1) et tient sur 200vh de scroll vertical. */
     .htypo-section {
-      height: 320vh;
+      height: 200vh;
       position: relative;
     }
     .htypo-sticky {
@@ -1410,14 +1412,18 @@ const typologies = [
     }
 
     /* Rail horizontal — 5 panneaux, ~30vw + gap (4 visibles + 5e cropée).
-       Travel auto = (rail width - viewport) géré par setupHorizontalTypologies. */
+       Travel auto = (rail width - viewport) géré par setupHorizontalTypologies.
+       padding-right ÉTENDU 2026-04-30 v3 (retours Jonathan) : doit permettre
+       au panel 5 (Architecture publique) d'atteindre l'emplacement initial
+       du panel 1 (Micro urbain) en fin de scroll → besoin de ~4 × largeur
+       panneau en travel total. padding-right gonflé en conséquence. */
     .htypo-rail {
       display: flex;
       align-items: flex-end;
       gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
-      padding: 0 clamp(2rem, 4vw, 5rem);
+      padding: 0 70vw 0 clamp(2rem, 4vw, 5rem);
       will-change: transform;
     }
 

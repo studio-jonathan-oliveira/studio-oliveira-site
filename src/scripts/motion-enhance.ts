@@ -951,14 +951,13 @@ function setupHorizontalTypologies(root: ParentNode) {
     const mq = window.matchMedia('(min-width: 1024px) and (hover: hover)');
     if (!mq.matches) return;
 
-    // Dwell 2026-04-24 (feedback Morgan « scroll horizontal plus lent et plus
-    // sticky sur le début et la fin »). On s'arrête 22% au début et 18% à la
-    // fin → sensation d'immersion sur le 1er et le dernier panel. Pour
-    // ralentir, la section fait aussi 550vh de scroll (CSS) vs 400vh.
-    // Dwell réduit (Morgan 2026-04-27 : « un tout petit peu moins sticky
-    // au début et à la fin »). 22→15% et 18→12%.
-    const DWELL_START = 0.15;
-    const DWELL_END = 0.12;
+    // Dwell — durées sticky en début et fin de scroll horizontal.
+    // Refonte 2026-04-30 v3 (Jonathan : « grandement accélérer le scroll ») :
+    // dwells réduits à 0.04/0.04 → la translation horizontale couvre 92%
+    // du progress (vs 73% avant), perception bien plus rapide à hauteur
+    // section égale.
+    const DWELL_START = 0.04;
+    const DWELL_END = 0.04;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
     // Pré-split chars des noms de typologie pour stagger reveal par panel actif
