@@ -952,12 +952,12 @@ function setupHorizontalTypologies(root: ParentNode) {
     if (!mq.matches) return;
 
     // Dwell — durées sticky en début et fin de scroll horizontal.
-    // Refonte 2026-04-30 v3 : dwells réduits à 0.04/0.04 pour accélérer.
-    // Refonte v4 (Jonathan : « le carousel doit commencer à se décaler
-    // seulement quand la 1re typo est entièrement affichée ») : DWELL_START
-    // remonté à 0.18 pour avoir un vrai sticky d'entrée. DWELL_END laissé
-    // à 0.04 (pas besoin de sticky long en fin).
-    const DWELL_START = 0.18;
+    // Refonte v5 (Jonathan : « ça doit commencer à bouger en horizontale
+    // que quand on voit entièrement les images du carousel ») : DWELL_START
+    // remonté 0.18 → 0.32 → on a vraiment le temps de voir les 4 premiers
+    // panneaux + 5e cropée avant que la translation horizontale démarre.
+    // DWELL_END inchangé à 0.04 (pas besoin de sticky long en fin).
+    const DWELL_START = 0.32;
     const DWELL_END = 0.04;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
