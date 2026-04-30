@@ -1,0 +1,290 @@
+---
+/*
+ * /zones/[slug] — pilier SEO local.
+ *
+ * Génère 3 pages : Brive-la-Gaillarde (siège), Bordeaux (zone d'intervention),
+ * Limoges (bureau d'études Verneuil-sur-Vienne).
+ *
+ * Chaque page :
+ *   - H1 cible la requête principale "paysagiste designer à [Ville]"
+ *   - Climat + essences locales (factuel, autorité topique)
+ *   - Communes voisines (longue traîne géographique)
+ *   - Typologies dominantes localement (maillage interne fort)
+ *   - FAQ avec 6-7 questions ratissant : paysagiste vs designer, budget,
+ *     délais, zone, essences, collaborations pro
+ *   - Schema LocalBusiness (areaServed local) + FAQPage + Service + Breadcrumb
+ *
+ * Stratégie : les pages exposent "paysagiste" dans le H1, le metaTitle, les
+ * FAQ et le schema. Le contenu visible reste éditorialement sobre, avec le
+ * positionnement « designer végétal » porté en sous-texte.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
+import { SITE } from '@/lib/site-config';
+import { ZONES, ZONE_SLUGS } from '@/data/zones-content';
+import {
+  jsonLdGraph,
+  organization,
+  person,
+  localBusiness,
+  breadcrumbs,
+  faqPage,
+  service,
+} from '@/lib/schema-org';
+
+export function getStaticPaths() {
+  return ZONE_SLUGS.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const zone = ZONES.find((z) => z.slug === slug);
+if (!zone) throw new Error(`Zone introuvable : ${slug}`);
+
+const typologiesIndex = Object.fromEntries(SITE.typologies.map((t) => [t.slug, t]));
+
+const schema = jsonLdGraph([
+  organization(),
+  person(),
+  localBusiness({ areaServed: [zone.ville, ...zone.communesVoisines.slice(0, 8)] }),
+  breadcrumbs([
+    { name: 'Accueil', item: '/' },
+    { name: 'Zones d’intervention', item: '/zones' },
+    { name: zone.ville, item: `/zones/${zone.slug}` },
+  ]),
+  service({
+    name: `Conception de jardin sur mesure à ${zone.ville}`,
+    slug: zone.slug,
+    path: `/zones/${zone.slug}`,
+    description: zone.metaDescription,
+    areaServed: [zone.ville, ...zone.communesVoisines],
+  }),
+  faqPage(zone.faq),
+]);
+---
+
+<BaseLayout title={zone.metaTitle} description={zone.metaDescription}>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={schema} />
+  </Fragment>
+
+  <!-- 01 · HERO -->
+  <Section variant="cream" space="hero" id="hero" sectionLabel={zone.ville} class="pt-40 md:pt-48">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
+        Zone d’intervention · {zone.departement} ({zone.codeDepartement})
+      </p>
+      <h1
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.04] tracking-tight md:text-[length:var(--text-5xl)]"
+        style="font-weight: 500; letter-spacing: -0.012em;"
+      >
+        {zone.h1}
+      </h1>
+      <p
+        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/85"
+      >
+        {zone.introLead}
+      </p>
+      <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3">
+        <CtaLink href="/demarrer-un-projet" label="Démarrer un projet" tone="light" size="lg" />
+        <CtaLink href="/contact" label="Contact direct" tone="light" size="md" />
+      </div>
+    </div>
+  </Section>
+
+  <!-- 02 · INTRO LONG + CONTEXTE -->
+  <Section variant="cream" space="default" id="contexte">
+    <div class="grid gap-16 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <h2
+          class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight md:text-[length:var(--text-3xl)]"
+          style="font-weight: 500;"
+        >
+          Le studio à {zone.villeSimple}
+        </h2>
+        <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+          {
+            zone.role === 'siege'
+              ? 'Siège social — 41 rue Général Souham'
+              : zone.role === 'bureau-etudes'
+                ? 'Bureau d’études — Verneuil-sur-Vienne'
+                : 'Zone d’intervention active'
+          }
+        </p>
+      </div>
+      <div class="md:col-span-7">
+        <p class="text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/90">
+          {zone.introLong}
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 03 · CLIMAT & ESSENCES -->
+  <Section variant="cream" space="default" id="climat" topDivider>
+    <div class="grid gap-16 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+          Lecture du territoire
+        </p>
+        <h2
+          class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight md:text-[length:var(--text-3xl)]"
+          style="font-weight: 500;"
+        >
+          Climat et palette végétale à {zone.villeSimple}
+        </h2>
+        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+          <strong>{zone.climat.type}.</strong>
+          {zone.climat.description}
+        </p>
+        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+          {zone.caracteristiquesPaysageres}
+        </p>
+      </div>
+      <div class="md:col-span-7">
+        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+          Essences travaillées
+        </p>
+        <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+          {
+            zone.essences.map((e) => (
+              <li class="flex items-baseline gap-3 text-[length:var(--text-base)] text-[var(--color-ink)]/85">
+                <span class="text-[var(--color-klein)]/60">·</span>
+                <span>{e}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 04 · TYPOLOGIES DOMINANTES -->
+  <Section variant="cream" space="default" id="typologies" topDivider>
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        Typologies de jardin à {zone.villeSimple}
+      </p>
+      <h2
+        class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight md:text-[length:var(--text-3xl)]"
+        style="font-weight: 500;"
+      >
+        Les conceptions les plus représentées localement
+      </h2>
+    </div>
+    <div class="mt-12 grid gap-10 md:grid-cols-3">
+      {
+        zone.typologiesDominantes.map((td) => {
+          const t = typologiesIndex[td.slug];
+          if (!t) return null;
+          return (
+            <a
+              href={`/architecture-paysagere/${td.slug}`}
+              class="group block border-t border-[var(--color-ink)]/15 pt-6 transition-colors hover:border-[var(--color-klein)]"
+            >
+              <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+                {t.nomProprietaire}
+              </p>
+              <h3
+                class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight tracking-tight"
+                style="font-weight: 500;"
+              >
+                {t.h1Seo}
+              </h3>
+              <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/80">
+                {td.raison}
+              </p>
+              <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-klein)] uppercase transition-colors group-hover:text-[var(--color-ink)]">
+                Voir la typologie →
+              </p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </Section>
+
+  <!-- 05 · COMMUNES VOISINES -->
+  <Section variant="cream" space="default" id="zone" topDivider>
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        Zone d’intervention élargie
+      </p>
+      <h2
+        class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight md:text-[length:var(--text-3xl)]"
+        style="font-weight: 500;"
+      >
+        Communes desservies autour de {zone.villeSimple}
+      </h2>
+      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+        Le studio intervient en étude complète et suivi de chantier sur l’ensemble du bassin {
+          zone.villeSimple
+        } et au-delà — Brive, Bordeaux, Limoges étant les trois points d’ancrage en Nouvelle-Aquitaine.
+      </p>
+    </div>
+    <ul
+      class="mt-10 flex flex-wrap gap-x-3 gap-y-2 font-mono text-xs tracking-[0.12em] text-[var(--color-ink)]/70 uppercase"
+    >
+      {
+        zone.communesVoisines.map((c) => (
+          <li class="border border-[var(--color-ink)]/15 px-3 py-1.5">{c}</li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- 06 · FAQ -->
+  <Section variant="cream" space="default" id="faq" topDivider>
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        Questions fréquentes
+      </p>
+      <h2
+        class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight md:text-[length:var(--text-3xl)]"
+        style="font-weight: 500;"
+      >
+        Paysagiste, designer végétal, architecte paysagiste à {zone.villeSimple}
+      </h2>
+    </div>
+    <div class="mt-12 max-w-3xl space-y-10">
+      {
+        zone.faq.map((f) => (
+          <div class="border-t border-[var(--color-ink)]/15 pt-6">
+            <h3
+              class="font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] leading-tight tracking-tight"
+              style="font-weight: 500;"
+            >
+              {f.question}
+            </h3>
+            <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+              {f.answer}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 07 · CTA -->
+  <Section variant="klein" space="spacious" id="cta-zone">
+    <div class="max-w-2xl">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/65 uppercase">
+        Démarrer un projet à {zone.villeSimple}
+      </p>
+      <h2
+        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight tracking-tight md:text-[length:var(--text-4xl)]"
+        style="font-weight: 500;"
+      >
+        Une visite, une lecture du site, une étude calibrée.
+      </h2>
+      <p class="mt-6 text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85">
+        Premier contact gratuit et sans engagement. Visite planifiée sous 7 à 15 jours. L’étude
+        n’est lancée qu’après validation de la typologie et signature.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3">
+        <CtaLink href="/demarrer-un-projet" label="Démarrer un projet" tone="dark" size="lg" />
+        <CtaLink href="/contact" label="Contact direct" tone="dark" size="md" />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

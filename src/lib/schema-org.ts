@@ -80,15 +80,119 @@ export interface LocationSeoInput {
 
 // Builders ------------------------------------------------------------------
 
+/**
+ * Champ lexical métier — alimente `knowsAbout` (Person + Organization)
+ * et `serviceType` (LocalBusiness). Couvre les requêtes Google que le studio
+ * doit capter au-delà du positionnement « designer végétal » visible.
+ *
+ * Stratégie : visibilité maximale sur les synonymes du métier sans diluer
+ * la marque dans le contenu lisible. Google lit ces tokens via JSON-LD,
+ * l'utilisateur humain ne les voit pas.
+ */
+export const KEYWORDS_METIER = [
+  // Métier principal et synonymes
+  'Designer végétal',
+  'Designer paysagiste',
+  'Architecte paysagiste',
+  'Concepteur paysagiste',
+  'Concepteur de jardins',
+  'Paysagiste designer',
+  'Paysagiste concepteur',
+  'Studio de design végétal',
+  'Studio de paysage',
+  'Cabinet de paysagisme',
+  'Bureau d’études paysage',
+  // Spécialités
+  'Design biophilique',
+  'Architecture biophilique',
+  'Biophilie appliquée',
+  'Conception de jardin sur mesure',
+  'Aménagement paysager',
+  'Aménagement extérieur',
+  'Aménagement de jardin',
+  'Aménagement végétal',
+  'Aménagement végétal d’intérieur',
+  'Décor végétal',
+  'Mur végétal',
+  'Toiture végétalisée',
+  'Jardin intérieur',
+  'Patio végétalisé',
+  'Terrasse végétalisée',
+  'Rooftop végétalisé',
+  // Typologies de projet
+  'Petit jardin de ville',
+  'Jardin de ville sur mesure',
+  'Grand jardin péri-urbain',
+  'Parc privé',
+  'Domaine privé',
+  'Jardin de caractère',
+  'Jardin contemporain',
+  'Jardin méditerranéen',
+  'Jardin sec',
+  'Jardin d’architecte',
+  'Jardin de maison de ville',
+  'Jardin de résidence secondaire',
+  // Verticales pro
+  'Décorateur végétal hôtellerie',
+  'Aménagement végétal restaurant',
+  'Végétalisation de bureaux',
+  'Végétalisation commerce',
+  'Aménagement Airbnb atypique',
+  'Scénographie végétale',
+  // Geo
+  'Paysagiste Brive',
+  'Paysagiste Brive-la-Gaillarde',
+  'Paysagiste Corrèze',
+  'Paysagiste Limousin',
+  'Paysagiste Aquitaine',
+  'Paysagiste Bordeaux',
+  'Paysagiste Limoges',
+  'Paysagiste Haute-Vienne',
+  'Designer végétal Bordeaux',
+  'Designer végétal Brive',
+  'Designer végétal Limoges',
+  'Architecte paysagiste Aquitaine',
+  'Architecte paysagiste Nouvelle-Aquitaine',
+];
+
+const SERVICE_TYPES = [
+  'Conception de jardin sur mesure',
+  'Aménagement paysager',
+  'Aménagement de jardin',
+  'Aménagement végétal d’intérieur',
+  'Design biophilique',
+  'Étude paysagère',
+  'Maîtrise d’œuvre paysagère',
+  'Suivi de chantier paysager',
+  'Conseil en végétalisation',
+  'Scénographie végétale',
+  'Décor végétal pour hôtellerie',
+  'Décor végétal pour restauration',
+  'Végétalisation de bureaux',
+  'Aménagement Airbnb et locations atypiques',
+];
+
+const ALTERNATE_NAMES = [
+  'Studio Oliveira',
+  'Studio Jonathan Oliveira',
+  'Studio J Oliveira — Designer paysagiste',
+  'Paysagiste designer Brive',
+  'Architecte paysagiste Brive-la-Gaillarde',
+  'Designer paysagiste Corrèze',
+];
+
 export function organization(): Thing {
   return {
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
     name: SITE.name,
+    alternateName: ALTERNATE_NAMES,
     url: SITE_URL,
     founder: { '@id': PERSON_ID },
     foundingDate: String(SITE.foundedYear),
     logo: `${SITE_URL}/brand/wordmark-moss.png`,
+    description: SITE.tagline,
+    knowsAbout: KEYWORDS_METIER,
     sameAs: [SITE.social.instagram, SITE.social.linkedin, SITE.social.pinterest].filter(Boolean),
   };
 }
@@ -99,18 +203,30 @@ export function person(): Thing {
     '@id': PERSON_ID,
     name: SITE.founderName,
     jobTitle: 'Designer paysagiste · Architecte biophilique',
+    description:
+      'Designer paysagiste fondateur du Studio J Oliveira. Conception de jardins, aménagement végétal d’intérieur et design biophilique en Nouvelle-Aquitaine.',
+    knowsAbout: KEYWORDS_METIER,
     worksFor: { '@id': ORGANIZATION_ID },
     url: `${SITE_URL}/studio`,
+    sameAs: [SITE.social.instagram].filter(Boolean),
   };
 }
 
 export function localBusiness(opts: { areaServed?: string[] } = {}): Thing {
   const areaServed = opts.areaServed ?? SITE.zones.map((z) => z.ville);
   return {
-    '@type': 'ProfessionalService',
+    // ProfessionalService = sous-type de LocalBusiness. Multi-typage pour cumuler
+    // les signaux Google : LocalBusiness (rich results local) + ProfessionalService
+    // (catégorie métier) + Organization (entité globale).
+    '@type': ['ProfessionalService', 'LocalBusiness'],
     '@id': LOCAL_BUSINESS_ID,
     name: SITE.name,
+    alternateName: ALTERNATE_NAMES,
     description: SITE.tagline,
+    slogan: 'Designer végétal · Studio de design biophilique',
+    knowsAbout: KEYWORDS_METIER,
+    serviceType: SERVICE_TYPES,
+    priceRange: '€€€',
     url: SITE_URL,
     telephone: SITE.contact.phoneInternational,
     email: SITE.contact.email,
