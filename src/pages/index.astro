@@ -19,6 +19,9 @@ import CtaLink from '@/components/astro/CtaLink.astro';
 // signalait « accueil toujours noir ». À réactiver quand Jonathan fournira
 // une vidéo logo plus robuste + une seconde de fallback.
 import { Image } from 'astro:assets';
+import { jsonLdGraph, organization, localBusiness, website, person } from '@/lib/schema-org';
+
+const homeSchema = jsonLdGraph([organization(), person(), localBusiness(), website()]);
 // Slideshow hero VIDÉO — refonte 2026-04-29 (Morgan : 3 vidéos Jonathan
 // fournies en full HD, ré-encodées 720p H.264 via scripts/optimize-hero-videos.ts).
 // Cycle infini avec cross-fade 800 ms entre chaque clip.
@@ -137,6 +140,10 @@ const zones = ['Brive‑la‑Gaillarde', 'Bordeaux', 'Limoges'];
       type="image/jpeg"
       fetchpriority="high"
     />
+    {
+      /* JSON-LD home : Organization + Person + LocalBusiness (siège Brive) + WebSite (SearchAction). Pilier consolidation autorité topique Google. */
+    }
+    <script type="application/ld+json" is:inline set:html={homeSchema} />
   </Fragment>
   {/* IntroBumper retiré 2026-04-24 — bug écran noir persistant */}
 

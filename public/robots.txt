@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Pas de pages sensibles à exclure pour l'instant.
+# Sanity Studio (sanity.studio) hébergé séparément, hors scope.
+
+Sitemap: https://www.jonathanoliveira.fr/sitemap-index.xml
