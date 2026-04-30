@@ -44,8 +44,6 @@
     "@marsidev/react-turnstile": "^1.5.0",
     "@sanity/client": "^7.21.0",
     "@sanity/image-url": "^2.1.1",
-    "@sanity/vision": "^4.10.0",
-    "sanity": "^4.10.0",
     "@tailwindcss/vite": "^4.2.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

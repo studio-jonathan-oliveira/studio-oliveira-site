@@ -28,10 +28,15 @@ Tout est prêt côté code, sauf l'install des deps et la création du projet Sa
 ### 1. Installer les deps Sanity (Morgan, 1 min)
 
 ```bash
-pnpm install
+pnpm add sanity @sanity/vision styled-components
 ```
 
-Ajoute `sanity` (CLI + Studio React) et `@sanity/vision` (debug GROQ) au lockfile.
+Ajoute `sanity` (CLI + Studio React), `@sanity/vision` (debug GROQ) et
+`styled-components` (peer dependency Sanity v3+).
+
+> Note : ces deps ont été initialement ajoutées au `package.json` puis retirées
+> car Vercel rebuild échouait avec `pnpm install` (versions à arbitrer au
+> moment de l'install effective). Les ajouter manuellement résout le pin.
 
 ### 2. Créer le projet Sanity (Morgan, 2 min)
 
