@@ -171,6 +171,22 @@ const typologies = [
     data-hero-bg
   >
     {
+      /* Logo Oliveira en haut-gauche du hero — refonte 2026-04-30 (Jonathan) :
+        comme le Header est caché par défaut sur darkHero (auto-hide), on
+        rajoute le logo directement dans le hero pour qu'il reste toujours
+        visible au-dessus du slideshow vidéo. */
+    }
+    <a href="/" class="hero-logo" aria-label="Studio J Oliveira — accueil">
+      <img
+        src="/brand/wordmark-cream.png?v=3"
+        alt="Studio J Oliveira"
+        width="1200"
+        height="288"
+        loading="eager"
+        decoding="async"
+      />
+    </a>
+    {
       /* Stacking explicite (Morgan 2026-04-27 « tout noir le fond ») :
         slideshow z-0 par-dessus le bg ink de la section, contenu z-10
         par-dessus. On retire isolate sur la section qui scopait -z-10
@@ -708,6 +724,35 @@ const typologies = [
       text-shadow:
         0 1px 4px rgba(0, 0, 0, 0.85),
         0 2px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Logo Oliveira haut-gauche du hero — refonte 2026-04-30 (Jonathan).
+       Visible en permanence dans la zone hero, indépendant du Header
+       (qui est caché par auto-hide tant qu'on est sur la home darkHero). */
+    .hero-logo {
+      position: absolute;
+      top: clamp(1.5rem, 2.5vh, 2.25rem);
+      left: clamp(1.5rem, 4vw, 2.5rem);
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
+      filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.45));
+    }
+    .hero-logo img {
+      display: block;
+      height: 36px;
+      width: auto;
+    }
+    @media (min-width: 768px) {
+      .hero-logo img {
+        height: 42px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .hero-logo img {
+        height: 46px;
+      }
     }
     .hero-immersive .hero-eyebrow,
     .hero-immersive .hero-title-asym,
