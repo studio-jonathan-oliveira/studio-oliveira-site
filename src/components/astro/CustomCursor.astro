@@ -151,24 +151,24 @@
        au-dessus (translateY -100% + petite marge) pour ne PAS chevaucher
        la bulle CTA "Choisir/Explorer" affichée dans le ring agrandi.
        Refonte v3 (retours 2026-04-30) : fond ink fixe + texte cream pour
-       contraste lisible quel que soit le fond de section (pas de fond
-       latérite qui agresse sur sections latérite). Taille augmentée 10→12px. */
+       contraste lisible quel que soit le fond de section.
+       Refonte v4 : font 14px + white-space: pre pour que chaque ligne
+       tienne sur une seule ligne sans wrap (largeur auto-fit). */
     .cursor-tooltip {
       position: absolute;
       left: 100%;
       top: 0;
       transform: translate(20px, -100%);
       margin-top: -8px;
-      padding: 12px 16px;
-      max-width: 280px;
+      padding: 14px 20px;
       background-color: var(--color-ink);
       color: var(--color-cream);
       font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.16em;
-      line-height: 1.6;
+      line-height: 1.7;
       text-transform: uppercase;
-      white-space: pre-line;
+      white-space: pre;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s var(--ease-out-editorial);
