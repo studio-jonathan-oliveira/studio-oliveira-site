@@ -349,7 +349,7 @@ const typologies = [
     aria-label="Identité du studio"
   >
     <div
-      class="mx-auto max-w-[1500px] px-6 py-20 md:px-10 md:py-28"
+      class="px-6 py-20 md:px-10 md:py-28"
       data-justify-multi
       data-justify-amp="80"
       data-justify-line-step="0.1"
@@ -378,7 +378,7 @@ const typologies = [
     class="studio-presentation relative bg-[var(--color-laterite)] text-[var(--color-cream)]"
     aria-labelledby="studio-presentation-title"
   >
-    <div class="mx-auto max-w-[1100px] px-6 pb-24 md:px-10 md:pb-36" data-reveal="up">
+    <div class="px-6 pb-24 md:px-10 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
       <p class="studio-presentation-text">
         {
@@ -389,7 +389,7 @@ const typologies = [
         TEXTE EXPLICATIF ET PRESENTATION DU STUDIO, DE SON ADN, UN TEXTE GENERAL SUR LA MANIERE AU STUDIO
         DE TRAVAILLER SES CONCEPTIONS.
       </p>
-      <div class="mt-12 flex justify-center md:mt-16">
+      <div class="mt-12 md:mt-16">
         <CtaLink
           href="/studio"
           label="Découvrir le Studio J Oliveira"
@@ -776,7 +776,9 @@ const typologies = [
     }
 
     /* Bloc STUDIO (présentation) — texte court + CTA magnétique.
-       Refonte 2026-04-30 : taille augmentée (Jonathan veut plus de présence). */
+       Refonte 2026-04-30 : taille augmentée. v5 (Jonathan) : alignement
+       gauche + pleine largeur (plus de max-width / centrage), en cohérence
+       avec la zone IDENTITÉ qui est elle aussi pleine largeur. */
     .studio-presentation-text {
       font-family: var(--font-heading), sans-serif;
       font-weight: 500;
@@ -784,10 +786,9 @@ const typologies = [
       line-height: 1.35;
       letter-spacing: 0.01em;
       text-transform: uppercase;
-      text-align: center;
+      text-align: left;
       color: var(--color-cream);
-      max-width: 60ch;
-      margin: 0 auto;
+      margin: 0;
     }
 
     /* Vitrine projets — pattern designbyad (scroll_home.mp4 frame 7-9) :
