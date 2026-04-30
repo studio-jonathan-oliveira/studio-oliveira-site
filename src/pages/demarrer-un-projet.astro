@@ -148,7 +148,8 @@ const schema = jsonLdGraph([
 
 <style>
   /* Refonte 2026-04-28 #B9 : page repassée en fond crème, donc tous les
-     accents cream → ink, et latérite → klein pour la cohérence couleur. */
+     accents cream → ink. Les accents signature (flèches méthode, traits)
+     utilisent le rouge latérite (refonte couleur 2026-04-30). */
 
   .page-title {
     font-size: clamp(1.6rem, 5.2vw, 4.5rem);
@@ -188,7 +189,7 @@ const schema = jsonLdGraph([
   }
   .methode-summary-arrow {
     font-family: var(--font-mono), ui-monospace, monospace;
-    color: var(--color-klein);
+    color: var(--color-laterite);
     font-size: 1.25rem;
   }
   .methode-summary-total {
@@ -234,7 +235,7 @@ const schema = jsonLdGraph([
     display: block;
     width: 40px;
     height: 1px;
-    background-color: color-mix(in oklab, var(--color-klein) 80%, transparent);
+    background-color: color-mix(in oklab, var(--color-laterite) 80%, transparent);
     padding-top: 1.5rem;
   }
 </style>

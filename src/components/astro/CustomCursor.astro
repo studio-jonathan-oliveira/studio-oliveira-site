@@ -31,13 +31,13 @@
       /* Refonte 2026-04-29 (Morgan retours bloc 4) : détection live du theme
          sous le pointeur (pas via theme-observer scroll-based, qui est trop
          lent). Le JS toggle .is-on-dark sur le cursor dès que la section
-         data-theme="dark" passe sous lui — bascule instantanée Klein↔cream. */
-      --cursor-fill: var(--color-klein);
+         data-theme="dark" passe sous lui — bascule instantanée latérite↔cream. */
+      --cursor-fill: var(--color-laterite);
       --cursor-text: var(--color-cream);
     }
     .custom-cursor.is-on-dark {
       --cursor-fill: var(--color-cream);
-      --cursor-text: var(--color-klein);
+      --cursor-text: var(--color-laterite);
     }
 
     /* Masque le curseur natif uniquement en fine pointer. */
@@ -80,7 +80,7 @@
       left: -12px;
       width: 24px;
       height: 24px;
-      /* Refonte 2026-04-29 — disque Klein sur cream, cream sur Klein, via
+      /* Refonte 2026-04-29 — disque latérite sur cream, cream sur latérite, via
          --cursor-fill piloté par body.is-dark-section. */
       background-color: var(--cursor-fill);
       border-radius: 50%;
@@ -122,7 +122,7 @@
       font-size: 9px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      /* Texte cream sur ring Klein (default) ; sur dark-section : Klein sur cream. */
+      /* Texte cream sur ring latérite (default) ; sur dark-section : latérite sur cream. */
       color: var(--cursor-text);
       font-weight: 600;
       opacity: 0;
@@ -179,7 +179,7 @@
     // cursor devrait basculer au PASSAGE dans une autre couleur, pas quand
     // on a assez scrollé »). On cherche la section[data-theme] sous le
     // pointeur via elementsFromPoint, et on bascule la classe is-on-dark
-    // sur le cursor → le CSS choisit alors Klein/cream pile poil.
+    // sur le cursor → le CSS choisit alors latérite/cream pile poil.
     let lastTheme: 'light' | 'dark' | null = null;
     const detectThemeUnderPointer = () => {
       // Le cursor est position:fixed z=9999 → il faut le cacher temporairement

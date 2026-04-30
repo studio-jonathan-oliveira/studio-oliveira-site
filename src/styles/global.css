@@ -34,9 +34,11 @@
   --color-moss: #70725b;
   --color-laterite: #a94930;
   --color-ink: #1d1f1b;
-  /* Bleu Klein (IKB) — refonte 2026-04-28, demande Jonathan.
-     Fond signature pour MenuPrimary plein, section studio home, accents H1. */
-  --color-klein: #002fa7;
+  /* Note refonte 2026-04-30 (demande Jonathan) :
+     l'ancien token --color-klein (#002fa7, IKB) a été retiré au profit de
+     --color-laterite déjà défini ci-dessus. Tous les usages signature
+     (MenuPrimary plein, section studio home, accents H1) utilisent désormais
+     le rouge latérite. Aucun alias rétro-compat. */
 
   /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
      Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */

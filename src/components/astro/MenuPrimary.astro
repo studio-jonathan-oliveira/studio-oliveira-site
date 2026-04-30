@@ -388,15 +388,16 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Refonte 2026-04-28 (Jonathan) : MENU PLEIN BLEU KLEIN partout.
-     Plus de zone forest séparée pour l'aside — tout est bleu Klein uni,
-     texte crème. Épuration : grain texture + radial-gradient retirés. */
+  /* Refonte 2026-04-28 (Jonathan) : MENU PLEIN partout, fond couleur signature.
+     Plus de zone forest séparée pour l'aside — tout est en couleur signature unie,
+     texte crème. Épuration : grain texture + radial-gradient retirés.
+     2026-04-30 : bascule de bleu Klein vers rouge latérite (demande Jonathan). */
   .primary-menu__inner {
     width: 100vw;
     max-width: 100vw;
     height: 100dvh;
     min-height: 0;
-    background: var(--color-klein);
+    background: var(--color-laterite);
     color: var(--color-cream);
     display: flex;
     flex-direction: column;
@@ -456,7 +457,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__close:hover,
   .primary-menu__close:focus-visible {
-    color: var(--color-klein);
+    color: var(--color-laterite);
     background-color: var(--color-cream);
     border-color: var(--color-cream);
   }
@@ -678,10 +679,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
 
   /* ───────── Aside ─────────
-     Refonte 2026-04-28 (Jonathan) : menu plein bleu Klein, donc l'aside hérite
-     simplement du fond Klein (transparent). Suppression du fond forest, du
+     Refonte 2026-04-28 (Jonathan) : menu plein couleur signature, donc l'aside
+     hérite simplement du fond (transparent). Suppression du fond forest, du
      grain, et du radial-gradient → épuration. Contenu aligné à droite pour
      créer une gouttière typographique avec la nav.
+     2026-04-30 : bascule de bleu Klein vers rouge latérite (demande Jonathan).
      IMPORTANT : sur desktop, l'aside est en order: 1 (visuellement à gauche)
      et la nav en order: 2 (à droite). Le text-align: right met le contenu de
      l'aside contre son bord droit, qui touche la gouttière centrale. */

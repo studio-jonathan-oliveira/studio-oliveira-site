@@ -149,7 +149,7 @@ const schema = jsonLdGraph([
           {
             zone.essences.map((e) => (
               <li class="flex items-baseline gap-3 text-[length:var(--text-base)] text-[var(--color-ink)]/85">
-                <span class="text-[var(--color-klein)]/60">·</span>
+                <span class="text-[var(--color-laterite)]/60">·</span>
                 <span>{e}</span>
               </li>
             ))
@@ -180,7 +180,7 @@ const schema = jsonLdGraph([
           return (
             <a
               href={`/architecture-paysagere/${td.slug}`}
-              class="group block border-t border-[var(--color-ink)]/15 pt-6 transition-colors hover:border-[var(--color-klein)]"
+              class="group block border-t border-[var(--color-ink)]/15 pt-6 transition-colors hover:border-[var(--color-laterite)]"
             >
               <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
                 {t.nomProprietaire}
@@ -194,7 +194,7 @@ const schema = jsonLdGraph([
               <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/80">
                 {td.raison}
               </p>
-              <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-klein)] uppercase transition-colors group-hover:text-[var(--color-ink)]">
+              <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-laterite)] uppercase transition-colors group-hover:text-[var(--color-ink)]">
                 Voir la typologie →
               </p>
             </a>
@@ -266,7 +266,7 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- 07 · CTA -->
-  <Section variant="klein" space="spacious" id="cta-zone">
+  <Section variant="laterite" space="spacious" id="cta-zone">
     <div class="max-w-2xl">
       <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/65 uppercase">
         Démarrer un projet à {zone.villeSimple}

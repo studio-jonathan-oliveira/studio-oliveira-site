@@ -4,7 +4,7 @@
  *
  * Refonte 2026-04-29 (Morgan, retours bloc) :
  *  - Plus de mix-blend-difference : le rail/thumb/text utilisent des
- *    couleurs explicites (Klein sur fond cream, cream sur dark-section)
+ *    couleurs explicites (latérite sur fond cream, cream sur dark-section)
  *    via body.is-dark-section.
  *  - Plus de numéros : ni dans les items, ni dans le compteur. Le compteur
  *    en bas est supprimé entièrement. Seuls les noms de sections restent.
@@ -69,7 +69,7 @@
   /* ─────────── Sidebar desktop ───────────
      Refonte 2026-04-29 (Morgan « sidebar invisible blanc sur blanc ») :
      couleurs explicites par sous-élément, pas d'héritage via currentColor.
-     Default = Klein (visible sur fond cream du site), cream sur dark-section. */
+     Default = latérite (visible sur fond cream du site), cream sur dark-section. */
   .scroll-nav {
     position: fixed;
     left: 1.5rem;
@@ -98,7 +98,7 @@
      et --sn-rail-color (rail), set DIRECTEMENT par le JS via element.style.
      Bypass complet de la cascade scoped Astro / problèmes de spécificité. */
   .scroll-nav {
-    --sn-color: var(--color-klein);
+    --sn-color: var(--color-laterite);
   }
 
   .scroll-nav-rail {
@@ -154,7 +154,7 @@
     padding: 0.2rem 0;
   }
 
-  /* Titre — couleur via --sn-color (Klein par défaut, swap par JS en cream
+  /* Titre — couleur via --sn-color (latérite par défaut, swap par JS en cream
      sur dark). Pas d'override de cascade : la var change, le titre suit. */
   .scroll-nav-title {
     font-family: var(--font-heading), serif;
@@ -213,7 +213,7 @@
     background-color: color-mix(in srgb, var(--color-cream) 92%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-klein) 12%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-laterite) 12%, transparent);
     opacity: 0;
     transform: translateY(-100%);
     transition:
@@ -235,7 +235,7 @@
     font-style: italic;
     font-size: 13px;
     line-height: 1;
-    color: var(--color-klein);
+    color: var(--color-laterite);
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -245,7 +245,7 @@
     flex-shrink: 0;
     width: 80px;
     height: 1px;
-    background-color: color-mix(in srgb, var(--color-klein) 18%, transparent);
+    background-color: color-mix(in srgb, var(--color-laterite) 18%, transparent);
     position: relative;
     overflow: hidden;
   }
@@ -255,12 +255,12 @@
     left: 0;
     top: 0;
     height: 100%;
-    background-color: var(--color-klein);
+    background-color: var(--color-laterite);
     width: 0;
     transition: width 0.3s linear;
   }
   .scroll-nav-mobile.is-on-dark {
-    background-color: color-mix(in srgb, var(--color-klein) 88%, transparent);
+    background-color: color-mix(in srgb, var(--color-laterite) 88%, transparent);
     color: var(--color-cream);
     border-bottom-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
   }
@@ -354,8 +354,9 @@
     });
 
     // Visibilité + détection theme de la section au mid viewport (Morgan
-    // 2026-04-29 : sections Klein parfois pas détectées par IntersectionObserver
-    // → on bascule sur du geometry direct pour la couleur sidebar).
+    // 2026-04-29 : sections d'accent foncées parfois pas détectées par
+    // IntersectionObserver → on bascule sur du geometry direct pour la
+    // couleur sidebar).
     const onScroll = () => {
       const show = window.scrollY > window.innerHeight * 0.4;
       nav.classList.toggle('is-visible', show);
@@ -367,7 +368,7 @@
         mobileFill.style.width = `${pct}%`;
       }
 
-      // Bascule cream/Klein de la sidebar — STYLE INLINE !important direct
+      // Bascule cream/latérite de la sidebar — STYLE INLINE !important direct
       // sur chaque élément (Morgan 2026-04-29 retours en boucle malgré
       // CSS variables/scoped/cascade : la couleur restait gris sombre).
       // L'inline !important bat absolument toute cascade CSS.
@@ -381,7 +382,7 @@
           isDark = s.dataset.theme === 'dark';
         }
       }
-      const fg = isDark ? '#f5f1ea' /* cream */ : '#002fa7'; /* klein */
+      const fg = isDark ? '#f5f1ea' /* cream */ : '#a94930'; /* laterite */
       const titles = nav.querySelectorAll<HTMLElement>('.scroll-nav-title');
       titles.forEach((t) => t.style.setProperty('color', fg, 'important'));
       if (thumb) thumb.style.setProperty('background-color', fg, 'important');

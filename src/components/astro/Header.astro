@@ -11,8 +11,8 @@
  *
  *   - Logo : ink (gris sombre) sur le fond cream du Header.
  *   - Menu trigger : ink.
- *   - CTA pill : Klein bg + cream texte, toujours.
- *   - Topbar méta : écritures Klein.
+ *   - CTA pill : latérite bg + cream texte, toujours.
+ *   - Topbar méta : écritures latérite.
  */
 
 interface Props {
@@ -26,7 +26,7 @@ const { darkHero = false } = Astro.props;
   data-header
   data-dark-hero={darkHero ? 'true' : 'false'}
 >
-  <!-- Topbar méta (desktop only) ─ écritures Klein ───── -->
+  <!-- Topbar méta (desktop only) ─ écritures latérite ───── -->
   <div class="site-header__topbar hidden lg:block">
     <div
       class="mx-auto flex max-w-[1400px] items-center justify-between gap-8 px-10 py-3.5 font-mono text-[11.5px] tracking-[0.26em] uppercase"
@@ -106,13 +106,13 @@ const { darkHero = false } = Astro.props;
   .site-header {
     background-color: var(--color-cream);
     color: var(--color-ink);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-klein) 8%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-laterite) 8%, transparent);
   }
 
-  /* Topbar méta — séparée par un trait fin, écritures Klein. */
+  /* Topbar méta — séparée par un trait fin, écritures latérite. */
   .site-header__topbar {
-    color: var(--color-klein);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-klein) 10%, transparent);
+    color: var(--color-laterite);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-laterite) 10%, transparent);
   }
 
   /* Logo — ink toujours (sur fond cream du Header). */
@@ -122,18 +122,18 @@ const { darkHero = false } = Astro.props;
     mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* CTA pill — fond Klein + texte cream, toujours. Hover assombrit le bleu. */
+  /* CTA pill — fond latérite + texte cream, toujours. Hover assombrit le rouge. */
   .cta-pill {
-    background-color: var(--color-klein);
+    background-color: var(--color-laterite);
     color: var(--color-cream);
-    border: 1px solid var(--color-klein);
+    border: 1px solid var(--color-laterite);
     transition:
       background-color 0.3s var(--ease-out-editorial),
       border-color 0.3s var(--ease-out-editorial);
   }
   .cta-pill:hover {
-    background-color: color-mix(in oklab, var(--color-klein) 85%, black);
-    border-color: color-mix(in oklab, var(--color-klein) 85%, black);
+    background-color: color-mix(in oklab, var(--color-laterite) 85%, black);
+    border-color: color-mix(in oklab, var(--color-laterite) 85%, black);
   }
   .cta-pill .cta-dot {
     background-color: var(--color-cream);
@@ -143,9 +143,9 @@ const { darkHero = false } = Astro.props;
     transform: scale(1.4);
   }
 
-  /* Status dot topbar — Klein qui pulse. */
+  /* Status dot topbar — latérite qui pulse. */
   .status-dot {
-    background-color: var(--color-klein);
+    background-color: var(--color-laterite);
     animation: status-pulse 2.5s ease-in-out infinite;
   }
   @keyframes status-pulse {
