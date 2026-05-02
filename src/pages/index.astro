@@ -1489,7 +1489,7 @@ const typologies = [
        carte simple = nom au-dessus + image en dessous + CTA. Largeur ~30vw
        pour avoir 4 visibles + 5e cropée à droite. */
     .htypo-panel {
-      flex: 0 0 clamp(280px, 30vw, 480px);
+      flex: 0 0 clamp(260px, 26vw, 420px);
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -1499,11 +1499,10 @@ const typologies = [
       color: inherit;
     }
 
-    /* Espace nom ↔ image augmenté 2026-05-02 (Morgan) : 0.75rem → 1.75rem. */
     .htypo-card {
       display: flex;
       flex-direction: column;
-      gap: clamp(1.5rem, 2vw, 2.25rem);
+      gap: 0.75rem;
       width: 100%;
     }
 
@@ -1518,12 +1517,14 @@ const typologies = [
       margin: 0;
     }
 
-    /* Images allongées 2026-05-02 (Morgan, capture screenshot) :
-       aspect-ratio 4/3 (paysage) → 4/5 (portrait), plus de hauteur visible. */
+    /* Images réduites 2026-05-02 (Morgan : « réduit un peu, faut un peu
+       plus d'espace entre le texte et les images »). 4/5 portrait → 1/1
+       carré, panel max-width passé de 480px → 420px : la photo perd
+       en hauteur, libérant de l'espace entre l'intro et le rail. */
     .htypo-visual {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
     }
