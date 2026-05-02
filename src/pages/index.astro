@@ -310,12 +310,16 @@ const typologies = [
           - PAYSAGISTE en Gloock gras (.display = font-display 700)
           - Écart entre lignes pb-0.05/0.12em (match studio biophilique) */
       }
+      {
+        /* Hero H1 — refonte 2026-05-02 (Morgan) : « DESIGNER PAYSAGISTE »
+          remplacé par « DESIGN PAYSAGER » Jost normal (font-weight 400),
+          monoligne, calé bas-droite. Plus de Gloock dans le titre. */
+      }
       <h1
-        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] font-bold text-[var(--color-cream)] md:text-[length:var(--text-hero)]"
+        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] font-normal text-[var(--color-cream)] md:text-[length:var(--text-hero)]"
         data-hero-mask
       >
-        <span data-mask-line class="block pb-[0.05em]">DESIGNER</span>
-        <span data-mask-line class="display block pb-[0.12em]">PAYSAGISTE</span>
+        <span data-mask-line class="block pb-[0.05em]">DESIGN PAYSAGER</span>
       </h1>
 
       {
@@ -405,7 +409,11 @@ const typologies = [
         TEXTE EXPLICATIF ET PRESENTATION DU STUDIO, DE SON ADN, UN TEXTE GENERAL SUR LA MANIERE AU STUDIO
         DE TRAVAILLER SES CONCEPTIONS.
       </p>
-      <div class="mt-12 md:mt-16">
+      {
+        /* CTA recentré 2026-05-02 (Morgan) : « plein milieu de la section,
+          plus aligné à gauche ». flex justify-center sur le wrapper. */
+      }
+      <div class="mt-12 flex justify-center md:mt-16">
         <CtaLink
           href="/studio"
           label="Découvrir le Studio J Oliveira"
@@ -467,10 +475,9 @@ const typologies = [
                     style={`object-position: ${t.imagePosition ?? 'center'}`}
                   />
                 </div>
-                <span class="htypo-cta">
-                  {t.cta}
-                  <span aria-hidden="true">→</span>
-                </span>
+                {/* Petits CTA « Choisir / Explorer » retirés 2026-05-02
+                    (Morgan) : la photo entière est cliquable, le texte
+                    redondant n'apporte rien. Tooltip au hover suffit. */}
               </div>
             </a>
           ))
@@ -1417,8 +1424,11 @@ const typologies = [
        accélérer encore »). Avec padding-right rail 70vw, le travel
        horizontal couvre maintenant ~125vw (panel 5 arrive à la position
        initiale de panel 1) et tient sur 200vh de scroll vertical. */
+    /* Hauteur augmentée 2026-05-02 (Morgan) : sticky de fin renforcé,
+       on veut que la dernière typologie reste à la place de la première
+       avant que le scroll ne reprenne. 200vh → 320vh + DWELL_END remontée. */
     .htypo-section {
-      height: 200vh;
+      height: 320vh;
       position: relative;
     }
     .htypo-sticky {
@@ -1445,15 +1455,17 @@ const typologies = [
         right: 3rem;
       }
     }
+    /* Taille augmentée 2026-05-02 (Morgan, capture screenshot designbyad) :
+       clamp 1.2/2.2/2 → 1.6/3/2.8rem. */
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
       font-weight: 600;
-      font-size: clamp(1.2rem, 2.2vw, 2rem);
-      line-height: 1.3;
-      letter-spacing: 0.02em;
+      font-size: clamp(1.6rem, 3vw, 2.8rem);
+      line-height: 1.25;
+      letter-spacing: 0.01em;
       text-transform: uppercase;
       color: var(--color-ink);
-      max-width: 50ch;
+      max-width: 56ch;
       margin: 0;
     }
 
@@ -1505,10 +1517,12 @@ const typologies = [
       margin: 0;
     }
 
+    /* Images allongées 2026-05-02 (Morgan, capture screenshot) :
+       aspect-ratio 4/3 (paysage) → 4/5 (portrait), plus de hauteur visible. */
     .htypo-visual {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 4 / 5;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
     }
@@ -1521,27 +1535,7 @@ const typologies = [
     }
     /* Pas d'animation au hover sur les images (demande Jonathan 2026-04-30). */
 
-    .htypo-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
-      color: var(--color-ink);
-      border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 25%, transparent);
-      padding-bottom: 4px;
-      align-self: flex-start;
-      transition:
-        border-color 0.3s ease,
-        color 0.3s ease;
-    }
-    .htypo-panel:hover .htypo-cta,
-    .htypo-panel:focus-visible .htypo-cta {
-      border-bottom-color: var(--color-laterite);
-      color: var(--color-laterite);
-    }
+    /* .htypo-cta retiré 2026-05-02 (Morgan) avec le span correspondant. */
 
     /* Mobile : scroll horizontal snap natif au lieu du pin (touch-friendly).
        Le rail devient overflow-x scrollable, panels alignés snap start. */

@@ -29,25 +29,27 @@
  */
 
 @theme {
-  /* Couleurs marque — primaires (refonte 2026-04-24) */
+  /* Couleurs marque — primaires (refonte 2026-05-02 Morgan : retrait
+     intégral du latérite, palette monochrome cream / ink à la designbyad). */
   --color-cream: #f5f1ea;
   --color-moss: #70725b;
-  --color-laterite: #a94930;
   --color-ink: #1d1f1b;
-  /* Note refonte 2026-04-30 (demande Jonathan) :
-     l'ancien token --color-klein (#002fa7, IKB) a été retiré au profit de
-     --color-laterite déjà défini ci-dessus. Tous les usages signature
-     (MenuPrimary plein, section studio home, accents H1) utilisent désormais
-     le rouge latérite. Aucun alias rétro-compat. */
 
   /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
      Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */
   --color-forest: var(--color-ink);
   --color-forest-deep: #2a2d28;
 
-  /* Accent signature — latérite sur hover mots-clés et CTA primaire */
-  --color-gold: var(--color-laterite);
-  --color-accent: var(--color-laterite);
+  /* Latérite supprimé 2026-05-02 (Morgan) — alias re-routés en monochrome
+     pour purger sitewide sans toucher chaque consommateur. Toutes les zones
+     précédemment latérite (sections #identite / #studio-presentation, footer,
+     menu fullscreen, hover keywords, halos, dots) basculent automatiquement
+     en gris sombre + crème.
+     - laterite / accent → ink (texte/fond signature)
+     - gold → cream (disques pleins ScrollCursorCta sur fond ink → restent visibles) */
+  --color-laterite: var(--color-ink);
+  --color-accent: var(--color-ink);
+  --color-gold: var(--color-cream);
 
   /* Typographies — refonte Jonathan 2026-04-24
      Jost* = alternative OSS à Futura (titres + corps)

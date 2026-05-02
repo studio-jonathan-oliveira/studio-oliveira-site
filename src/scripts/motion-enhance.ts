@@ -956,9 +956,11 @@ function setupHorizontalTypologies(root: ParentNode) {
     // que quand on voit entièrement les images du carousel ») : DWELL_START
     // remonté 0.18 → 0.32 → on a vraiment le temps de voir les 4 premiers
     // panneaux + 5e cropée avant que la translation horizontale démarre.
-    // DWELL_END inchangé à 0.04 (pas besoin de sticky long en fin).
+    // DWELL_END remonté 2026-05-02 (Morgan) : la dernière typologie reste
+    // sticky longtemps à l'emplacement de la première avant de relâcher
+    // → effet « la dernière revient à la place de la première » très net.
     const DWELL_START = 0.32;
-    const DWELL_END = 0.04;
+    const DWELL_END = 0.28;
     const activeRange = 1 - DWELL_START - DWELL_END;
 
     // Pré-split chars des noms de typologie pour stagger reveal par panel actif
