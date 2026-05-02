@@ -430,7 +430,10 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Label principal — Jost MAJ Gras, taille XL */
+  /* Label principal — Jost MAJ Gras, taille XL.
+     Hover dim 2026-05-02 (Morgan : « plus d'animations au survol ») :
+     quand on hover un item, les autres se dim à 0.35. Effet focus/blur
+     classique designbyad — la nav reste vivante même avec tout visible. */
   .primary-menu__label-main {
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(1.6rem, 4vw, 3.2rem);
@@ -438,21 +441,48 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     letter-spacing: -0.01em;
     font-weight: 700;
     text-transform: uppercase;
-    transition: color 0.4s var(--ease-out-editorial);
+    transition:
+      opacity 0.4s var(--ease-out-editorial),
+      transform 0.45s var(--ease-out-editorial),
+      color 0.4s var(--ease-out-editorial);
   }
-
-  /* Flèche ↗ devant le titre — refonte 2026-05-02 (Morgan, capture menu)
-     toujours visible (plus de reveal au hover). Hover assombrit légèrement. */
+  /* Flèche ↗ — toujours visible (capture Morgan). Sur hover de son
+     propre lien : translate-X amont + scale léger pour un retour visuel. */
   .primary-menu__arrow {
+    display: inline-block;
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(1rem, 2vw, 1.55rem);
     line-height: 1;
     color: var(--color-cream);
     opacity: 0.85;
-    transition: opacity 0.3s var(--ease-out-editorial);
+    transition:
+      opacity 0.3s var(--ease-out-editorial),
+      transform 0.5s var(--ease-out-editorial);
   }
-  .primary-menu__link:hover .primary-menu__arrow {
-    opacity: 1;
+
+  /* Hover focus/blur sur la nav — items non-survolés dim, item survolé
+     reste à 1 + label glisse de 6px à droite, flèche vers le haut-droit. */
+  @media (hover: hover) and (min-width: 768px) {
+    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__label-main,
+    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__arrow,
+    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__sub a {
+      opacity: 0.35;
+    }
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__label-main,
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__arrow,
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__sub a {
+      opacity: 1;
+    }
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__label-main {
+      transform: translateX(-10px);
+    }
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__arrow {
+      transform: translate(-4px, -4px) scale(1.15);
+    }
+    /* Sous-sections : underline qui se trace au hover individuel. */
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__sub a:hover {
+      border-bottom-color: var(--color-cream);
+    }
   }
 
   /* CTA "Démarrer un projet" — mis en avant, plus gros, gras. */
