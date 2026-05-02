@@ -311,12 +311,12 @@ const typologies = [
           - Écart entre lignes pb-0.05/0.12em (match studio biophilique) */
       }
       {
-        /* Hero H1 — refonte 2026-05-02 (Morgan) : « DESIGNER PAYSAGISTE »
-          remplacé par « DESIGN PAYSAGER » Jost normal (font-weight 400),
-          monoligne, calé bas-droite. Plus de Gloock dans le titre. */
+        /* Hero H1 — refonte 2026-05-02 v2 (Morgan) : « DESIGN PAYSAGER »
+          Jost gras (font-bold), couleur ink (gris sombre), taille augmentée
+          (clamp 4/8vw/9rem au lieu de text-hero). Bas-droite. */
       }
       <h1
-        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] font-normal text-[var(--color-cream)] md:text-[length:var(--text-hero)]"
+        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[clamp(3.2rem,7vw,8.5rem)] leading-[1.02] font-bold text-[var(--color-ink)]"
         data-hero-mask
       >
         <span data-mask-line class="block pb-[0.05em]">DESIGN PAYSAGER</span>
@@ -527,10 +527,13 @@ const typologies = [
           Je vends par une méthode précise, une structuration globale qui sécurise un résultat final et
           garantit une expérience d'usage durable.
         </blockquote>
-        <footer
-          class="mt-16 font-mono text-[11px] tracking-[0.28em] text-[var(--color-ink)]/50 uppercase"
-        >
-          Jonathan Oliveira, fondateur et designer-gérant du studio
+        {
+          /* Casse respectée 2026-05-02 (Morgan) : `uppercase` retiré pour
+            préserver « Jonathan OLIVEIRA » (seul OLIVEIRA en caps) +
+            le reste en minuscules. */
+        }
+        <footer class="mt-16 font-mono text-[12px] tracking-[0.18em] text-[var(--color-ink)]/55">
+          Jonathan OLIVEIRA, fondateur et designer-gérant du studio
         </footer>
       </div>
     </div>
@@ -1068,15 +1071,17 @@ const typologies = [
       padding-left: 0.25rem;
     }
 
-    /* Manifeste — refonte 2026-04-28 (Jonathan) : retrait du justify CSS
-       (Jonathan n'aimait pas l'écartement irrégulier). Bloc compact, casse
-       naturelle, fade-in mot par mot piloté par setupWordsFade. */
+    /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +
+       MAJUSCULES (au lieu du bloc justify casse naturelle). Fade-in mot
+       par mot toujours piloté par setupWordsFade. */
     .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
       font-weight: 500;
       font-size: clamp(1.6rem, 3.4vw, 3.2rem);
       line-height: 1.25;
       letter-spacing: -0.005em;
+      text-transform: uppercase;
+      text-align: left;
       color: inherit;
       hyphens: none;
       max-width: 60rem;

@@ -76,7 +76,9 @@
       "Bash(\"node_modules/.pnpm/ffmpeg-static@5.3.0/node_modules/ffmpeg-static/ffmpeg.exe\" -i public/hero/hero-01.mp4 -vf \"select='eq\\(n\\\\,0\\)+eq\\(n\\\\,30\\)+eq\\(n\\\\,90\\)+eq\\(n\\\\,180\\)+eq\\(n\\\\,300\\)',signalstats\" -f null -)",
       "Bash(node_modules/.pnpm/ffmpeg-static@5.3.0/node_modules/ffmpeg-static/ffmpeg.exe -i public/hero/hero-01-poster.jpg -vf signalstats -f null -)",
       "Bash(python3)",
-      "Bash(python)"
+      "Bash(python)",
+      "Bash(git rebase *)",
+      "Bash(git fetch *)"
     ]
   }
 }
