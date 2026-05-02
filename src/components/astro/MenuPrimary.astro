@@ -441,17 +441,18 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     transition: color 0.4s var(--ease-out-editorial);
   }
 
-  /* Flèche ↗ devant le titre — cachée par défaut, apparaît au hover. */
+  /* Flèche ↗ devant le titre — refonte 2026-05-02 (Morgan, capture menu)
+     toujours visible (plus de reveal au hover). Hover assombrit légèrement. */
   .primary-menu__arrow {
     font-family: var(--font-heading), sans-serif;
-    font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+    font-size: clamp(1rem, 2vw, 1.55rem);
     line-height: 1;
     color: var(--color-cream);
-    opacity: 0;
-    transform: translateX(8px);
-    transition:
-      opacity 0.4s var(--ease-out-editorial),
-      transform 0.5s var(--ease-out-editorial);
+    opacity: 0.85;
+    transition: opacity 0.3s var(--ease-out-editorial);
+  }
+  .primary-menu__link:hover .primary-menu__arrow {
+    opacity: 1;
   }
 
   /* CTA "Démarrer un projet" — mis en avant, plus gros, gras. */
@@ -464,71 +465,42 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     letter-spacing: -0.02em;
   }
   .primary-menu__item--cta .primary-menu__arrow {
-    font-size: clamp(1.3rem, 3vw, 2.2rem);
-    /* CTA principal : flèche visible par défaut pour signaler l'action. */
-    opacity: 0.7;
-    transform: translateX(0);
+    font-size: clamp(1.2rem, 2.6vw, 1.9rem);
+    opacity: 0.95;
   }
 
-  /* Hover : flèche apparaît + sous-liens deviennent visibles. */
-  @media (hover: hover) and (min-width: 768px) {
-    .primary-menu__link:hover .primary-menu__arrow,
-    .primary-menu__link:focus-visible .primary-menu__arrow,
-    .primary-menu__item:hover .primary-menu__arrow,
-    .primary-menu__item:focus-within .primary-menu__arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* État actif : flèche fixe visible. */
+  /* État actif : flèche fixe pleine opacité. */
   .primary-menu__item.is-active .primary-menu__arrow {
-    opacity: 0.85;
-    transform: translateX(0);
+    opacity: 1;
   }
 
-  /* Sous-liens — refonte 2026-04-30 (capture Jonathan) :
-     cachés par défaut sur desktop, apparaissent au hover du parent.
-     Sur mobile, toujours visibles (touch n'a pas de hover). */
+  /* Sous-sections — refonte 2026-05-02 (Morgan, capture) :
+     toujours visibles, plus de reveal au hover. Alignées droite sous le
+     titre principal. UPPERCASE Jost gras (au lieu de mono 11px). */
   .primary-menu__sub {
     list-style: none;
     margin: 0;
-    padding: 0.4rem 0 0.4rem 0;
+    padding: 0.6rem 0 0.4rem 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 1.2rem;
-    /* Mobile : visible direct. Desktop : reveal au hover. */
-    opacity: 0.7;
-    max-height: 200px;
-    transition:
-      opacity 0.4s var(--ease-out-editorial),
-      max-height 0.5s var(--ease-out-editorial);
+    gap: 0.4rem 1.4rem;
   }
   @media (min-width: 768px) {
     .primary-menu__sub {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      padding: 0;
       justify-content: flex-end;
-      gap: 0.6rem 1.6rem;
-    }
-    .primary-menu__item:hover .primary-menu__sub,
-    .primary-menu__item:focus-within .primary-menu__sub,
-    .primary-menu__item.is-active .primary-menu__sub {
-      opacity: 1;
-      max-height: 200px;
-      padding: 0.6rem 0 1rem 0;
+      gap: 0.6rem 2rem;
+      padding: 0.5rem 0 1.2rem 0;
     }
   }
   .primary-menu__sub a {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    letter-spacing: 0.22em;
+    font-family: var(--font-heading), sans-serif;
+    font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+    color: color-mix(in oklab, var(--color-cream) 80%, transparent);
     text-decoration: none;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
     border-bottom: 1px solid transparent;
     transition:
       color 0.3s ease,
