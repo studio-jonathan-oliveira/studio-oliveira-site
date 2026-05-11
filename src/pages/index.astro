@@ -519,14 +519,12 @@ const typologies = [
   >
     <div class="pull-quote-sticky">
       {
-        /* Bloc élargi vers la droite (Morgan 2026-04-28 #2) : max-w-[76rem]
-          + padding asymétrique (md:pl-28 vs md:pr-10) → contenu décalé à
-          droite pour libérer la sidebar ScrollNav à gauche. Font légèrement
-          réduite + word-spacing positif (cf. CSS) → moins de mots par ligne,
-          effet justify amplifié. */
+        /* Bloc élargi (Morgan 2026-05-11) : max-w-[76rem] → max-w-[92rem]
+          + padding gauche réduit (pl-28 → pl-16) pour étaler le manifeste
+          sur un peu plus de largeur sans recoller à la sidebar. */
       }
       <div
-        class="mx-auto flex min-h-[100vh] max-w-[76rem] flex-col justify-center px-6 py-12 md:pr-10 md:pl-28"
+        class="mx-auto flex min-h-[100vh] max-w-[92rem] flex-col justify-center px-6 py-12 md:pr-10 md:pl-16"
       >
         {/* Eyebrow Manifeste retiré 2026-04-28 #B8. */}
         {
@@ -549,9 +547,13 @@ const typologies = [
         {
           /* Casse respectée 2026-05-02 (Morgan) : `uppercase` retiré pour
             préserver « Jonathan OLIVEIRA » (seul OLIVEIRA en caps) +
-            le reste en minuscules. */
+            le reste en minuscules.
+            Signature passée en Jost (font-heading) + taille augmentée à
+            15-17px (2026-05-11 Morgan : « augmenter légèrement »). */
         }
-        <footer class="mt-16 font-mono text-[12px] tracking-[0.18em] text-[var(--color-ink)]/55">
+        <footer
+          class="mt-16 font-[family-name:var(--font-heading)] text-[15px] tracking-[0.06em] text-[var(--color-ink)]/70 md:text-[17px]"
+        >
           Jonathan OLIVEIRA, fondateur et designer-gérant du studio
         </footer>
       </div>
