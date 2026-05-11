@@ -80,7 +80,11 @@
       "Bash(git rebase *)",
       "Bash(git fetch *)",
       "Bash(echo \"EXIT=$?\")",
-      "Read(//tmp/**)"
-    ]
+      "Read(//tmp/**)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('vercel.json','utf8'\\)\\); console.log\\('vercel.json OK'\\)\")",
+      "Bash(pnpm remove *)",
+      "Bash(curl -sI https://studio-oliveira-site.vercel.app/og-default.jpg)"
+    ],
+    "additionalDirectories": ["\\tmp"]
   }
 }

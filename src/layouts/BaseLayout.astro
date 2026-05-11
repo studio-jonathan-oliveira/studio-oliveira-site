@@ -37,9 +37,16 @@ const {
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
-const ogImageUrl = new URL(ogImage, siteUrl).toString();
+// OG image résolue contre l'origine du request en priorité (pour que les
+// previews Vercel exposent une URL réellement atteignable), sinon siteUrl
+// en fallback. URL absolue déjà passée → on la garde telle quelle.
+const ogImageBase = Astro.url.origin || siteUrl;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, ogImageBase).toString();
 const siteName = 'Studio J Oliveira';
-const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+// Dedup intelligente : ne pas ajouter « — Studio J Oliveira » si le title
+// le contient déjà (cas d'un title rédigé full custom comme la home).
+const titleContainsSiteName = title.toLowerCase().includes(siteName.toLowerCase());
+const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
 ---
 
 <!doctype html>
