@@ -21,6 +21,14 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 
 ## Contenus identifiés à ce stade
 
+### HOME-STUDIO
+
+**Type** : texte court
+**Emplacement** : `src/pages/index.astro` section `#studio-presentation` (l. 414)
+**Volume attendu** : 2 à 3 lignes, ~30-50 mots
+**Contexte** : texte ADN du studio juste avant le CTA « Découvrir le Studio J Oliveira ». Doit présenter le studio, son ADN, sa manière de travailler les conceptions. Lu après #identite (mots-clés justify) — sert de transition narrative.
+**Deadline suggérée** : avant mise en ligne mai 2026 — actuellement le bloc est rendu vide en prod (placeholder caché en dev only).
+
 ### HERO-VIDEO-HOME
 
 **Type** : vidéo (séquence Twinmotion 5s en boucle)

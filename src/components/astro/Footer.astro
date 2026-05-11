@@ -56,10 +56,17 @@ const studio = [
 
         <section aria-labelledby="footer-territoires" class="site-footer__block">
           <h2 id="footer-territoires" class="site-footer__heading">Territoires d'intervention</h2>
+          {
+            /* Liens vers les pages /zones/* — refonte 2026-05-11 (audit SEO P0 :
+              les pages locales étaient orphelines, jamais crawlées). Le footer
+              global les link désormais sitewide, ce qui les sort de l'orphelinat
+              et active le pilier SEO local Brive/Bordeaux/Limoges. */
+          }
           <ul class="site-footer__list">
-            <li>Bassin de Brive et alentours</li>
-            <li>Région Nord — Aquitaine, <strong>Limoges</strong></li>
-            <li>Région Sud — Aquitaine, <strong>Bordeaux</strong></li>
+            <li><a href="/zones/brive" class="site-footer__link">Brive et alentours</a></li>
+            <li><a href="/zones/bordeaux" class="site-footer__link">Bordeaux et Gironde</a></li>
+            <li><a href="/zones/limoges" class="site-footer__link">Limoges et Haute-Vienne</a></li>
+            <li><a href="/zones" class="site-footer__link">Toutes les zones →</a></li>
           </ul>
         </section>
       </div>

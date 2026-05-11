@@ -413,15 +413,22 @@ const typologies = [
   >
     <div class="px-6 pb-24 md:px-10 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
-      <p class="studio-presentation-text">
-        {
-          /* [À FOURNIR PAR JONATHAN — texte explicatif et présentation du studio,
-            de son ADN, un texte général sur la manière au studio de travailler ses
-            conceptions. 2 à 3 lignes max. Voir _brief/contenus-manquants.md §home-studio.] */
-        }
-        TEXTE EXPLICATIF ET PRESENTATION DU STUDIO, DE SON ADN, UN TEXTE GENERAL SUR LA MANIERE AU STUDIO
-        DE TRAVAILLER SES CONCEPTIONS.
-      </p>
+      {
+        /* Texte ADN du studio — [À FOURNIR PAR JONATHAN, voir
+          _brief/contenus-manquants.md §home-studio]. En attendant, on
+          n'affiche le placeholder qu'en dev pour ne pas exposer un texte
+          MAJUSCULE non éditorialisé en prod. Le CTA « Découvrir le Studio »
+          reste visible dans tous les cas — il porte à lui seul la
+          transition vers /studio. */
+      }
+      {
+        import.meta.env.DEV && (
+          <p class="studio-presentation-text italic opacity-50">
+            [À FOURNIR PAR JONATHAN — texte ADN du studio, 2 à 3 lignes, voir
+            _brief/contenus-manquants.md §home-studio]
+          </p>
+        )
+      }
       {
         /* CTA recentré 2026-05-02 (Morgan) : « plein milieu de la section,
           plus aligné à gauche ». flex justify-center sur le wrapper. */
@@ -737,17 +744,10 @@ const typologies = [
       opacity: 1;
     }
 
-    /* Lisibilité hero (Morgan 2026-04-27 passe 3) — passes 1+2 jugées
-       insuffisantes même avec text-shadow 0.70. On pousse à 0.85 + halo
-       0.55, et on ajoute un -webkit-text-stroke fin cream pour outline
-       discret qui assure la lisibilité absolue sur tout fond. Sur les
-       fonts heading (Cormorant/Jost), 0.3px reste imperceptible mais
-       cale le contour. */
-    .hero-immersive {
-      text-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.85),
-        0 2px 18px rgba(0, 0, 0, 0.55);
-    }
+    /* Hero texte sans ombre (Jonathan 2026-05-11) : le titre visuel est
+       désormais ink monumental sur slideshow vidéo, l'ombre noire portée
+       de l'ancienne version cream n'a plus de sens et alourdit visuellement.
+       Retiré aussi du wordmark hero-logo plus bas. */
 
     /* Logo Oliveira haut-gauche du hero — refonte 2026-04-30 (Jonathan).
        Visible en permanence dans la zone hero, indépendant du Header

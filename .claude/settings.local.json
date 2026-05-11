@@ -78,7 +78,9 @@
       "Bash(python3)",
       "Bash(python)",
       "Bash(git rebase *)",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Read(//tmp/**)"
     ]
   }
 }
