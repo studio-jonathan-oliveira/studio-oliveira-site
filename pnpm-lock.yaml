@@ -38,9 +38,6 @@ importers:
       '@fontsource/cormorant-garamond':
         specifier: ^5.2.11
         version: 5.2.11
-      '@fontsource/gloock':
-        specifier: ^5.2.8
-        version: 5.2.8
       '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
@@ -618,9 +615,6 @@ packages:
 
   '@fontsource/cormorant-garamond@5.2.11':
     resolution: {integrity: sha512-5JjpN023lhA5soijgVT0BdRGzmlijm402ppjccMd6h+vRE0mX2lJnE+41UPfnlidrkV9/rCo1mf58WZlHnB0CA==}
-
-  '@fontsource/gloock@5.2.8':
-    resolution: {integrity: sha512-2qh1h3uC8bY93r2zuX3a0Q2IoGUf4vc1qxM0DUqoNVxwqDkXIOhGS7/0EEYNBLfSWO7ABfi/qkVmzedkj2jSZA==}
 
   '@fontsource/inter@5.2.8':
     resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
@@ -4577,8 +4571,6 @@ snapshots:
   '@fontsource-variable/jost@5.2.8': {}
 
   '@fontsource/cormorant-garamond@5.2.11': {}
-
-  '@fontsource/gloock@5.2.8': {}
 
   '@fontsource/inter@5.2.8': {}
 

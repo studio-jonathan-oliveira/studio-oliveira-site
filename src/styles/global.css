@@ -1,13 +1,14 @@
 @import 'tailwindcss';
 
 /* Fonts — Fontsource self-hosted, font-display: swap par défaut.
-   Refonte DA 2026-04-24 (brief Jonathan) :
+   Refonte DA 2026-04-24 (brief Jonathan) puis purge Gloock 2026-05-11 :
    - Jost Variable = alternative OSS à Futura (titres + corps)
-   - Gloock = serif affichage pour mots-clés et compléments titres
-   - Geist Mono conservé pour eyebrows / labels techniques
-   Ancien duo Fraunces + Geist retiré. */
+   - Geist Mono = eyebrows / labels techniques
+   Gloock retiré : Jonathan a redit « Jost partout », plus aucun `.display`
+   actif. Le token `--font-display` retombe sur Playfair/Georgia fallback
+   au cas où un bloc l'utiliserait encore (visuellement tolérable, économie
+   ~30 KB de font). */
 @import '@fontsource-variable/jost';
-@import '@fontsource/gloock';
 @import '@fontsource-variable/geist-mono';
 
 /*
