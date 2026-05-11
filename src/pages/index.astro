@@ -877,7 +877,10 @@ const typologies = [
 
     /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +
        MAJUSCULES (au lieu du bloc justify casse naturelle). Fade-in mot
-       par mot toujours piloté par setupWordsFade. */
+       par mot toujours piloté par setupWordsFade.
+       2026-05-11 : max-width 60rem → 92rem (Morgan : « le texte est trop
+       casé à gauche, étaler sur d'avantage de largeur »). Le bloc occupe
+       désormais quasi toute la largeur du conteneur 108rem. */
     .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
       font-weight: 500;
@@ -888,7 +891,7 @@ const typologies = [
       text-align: left;
       color: inherit;
       hyphens: none;
-      max-width: 60rem;
+      max-width: 92rem;
       margin: 0;
     }
     /* Mots animés — chaque mot inline-block, opacity 0 + translateY 10px
