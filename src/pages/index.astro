@@ -420,21 +420,14 @@ const typologies = [
     <div class="px-6 pt-24 pb-24 md:px-10 md:pt-36 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
       {
-        /* Texte ADN du studio — [À FOURNIR PAR JONATHAN, voir
-          _brief/contenus-manquants.md §home-studio]. En attendant, on
-          n'affiche le placeholder qu'en dev pour ne pas exposer un texte
-          MAJUSCULE non éditorialisé en prod. Le CTA « Découvrir le Studio »
-          reste visible dans tous les cas — il porte à lui seul la
-          transition vers /studio. */
+        /* Placeholder marqueur visible (Morgan 2026-05-11) : visible en prod
+          et preview pour signaler clairement l'emplacement à Jonathan, sans
+          paraître comme une copy officielle. Sera remplacé par le texte ADN
+          final dès que Jonathan fournit (cf. _brief/contenus-manquants.md
+          §home-studio). Styling cream/40 italique non-uppercase pour le
+          distinguer d'une vraie copy éditoriale. */
       }
-      {
-        import.meta.env.DEV && (
-          <p class="studio-presentation-text italic opacity-50">
-            [À FOURNIR PAR JONATHAN — texte ADN du studio, 2 à 3 lignes, voir
-            _brief/contenus-manquants.md §home-studio]
-          </p>
-        )
-      }
+      <p class="studio-presentation-placeholder">[Texte ADN du studio — à fournir par Jonathan]</p>
       {
         /* CTA recentré 2026-05-02 (Morgan) : « plein milieu de la section,
           plus aligné à gauche ». flex justify-center sur le wrapper. */
@@ -862,6 +855,21 @@ const typologies = [
       text-transform: uppercase;
       text-align: left;
       color: var(--color-cream);
+      margin: 0;
+    }
+
+    /* Placeholder marqueur (Morgan 2026-05-11) — signale l'emplacement à
+       Jonathan sans paraître comme une copy officielle. Cream/35 italique,
+       casse normale, pas d'uppercase, tracking neutre. */
+    .studio-presentation-placeholder {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1rem, 1.6vw, 1.4rem);
+      line-height: 1.5;
+      letter-spacing: 0.005em;
+      text-align: left;
+      color: color-mix(in oklab, var(--color-cream) 38%, transparent);
       margin: 0;
     }
 
