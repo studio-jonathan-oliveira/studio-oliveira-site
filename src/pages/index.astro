@@ -411,7 +411,13 @@ const typologies = [
     class="studio-presentation relative bg-[var(--color-laterite)] text-[var(--color-cream)]"
     aria-labelledby="studio-presentation-title"
   >
-    <div class="px-6 pb-24 md:px-10 md:pb-36" data-reveal="up">
+    {
+      /* pt-24/pb-24 (refonte 2026-05-11) : depuis le retrait du placeholder
+        MAJUSCULES, le bloc n'avait que pb-24 → la section devenait courte et
+        le hero sticky restait visible au-dessus du CTA. Padding symétrique
+        pour couvrir le hero proprement, quel que soit le contenu interne. */
+    }
+    <div class="px-6 pt-24 pb-24 md:px-10 md:pt-36 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
       {
         /* Texte ADN du studio — [À FOURNIR PAR JONATHAN, voir

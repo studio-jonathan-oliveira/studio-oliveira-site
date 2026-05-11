@@ -83,7 +83,10 @@
       "Read(//tmp/**)",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('vercel.json','utf8'\\)\\); console.log\\('vercel.json OK'\\)\")",
       "Bash(pnpm remove *)",
-      "Bash(curl -sI https://studio-oliveira-site.vercel.app/og-default.jpg)"
+      "Bash(curl -sI https://studio-oliveira-site.vercel.app/og-default.jpg)",
+      "Bash(curl -s https://studio-oliveira-site.vercel.app/)",
+      "Bash(curl -s https://studio-oliveira-site.vercel.app/sitemap-0.xml)",
+      "Bash(curl -s https://studio-oliveira-site.vercel.app/projets)"
     ],
     "additionalDirectories": ["\\tmp"]
   }
