@@ -171,6 +171,17 @@ const typologies = [
     data-hero-bg
   >
     {
+      /* H1 SEO — invisible à l'œil, lu par Google et lecteurs d'écran.
+        Porte tous les keywords cibles (CLAUDE.md §2 : top-3 « designer végétal
+        [zone] »). Le titre visuel STUDIO J OLIVEIRA ci-dessous est rétrogradé
+        en <p> pour garantir un seul H1 par page (règle SEO stricte). */
+    }
+    <h1 class="sr-only">
+      Studio J Oliveira — designer paysagiste et design biophilique à Brive-la-Gaillarde, Bordeaux,
+      Limoges et Toulouse. Conception de jardins, aménagements végétalisés et architecture paysagère
+      pour particuliers, hôtellerie-restauration, bureaux et collectivités.
+    </h1>
+    {
       /* Logo Oliveira en haut-gauche du hero — refonte 2026-04-30 (Jonathan) :
         comme le Header est caché par défaut sur darkHero (auto-hide), on
         rajoute le logo directement dans le hero pour qu'il reste toujours
@@ -311,16 +322,18 @@ const typologies = [
           - Écart entre lignes pb-0.05/0.12em (match studio biophilique) */
       }
       {
-        /* Hero H1 — refonte 2026-05-11 (Morgan) : « STUDIO J OLIVEIRA »
-          Jost gras (font-bold), couleur ink (gris sombre), taille augmentée
-          (clamp 4/8vw/9rem au lieu de text-hero). Bas-droite. */
+        /* Titre visuel hero — refonte 2026-05-11 (Morgan) : « STUDIO J OLIVEIRA »
+          Jost gras, ink, bas-droite. Rétrogradé de <h1> en <p> 2026-05-11 :
+          le vrai H1 SEO (sr-only, riche en keywords métier+zones) est en haut
+          du <section>. Règle stricte : un seul H1 par page. */
       }
-      <h1
+      <p
         class="hero-title-bottom font-[family-name:var(--font-heading)] text-[clamp(3.2rem,7vw,8.5rem)] leading-[1.02] font-bold text-[var(--color-ink)]"
         data-hero-mask
+        aria-hidden="true"
       >
         <span data-mask-line class="block pb-[0.05em]">STUDIO J OLIVEIRA</span>
-      </h1>
+      </p>
 
       {
         /* Manifesto bas-gauche + 2 CTAs hero retirés 2026-04-28 (Jonathan) :
