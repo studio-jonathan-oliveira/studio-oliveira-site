@@ -38,8 +38,6 @@ import type { ImageMetadata } from 'astro';
 interface Props {
   variant?: 'cream' | 'forest' | 'laterite' | 'cream-accent' | 'immersive';
   space?: 'compact' | 'default' | 'spacious' | 'hero';
-  /** @deprecated utiliser `space="compact"` */
-  tight?: boolean;
   topDivider?: boolean;
   size?: 'default' | 'wide' | 'narrow';
   labelledBy?: string;
@@ -55,8 +53,7 @@ interface Props {
 
 const {
   variant = 'cream',
-  space,
-  tight = false,
+  space = 'default',
   topDivider = false,
   size = 'default',
   labelledBy,
@@ -67,9 +64,6 @@ const {
   imageOverlay = 88,
   theme,
 } = Astro.props as Props;
-
-// Migration progressive : tight → space="compact"
-const effectiveSpace = space ?? (tight ? 'compact' : 'default');
 
 // 2026-04-29 — DA all-cream : forest aliasé sur cream (Morgan : « DA fond
 // crème partout »). Latérite est le seul vrai accent sombre, à activer
@@ -90,7 +84,7 @@ const spaceVar = {
   default: 'var(--section-space-default)',
   spacious: 'var(--section-space-spacious)',
   hero: 'var(--section-space-hero)',
-}[effectiveSpace];
+}[space];
 
 // Forest aliasé en cream → theme: light. Seuls laterite et immersive sont sombres.
 const isDark = variant === 'laterite' || variant === 'immersive';

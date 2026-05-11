@@ -78,7 +78,7 @@ const schema = jsonLdGraph([
   description={project.seoDescription ??
     `Étude de conception — ${project.title}, ${project.location ?? ''}.`}
 >
-  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+  <Section variant="cream" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
       class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
@@ -104,7 +104,7 @@ const schema = jsonLdGraph([
     </nav>
   </Section>
 
-  <Section variant="cream" tight class="pt-0 pb-0">
+  <Section variant="cream" space="compact" class="pt-0 pb-0">
     <article>
       <header class="mb-16 max-w-3xl">
         <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">

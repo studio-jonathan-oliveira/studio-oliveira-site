@@ -80,7 +80,7 @@ const schema = jsonLdGraph([
   description={`${typologie.h1Seo} avec le Studio J Oliveira — ${typologie.surface}, étude ${typologie.prixEtude}. Studio biophilique à Brive‑la‑Gaillarde.`}
 >
   <!-- Breadcrumb visible -->
-  <Section variant="forest" tight class="pt-32 pb-0 md:pt-40">
+  <Section variant="forest" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
       class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-ink)]/50 uppercase"
@@ -105,7 +105,7 @@ const schema = jsonLdGraph([
   </Section>
 
   <!-- HERO ───────────────────────────────────────────────── -->
-  <Section variant="forest" tight class="pt-0">
+  <Section variant="forest" space="compact" class="pt-0">
     <div class="max-w-4xl">
       <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-ink)]/55 uppercase">
         Typologie · {typologie.nomProprietaire}
@@ -184,7 +184,7 @@ const schema = jsonLdGraph([
   }
 
   <!-- Grille chiffres ───────────────────────────────────── -->
-  <Section variant="forest" topDivider tight aria-labelledby="cles-title">
+  <Section variant="forest" topDivider space="compact" aria-labelledby="cles-title">
     <h2 id="cles-title" class="sr-only">Chiffres-clés de la typologie</h2>
     <dl class="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
       <div>

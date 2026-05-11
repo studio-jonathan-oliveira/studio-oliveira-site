@@ -82,7 +82,7 @@ const formatDate = (iso: string) =>
   title={article.seoTitle ?? article.title}
   description={article.seoDescription ?? article.excerpt}
 >
-  <Section variant="cream" tight class="pt-32 pb-0 md:pt-40">
+  <Section variant="cream" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
       class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
@@ -108,7 +108,7 @@ const formatDate = (iso: string) =>
     </nav>
   </Section>
 
-  <Section variant="cream" tight class="pt-0 pb-0">
+  <Section variant="cream" space="compact" class="pt-0 pb-0">
     <article class="mx-auto max-w-3xl">
       <header class="mb-12">
         <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
@@ -181,7 +181,7 @@ const formatDate = (iso: string) =>
     </article>
   </Section>
 
-  <Section variant="cream" topDivider tight>
+  <Section variant="cream" topDivider space="compact">
     <div class="mx-auto max-w-xl text-center">
       <a
         href="/journal"
