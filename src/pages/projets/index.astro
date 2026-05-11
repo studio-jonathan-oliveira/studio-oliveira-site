@@ -32,7 +32,7 @@ const schema = jsonLdGraph([
   darkHero
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script type="application/ld+json" set:html={schema} is:inline />
   </Fragment>
 
   {/* ───── HERO immersif ───── */}

@@ -55,7 +55,7 @@ const schema = jsonLdGraph([
   description="Studio de design biophilique à Brive. Aménagements végétalisés pour hôtellerie, restauration, bureaux et commerces. Décors immersifs, plantes naturelles et artificielles."
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script type="application/ld+json" set:html={schema} is:inline />
   </Fragment>
 
   {
