@@ -220,6 +220,14 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 **Contexte** : actuellement le carousel home et la page utilisent `domaine-caractere.webp` comme placeholder. À remplacer par un visuel propre représentatif (espace public végétalisé, parc institutionnel, génie végétal).
 **Deadline suggérée** : avant mise en ligne fin mai 2026.
 
+### FORMULAIRE-CONTACT
+
+**Type** : texte court (message de confirmation succès)
+**Emplacement** : `src/components/islands/ContactForm.tsx` — bloc state success
+**Volume attendu** : 1 à 2 phrases (~20-40 mots)
+**Contexte** : message affiché après envoi réussi du formulaire. Doit engager l'utilisateur sur le délai de réponse réel de Jonathan (« sous 48 h », « sous 2 jours ouvrés »…) et la suite (appel de qualification 15-25 min). Placeholder actuel : « Nous revenons vers vous sous quelques jours ouvrés pour engager l'appel de qualification. »
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
 ---
 
 **Mise à jour** : à compléter à chaque nouveau placeholder inséré dans le code ou la doc.

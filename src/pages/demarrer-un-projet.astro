@@ -9,6 +9,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
+import ContactForm from '@/components/islands/ContactForm.tsx';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
 
@@ -126,21 +127,48 @@ const schema = jsonLdGraph([
         }
       </ol>
 
-      <!-- CTA final → formulaire contact -->
-      <div class="mt-20 flex flex-col items-start gap-6 md:mt-28">
-        <p
-          class="max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/75"
-        >
-          Le parcours commence par un appel court. Choisissez un créneau et nous engagerons la
-          conversation.
-        </p>
-        <CtaLink
-          href="/contact"
-          label="Réserver un appel découverte"
-          tone="light"
-          size="lg"
-          magnetic={0.32}
-        />
+      <!-- Bloc final : formulaire qualifié + raccourcis contact -->
+      <div class="mt-20 grid gap-16 md:mt-28 md:grid-cols-[3fr_2fr] md:gap-20">
+        <div id="formulaire">
+          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase">
+            Engager la conversation
+          </p>
+          <h2
+            class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-ink)] md:text-[length:var(--text-4xl)]"
+          >
+            Décrire votre projet.
+          </h2>
+          <p
+            class="mt-6 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75"
+          >
+            Le parcours commence par un appel court. Renseignez le formulaire ci-dessous — nous
+            revenons vers vous pour caler le premier échange.
+          </p>
+          <div class="mt-10">
+            <ContactForm client:visible />
+          </div>
+        </div>
+
+        <aside class="md:sticky md:top-32 md:self-start">
+          <div class="border border-[var(--color-ink)]/15 p-8">
+            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase">
+              Préférer la voix
+            </p>
+            <a
+              href={`tel:${SITE.contact.phone}`}
+              class="mt-4 block font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-ink)] hover:text-[var(--color-laterite)]"
+            >
+              {SITE.contact.phoneDisplay}
+            </a>
+            <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink)]/70">
+              {SITE.hours.days} · {SITE.hours.open} — {SITE.hours.close}
+            </p>
+
+            <div class="mt-8 border-t border-[var(--color-ink)]/10 pt-6">
+              <CtaLink href="/contact" label="Voir toutes les coordonnées" tone="light" size="sm" />
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </section>

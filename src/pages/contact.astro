@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import ContactForm from '@/components/islands/ContactForm.tsx';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
 
@@ -100,18 +101,15 @@ const schema = jsonLdGraph([
           </a>
         </div>
 
-        <div
-          class="mt-16 rounded-md border border-[var(--color-forest)]/10 bg-[var(--color-forest)]/5 p-8"
-        >
+        <div class="mt-16">
           <p
             class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
           >
             Formulaire qualifié
           </p>
-          <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">
-            [Phase 5 : formulaire Astro Actions + Zod + Turnstile + Resend. Champs : type de projet,
-            surface approx, budget tranche, délai, message, upload optionnel plans.]
-          </p>
+          <div class="mt-8">
+            <ContactForm client:visible />
+          </div>
         </div>
       </div>
 
