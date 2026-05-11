@@ -383,13 +383,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
 
   /* ───────── Body : nav pleine largeur, alignée droite ─────────
-     Refonte 2026-04-30 — suppression de l'aside latéral, nav prend tout. */
+     Refonte 2026-04-30 — suppression de l'aside latéral, nav prend tout.
+     2026-05-11 : justify-content `safe center` (Morgan : « les titres
+     dépassent en haut sur le Fermer »). Avec 6 sections + sous-liens
+     toujours visibles + Territoires, le contenu peut être plus grand
+     que la zone body et le simple `center` le faisait remonter sous le
+     header. `safe center` bascule en flex-start si overflow → plus de
+     chevauchement. Fallback flex-start pour anciens browsers. */
   .primary-menu__body {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    justify-content: center;
+    justify-content: flex-start;
+    justify-content: safe center;
   }
 
   .primary-menu__nav {
