@@ -1,38 +1,104 @@
 ---
+/*
+ * Page 404 — éditoriale, propose des chemins de récupération clairs.
+ *
+ * Refonte 2026-05-12 (audit UX) : la page par défaut Astro était minimale,
+ * pas de récupération de session utilisateur. Ici on propose les 4 chemins
+ * les plus probables (Architecture paysagère, Aménagement intérieur, Pros,
+ * Zones) + un retour home + un contact direct.
+ *
+ * Reste noindex : pas de raison d'indexer une 404 même éditoriale.
+ */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
+
+const chemins = [
+  {
+    href: '/architecture-paysagere',
+    label: 'Architecture paysagère',
+    desc: 'Les 4 typologies de jardin et le process d’étude.',
+  },
+  {
+    href: '/amenagement-vegetal-interieur',
+    label: 'Aménagement végétal intérieur',
+    desc: 'Décors végétalisés pour hôtels, restaurants, bureaux, commerces.',
+  },
+  {
+    href: '/pros',
+    label: 'Professionnels',
+    desc: 'Hôtellerie, restauration, bureaux, commerces.',
+  },
+  {
+    href: '/zones',
+    label: 'Zones d’intervention',
+    desc: 'Brive, Bordeaux, Limoges, Toulouse.',
+  },
+];
 ---
 
-<BaseLayout title="Page introuvable" noindex>
+<BaseLayout
+  title="Page introuvable — Studio J Oliveira"
+  description="La page demandée n’existe pas ou a été déplacée. Parcourez les services et zones d’intervention du Studio J Oliveira."
+  noindex
+>
   <Section variant="cream" class="pt-40 md:pt-48">
-    <div class="mx-auto max-w-xl text-center">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-moss)] uppercase">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="font-mono text-[11px] tracking-[0.28em] text-[var(--color-moss)] uppercase">
         404 · Page introuvable
       </p>
       <h1
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.05] tracking-tight"
+        class="mt-10 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight md:text-[length:var(--text-hero)]"
+        style="font-weight: 500; letter-spacing: -0.012em;"
       >
-        Cette page n'existe pas,<br /><em class="italic">ou n'existe plus</em>.
+        <span class="block">Cette page</span>
+        <em class="block text-[var(--color-forest)]/55 italic">n’existe pas.</em>
       </h1>
-      <p class="mt-8 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
-        L'URL que vous avez suivie pointe vers un contenu déplacé ou supprimé. Vous pouvez revenir à
-        l'accueil ou parcourir les réalisations.
+      <p
+        class="mx-auto mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/75"
+      >
+        L’URL pointe vers un contenu déplacé, supprimé, ou jamais publié. Voici les chemins les plus
+        probables — sinon, écrivez-nous, on retrouve votre projet.
       </p>
-      <div class="mt-14 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <a
-          href="/"
-          class="inline-flex items-center gap-3 border-b border-[var(--color-forest)] pb-1 text-sm tracking-wide transition-colors hover:border-[var(--color-moss)] hover:text-[var(--color-moss)]"
-        >
-          Retour à l'accueil
-          <span aria-hidden="true">→</span>
-        </a>
-        <a
-          href="/realisations"
-          class="text-sm text-[var(--color-forest)]/60 hover:text-[var(--color-forest)]"
-        >
-          Voir les réalisations
-        </a>
+      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
+        <CtaLink href="/" label="Retour à l’accueil" tone="light" size="lg" />
+        <CtaLink href="/contact" label="Contact direct" tone="light" size="md" />
       </div>
+    </div>
+  </Section>
+
+  <Section variant="cream" topDivider>
+    <div class="mx-auto max-w-5xl">
+      <p
+        class="text-center font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase"
+      >
+        Continuer la visite
+      </p>
+      <ul class="mt-12 grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+        {
+          chemins.map((c) => (
+            <li class="bg-[var(--color-cream)]">
+              <a
+                href={c.href}
+                class="group flex h-full flex-col justify-between p-8 transition-colors hover:bg-[var(--color-forest)]/5 md:p-12"
+              >
+                <div>
+                  <h2 class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight tracking-tight">
+                    {c.label}
+                  </h2>
+                  <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/75">
+                    {c.desc}
+                  </p>
+                </div>
+                <span class="mt-8 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.22em] uppercase transition-transform group-hover:translate-x-1">
+                  Explorer
+                  <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </Section>
 </BaseLayout>
