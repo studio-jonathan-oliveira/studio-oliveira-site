@@ -5,6 +5,7 @@ import { Picture } from 'astro:assets';
 import { fetch } from '@/lib/sanity';
 import { projectsListQuery } from '@/lib/queries';
 import { mockProjectsBySection } from '@/data/mock-projects';
+import { cleanDraft } from '@/lib/drafts';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, organization, localBusiness } from '@/lib/schema-org';
 
@@ -111,7 +112,10 @@ const schema = jsonLdGraph([
                 </div>
                 <div class="mt-6">
                   <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
-                    {project.typologyLabel} · {project.location} · {project.year}
+                    {project.typologyLabel}
+                    {cleanDraft(project.location) && ` · ${cleanDraft(project.location)}`}
+                    {' · '}
+                    {project.year}
                   </p>
                   <h2 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight transition-colors group-hover:text-[var(--color-forest)]/55">
                     {project.title}

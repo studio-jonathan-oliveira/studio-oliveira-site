@@ -16,6 +16,7 @@ import Section from '@/components/astro/Section.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
+import { isDraft } from '@/lib/drafts';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -112,7 +113,7 @@ const chapitres = [
 
 // FAQ étoffée — questions existantes (sourcées PDF) + questions d'objection
 // (audit UX 2026-04-23 §4) en placeholder copie Jonathan.
-const pageFaq = [
+const pageFaqAll = [
   {
     question: "Qu'est-ce qu'une typologie de jardin ?",
     answer:
@@ -155,6 +156,9 @@ const pageFaq = [
       '[À FOURNIR PAR JONATHAN : 80-120 mots. Angle suggéré : visite de projets livrés sur demande qualifiée, portfolio Twinmotion accessible, études de cas en journal.]',
   },
 ];
+
+// Filtre les FAQ draft : ne pollue pas le schema FAQPage ni le rendu visible en prod.
+const pageFaq = pageFaqAll.filter((f) => !isDraft(f.answer));
 
 const schema = jsonLdGraph([
   organization(),

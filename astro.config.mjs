@@ -32,7 +32,19 @@ export default defineConfig({
         !page.includes('/mentions-legales') &&
         !page.includes('/confidentialite') &&
         !page.includes('/404') &&
-        !page.includes('coeur-urbain-parenthese-exotique'),
+        // Pages mock-projects draft (summary [À FOURNIR PAR JONATHAN]) :
+        // noindex côté page + retrait du sitemap pour ne pas exposer des URLs
+        // dont le contenu n'est pas finalisé.
+        !page.includes('coeur-urbain-parenthese-exotique') &&
+        !page.includes('frange-urbaine-restanque') &&
+        !page.includes('provence-correzienne-domaine') &&
+        !page.includes('/realisations/cafe-de-paris') &&
+        !page.includes('/realisations/schmit-cuisine') &&
+        !page.includes('/realisations/airbnb-signature') &&
+        !page.includes('/realisations/jungle-room-agde') &&
+        // architecture-publique = page squelette tant que Jonathan n'a pas
+        // fourni le positionnement (noindex en prod via SHOW_DRAFTS).
+        !page.includes('architecture-publique'),
     }),
     mdx(),
     partytown(),

@@ -9,6 +9,7 @@ import { Picture } from 'astro:assets';
 import { fetch } from '@/lib/sanity';
 import { projectSlugsQuery } from '@/lib/queries';
 import { mockProjects, type MockProject } from '@/data/mock-projects';
+import { cleanDraft, isDraft, isDraftProject, SHOW_DRAFTS } from '@/lib/drafts';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -63,6 +64,14 @@ const breadcrumbItems = [
   { name: project.title, item: `/realisations/${slug}` },
 ];
 
+const draftPage = isDraftProject(project);
+const cleanLocation = cleanDraft(project.location, '');
+const cleanSummary = cleanDraft(
+  project.summary,
+  `Projet ${project.typologyLabel} livré en ${project.year} par le Studio J Oliveira — Designer végétal et paysagiste à Brive-la-Gaillarde.`,
+);
+const metaDescription = `${project.title} — ${cleanSummary}`.slice(0, 220);
+
 const schema = jsonLdGraph([
   organization(),
   person(),
@@ -72,14 +81,14 @@ const schema = jsonLdGraph([
     slug: project.slug,
     section: 'realisations',
     year: project.year,
-    location: project.location,
-    description: project.summary,
+    location: cleanLocation,
+    description: cleanSummary,
   }),
   breadcrumbs(breadcrumbItems),
 ]);
 ---
 
-<BaseLayout title={project.title} description={project.summary}>
+<BaseLayout title={project.title} description={metaDescription} noindex={draftPage}>
   <Section variant="cream" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
@@ -118,11 +127,20 @@ const schema = jsonLdGraph([
           as="h1"
           class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
         />
-        <p
-          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic"
-        >
-          {project.location}
-        </p>
+        {
+          cleanLocation && (
+            <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic">
+              {cleanLocation}
+            </p>
+          )
+        }
+        {
+          !cleanLocation && SHOW_DRAFTS && (
+            <p class="mt-8 font-mono text-xs text-[#d97706]">
+              [DRAFT — Lieu à valider par Jonathan, masqué en prod]
+            </p>
+          )
+        }
       </header>
 
       {
@@ -154,7 +172,7 @@ const schema = jsonLdGraph([
                 >
                   Lieu
                 </dt>
-                <dd class="mt-1">{project.location}</dd>
+                <dd class="mt-1">{cleanLocation || (SHOW_DRAFTS ? '[DRAFT]' : '—')}</dd>
               </div>
               <div>
                 <dt
@@ -190,7 +208,26 @@ const schema = jsonLdGraph([
         </aside>
 
         <Prose size="lg">
-          <p>{project.summary}</p>
+          {
+            isDraft(project.summary) ? (
+              SHOW_DRAFTS ? (
+                <p class="font-mono text-xs text-[#d97706]">{project.summary}</p>
+              ) : (
+                <p class="text-[var(--color-forest)]/60 italic">
+                  Description en cours de rédaction. Pour découvrir ce projet en détail,{' '}
+                  <a
+                    href="/contact"
+                    class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
+                  >
+                    me contacter directement
+                  </a>
+                  .
+                </p>
+              )
+            ) : (
+              <p>{project.summary}</p>
+            )
+          }
         </Prose>
       </div>
 

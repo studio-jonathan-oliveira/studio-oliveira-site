@@ -10,6 +10,8 @@ import CtaLink from '@/components/astro/CtaLink.astro';
 import { SITE } from '@/lib/site-config';
 import { getVerticaleGallery } from '@/lib/galleries';
 import { PROJETS_PAR_SLUG } from '@/lib/projets';
+import { isDraft } from '@/lib/drafts';
+import DraftOnly from '@/components/astro/DraftOnly.astro';
 import {
   jsonLdGraph,
   breadcrumbs,
@@ -52,6 +54,8 @@ const faq = [
   },
 ];
 
+const faqVisible = faq.filter((f) => !isDraft(f.answer));
+
 const breadcrumbItems = [
   { name: 'Accueil', item: '/' },
   { name: 'Aménagement intérieur', item: '/amenagement-vegetal-interieur' },
@@ -66,7 +70,7 @@ const schema = jsonLdGraph([
     slug: verticale.slug,
     description: `${verticale.h1Seo} — Studio J Oliveira, designer paysagiste. Conception et réalisation de décors végétalisés premium.`,
   }),
-  faqPage(faq),
+  faqPage(faqVisible),
   breadcrumbs(breadcrumbItems),
 ]);
 ---
@@ -109,12 +113,14 @@ const schema = jsonLdGraph([
         as="h1"
         class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
       />
-      <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
-      >
-        [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour la verticale
-        {verticale.label.toLowerCase()} — enjeux métier, contraintes, exemples de livrables.]
-      </p>
+      <DraftOnly>
+        <p
+          class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        >
+          [À FOURNIR PAR JONATHAN : introduction 100-150 mots pour la verticale
+          {verticale.label.toLowerCase()} — enjeux métier, contraintes, exemples de livrables.]
+        </p>
+      </DraftOnly>
     </div>
   </Section>
 
@@ -156,17 +162,19 @@ const schema = jsonLdGraph([
         id="desc-title"
       />
       <Prose size="lg">
-        <p>
-          [À FOURNIR PAR JONATHAN : 800-1200 mots. Structure recommandée — rôle du végétal dans
-          cette verticale, contraintes spécifiques (circulation, hygiène, lumière, entretien), choix
-          plantes naturelles vs artificielles, exemples de cas types, contrat d'entretien adapté.
-          Voir `_brief/plan-seo.md` §5 pour les attentes de volume et maillage.]
-        </p>
-        <h2>Cas types</h2>
-        <p>
-          [À FOURNIR : 3-5 exemples de projets pour cette verticale, ou à lier depuis Sanity une
-          fois les projets publiés.]
-        </p>
+        <DraftOnly>
+          <p>
+            [À FOURNIR PAR JONATHAN : 800-1200 mots. Structure recommandée — rôle du végétal dans
+            cette verticale, contraintes spécifiques (circulation, hygiène, lumière, entretien),
+            choix plantes naturelles vs artificielles, exemples de cas types, contrat d'entretien
+            adapté. Voir `_brief/plan-seo.md` §5 pour les attentes de volume et maillage.]
+          </p>
+          <h2>Cas types</h2>
+          <p>
+            [À FOURNIR : 3-5 exemples de projets pour cette verticale, ou à lier depuis Sanity une
+            fois les projets publiés.]
+          </p>
+        </DraftOnly>
       </Prose>
     </div>
   </Section>
@@ -175,7 +183,7 @@ const schema = jsonLdGraph([
     <SectionHeader eyebrow="Questions fréquentes" title="FAQ." id="faq-title" />
     <ul class="divide-y divide-[var(--color-forest)]/10 border-y border-[var(--color-forest)]/10">
       {
-        faq.map((item) => (
+        faqVisible.map((item) => (
           <li>
             <details class="group">
               <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-forest)]">

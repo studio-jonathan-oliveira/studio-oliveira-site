@@ -25,12 +25,14 @@ import Section from '@/components/astro/Section.astro';
 import SectionHeader from '@/components/astro/SectionHeader.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs, service } from '@/lib/schema-org';
+import { SHOW_DRAFTS, cleanDraft } from '@/lib/drafts';
+import DraftOnly from '@/components/astro/DraftOnly.astro';
 
 const verticales = [
-  { slug: 'hotellerie', nom: 'Hôtellerie', accroche: '[À FOURNIR]' },
-  { slug: 'restauration', nom: 'Restauration', accroche: '[À FOURNIR]' },
-  { slug: 'bureaux', nom: 'Bureaux', accroche: '[À FOURNIR]' },
-  { slug: 'commerces', nom: 'Commerces', accroche: '[À FOURNIR]' },
+  { slug: 'hotellerie', nom: 'Hôtellerie', accroche: cleanDraft('[À FOURNIR]') },
+  { slug: 'restauration', nom: 'Restauration', accroche: cleanDraft('[À FOURNIR]') },
+  { slug: 'bureaux', nom: 'Bureaux', accroche: cleanDraft('[À FOURNIR]') },
+  { slug: 'commerces', nom: 'Commerces', accroche: cleanDraft('[À FOURNIR]') },
 ];
 
 const schema = jsonLdGraph([
@@ -85,12 +87,14 @@ const schema = jsonLdGraph([
           >PROFESSIONNELS.</span
         >
       </h1>
-      <p
-        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
-      >
-        [À FOURNIR — pitch pro 60-80 mots. Plus-value business : validation de l'investissement par
-        la séduction du design, durabilité, conformité normes. Pas de blabla.]
-      </p>
+      <DraftOnly>
+        <p
+          class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        >
+          [À FOURNIR — pitch pro 60-80 mots. Plus-value business : validation de l'investissement
+          par la séduction du design, durabilité, conformité normes. Pas de blabla.]
+        </p>
+      </DraftOnly>
     </div>
   </Section>
 
@@ -115,7 +119,7 @@ const schema = jsonLdGraph([
     <SectionHeader
       eyebrow="Nos segments"
       title="Quatre univers, une même exigence."
-      intro="[À FOURNIR — 2-3 lignes pour introduire les 4 verticales.]"
+      intro={SHOW_DRAFTS ? '[À FOURNIR — 2-3 lignes pour introduire les 4 verticales.]' : ''}
       id="verticales-title"
     >
       <Fragment slot="title" set:html="Quatre univers, une même exigence." />
@@ -139,7 +143,9 @@ const schema = jsonLdGraph([
                 <h3 class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-forest)]">
                   {v.nom}
                 </h3>
-                <p class="mt-4 text-sm text-[var(--color-forest)]/70">{v.accroche}</p>
+                {v.accroche && (
+                  <p class="mt-4 text-sm text-[var(--color-forest)]/70">{v.accroche}</p>
+                )}
               </div>
               <span class="mt-10 inline-flex items-center gap-2 text-sm text-[var(--color-forest)] transition-transform group-hover:translate-x-1">
                 Découvrir
@@ -152,39 +158,37 @@ const schema = jsonLdGraph([
     </ul>
   </Section>
 
-  <!-- GARANTIES — placeholder structure -->
-  <Section variant="cream" topDivider>
-    <SectionHeader
-      eyebrow="Garanties"
-      title="[À FOURNIR — titre section garanties]"
-      intro="[À FOURNIR — intro 2 lignes sur les garanties que Jonathan propose aux pros.]"
-    />
-    <ul data-pros-cards class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-      {
-        [1, 2, 3].map((n) => (
-          <li class="border-t border-[var(--color-forest)]/10 pt-6">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-forest)]/55 uppercase">
-              Garantie {n}
-            </p>
-            <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
-              [À FOURNIR]
-            </h3>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">[À FOURNIR]</p>
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
+  <DraftOnly>
+    <Section variant="cream" topDivider>
+      <SectionHeader
+        eyebrow="Garanties"
+        title="[À FOURNIR — titre section garanties]"
+        intro="[À FOURNIR — intro 2 lignes sur les garanties que Jonathan propose aux pros.]"
+      />
+      <ul data-pros-cards class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+        {
+          [1, 2, 3].map((n) => (
+            <li class="border-t border-[var(--color-forest)]/10 pt-6">
+              <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-forest)]/55 uppercase">
+                Garantie {n}
+              </p>
+              <h3 class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-forest)]">
+                [À FOURNIR]
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-[var(--color-forest)]/70">[À FOURNIR]</p>
+            </li>
+          ))
+        }
+      </ul>
+    </Section>
 
-  <!-- GALERIE PROJETS PROS — à alimenter quand inventaire Jonathan reçu -->
-  <Section variant="cream" topDivider>
-    <SectionHeader eyebrow="Portefeuille pros" title="[À FOURNIR — projets pros publiables]" />
-    <p class="mt-8 max-w-2xl text-sm text-[var(--color-forest)]/60">
-      [À FOURNIR — galerie photo ou carrousel projets pros. Selon PDF ligne 800, peut être galerie
-      statique ou carrousel. Morgan conseille galerie scroll-snap horizontal plutôt que carrousel
-      auto (anti-pattern PDF l. 688).]
-    </p>
-  </Section>
+    <Section variant="cream" topDivider>
+      <SectionHeader eyebrow="Portefeuille pros" title="[À FOURNIR — projets pros publiables]" />
+      <p class="mt-8 max-w-2xl text-sm text-[var(--color-forest)]/60">
+        [À FOURNIR — galerie photo ou carrousel projets pros.]
+      </p>
+    </Section>
+  </DraftOnly>
 
   <!-- CTA FINAL -->
   <div>

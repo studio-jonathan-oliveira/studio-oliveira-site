@@ -11,6 +11,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ScrollFrames from '@/components/islands/ScrollFrames.tsx';
+import DraftOnly from '@/components/astro/DraftOnly.astro';
 
 const FRAME_BASE = '/frames/coeur-urbain-parenthese';
 const FRAME_COUNT = 15;
@@ -42,12 +43,14 @@ const FIRST_FRAME = `${FRAME_BASE}/0000.webp`;
         <span class="block">Parenthèse</span>
         <span class="block text-[var(--color-moss)] italic">exotique</span>
       </h1>
-      <p
-        class="mt-8 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70"
-      >
-        [À FOURNIR — synopsis du projet, 3 à 4 lignes. Contexte, programme, posture biophilique,
-        matière.]
-      </p>
+      <DraftOnly>
+        <p
+          class="mt-8 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70"
+        >
+          [À FOURNIR — synopsis du projet, 3 à 4 lignes. Contexte, programme, posture biophilique,
+          matière.]
+        </p>
+      </DraftOnly>
     </div>
   </section>
 

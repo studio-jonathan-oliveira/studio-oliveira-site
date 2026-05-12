@@ -5,6 +5,7 @@ import { fetch } from '@/lib/sanity';
 import { articlesListQuery } from '@/lib/queries';
 import { jsonLdGraph, breadcrumbs, organization, localBusiness } from '@/lib/schema-org';
 import { SITE } from '@/lib/site-config';
+import DraftOnly from '@/components/astro/DraftOnly.astro';
 
 interface Article {
   _id: string;
@@ -69,12 +70,14 @@ const formatDate = (iso: string) =>
           style="font-weight: 500; letter-spacing: -0.012em; line-height: 0.96;">STUDIO.</span
         >
       </h1>
-      <p
-        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
-      >
-        [À FOURNIR PAR JONATHAN : 2-3 phrases d'introduction au journal — pourquoi ces articles, ton
-        éditorial, rythme de publication envisagé.]
-      </p>
+      <DraftOnly>
+        <p
+          class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        >
+          [À FOURNIR PAR JONATHAN : 2-3 phrases d'introduction au journal — pourquoi ces articles,
+          ton éditorial, rythme de publication envisagé.]
+        </p>
+      </DraftOnly>
     </div>
   </Section>
 

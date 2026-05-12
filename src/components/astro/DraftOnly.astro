@@ -1,0 +1,46 @@
+---
+/*
+ * DraftOnly — wrap les blocs `[À FOURNIR PAR JONATHAN ...]` pour qu'ils
+ * s'affichent uniquement en dev. En prod (build Vercel), le bloc est
+ * absent du DOM — invisible aux visiteurs ET au crawler.
+ *
+ * Usage :
+ *   <DraftOnly>
+ *     <p>[À FOURNIR : ...]</p>
+ *   </DraftOnly>
+ *
+ * Marqueur visuel orange en dev pour repérer instantanément ce qui manque.
+ */
+import { SHOW_DRAFTS } from '@/lib/drafts';
+---
+
+{
+  SHOW_DRAFTS && (
+    <div data-draft class="draft-only">
+      <slot />
+    </div>
+  )
+}
+
+<style>
+  .draft-only {
+    position: relative;
+    outline: 2px dashed color-mix(in oklab, #d97706 60%, transparent);
+    outline-offset: 6px;
+    background-color: color-mix(in oklab, #d97706 6%, transparent);
+    padding: 0.25rem;
+  }
+  .draft-only::before {
+    content: 'DRAFT — invisible en prod';
+    position: absolute;
+    top: -1.25rem;
+    left: 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #d97706;
+    background-color: var(--color-cream);
+    padding: 0 0.4rem;
+  }
+</style>

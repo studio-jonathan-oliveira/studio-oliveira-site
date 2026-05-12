@@ -14,6 +14,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization } from '@/lib/schema-org';
+import { SHOW_DRAFTS } from '@/lib/drafts';
+import DraftOnly from '@/components/astro/DraftOnly.astro';
 
 const breadcrumbItems = [
   { name: 'Accueil', item: '/' },
@@ -27,6 +29,7 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
 <BaseLayout
   title="Architecture publique — génie végétal & design biophilique"
   description="Studio J Oliveira intervient sur les marchés publics : génie végétal, design biophilique, conception paysagère pour le secteur public en Aquitaine et Limousin."
+  noindex={!SHOW_DRAFTS}
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
@@ -55,18 +58,15 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
       Architecture publique
     </h1>
 
-    <p
-      class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/80"
-    >
-      {
-        /* [À FOURNIR PAR JONATHAN : positionnement studio sur le marché public —
-          quelles missions, quels donneurs d'ordre, quel périmètre territorial,
-          quelle approche biophilique. 3 à 4 lignes max. Voir
-          _brief/contenus-manquants.md §architecture-publique.] */
-      }
-      [À FOURNIR PAR JONATHAN — positionnement Architecture publique : missions type, donneurs d'ordre
-      cibles, périmètre territorial, approche biophilique en contexte marché public. 3 à 4 lignes.]
-    </p>
+    <DraftOnly>
+      <p
+        class="mt-10 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/80"
+      >
+        [À FOURNIR PAR JONATHAN — positionnement Architecture publique : missions type, donneurs
+        d'ordre cibles, périmètre territorial, approche biophilique en contexte marché public. 3 à 4
+        lignes.]
+      </p>
+    </DraftOnly>
   </Section>
 
   <!-- 02 · TROIS PILIERS -->
@@ -88,8 +88,9 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
           Génie végétal
         </h3>
         <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
-          {/* [À FOURNIR PAR JONATHAN : description génie végétal en MOA publique.] */}
-          [À FOURNIR — description du pilier Génie végétal en contexte marché public.]
+          <DraftOnly>
+            [À FOURNIR — description du pilier Génie végétal en contexte marché public.]
+          </DraftOnly>
         </p>
       </article>
       <article>
@@ -99,8 +100,9 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
           Design biophilique
         </h3>
         <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
-          {/* [À FOURNIR PAR JONATHAN : description design biophilique appliqué au public.] */}
-          [À FOURNIR — description du pilier Design biophilique appliqué aux espaces publics.]
+          <DraftOnly>
+            [À FOURNIR — description du pilier Design biophilique appliqué aux espaces publics.]
+          </DraftOnly>
         </p>
       </article>
       <article>
@@ -110,11 +112,10 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
           Secteur public
         </h3>
         <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
-          {
-            /* [À FOURNIR PAR JONATHAN : process marché public — réponse appel d'offres, accord-cadre, MOE…] */
-          }
-          [À FOURNIR — process spécifique au marché public : réponses aux appels d'offres, accord-cadres,
-          MOE, partenariats…]
+          <DraftOnly>
+            [À FOURNIR — process spécifique au marché public : réponses aux appels d'offres,
+            accord-cadres, MOE, partenariats…]
+          </DraftOnly>
         </p>
       </article>
     </div>
