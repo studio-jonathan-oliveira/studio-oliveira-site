@@ -1,0 +1,20 @@
+# Build outputs
+dist/
+.astro/
+.vercel/
+sanity/dist/
+
+# Lockfiles (gérés par pnpm, format custom)
+pnpm-lock.yaml
+
+# Settings IDE locales
+.claude/settings.local.json
+
+# Assets binaires
+public/scrollframes/
+public/frames/
+public/fonts/
+public/og/
+
+# Mémoire et brouillons
+_brief/client-assets/

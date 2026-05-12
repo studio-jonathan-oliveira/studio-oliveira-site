@@ -12,18 +12,15 @@ const files = readdirSync(dir)
   .filter((f) => f.endsWith('.png'))
   .sort();
 
-let totalBefore = 0;
 let totalAfter = 0;
 
 for (const f of files) {
   const input = join(dir, f);
   const output = join(dir, f.replace('.png', '.webp'));
-  const { size: sizeBefore } = await sharp(input).metadata();
   const meta = await sharp(input)
     .resize(1920, 1080, { fit: 'cover' })
     .webp({ quality: 82, effort: 5 })
     .toFile(output);
-  totalBefore += sizeBefore || 0;
   totalAfter += meta.size;
   console.log(`✓ ${f} → ${f.replace('.png', '.webp')} (${(meta.size / 1024).toFixed(0)} kB)`);
 }
