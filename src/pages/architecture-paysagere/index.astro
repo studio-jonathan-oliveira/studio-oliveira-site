@@ -305,7 +305,7 @@ const schema = jsonLdGraph([
           >
             <Image
               src={ch.image}
-              alt=""
+              alt={`Chapitre ${ch.num} — ${ch.titre}`}
               widths={[720, 1080, 1440, 1920]}
               sizes="(min-width: 1024px) 55vw, 100vw"
               quality={82}
@@ -376,7 +376,7 @@ const schema = jsonLdGraph([
                   <div class="ap-typo-card-visual overflow-hidden">
                     <Image
                       src={img}
-                      alt=""
+                      alt={`Typologie ${t.nomProprietaire} — ${t.exemple}`}
                       widths={[480, 720, 960, 1280]}
                       sizes="(min-width: 768px) 44vw, 92vw"
                       quality={80}
