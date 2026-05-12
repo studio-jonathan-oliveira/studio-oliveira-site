@@ -8,6 +8,7 @@ export default tseslint.config(
     ignores: [
       'dist/**',
       '.astro/**',
+      '.vercel/**',
       'node_modules/**',
       'sanity/dist/**',
       'public/scrollframes/**',
@@ -18,7 +19,26 @@ export default tseslint.config(
   {
     files: ['src/**/*.{jsx,tsx}'],
     plugins: { 'jsx-a11y': jsxA11y },
-    rules: jsxA11y.configs.recommended.rules,
+    rules: {
+      ...jsxA11y.configs.recommended.rules,
+      // Sanity client = server-only (token API). Importer @/lib/sanity dans une
+      // island React l'embarquerait dans le bundle navigateur — fuite du token
+      // et code GROQ inutile côté client. Charger les données depuis l'Astro
+      // parent et passer en props.
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/lib/sanity',
+              message:
+                "Le client Sanity est server-only. Charger les données dans un composant .astro et passer en props à l'island.",
+            },
+          ],
+          patterns: ['@/lib/sanity/*', '../**/lib/sanity', '../**/lib/sanity/*'],
+        },
+      ],
+    },
   },
   {
     languageOptions: {

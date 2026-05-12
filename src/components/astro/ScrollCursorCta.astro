@@ -20,6 +20,7 @@ interface Props {
 }
 
 const { href = '/contact', label = 'Démarrer\nun projet' } = Astro.props as Props;
+const labelLines = label.split('\n');
 ---
 
 <a
@@ -29,7 +30,17 @@ const { href = '/contact', label = 'Démarrer\nun projet' } = Astro.props as Pro
   aria-label="Démarrer un projet"
   data-cta-href={href}
 >
-  <span class="scroll-cursor-cta-inner" set:html={label.replace('\n', '<br />') + ' →'} />
+  <span class="scroll-cursor-cta-inner">
+    {
+      labelLines.map((line, i) => (
+        <>
+          {i > 0 && <br />}
+          {line}
+        </>
+      ))
+    }
+    {' →'}
+  </span>
 </a>
 
 <style>
