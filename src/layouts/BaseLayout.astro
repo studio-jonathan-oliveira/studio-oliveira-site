@@ -11,6 +11,7 @@ import Grain from '@/components/astro/Grain.astro';
 import SmoothScroll from '@/components/astro/SmoothScroll.astro';
 import CustomCursor from '@/components/astro/CustomCursor.astro';
 import ScrollNav from '@/components/astro/ScrollNav.astro';
+import { getOgImagePath } from '@/lib/og-pages';
 
 interface Props {
   title: string;
@@ -28,12 +29,18 @@ const {
   title,
   description,
   canonical,
-  ogImage = '/og-default.jpg',
+  ogImage,
   ogType = 'website',
   noindex = false,
   lang = 'fr',
   darkHero = false,
 } = Astro.props;
+
+// OG image résolution :
+// 1. Prop `ogImage` explicite si fournie par la page
+// 2. Sinon, OG dédiée si la pathname est listée dans og-pages.ts
+// 3. Fallback /og-default.jpg
+const resolvedOgImage = ogImage ?? getOgImagePath(Astro.url.pathname) ?? '/og-default.jpg';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
@@ -45,7 +52,9 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString(
 const vercelUrl = import.meta.env.VERCEL_URL;
 const ogImageBase =
   import.meta.env.PUBLIC_SITE_URL ?? (vercelUrl ? `https://${vercelUrl}` : siteUrl);
-const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, ogImageBase).toString();
+const ogImageUrl = resolvedOgImage.startsWith('http')
+  ? resolvedOgImage
+  : new URL(resolvedOgImage, ogImageBase).toString();
 const siteName = 'Studio J Oliveira';
 // Dedup intelligente : ne pas ajouter « — Studio J Oliveira » si le title
 // le contient déjà (cas d'un title rédigé full custom comme la home).
