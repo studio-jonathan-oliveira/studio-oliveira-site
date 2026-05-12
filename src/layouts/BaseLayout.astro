@@ -51,6 +51,12 @@ const siteName = 'Studio J Oliveira';
 // le contient déjà (cas d'un title rédigé full custom comme la home).
 const titleContainsSiteName = title.toLowerCase().includes(siteName.toLowerCase());
 const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
+
+// Plausible Analytics — chargé uniquement en prod si PUBLIC_PLAUSIBLE_DOMAIN
+// est défini. Script tagué avec api personnalisée + extension `pageview-props`
+// pour permettre l'envoi des Web Vitals comme propriétés d'événement.
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const enableAnalytics = import.meta.env.PROD && plausibleDomain;
 ---
 
 <!doctype html>
@@ -112,6 +118,17 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
 
     <meta name="theme-color" content="#F5F1EA" />
 
+    {
+      enableAnalytics && (
+        <script
+          is:inline
+          defer
+          data-domain={plausibleDomain}
+          src="https://plausible.io/js/script.outbound-links.tagged-events.js"
+        />
+      )
+    }
+
     {/* <ClientRouter /> désactivé 2026-04-24 — bug écran noir au clic lien */}
 
     <slot name="head" />
@@ -157,6 +174,11 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
       import '@/scripts/motion-enhance';
       // Theme observer : source unique de vérité pour html[data-theme] + body.is-dark-section.
       import '@/scripts/theme-observer';
+      // Web Vitals → Plausible. Le module se self-gate (no-op si Plausible absent
+      // ou si on est en dev), donc safe à charger inconditionnellement.
+      if (import.meta.env.PROD) {
+        import('@/scripts/report-web-vitals');
+      }
 
       // Micro-preloader : retire l'overlay 80ms après first paint. Cache les
       // éventuels reflows/FOUC tout en restant bref (pas de coût LCP significatif).
