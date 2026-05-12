@@ -15,6 +15,7 @@
  */
 
 const currentYear = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
 
 const services = [
   { href: '/architecture-paysagere', label: 'Architecture paysagère' },
@@ -83,7 +84,11 @@ const studio = [
             {
               services.map((s) => (
                 <li>
-                  <a href={s.href} class="site-footer__link">
+                  <a
+                    href={s.href}
+                    class="site-footer__link"
+                    aria-current={currentPath === s.href ? 'page' : undefined}
+                  >
                     {s.label}
                   </a>
                 </li>
@@ -98,7 +103,11 @@ const studio = [
             {
               studio.map((s) => (
                 <li>
-                  <a href={s.href} class="site-footer__link">
+                  <a
+                    href={s.href}
+                    class="site-footer__link"
+                    aria-current={currentPath === s.href ? 'page' : undefined}
+                  >
                     {s.label}
                   </a>
                 </li>

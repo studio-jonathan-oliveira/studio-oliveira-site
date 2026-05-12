@@ -220,6 +220,37 @@ header.intro-revealing {
 
 /* Base — corps de texte éditorial */
 @layer base {
+  /* A11y — focus-visible global. Outline cohérent sur toute élément
+     interactif (links, buttons, inputs, summary, details) accessible au
+     clavier. Le cursor custom masque déjà le visuel hover mais le clavier
+     a besoin d'un repère explicite. Outline-offset 4px pour ne pas
+     superposer le texte des CTA. */
+  :where(a, button, [role='button'], input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-moss);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  /* Sur les sections sombres (data-theme="dark") l'outline moss reste visible
+     mais on peut booster la couleur en cream pur pour le contraste maximal. */
+  [data-theme='dark']
+    :where(a, button, [role='button'], input, select, textarea, summary, [tabindex]):focus-visible {
+    outline-color: var(--color-cream);
+  }
+  /* Respect explicite de prefers-reduced-motion : neutralise les transitions
+     décoratives globales tout en gardant les transitions fonctionnelles
+     (focus rings, états interactifs). Override pour les transitions opacity
+     trop courtes sinon le contenu peut rester invisible si JS échoue. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   html {
     font-family: var(--font-body);
     color: var(--color-forest);

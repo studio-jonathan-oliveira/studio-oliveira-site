@@ -105,7 +105,12 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
           {
             sections.map((section) => (
               <li class:list={['primary-menu__item', isActive(section.href) && 'is-active']}>
-                <a href={section.href} class="primary-menu__link" data-menu-link>
+                <a
+                  href={section.href}
+                  class="primary-menu__link"
+                  data-menu-link
+                  aria-current={currentPath === section.href ? 'page' : undefined}
+                >
                   <span class="primary-menu__arrow" aria-hidden="true">
                     ↗
                   </span>
@@ -116,7 +121,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
                   <ul class="primary-menu__sub">
                     {section.sub.map((s) => (
                       <li>
-                        <a href={s.href} data-menu-link>
+                        <a
+                          href={s.href}
+                          data-menu-link
+                          aria-current={currentPath === s.href ? 'page' : undefined}
+                        >
                           {s.label}
                         </a>
                       </li>
