@@ -2,7 +2,7 @@
 /*
  * /zones — index des zones d'intervention.
  *
- * Page hub qui liste les 3 zones (Brive, Bordeaux, Limoges) et alimente
+ * Page hub qui liste les 4 zones (Brive, Bordeaux, Limoges, Toulouse) et alimente
  * le breadcrumb des pages /zones/[slug]. Capte les requêtes génériques
  * "zones d'intervention paysagiste Nouvelle-Aquitaine".
  */
@@ -33,7 +33,7 @@ const schema = jsonLdGraph([
 
 <BaseLayout
   title="Zones d’intervention — Paysagiste designer en Nouvelle-Aquitaine"
-  description="Studio J Oliveira intervient à Brive-la-Gaillarde (siège), Bordeaux et Limoges. Conception de jardin, aménagement paysager et design biophilique en Corrèze, Gironde et Haute-Vienne."
+  description="Studio J Oliveira intervient à Brive-la-Gaillarde (siège), Bordeaux, Limoges et Toulouse. Conception de jardin, aménagement paysager et design biophilique en Corrèze, Gironde, Haute-Vienne et Haute-Garonne."
 >
   <Fragment slot="head">
     <script type="application/ld+json" is:inline set:html={schema} />
@@ -53,16 +53,16 @@ const schema = jsonLdGraph([
       <p
         class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/85"
       >
-        Trois points d’ancrage en Nouvelle-Aquitaine — Brive-la-Gaillarde, Bordeaux et Limoges — et
-        une zone d’intervention élargie sur la Corrèze, le Lot, la Dordogne, la Gironde et la
-        Haute-Vienne. Conception de jardin sur mesure, aménagement paysager et design biophilique
-        pour particuliers et professionnels.
+        Quatre points d’ancrage — Brive-la-Gaillarde (siège), Bordeaux, Limoges et Toulouse — et une
+        zone d’intervention élargie sur la Corrèze, le Lot, la Dordogne, la Gironde, la Haute-Vienne
+        et la Haute-Garonne. Conception de jardin sur mesure, aménagement paysager et design
+        biophilique pour particuliers et professionnels.
       </p>
     </div>
   </Section>
 
   <Section variant="cream" space="default" id="zones">
-    <div class="grid gap-12 md:grid-cols-3">
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
       {
         ZONES.map((z) => (
           <a
@@ -107,8 +107,8 @@ const schema = jsonLdGraph([
         Le studio étudie chaque demande au cas par cas.
       </h2>
       <p class="mt-6 text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85">
-        Un projet en dehors de Brive, Bordeaux ou Limoges peut être pris en charge selon la
-        typologie et le budget — frais de déplacement intégrés au devis d’étude.
+        Un projet en dehors de Brive, Bordeaux, Limoges ou Toulouse peut être pris en charge selon
+        la typologie et le budget — frais de déplacement intégrés au devis d’étude.
       </p>
       <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3">
         <CtaLink href="/demarrer-un-projet" label="Démarrer un projet" tone="dark" size="lg" />

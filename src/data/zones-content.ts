@@ -358,6 +358,105 @@ export const ZONES: ZoneContent[] = [
       },
     ],
   },
+  {
+    slug: 'toulouse',
+    ville: 'Toulouse',
+    villeSimple: 'Toulouse',
+    region: 'Occitanie',
+    departement: 'Haute-Garonne',
+    codeDepartement: '31',
+    role: 'zone-intervention',
+    metaTitle:
+      'Paysagiste designer à Toulouse — Conception de jardin sur mesure | Studio J Oliveira',
+    metaDescription:
+      'Designer végétal et paysagiste à Toulouse (Haute-Garonne). Conception de jardin, terrasse et aménagement extérieur en climat occitan — palette méditerranéenne adaptée au stress hydrique.',
+    h1: 'Paysagiste designer à Toulouse',
+    introLead:
+      'Studio J Oliveira intervient à Toulouse et sur la métropole toulousaine en conception de jardin, terrasse et aménagement extérieur. Lecture du site, palette adaptée au climat sec et design biophilique pour particuliers et professionnels.',
+    introLong: `Toulouse est une zone d’intervention élargie du studio depuis la Corrèze. La métropole toulousaine — Blagnac, Colomiers, Tournefeuille, Cugnaux, Balma, Ramonville-Saint-Agne — concentre une forte demande de jardins contemporains, terrasses d’immeubles haussmanniens et propriétés péri-urbaines en bord de Garonne ou sur le Lauragais. Cette page rassemble les requêtes locales : paysagiste Toulouse, designer végétal Toulouse, architecte paysagiste Haute-Garonne, conception de jardin Toulouse, aménagement extérieur Occitanie. Le contexte climatique (sécheresses estivales prolongées, sols calcaires ou argilo-limoneux) impose un travail rigoureux sur le choix des essences et la gestion de l’eau dès la phase étude.`,
+    climat: {
+      type: 'Méditerranéen dégradé à influence océanique (climat toulousain)',
+      description: `Toulouse présente un climat doux mais marqué par des sécheresses estivales sévères, accentuées depuis 2020. Étés chauds (pointes 40°C), hivers doux, pluviométrie ~660 mm/an mal répartie (printemps + automne). Vent d’Autan régulier, asséchant. Pour la conception : palette méditerranéenne et continentale chaude, paillages minéraux, arrosage goutte-à-goutte intégré, ombres construites prioritaires. Les essences pelouses-anglaises et sous-bois acidophiles sont à proscrire.`,
+    },
+    essences: [
+      'Olivier (Olea europaea)',
+      'Cyprès de Provence (Cupressus sempervirens)',
+      'Chêne vert (Quercus ilex)',
+      'Chêne pubescent (Quercus pubescens)',
+      'Micocoulier (Celtis australis)',
+      'Pistachier térébinthe (Pistacia terebinthus)',
+      'Arbousier (Arbutus unedo)',
+      'Lavandes (Lavandula angustifolia, intermedia)',
+      'Romarin (Salvia rosmarinus)',
+      'Cistes (Cistus albidus, purpureus)',
+      'Graminées sèches (Stipa tenuissima, Festuca glauca)',
+      'Vivaces méditerranéennes (Perovskia, Phlomis, Euphorbia)',
+    ],
+    caracteristiquesPaysageres:
+      'Vallée de la Garonne, coteaux du Lauragais à l’est, plaine de l’Ariège au sud. Tissu urbain dense en hyper-centre (briques toulousaines, patios), couronne pavillonnaire en première périphérie, propriétés viticoles et fermes restaurées sur les coteaux. Forte exposition au vent d’Autan sur les sites ouverts.',
+    communesVoisines: [
+      'Blagnac',
+      'Colomiers',
+      'Tournefeuille',
+      'Cugnaux',
+      'Balma',
+      'Ramonville-Saint-Agne',
+      'Castanet-Tolosan',
+      'Saint-Orens-de-Gameville',
+      'Plaisance-du-Touch',
+      'L’Union',
+      'Muret',
+      'Pibrac',
+    ],
+    typologiesDominantes: [
+      {
+        slug: 'coeur-urbain',
+        raison:
+          'Patios toulousains, terrasses d’hôtels particuliers et cours intérieures briquées.',
+      },
+      {
+        slug: 'frange-urbaine',
+        raison:
+          'Pavillons et résidences contemporaines de première couronne (Blagnac, Colomiers, Balma).',
+      },
+      {
+        slug: 'domaine-caractere',
+        raison: 'Propriétés viticoles, fermes lauragaises et grandes parcelles sur les coteaux.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Le studio se déplace-t-il sur Toulouse ?',
+        answer:
+          'Oui. Toulouse fait partie des zones d’intervention élargies du studio depuis Brive-la-Gaillarde. Les frais de déplacement sont intégrés au devis d’étude. Visite planifiée sous 7 à 15 jours selon le planning.',
+      },
+      {
+        question: 'Quelle différence entre un paysagiste et un designer végétal à Toulouse ?',
+        answer:
+          'Le paysagiste toulousain est en général un entrepreneur de travaux paysagers. Le studio reste sur la conception : étude, dessin, prescription, maîtrise d’œuvre. Le suivi des entreprises de plantation locales est intégré à la prestation.',
+      },
+      {
+        question: 'Quelles plantes résistent au climat toulousain ?',
+        answer:
+          'Sécheresse estivale sévère et vent d’Autan : palette méditerranéenne et continentale chaude — olivier, chêne vert, chêne pubescent, micocoulier, arbousier, lavandes, cistes, graminées sèches (Stipa, Festuca), vivaces (Perovskia, Phlomis). Les essences acidophiles (rhododendrons, hortensias) et les pelouses anglaises sont à proscrire en sol calcaire toulousain.',
+      },
+      {
+        question: 'Quel budget pour la conception d’un jardin à Toulouse ?',
+        answer:
+          'Mêmes grilles que sur les autres zones : Micro-urbain à partir de 1 200 € TTC, Cœur urbain 2 750 €, Frange urbaine 4 250 €, Domaine 6 500 €. Le suivi de chantier est facturé entre 6 et 12 % du budget travaux selon la typologie. Frais de déplacement intégrés au devis.',
+      },
+      {
+        question: 'Intervenez-vous sur Blagnac, Colomiers, Balma, Muret ?',
+        answer:
+          'Oui. La zone couvre l’ensemble de la métropole toulousaine et la Haute-Garonne — Toulouse intra-muros, première couronne (Blagnac, Colomiers, Tournefeuille, Balma), seconde couronne (Muret, Castanet-Tolosan, Pibrac) et coteaux du Lauragais.',
+      },
+      {
+        question: 'Travaillez-vous avec des architectes toulousains ?',
+        answer:
+          'Oui. Le pôle « Pros » couvre les collaborations en cotraitance avec architectes et architectes d’intérieur sur les phases AVP, PRO et exécution. Le studio peut intervenir comme paysagiste-concepteur dans une équipe de maîtrise d’œuvre élargie.',
+      },
+    ],
+  },
 ];
 
 export const ZONE_SLUGS = ZONES.map((z) => z.slug);
