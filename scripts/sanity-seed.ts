@@ -21,8 +21,12 @@
  */
 
 import { createClient } from '@sanity/client';
+import { readFile } from 'node:fs/promises';
+import { basename, extname, join } from 'node:path';
 import { SITE } from '../src/lib/site-config';
 import { ZONES } from '../src/data/zones-content';
+import { mockProjects } from '../src/data/mock-projects';
+import { cleanDraft } from '../src/lib/drafts';
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? process.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset =
@@ -129,7 +133,7 @@ async function seedServices() {
 }
 
 // ----------------------------------------------------------------------------
-// Locations / zones (3 docs)
+// Locations / zones (4 docs : Brive, Bordeaux, Limoges, Toulouse)
 // ----------------------------------------------------------------------------
 
 async function seedLocations() {
@@ -177,6 +181,167 @@ async function seedLocations() {
 }
 
 // ----------------------------------------------------------------------------
+// Projects (mockProjects → Sanity). Upload des covers + galerie + descriptifs
+// nettoyés des marqueurs [À FOURNIR / À VALIDER] (vide plutôt que pollué).
+// ----------------------------------------------------------------------------
+
+async function uploadImage(filepath: string, altSuffix: string): Promise<string | null> {
+  try {
+    const buf = await readFile(filepath);
+    const name = basename(filepath);
+    const ext = extname(name).slice(1) || 'jpg';
+    const asset = await client.assets.upload('image', buf, {
+      filename: name,
+      contentType: `image/${ext === 'jpg' ? 'jpeg' : ext}`,
+    });
+    return asset._id;
+  } catch (err) {
+    console.warn(`  ⚠  Upload échec pour ${filepath} (${altSuffix}) :`, (err as Error).message);
+    return null;
+  }
+}
+
+async function seedProjects() {
+  // ⚠ Les imports Astro de mockProjects ne fonctionnent pas hors build
+  // (resolved par Vite). On reconstruit les chemins via convention :
+  // src/assets/projets/<sous-dossier>/<filename>.
+  //
+  // Tableau parallèle hardcodé des chemins disk pour matcher mockProjects.
+  // À régénérer si on ajoute des projets dans mock-projects.ts.
+  const projectAssetMap: Record<string, { cover: string; gallery: string[] }> = {
+    'jungle-room-agde': {
+      cover: 'src/assets/projets/jungle-room-entree.png',
+      gallery: [
+        'src/assets/projets/jungle-room-entree.png',
+        'src/assets/projets/jungle-room-espaces.png',
+        'src/assets/projets/jungle-room-mezzanine.png',
+        'src/assets/projets/jungle-room/01-salon.webp',
+        'src/assets/projets/jungle-room/02.webp',
+        'src/assets/projets/jungle-room/03.webp',
+      ],
+    },
+    'cafe-de-paris': {
+      cover: 'src/assets/projets/cafe-de-paris/01-cover.webp',
+      gallery: [
+        'src/assets/projets/cafe-de-paris/01-cover.webp',
+        'src/assets/projets/cafe-de-paris/02.webp',
+        'src/assets/projets/cafe-de-paris/03.webp',
+        'src/assets/projets/cafe-de-paris/04.webp',
+        'src/assets/projets/cafe-de-paris/05.webp',
+      ],
+    },
+    'schmit-cuisine': {
+      cover: 'src/assets/projets/schmit-cuisine/01-cover.webp',
+      gallery: [
+        'src/assets/projets/schmit-cuisine/01-cover.webp',
+        'src/assets/projets/schmit-cuisine/02.webp',
+        'src/assets/projets/schmit-cuisine/03.webp',
+        'src/assets/projets/schmit-cuisine/04.webp',
+      ],
+    },
+    'airbnb-signature': {
+      cover: 'src/assets/projets/airbnb/01-cover.webp',
+      gallery: [
+        'src/assets/projets/airbnb/01-cover.webp',
+        'src/assets/projets/airbnb/02.webp',
+        'src/assets/projets/airbnb/03.webp',
+        'src/assets/projets/airbnb/04.webp',
+        'src/assets/projets/airbnb/05.webp',
+      ],
+    },
+    'coeur-urbain-parenthese-exotique': {
+      cover: 'src/assets/projets/coeur-urbain-parenthese/01-cover.webp',
+      gallery: [
+        'src/assets/projets/coeur-urbain-parenthese/01-cover.webp',
+        'src/assets/projets/coeur-urbain-parenthese/02.webp',
+        'src/assets/projets/coeur-urbain-parenthese/03.webp',
+      ],
+    },
+    'frange-urbaine-restanque': {
+      cover: 'src/assets/projets/frange-urbaine-restanque/01-cover.webp',
+      gallery: ['src/assets/projets/frange-urbaine-restanque/01-cover.webp'],
+    },
+    'provence-correzienne-domaine': {
+      cover: 'src/assets/projets/provence-correzienne/01-cover.webp',
+      gallery: ['src/assets/projets/provence-correzienne/01-cover.webp'],
+    },
+  };
+
+  const root = process.cwd();
+
+  for (const project of mockProjects) {
+    const assets = projectAssetMap[project.slug];
+    if (!assets) {
+      console.warn(`  ⚠  Pas de mapping disk pour ${project.slug}, skip.`);
+      continue;
+    }
+
+    // 1. Upload cover
+    const coverAssetId = await uploadImage(join(root, assets.cover), `${project.slug} cover`);
+    if (!coverAssetId) continue;
+
+    // 2. Upload gallery (en parallèle pour aller plus vite)
+    const galleryUploads = await Promise.all(
+      project.gallery.map(async (img, i) => {
+        const filepath = assets.gallery[i];
+        if (!filepath) return null;
+        const assetId = await uploadImage(join(root, filepath), `${project.slug} gallery ${i}`);
+        if (!assetId) return null;
+        return {
+          _key: `g${i}`,
+          _type: 'image',
+          asset: { _type: 'reference' as const, _ref: assetId },
+          alt: img.alt,
+          caption: img.caption ?? undefined,
+        };
+      }),
+    );
+
+    const gallery = galleryUploads.filter((g): g is NonNullable<typeof g> => g !== null);
+
+    // 3. Description Portable Text minimaliste depuis summary (cleanDraft)
+    const cleanSummary = cleanDraft(project.summary, '');
+    const description = cleanSummary
+      ? [
+          {
+            _key: 'desc-0',
+            _type: 'block',
+            style: 'normal',
+            children: [{ _key: 'desc-0-0', _type: 'span', marks: [], text: cleanSummary }],
+            markDefs: [],
+          },
+        ]
+      : undefined;
+
+    const doc = {
+      _id: `project.${project.slug}`,
+      _type: 'project',
+      title: project.title,
+      slug: { _type: 'slug', current: project.slug },
+      section: project.section,
+      year: project.year,
+      location: cleanDraft(project.location, ''),
+      typology: project.typologySlug
+        ? { _type: 'reference', _ref: `typology.${project.typologySlug}` }
+        : undefined,
+      featured: project.featured ?? false,
+      coverImage: {
+        _type: 'image',
+        asset: { _type: 'reference', _ref: coverAssetId },
+        alt: project.title,
+      },
+      gallery,
+      description,
+      scrollFramesSlug: project.scrollFramesSlug,
+      scrollFramesCount: project.scrollFramesCount,
+    };
+
+    await client.createOrReplace(doc);
+    console.log(`✓ project.${project.slug} (${gallery.length} images galerie)`);
+  }
+}
+
+// ----------------------------------------------------------------------------
 // Run
 // ----------------------------------------------------------------------------
 
@@ -189,6 +354,8 @@ async function main() {
   await seedServices();
   console.log('');
   await seedLocations();
+  console.log('');
+  await seedProjects();
   console.log('\n✅ Seed terminé.\n');
   console.log(
     'Prochaine étape : ouvrir le studio (`pnpm studio:dev`) pour voir le contenu importé.',
