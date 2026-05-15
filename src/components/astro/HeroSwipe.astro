@@ -170,13 +170,10 @@ const slides = [
     );
   }
 
-  /* Logo Oliveira — refonte v14 2026-05-15 : on reproduit EXACTEMENT le
-     wrapper .site-header__main du Header (max-w 1400px + mx-auto + grid
-     3 cols + py-5 px-6 / md:py-6 md:px-10) pour aligner le logo au pixel
-     près quand la topbar apparaît. La cause du décalage v13 : Header
-     utilise max-w-[1400px] mx-auto, donc sur grand écran (>1400px) le
-     logo Header est centré avec marges auto — mon logo absolu full-bleed
-     était décalé de ~260px sur 1920px. */
+  /* Logo Oliveira — refonte v15 2026-05-15 : Header bascule en full-width
+     (max-w retiré). On reproduit le wrapper .site-header__main mais sans
+     contrainte de width → logo collé bord gauche, pile sous le logo Header
+     quand la topbar apparaît. */
   .hero-slide__topbar-mimic {
     position: absolute;
     top: 0;
@@ -187,10 +184,10 @@ const slides = [
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 1rem;
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100%;
     padding: 1.25rem 1.5rem;
     pointer-events: none;
+    box-sizing: border-box;
   }
   @media (min-width: 768px) {
     .hero-slide__topbar-mimic {

@@ -30,9 +30,11 @@ const { darkHero = false } = Astro.props;
   data-theme="light"
   data-dark-hero={darkHero ? 'true' : 'false'}
 >
-  <!-- Main row : logo · CTA centré · bouton Menu ─────────────── -->
+  <!-- Main row : logo flush-left · CTA centré · Menu flush-right.
+       v8 2026-05-15 retour Morgan : largeur totale viewport, pas de
+       max-width sur le wrapper. Logo et MENU touchent les bords. -->
   <div
-    class="site-header__main mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-5 md:px-10 md:py-6"
+    class="site-header__main grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-5 md:px-10 md:py-6"
   >
     <a
       href="/"
