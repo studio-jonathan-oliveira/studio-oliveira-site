@@ -60,7 +60,25 @@ export default function ArchitecturesAccordion({ items }: Props) {
               }
             >
               <div className="studio-architectures__panel">
-                <p>{arch.description}</p>
+                {/* Wave reveal pro : chaque mot devient un <span> avec une
+                   custom property --i (index) pour staggerer le delay
+                   d'apparition via CSS pur. Animation : opacity + translateY
+                   + blur. La cascade arrive comme une vague de gauche à
+                   droite, ligne par ligne. */}
+                <p className="studio-architectures__text">
+                  {arch.description.split(/(\s+)/).map((token, wi) => {
+                    if (/^\s+$/.test(token)) return token;
+                    return (
+                      <span
+                        key={wi}
+                        className="studio-architectures__word"
+                        style={{ ['--i' as never]: wi } as React.CSSProperties}
+                      >
+                        {token}
+                      </span>
+                    );
+                  })}
+                </p>
               </div>
             </div>
           </li>

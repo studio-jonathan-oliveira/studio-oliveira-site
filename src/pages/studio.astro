@@ -188,27 +188,27 @@ const parcours = [
     class="studio-parcours full-bleed-bg relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-labelledby="parcours-title"
   >
-    <div class="studio-parcours__inner">
-      {
-        /* Justify-multi designbyad (retour Morgan v3 2026-05-15) :
-         3 mots étalés sur la largeur via text-align: justify CSS natif,
-         calage scroll-driven via setupJustifyMulti (pattern home). */
-      }
-      <h2
-        id="parcours-title"
-        class="studio-parcours__title"
-        data-justify-multi
-        data-justify-amp="60"
-        data-justify-line-step="0.15"
-        data-justify-line-window="0.55"
+    {
+      /* Titre justify-multi sur largeur TOTALE viewport (retour Morgan v4
+       2026-05-15). Sorti du conteneur inner pour s'étendre bord-à-bord
+       sans contrainte de padding lateral. */
+    }
+    <h2
+      id="parcours-title"
+      class="studio-parcours__title"
+      data-justify-multi
+      data-justify-amp="60"
+      data-justify-line-step="0.15"
+      data-justify-line-window="0.55"
+    >
+      <span
+        class="studio-parcours__title-line"
+        data-justify-line
+        data-justify-direction="from-right">PARCOURS ET EXPERIENCE</span
       >
-        <span
-          class="studio-parcours__title-line"
-          data-justify-line
-          data-justify-direction="from-right">PARCOURS ET EXPERIENCE</span
-        >
-      </h2>
+    </h2>
 
+    <div class="studio-parcours__inner">
       <div class="studio-parcours__grid">
         <div class="studio-parcours__photo" data-reveal="up">
           <Image
@@ -410,10 +410,11 @@ const parcours = [
     .studio-architectures__icon--open {
       transform: rotate(45deg);
     }
-    /* Animation curtain clip-path (retour Morgan v3 2026-05-15 :
-       « comme le menu burger »). Pattern identique à MenuPrimary :
-       clip-path inset(0 0 100% 0) → inset(0 0 0 0), cubic-bezier
-       (0.7, 0, 0.3, 1), 0.7s. Combiné avec max-height pour le layout. */
+    /* Animation v4 2026-05-15 (retour Morgan « comme une vague »).
+       Le collapse pilote uniquement le layout (max-height). L'effet wave
+       pro est porté par le word-by-word reveal sur chaque .word :
+       chaque mot a un --i (index) en custom property, le stagger CSS
+       calcule le transition-delay → cascade fluide gauche→droite. */
     .studio-architectures__collapse {
       max-height: 0;
       overflow: hidden;
@@ -422,18 +423,57 @@ const parcours = [
     .studio-architectures__collapse--open {
       max-height: 60rem;
     }
-    .studio-architectures__collapse > .studio-architectures__panel {
-      clip-path: inset(0 0 100% 0);
-      transition: clip-path 0.75s cubic-bezier(0.7, 0, 0.3, 1);
-    }
-    .studio-architectures__collapse--open > .studio-architectures__panel {
-      clip-path: inset(0 0 0 0);
-    }
-    /* Largeur totale page (retour Morgan v3 2026-05-15 : « doit être
-       affiché sur la largeur totale »). max-width retiré, padding
-       identique au summary. */
+    /* Largeur totale page (retour Morgan v3) — pas de max-width. */
     .studio-architectures__panel {
       padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+    }
+    /* Texte : conteneur paragraphe — word-spacing souple, ligne lisible. */
+    .studio-architectures__text {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1rem, 1.15vw, 1.2rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 95%, transparent);
+      text-align: left;
+      margin: 0;
+      max-width: none;
+    }
+    /* État repos d'un mot : invisible, légèrement décalé bas, flou. */
+    .studio-architectures__word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(8px);
+      will-change: opacity, transform, filter;
+      /* Retour vers l'état repos : rapide et sans stagger (fermeture). */
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        filter 0.25s ease;
+    }
+    /* État ouvert : chaque mot révélé avec un delay basé sur --i.
+       Stagger 16ms par mot — donne une vague fluide sans s'éterniser sur
+       les longs paragraphes. Le 120ms initial laisse le temps au panel
+       de s'ouvrir avant que la cascade ne commence. */
+    .studio-architectures__collapse--open .studio-architectures__word {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+      transition:
+        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.7s ease-out;
+      transition-delay: calc(var(--i, 0) * 16ms + 120ms);
+    }
+    /* Reduced motion : disable wave, montre tout d'un coup. */
+    @media (prefers-reduced-motion: reduce) {
+      .studio-architectures__word,
+      .studio-architectures__collapse--open .studio-architectures__word {
+        transition: opacity 0.2s linear !important;
+        transition-delay: 0s !important;
+        transform: none;
+        filter: none;
+      }
     }
     .studio-architectures__panel p {
       font-family: var(--font-body), sans-serif;
@@ -455,18 +495,21 @@ const parcours = [
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
     }
-    /* Titre justify-multi designbyad (retour Morgan v3 2026-05-15) —
-       3 mots Bold UPPERCASE étalés sur toute la largeur via
-       text-align: justify CSS natif, calage scroll piloté par
-       setupJustifyMulti (motion-enhance.ts). */
+    /* Titre justify-multi designbyad (retour Morgan v4 2026-05-15) —
+       3 mots Bold UPPERCASE étalés sur la LARGEUR TOTALE viewport.
+       Sorti du wrapper inner, garde son propre padding latéral léger. */
     .studio-parcours__title {
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
       margin: 0 0 clamp(3rem, 6vw, 5rem) 0;
+      box-sizing: border-box;
     }
     .studio-parcours__title-line {
       display: block;
+      width: 100%;
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(1.6rem, 5.5vw, 5rem);
+      font-size: clamp(1.6rem, 7vw, 6.5rem);
       line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: uppercase;
