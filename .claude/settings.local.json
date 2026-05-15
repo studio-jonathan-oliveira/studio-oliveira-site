@@ -86,8 +86,18 @@
       "Bash(curl -sI https://studio-oliveira-site.vercel.app/og-default.jpg)",
       "Bash(curl -s https://studio-oliveira-site.vercel.app/)",
       "Bash(curl -s https://studio-oliveira-site.vercel.app/sitemap-0.xml)",
-      "Bash(curl -s https://studio-oliveira-site.vercel.app/projets)"
+      "Bash(curl -s https://studio-oliveira-site.vercel.app/projets)",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm -s tsx -e \"import {mockProjectsBySection} from './src/data/mock-projects'; console.log\\('realisations:', mockProjectsBySection.realisations.length\\); console.log\\('conceptions:', mockProjectsBySection.conceptions.length\\);\")",
+      "Bash(git rm *)",
+      "Bash(pnpm format:check)",
+      "Bash(cat > *)",
+      "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2 public/fonts/inter-variable-latin.woff2)",
+      "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2 public/fonts/inter-variable-latin-ext.woff2)",
+      "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2 public/fonts/inter-variable-latin-italic.woff2)"
     ],
-    "additionalDirectories": ["\\tmp"]
+    "additionalDirectories": [
+      "\\tmp"
+    ]
   }
 }

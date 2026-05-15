@@ -883,7 +883,9 @@ const typologies = [
        désormais quasi toute la largeur du conteneur 108rem. */
     .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
+      /* Thin 100 (demande Jonathan 2026-05-15) — contraste fort avec les
+         titres heading bold, accentue le ton manifeste sobre. */
+      font-weight: 100;
       font-size: clamp(1.6rem, 3.4vw, 3.2rem);
       line-height: 1.25;
       letter-spacing: -0.005em;
@@ -906,7 +908,9 @@ const typologies = [
        expérience / sécurité de résultat. Le <strong> fournit le poids,
        on désactive juste l'italique éventuel et on garde la même couleur. */
     .manifeste-fade .manifeste-bold {
-      font-weight: 700;
+      /* Bascule Thin 100 globale 2026-05-15 — la première phrase reste
+         distinguée par sa position en ouverture, plus par le poids. */
+      font-weight: 100;
       font-style: normal;
     }
 
@@ -1271,7 +1275,9 @@ const typologies = [
        clamp 1.2/2.2/2 → 1.6/3/2.8rem. */
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 600;
+      /* Thin 100 (demande Jonathan 2026-05-15) — accentue le caractère
+         "phrase d'introduction" face aux titres typologie bold. */
+      font-weight: 100;
       font-size: clamp(1.6rem, 3vw, 2.8rem);
       line-height: 1.25;
       letter-spacing: 0.01em;
