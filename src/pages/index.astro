@@ -653,14 +653,16 @@ const typologies = [
       margin-top: clamp(0.4rem, 1vw, 1rem);
     }
 
-    /* Section STUDIO — refonte v8 2026-05-15 (retour Morgan : « remonte
-       un peu ce bloc texte + le CTA »). Padding-top réduit pour
-       rapprocher le texte de l'Identité. min-height retiré, gap réduit. */
+    /* Section STUDIO — refonte v10 2026-05-15 (retour Morgan : « remonte
+       légèrement pour être centré entre le texte du dessus et le CTA »).
+       min-height intermédiaire + justify-center → centrage propre. */
     .studio-presentation__wrap {
       display: flex;
       flex-direction: column;
-      gap: clamp(2rem, 4vw, 3rem);
-      padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      gap: clamp(2.5rem, 5vw, 4rem);
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      min-height: 55vh;
+      justify-content: center;
     }
     .studio-presentation__cta {
       display: flex;
@@ -1163,22 +1165,21 @@ const typologies = [
       gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
-      /* v9 2026-05-15 : padding-right calibré à 75vw pour qu'au bout du
-         scroll horizontal, le panel 5 (Architecture publique) arrive
-         exactement à la position du panel 1 (Micro urbain). Calcul :
-         panels 5×22vw=110vw, padding-left 3vw, viewport 100vw → travel
-         = 110+3+75-100 = 88vw = position panel 5 - position panel 1. */
-      padding: 0 75vw 0 clamp(2rem, 4vw, 5rem);
+      /* v10 2026-05-15 : padding-right re-calibré à 74vw pour le nouveau
+         sizing 23vw. Calcul : panels 5×23vw=115vw, padding-left 3vw,
+         viewport 100vw → travel = 115+3+74-100 = 92vw = position panel 5
+         (3+92=95) - position panel 1 (3) = 92vw. La dernière typologie
+         arrive donc exactement à la place de la première. */
+      padding: 0 74vw 0 clamp(2rem, 4vw, 5rem);
       will-change: transform;
     }
 
-    /* Panneau — refonte v9 2026-05-15 (retour Morgan « 4 premières
-       typologies visibles sur la largeur, 5e croppée à droite »).
-       Largeur fixée à 22vw (sans clamp restrictif) : 4 panels = 88vw,
-       le padding-left (~3vw) + amorce de la 5e (~9vw) remplissent les
-       12vw restants. La 5e typologie est donc visible cropée. */
+    /* Panneau — refonte v10 2026-05-15 (retour Morgan : « augmente encore
+       légèrement, afficher jusqu'à Domaine et Caractère en largeur »).
+       Largeur 22vw → 23vw. 4 panels = 92vw + padding-left 3vw = 95vw,
+       reste 5vw pour amorce de la 5e. */
     .htypo-panel {
-      flex: 0 0 22vw;
+      flex: 0 0 23vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -1204,7 +1205,9 @@ const typologies = [
     .htypo-name {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+      /* Taille augmentée v10 2026-05-15 (retour Morgan : « augmente un
+         peu la taille de la police des titres de typologies »). */
+      font-size: clamp(1.1rem, 1.5vw, 1.6rem);
       line-height: 1.2;
       letter-spacing: 0;
       text-transform: uppercase;

@@ -13,12 +13,10 @@
  *
  * Reste : drag pointer/touch (vrai swipe à la doigt), clavier ←/→, dots.
  */
+// Refonte v10 2026-05-15 : 01-villa retirée temporairement (retour Morgan).
+// Reste 3 slides actifs. Les fichiers restent dans public/hero/ — on les
+// ré-activera quand Jonathan validera ou fournira une autre 1re.
 const slides = [
-  {
-    name: '01-villa',
-    label: 'Villa et jardin paysager',
-    position: '50% 100%', // image 1 : Morgan « plus vers le bas »
-  },
   {
     name: '02-cypres',
     label: 'Cyprès et statues méditerranéennes',
@@ -104,21 +102,21 @@ const slides = [
     z-index: 0;
     touch-action: pan-y;
   }
-  /* Track horizontal — 4 panels juxtaposés, translateX piloté par JS. */
+  /* Track horizontal — 3 panels juxtaposés, translateX piloté par JS.
+     v10 2026-05-15 : width 400→300%, panel 25→33.333% (suite retrait de
+     01-villa). */
   .hero-slide__track {
     display: flex;
-    width: 400%;
+    width: 300%;
     height: 100%;
     will-change: transform;
-    /* Slide pro : cubic-bezier custom, ~950ms. Sentir une vraie inertie
-       de doigt, pas un simple ease. */
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
   }
   .hero-slide.is-dragging .hero-slide__track {
     transition: none;
   }
   .hero-slide__panel {
-    flex: 0 0 25%;
+    flex: 0 0 33.3333%;
     position: relative;
     height: 100%;
     overflow: hidden;
