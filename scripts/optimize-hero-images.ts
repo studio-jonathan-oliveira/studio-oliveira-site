@@ -16,8 +16,16 @@ import { join, parse } from 'node:path';
 
 const SRC_DIR = '_assets/hero-source';
 const OUT_DIR = 'public/hero';
-const WIDTH = 1920;
-const HEIGHT = 1080;
+
+// Refonte 2026-05-15 (retour Morgan : « images un peu pixelisées ») :
+// double sortie 1x et 2x pour piloter srcset retina. La 2x couvre les
+// écrans haute densité (laptop retina, iPad Pro, 4K desktop) sans pénaliser
+// les écrans 1080p qui ne chargent que la 1x. Position bottom center à la
+// requête Jonathan (cadrage bas-centré la plupart du temps).
+const VARIANTS = [
+  { suffix: '', width: 1920, height: 1080, quality: 86 }, // 1x baseline
+  { suffix: '@2x', width: 3840, height: 2160, quality: 80 }, // 2x retina
+];
 
 await mkdir(OUT_DIR, { recursive: true });
 
@@ -30,38 +38,40 @@ if (files.length === 0) {
   process.exit(1);
 }
 
-let totalBefore = 0;
 let totalAfter = 0;
 
 for (const file of files) {
   const srcPath = join(SRC_DIR, file);
-  const before = (await stat(srcPath)).size;
-  totalBefore += before;
+  await stat(srcPath); // valider l'existence — la taille brute n'est plus reportée.
 
   const { name } = parse(file);
   const baseName = name.toLowerCase();
 
-  const pipeline = sharp(srcPath).resize(WIDTH, HEIGHT, {
-    fit: 'cover',
-    position: 'center',
-  });
+  for (const v of VARIANTS) {
+    const pipeline = sharp(srcPath).resize(v.width, v.height, {
+      fit: 'cover',
+      position: 'attention', // crop intelligent autour du sujet principal
+    });
 
-  const webp = await pipeline.clone().webp({ quality: 82, effort: 5 }).toBuffer();
-  const jpeg = await pipeline
-    .clone()
-    .jpeg({ quality: 80, mozjpeg: true, progressive: true })
-    .toBuffer();
+    const webp = await pipeline.clone().webp({ quality: v.quality, effort: 5 }).toBuffer();
+    const jpeg = await pipeline
+      .clone()
+      .jpeg({ quality: v.quality - 2, mozjpeg: true, progressive: true })
+      .toBuffer();
 
-  const webpPath = join(OUT_DIR, `${baseName}.webp`);
-  const jpegPath = join(OUT_DIR, `${baseName}.jpg`);
-  await sharp(webp).toFile(webpPath);
-  await sharp(jpeg).toFile(jpegPath);
+    const webpPath = join(OUT_DIR, `${baseName}${v.suffix}.webp`);
+    const jpegPath = join(OUT_DIR, `${baseName}${v.suffix}.jpg`);
+    await sharp(webp).toFile(webpPath);
+    await sharp(jpeg).toFile(jpegPath);
 
-  totalAfter += webp.byteLength + jpeg.byteLength;
-  console.log(
-    `✓ ${file} : ${Math.round(before / 1024)} KB → ${Math.round(webp.byteLength / 1024)} KB webp + ${Math.round(jpeg.byteLength / 1024)} KB jpg`,
-  );
+    totalAfter += webp.byteLength + jpeg.byteLength;
+    console.log(
+      `✓ ${file}${v.suffix} → ${Math.round(webp.byteLength / 1024)} KB webp + ${Math.round(jpeg.byteLength / 1024)} KB jpg`,
+    );
+  }
 }
 
-const savedKB = Math.round((totalBefore - totalAfter) / 1024);
-console.log(`\nTotal : -${savedKB} KB sur les 5 hero images (${files.length} traitées).`);
+const totalAfterMB = Math.round((totalAfter / 1024 / 1024) * 10) / 10;
+console.log(
+  `\nTotal : ${files.length} hero images × ${VARIANTS.length} variants × 2 formats = ${totalAfterMB} MB.`,
+);

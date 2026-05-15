@@ -84,10 +84,11 @@ const { darkHero = false } = Astro.props;
 </header>
 
 <style>
-  /* Header — refonte 2026-05-02 (Morgan) : fond ink + écritures cream
-     (inversé par rapport à la version cream précédente). */
+  /* Header — refonte DA Jonathan 2026-05-15 : fond noir profond + cream.
+     Le --color-ink étant désormais aliasé sur --color-black-deep, on
+     est cohérent avec le reste de la home. */
   .site-header {
-    background-color: var(--color-ink);
+    background-color: var(--color-black-deep);
     color: var(--color-cream);
     border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 8%, transparent);
     transform: translateY(0);

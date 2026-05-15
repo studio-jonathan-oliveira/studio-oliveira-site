@@ -66,11 +66,14 @@
  */
 
 @theme {
-  /* Couleurs marque — primaires (refonte 2026-05-02 Morgan : retrait
-     intégral du latérite, palette monochrome cream / ink à la designbyad). */
+  /* Couleurs marque — refonte DA Jonathan 2026-05-15 (trame home).
+     Le "noir profond" #0a0a0a remplace l'ancien gris-sombre #1d1f1b
+     partout sur le site (Morgan : « le noir que tu as utilisé pour
+     toute la homepage C'est notre nouveau gris sombre, Il le remplace »).
+     --color-ink reste un alias historique → pointe désormais sur le noir. */
   --color-cream: #f5f1ea;
   --color-moss: #70725b;
-  --color-ink: #1d1f1b;
+  --color-ink: #0a0a0a;
 
   /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
      Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */
