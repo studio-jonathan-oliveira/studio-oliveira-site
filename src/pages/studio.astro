@@ -265,12 +265,12 @@ const parcours = [
       padding: clamp(7rem, 14vh, 10rem) 0 clamp(4rem, 8vw, 7rem);
     }
     .studio-bienvenue__inner {
-      max-width: 1500px;
-      margin: 0 auto;
+      width: 100%;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
       display: grid;
       grid-template-columns: 1fr;
       gap: clamp(2.5rem, 5vw, 4rem);
+      box-sizing: border-box;
     }
     @media (min-width: 1024px) {
       .studio-bienvenue__inner {
@@ -291,13 +291,13 @@ const parcours = [
       text-align: left;
       color: var(--color-cream);
       margin: 0 0 clamp(2rem, 4vw, 3.5rem) 0;
-      max-width: 60ch;
+      max-width: none;
     }
     .studio-bienvenue__body {
       display: flex;
       flex-direction: column;
       gap: clamp(1rem, 1.6vw, 1.5rem);
-      max-width: 56ch;
+      max-width: none;
     }
     .studio-bienvenue__body p {
       font-family: var(--font-body), sans-serif;
@@ -347,9 +347,9 @@ const parcours = [
       padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem);
     }
     .studio-manifeste__inner {
-      max-width: 1500px;
-      margin: 0 auto;
+      width: 100%;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
+      box-sizing: border-box;
     }
     /* Phrase manifeste Bold UPPERCASE — règle stricte Jonathan + cohérence
      home (.manifeste-bold). Justifié, mots cliquablement aérés via
@@ -507,9 +507,9 @@ const parcours = [
       padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem);
     }
     .studio-parcours__inner {
-      max-width: 1500px;
-      margin: 0 auto;
+      width: 100%;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
+      box-sizing: border-box;
     }
     /* Titre justify-multi designbyad (retour Morgan v4 2026-05-15) —
        3 mots Bold UPPERCASE étalés sur la LARGEUR TOTALE viewport.
