@@ -432,18 +432,18 @@ const parcours = [
     .studio-architectures__icon--open {
       transform: rotate(45deg);
     }
-    /* Layout collapse — close FAST (0.28s ease-in) pour ne pas freiner
-       le switch entre 2 architectures. Open un poil plus long (0.42s)
-       pour rester fluide. v6 retour Morgan : « trop lent quand on
-       clique sur une autre ». */
+    /* Layout collapse — height JS-measured (v8 2026-05-15).
+       Retour Morgan « encore plus fluide » : on anime height (mesurée
+       au scrollHeight par React) au lieu de max-height fixe. La
+       transition couvre 100% du mouvement visible, plus de temps mort.
+       Close 0.28s ease-in-out, open 0.32s spring-out tendu. */
     .studio-architectures__collapse {
-      max-height: 0;
+      height: 0;
       overflow: hidden;
-      transition: max-height 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+      transition: height 0.26s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .studio-architectures__collapse--open {
-      max-height: 60rem;
-      transition: max-height 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
     /* Largeur totale page (retour Morgan v3) — pas de max-width. */
     .studio-architectures__panel {
