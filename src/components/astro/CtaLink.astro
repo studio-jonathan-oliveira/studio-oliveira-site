@@ -60,7 +60,22 @@ const rel = external ? 'noopener noreferrer' : undefined;
 >
   {showDot && <span class="cta-link__dot" aria-hidden="true" />}
   <span class="cta-link__label">{label}</span>
-  <span class="cta-link__arrow" aria-hidden="true">{external ? '↗' : '→'}</span>
+  {
+    /* Flèche image Jonathan (refonte v3 2026-05-15) — couleur dérivée du
+     tone : dark→white, light→dark, accent→red. */
+  }
+  <img
+    src={tone === 'light'
+      ? '/brand/fleche-dark.webp'
+      : tone === 'accent'
+        ? '/brand/fleche-red.webp'
+        : '/brand/fleche-white.webp'}
+    alt=""
+    aria-hidden="true"
+    class="cta-link__arrow cta-link__arrow--img"
+    width="32"
+    height="32"
+  />
 </a>
 
 <style>
@@ -128,6 +143,24 @@ const rel = external ? 'noopener noreferrer' : undefined;
     transition:
       transform 0.45s var(--ease-out-editorial),
       opacity 0.3s ease;
+  }
+  /* Flèche image (refonte v3 2026-05-15) — taille dérivée de la size variant. */
+  .cta-link__arrow--img {
+    display: inline-block;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .cta-link--sm .cta-link__arrow--img {
+    width: 14px;
+    height: 14px;
+  }
+  .cta-link--md .cta-link__arrow--img {
+    width: 18px;
+    height: 18px;
+  }
+  .cta-link--lg .cta-link__arrow--img {
+    width: 22px;
+    height: 22px;
   }
 
   /* ───────── Variantes tone ───────── */

@@ -61,11 +61,15 @@ const { darkHero = false } = Astro.props;
       <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
       <span class="hidden sm:inline">Démarrer un projet</span>
       <span class="sm:hidden">Projet</span>
-      <span
+      {/* Flèche image Jonathan (white, refonte v3 2026-05-15). */}
+      <img
+        src="/brand/fleche-white.webp"
+        alt=""
         aria-hidden="true"
-        class="inline-block transition-transform duration-[var(--duration-fast)] group-hover:translate-x-1"
-        >→</span
-      >
+        class="cta-pill__arrow"
+        width="32"
+        height="32"
+      />
     </a>
 
     <button
@@ -166,6 +170,19 @@ const { darkHero = false } = Astro.props;
     transform: scale(1.55);
     opacity: 1;
     animation-play-state: paused;
+  }
+  /* Flèche image (refonte v3 2026-05-15) — remplace le glyphe → par
+     la flèche blanche Jonathan. translateX au hover comme avant. */
+  .cta-pill__arrow {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    pointer-events: none;
+    transition: transform 0.4s var(--ease-out-editorial);
+  }
+  .cta-pill:hover .cta-pill__arrow {
+    transform: translateX(4px);
   }
 
   @media (prefers-reduced-motion: reduce) {

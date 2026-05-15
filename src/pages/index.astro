@@ -203,23 +203,39 @@ const typologies = [
     class="studio-presentation relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-labelledby="studio-presentation-title"
   >
-    <div class="px-6 pt-24 pb-24 md:px-10 md:pt-36 md:pb-36" data-reveal="up">
+    <div class="studio-presentation__wrap" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
       {
-        /* Texte verbatim Jonathan — ExtraLight 200 lowercase + 1res lettres
-          des 2 phrases capitalisées (règle Jonathan 2026-05-15). Full-justify
-          "designbyad" sur toute la largeur via .studio-presentation-text. */
+        /* Texte verbatim Jonathan — ExtraLight 200 + casse naturelle (« Studio
+          J. Oliveira » avec majuscules sur la marque, 1res lettres de phrase
+          en maj). Animation justify-multi designbyad sur 4 lignes : chaque
+          ligne en text-align: justify CSS natif, calage scroll-driven via
+          motion-enhance.ts (setupJustifyMulti). */
       }
-      <p class="studio-presentation-text">
-        Le studio j oliveira est un studio de design spatial specialisé dans l'aménagement
-        environnemental immersif et expérientiel. Sa mission est d'étudier et concevoir des espaces
-        extérieurs comme intérieurs en dialogue avec le bâti, l'environnement et l'humain, de la
-        conception jusqu'au pilotage chantier.
-      </p>
-      <div class="mt-12 flex justify-center md:mt-16">
+      <div
+        class="studio-presentation-text"
+        data-justify-multi
+        data-justify-amp="60"
+        data-justify-line-step="0.12"
+        data-justify-line-window="0.55"
+      >
+        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
+          Le Studio J. Oliveira est un studio de design spatial spécialisé dans l'aménagement
+        </p>
+        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
+          environnemental immersif et expérientiel. Sa mission est d'étudier et concevoir des
+        </p>
+        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
+          espaces extérieurs comme intérieurs en dialogue avec le bâti, l'environnement et l'humain,
+        </p>
+        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
+          de la conception jusqu'au pilotage chantier.
+        </p>
+      </div>
+      <div class="studio-presentation__cta">
         <CtaLink
           href="/studio"
-          label="Découvrir le Studio J Oliveira"
+          label="Découvrir le studio"
           tone="dark"
           size="lg"
           magnetic={0.3}
@@ -313,7 +329,16 @@ const typologies = [
               aria-label={`${t.cta} la typologie ${t.nom}`}
             >
               <div class="htypo-card">
-                <h3 class="htypo-name">{t.nom}</h3>
+                {/* Architecture publique → ExtraLight 200 + lowercase
+                    (retour Morgan : « n'écris pas ça en gras »). */}
+                <h3
+                  class:list={[
+                    'htypo-name',
+                    t.slug === 'architecture-publique' && 'htypo-name--light',
+                  ]}
+                >
+                  {t.nom}
+                </h3>
                 <div class="htypo-visual" data-cursor-label={t.cta} data-cursor-tooltip={t.tagline}>
                   {/* <picture> + srcset 1x/2x pour rendu retina. Cadrage
                       object-position 50% 85% (bottom-center) à la requête
@@ -628,11 +653,30 @@ const typologies = [
       margin-top: clamp(0.4rem, 1vw, 1rem);
     }
 
-    /* Bloc STUDIO (présentation) — refonte DA Jonathan 2026-05-15
-       (retours v2) : ExtraLight 200 lowercase, première lettre de chaque
-       phrase capitalisée (gérée dans le texte HTML, pas via CSS). Full-justify
-       "designbyad" sur toute la largeur de la page. */
+    /* Section STUDIO — refonte v3 2026-05-15 (Morgan : « centré entre
+       Identité et CTA + animation justify-multi designbyad »). Le bloc
+       texte est en flex column avec marge auto pour rester centré
+       verticalement dans la section. */
+    .studio-presentation__wrap {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3rem, 6vw, 5rem);
+      padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+      min-height: 70vh;
+      justify-content: center;
+    }
+    .studio-presentation__cta {
+      display: flex;
+      justify-content: center;
+    }
+    /* Bloc texte ADN — 4 lignes en text-align: justify CSS natif. Pattern
+       data-justify-multi (setupJustifyMulti) qui calague les mots au scroll
+       direction par direction. ExtraLight 200 + casse naturelle. */
     .studio-presentation-text {
+      max-width: 100%;
+      margin: 0;
+    }
+    .studio-presentation-line {
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(1.4rem, 2.4vw, 2.6rem);
@@ -640,10 +684,24 @@ const typologies = [
       letter-spacing: 0;
       text-transform: none;
       text-align: justify;
-      text-align-last: left;
+      text-align-last: justify;
       color: var(--color-cream);
-      max-width: 100%;
       margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    /* La dernière ligne, plus courte, n'est pas justifiée — sinon les
+       mots seraient ridiculement écartés. */
+    .studio-presentation-line:last-child {
+      text-align-last: left;
+    }
+    @media (max-width: 767px) {
+      .studio-presentation-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
     }
 
     /* Placeholder marqueur (Morgan 2026-05-11) — signale l'emplacement à
@@ -669,14 +727,16 @@ const typologies = [
        désormais quasi toute la largeur du conteneur 108rem. */
     .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
-      /* ExtraLight 200 + lowercase (refonte DA Jonathan 2026-05-15) —
-         exception : la phrase d'ouverture en gras conserve UPPERCASE.
-         Reste du manifeste en minuscules pour respecter la règle Jonathan. */
+      /* ExtraLight 200 + casse naturelle (refonte v3 2026-05-15 : retour
+         Morgan « tu as oublié la majuscule à 'Je vends par...' »). On
+         retire text-transform: lowercase et on écrit le HTML avec les
+         bonnes majuscules. La phrase d'ouverture .manifeste-bold force
+         UPPERCASE via son propre text-transform. */
       font-weight: 200;
       font-size: clamp(1.6rem, 3.4vw, 3.2rem);
       line-height: 1.3;
       letter-spacing: 0;
-      text-transform: lowercase;
+      text-transform: none;
       text-align: left;
       color: inherit;
       hyphens: none;
@@ -1136,6 +1196,13 @@ const typologies = [
       text-transform: uppercase;
       color: var(--color-cream);
       margin: 0;
+    }
+    /* Variante .htypo-name--light → Architecture publique en ExtraLight 200
+       lowercase (retour Morgan : « n'écris pas ça en gras »). Garde la
+       même taille pour rester cohérent dans l'alignement de la grille. */
+    .htypo-name--light {
+      font-weight: 200;
+      text-transform: lowercase;
     }
 
     /* Images réduites 2026-05-02 (Morgan : « réduit un peu, faut un peu

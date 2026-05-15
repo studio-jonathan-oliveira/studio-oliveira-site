@@ -23,6 +23,20 @@ const VARIANTS = [
   { suffix: '@2x', size: 1800, quality: 80 },
 ];
 
+// Position du crop par fichier (retour Morgan 2026-05-15) :
+//   - 02-coeur-urbain : 'south' → voir depuis le bas de l'image
+//   - 04-domaine-caractere : 'east' → centrer un peu plus à droite pour
+//     apercevoir la statue
+//   - les autres : 'attention' (sharp = smart-crop autour du sujet principal)
+type SharpPosition = 'attention' | 'centre' | 'south' | 'east';
+const POSITION_BY_FILE: Record<string, SharpPosition> = {
+  '01-micro-urbain': 'attention',
+  '02-coeur-urbain': 'south',
+  '03-frange-urbaine': 'attention',
+  '04-domaine-caractere': 'east',
+  '05-architecture-publique': 'attention',
+};
+
 await mkdir(OUT_DIR, { recursive: true });
 
 const files = (await readdir(SRC_DIR))
@@ -41,10 +55,11 @@ for (const file of files) {
   const { name } = parse(file);
   const baseName = name.toLowerCase();
 
+  const position = POSITION_BY_FILE[baseName] ?? 'attention';
   for (const v of VARIANTS) {
     const pipeline = sharp(srcPath).resize(v.size, v.size, {
       fit: 'cover',
-      position: 'attention',
+      position,
     });
 
     const webp = await pipeline.clone().webp({ quality: v.quality, effort: 5 }).toBuffer();

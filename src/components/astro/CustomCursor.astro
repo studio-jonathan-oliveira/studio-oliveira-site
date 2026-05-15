@@ -136,13 +136,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 9px;
-      letter-spacing: 0.18em;
+      /* Refonte v3 2026-05-15 (retour Morgan) : Inter Bold (heading) au
+         lieu de Geist Mono, pour le label CHOISIR / EXPLORER affiché dans
+         le ring agrandi au survol des cards typologies. */
+      font-family: var(--font-heading), sans-serif;
+      font-size: 13px;
+      letter-spacing: 0;
       text-transform: uppercase;
-      /* Texte cream sur ring latérite (default) ; sur dark-section : latérite sur cream. */
       color: var(--cursor-text);
-      font-weight: 600;
+      font-weight: 700;
       opacity: 0;
       transition: opacity 0.2s ease;
       pointer-events: none;
@@ -168,23 +170,23 @@
        contraste lisible quel que soit le fond de section.
        Refonte v4 : font 14px + white-space: pre pour que chaque ligne
        tienne sur une seule ligne sans wrap (largeur auto-fit). */
-    /* Tooltip typologies — refonte v2 2026-05-15 (retour Morgan) :
-       fond transparent + texte rouge Inter Bold UPPERCASE. Suit le curseur
-       au survol des images du scroll horizontal typologies. */
+    /* Tooltip typologies — refonte v3 2026-05-15 (retour Morgan) :
+       transparent + texte rouge Inter Bold UPPERCASE, BEAUCOUP plus gros
+       pour bien voir (taille proche de la trame Jonathan). Pas d'ombrage. */
     .cursor-tooltip {
       position: absolute;
       left: 100%;
       top: 0;
-      transform: translate(20px, -100%);
+      transform: translate(24px, -100%);
       margin-top: -8px;
       padding: 6px 0;
       background-color: transparent;
       color: var(--color-red);
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: 13px;
+      font-size: clamp(18px, 1.6vw, 26px);
       letter-spacing: 0;
-      line-height: 1.5;
+      line-height: 1.25;
       text-transform: uppercase;
       white-space: pre;
       opacity: 0;
@@ -192,7 +194,6 @@
       transition: opacity 0.25s var(--ease-out-editorial);
       will-change: transform, opacity;
       z-index: 1;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
     .custom-cursor.is-tooltipped .cursor-tooltip {
       opacity: 1;

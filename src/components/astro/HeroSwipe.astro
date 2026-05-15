@@ -1,32 +1,49 @@
 ---
 /*
- * HeroSwipe — slideshow hero (refonte v2 2026-05-15, retours Morgan/Jonathan).
+ * HeroSwipe v3 — slide horizontal propre (refonte 2026-05-15 retour Morgan :
+ * « pas de flou, swipe gauche→droite comme sur une tablette »).
  *
- * Changements vs v1 :
- *  - Cross-fade opacity (au lieu de slide horizontal qui faisait "mal aux yeux").
- *  - 3 secondes d'affichage par image (au lieu de défilement rapide).
- *  - Wordmark "STUDIO J. OLIVEIRA" SORTI des slides → figé en overlay,
- *    seules les images défilent dessous. "STUDIO" ligne 1, "J. OLIVEIRA" ligne 2.
- *  - Images en 2x density (srcset 1920/3840) via pipeline scripts/optimize-hero-images.ts.
- *  - object-position: 50% 85% (cadrage bas-centré la plupart du temps).
- *  - Drag/clavier/dots restent dispos pour naviguer manuellement.
+ * Architecture :
+ *  - Track horizontal qui translate à chaque changement d'index.
+ *  - 4 slides côte à côte (04-pergola-palmiers retiré). flex 0 0 100% chacun.
+ *  - Transition cubic-bezier 950ms, smooth pro.
+ *  - Wordmark FIGÉ en overlay absolu (ne défile pas avec les slides).
+ *  - 5s par image (durée d'arrêt) — le slide lui-même prend 950ms.
+ *  - srcset 1x/2x pour piloter retina.
+ *
+ * Reste : drag pointer/touch (vrai swipe à la doigt), clavier ←/→, dots.
  */
 const slides = [
-  { name: '01-villa', label: 'Villa et jardin paysager' },
-  { name: '02-cypres', label: 'Cyprès et statues méditerranéennes' },
-  { name: '03-terrasse-salon', label: 'Terrasse et salon outdoor végétalisé' },
-  { name: '04-pergola-palmiers', label: 'Pergola et palmiers' },
-  { name: '05-ruelle', label: 'Ruelle végétalisée' },
+  {
+    name: '01-villa',
+    label: 'Villa et jardin paysager',
+    position: '50% 100%', // image 1 : Morgan « plus vers le bas »
+  },
+  {
+    name: '02-cypres',
+    label: 'Cyprès et statues méditerranéennes',
+    position: '50% 85%',
+  },
+  {
+    name: '03-terrasse-salon',
+    label: 'Terrasse et salon outdoor végétalisé',
+    position: '50% 85%',
+  },
+  {
+    name: '05-ruelle',
+    label: 'Ruelle végétalisée',
+    position: '50% 85%',
+  },
 ];
 ---
 
-<div class="hero-fade" data-hero-fade>
-  <div class="hero-fade__stack" data-hero-fade-stack>
+<div class="hero-slide" data-hero-slide>
+  <div class="hero-slide__track" data-hero-slide-track>
     {
       slides.map((slide, i) => (
         <div
-          class={i === 0 ? 'hero-fade__slide is-active' : 'hero-fade__slide'}
-          data-hero-fade-slide={i}
+          class="hero-slide__panel"
+          data-hero-slide-panel={i}
           aria-hidden={i === 0 ? 'false' : 'true'}
         >
           <picture>
@@ -42,6 +59,7 @@ const slides = [
               decoding="async"
               fetchpriority={i === 0 ? 'high' : 'auto'}
               draggable="false"
+              style={`object-position: ${slide.position}`}
             />
           </picture>
         </div>
@@ -49,32 +67,29 @@ const slides = [
     }
   </div>
 
-  {
-    /* Voile sombre subtil — au-dessus des images, sous le wordmark.
-      Garantit le contraste du wordmark et du Header quel que soit le visuel. */
-  }
-  <div class="hero-fade__veil" aria-hidden="true"></div>
+  {/* Voile sombre subtil — au-dessus des images, sous le wordmark. */}
+  <div class="hero-slide__veil" aria-hidden="true"></div>
 
   {
-    /* Wordmark figé — ne défile PAS avec les images (retour Jonathan).
-      "STUDIO" ligne 1, "J. OLIVEIRA" ligne 2. ExtraLight 200 UPPERCASE rouge. */
+    /* Wordmark FIGÉ — "STUDIO" / "J. OLIVEIRA" sur 2 lignes, taille réduite
+      (retour Morgan : « un peu plus petit »). ExtraLight 200 UPPERCASE rouge. */
   }
-  <p class="hero-fade__wordmark" aria-hidden="true">
-    <span class="hero-fade__wordmark-line">STUDIO</span>
-    <span class="hero-fade__wordmark-line">J. OLIVEIRA</span>
+  <p class="hero-slide__wordmark" aria-hidden="true">
+    <span class="hero-slide__wordmark-line">STUDIO</span>
+    <span class="hero-slide__wordmark-line">J. OLIVEIRA</span>
   </p>
 
-  {/* Dots indicateurs — bas-centre, cliquables pour goto direct. */}
-  <div class="hero-fade__dots" role="tablist" aria-label="Sélecteur de visuel hero">
+  {/* Dots indicateurs — bas-centre. */}
+  <div class="hero-slide__dots" role="tablist" aria-label="Sélecteur de visuel hero">
     {
       slides.map((_, i) => (
         <button
           type="button"
-          class="hero-fade__dot"
+          class="hero-slide__dot"
           role="tab"
           aria-selected={i === 0 ? 'true' : 'false'}
           aria-label={`Aller au visuel ${i + 1}`}
-          data-hero-fade-dot={i}
+          data-hero-slide-dot={i}
         />
       ))
     }
@@ -82,47 +97,47 @@ const slides = [
 </div>
 
 <style>
-  .hero-fade {
+  .hero-slide {
     position: absolute;
     inset: 0;
     overflow: hidden;
     z-index: 0;
+    touch-action: pan-y;
   }
-  .hero-fade__stack {
-    position: absolute;
-    inset: 0;
+  /* Track horizontal — 4 panels juxtaposés, translateX piloté par JS. */
+  .hero-slide__track {
+    display: flex;
+    width: 400%;
+    height: 100%;
+    will-change: transform;
+    /* Slide pro : cubic-bezier custom, ~950ms. Sentir une vraie inertie
+       de doigt, pas un simple ease. */
+    transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
   }
-  /* Chaque slide superposé en absolute — visibilité pilotée par opacity.
-     Cross-fade 1.2s (refonte douce, retour Morgan/Jonathan). */
-  .hero-fade__slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1.2s var(--ease-out-editorial);
-    will-change: opacity;
+  .hero-slide.is-dragging .hero-slide__track {
+    transition: none;
   }
-  .hero-fade__slide.is-active {
-    opacity: 1;
+  .hero-slide__panel {
+    flex: 0 0 25%;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
   }
-  .hero-fade__slide picture,
-  .hero-fade__slide img {
+  .hero-slide__panel picture,
+  .hero-slide__panel img {
     width: 100%;
     height: 100%;
     display: block;
   }
-  .hero-fade__slide img {
+  .hero-slide__panel img {
     object-fit: cover;
-    /* Cadrage bas-centré (retour Jonathan : « aligné au bas de l'image la
-       plupart du temps »). 50% horizontal, 85% vertical — laisse 15% de
-       haut visibles, le bas pleine résolution.. */
-    object-position: 50% 85%;
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
   }
 
-  /* Voile gradient bord haut + bord bas, centre transparent. */
-  .hero-fade__veil {
+  /* Voile vignette top + bottom. */
+  .hero-slide__veil {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -138,9 +153,8 @@ const slides = [
     );
   }
 
-  /* Wordmark FIGÉ sur l'écran — ne dépend pas du stack des slides.
-     Ligne 1 "STUDIO", ligne 2 "J. OLIVEIRA". ExtraLight 200 UPPERCASE rouge. */
-  .hero-fade__wordmark {
+  /* Wordmark FIGÉ — réduit (Morgan : « un peu plus petit »). */
+  .hero-slide__wordmark {
     position: absolute;
     left: clamp(1.5rem, 4vw, 4rem);
     bottom: clamp(4rem, 9vh, 7rem);
@@ -152,18 +166,18 @@ const slides = [
     color: var(--color-red);
     text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
   }
-  .hero-fade__wordmark-line {
+  .hero-slide__wordmark-line {
     font-family: var(--font-heading), sans-serif;
     font-weight: 200;
-    font-size: clamp(3.2rem, 9.5vw, 11rem);
-    line-height: 0.92;
+    font-size: clamp(2.4rem, 6.8vw, 7.5rem);
+    line-height: 0.95;
     letter-spacing: -0.005em;
     text-transform: uppercase;
     display: block;
   }
 
-  /* Dots indicateurs — bas-centre. Inchangé vs v1 sauf nom de classe. */
-  .hero-fade__dots {
+  /* Dots — inchangé. */
+  .hero-slide__dots {
     position: absolute;
     left: 50%;
     bottom: clamp(1rem, 3vh, 1.75rem);
@@ -173,7 +187,7 @@ const slides = [
     z-index: 3;
     padding: 0.5rem 0.75rem;
   }
-  .hero-fade__dot {
+  .hero-slide__dot {
     appearance: none;
     background: transparent;
     width: 8px;
@@ -187,17 +201,17 @@ const slides = [
       transform 0.35s var(--ease-out-editorial),
       border-color 0.35s var(--ease-out-editorial);
   }
-  .hero-fade__dot[aria-selected='true'] {
+  .hero-slide__dot[aria-selected='true'] {
     background-color: var(--color-red);
     border-color: var(--color-red);
     transform: scale(1.25);
   }
-  .hero-fade__dot:hover {
+  .hero-slide__dot:hover {
     border-color: var(--color-cream);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-fade__slide {
+    .hero-slide__track {
       transition: none;
     }
   }
@@ -205,35 +219,47 @@ const slides = [
 
 <script>
   /*
-   * Wire hero cross-fade — auto-advance 3s par image, dots cliquables, clavier.
-   * Pas de drag (cross-fade, pas de slide horizontal à manipuler).
+   * Wire hero slide horizontal — drag pointer + clavier + dots + auto 5s.
+   * Le slide entier translate au changement d'index ; pas de cross-fade.
    */
-  function wireHeroFade() {
-    const root = document.querySelector<HTMLElement>('[data-hero-fade]');
+  function wireHeroSlide() {
+    const root = document.querySelector<HTMLElement>('[data-hero-slide]');
     if (!root) return;
-    if (root.dataset.fadeWired === 'true') return;
-    root.dataset.fadeWired = 'true';
+    if (root.dataset.slideWired === 'true') return;
+    root.dataset.slideWired = 'true';
 
-    const slides = root.querySelectorAll<HTMLElement>('[data-hero-fade-slide]');
-    const dots = root.querySelectorAll<HTMLButtonElement>('[data-hero-fade-dot]');
-    if (slides.length === 0) return;
+    const track = root.querySelector<HTMLElement>('[data-hero-slide-track]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-hero-slide-panel]');
+    const dots = root.querySelectorAll<HTMLButtonElement>('[data-hero-slide-dot]');
+    if (!track || panels.length === 0) return;
 
-    const total = slides.length;
+    const total = panels.length;
     let index = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentDeltaX = 0;
+    let pointerId: number | null = null;
     let autoTimer: number | null = null;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const AUTO_INTERVAL = 3000;
+    const AUTO_INTERVAL = 5000; // 5s par image (retour Morgan : « une ou deux secondes de plus »)
+    const DRAG_THRESHOLD = 0.18;
+
+    const applyTransform = (extraPx = 0) => {
+      const slideWidth = root.clientWidth;
+      const x = -index * slideWidth + extraPx;
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+
+    const updateA11y = () => {
+      panels.forEach((p, i) => p.setAttribute('aria-hidden', i === index ? 'false' : 'true'));
+      dots.forEach((d, i) => d.setAttribute('aria-selected', i === index ? 'true' : 'false'));
+    };
 
     const goto = (next: number) => {
-      const target = (next + total) % total;
-      if (target === index) return;
-      slides[index]!.classList.remove('is-active');
-      slides[index]!.setAttribute('aria-hidden', 'true');
-      slides[target]!.classList.add('is-active');
-      slides[target]!.setAttribute('aria-hidden', 'false');
-      dots.forEach((d, i) => d.setAttribute('aria-selected', i === target ? 'true' : 'false'));
-      index = target;
+      index = (next + total) % total;
+      applyTransform(0);
+      updateA11y();
       restartAuto();
     };
 
@@ -252,9 +278,46 @@ const slides = [
       startAuto();
     };
 
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => goto(i));
-    });
+    // Drag pointer (souris + touch) — vrai swipe doigt.
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      isDragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      currentDeltaX = 0;
+      root.classList.add('is-dragging');
+      root.setPointerCapture(e.pointerId);
+      stopAuto();
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      currentDeltaX = e.clientX - startX;
+      applyTransform(currentDeltaX);
+    };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      isDragging = false;
+      pointerId = null;
+      root.classList.remove('is-dragging');
+      const ratio = currentDeltaX / root.clientWidth;
+      let next = index;
+      if (ratio < -DRAG_THRESHOLD) next = index + 1;
+      else if (ratio > DRAG_THRESHOLD) next = index - 1;
+      goto(next);
+    };
+    const onPointerCancel = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      isDragging = false;
+      pointerId = null;
+      root.classList.remove('is-dragging');
+      applyTransform(0);
+      restartAuto();
+    };
+
+    root.addEventListener('pointerdown', onPointerDown);
+    root.addEventListener('pointermove', onPointerMove);
+    root.addEventListener('pointerup', onPointerUp);
+    root.addEventListener('pointercancel', onPointerCancel);
 
     document.addEventListener('keydown', (e) => {
       const rect = root.getBoundingClientRect();
@@ -268,12 +331,22 @@ const slides = [
       }
     });
 
-    root.addEventListener('mouseenter', stopAuto);
-    root.addEventListener('mouseleave', startAuto);
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goto(i));
+    });
 
+    root.addEventListener('mouseenter', stopAuto);
+    root.addEventListener('mouseleave', () => {
+      if (!isDragging) startAuto();
+    });
+
+    window.addEventListener('resize', () => applyTransform(0), { passive: true });
+
+    applyTransform(0);
+    updateA11y();
     startAuto();
   }
 
-  wireHeroFade();
-  document.addEventListener('astro:page-load', wireHeroFade);
+  wireHeroSlide();
+  document.addEventListener('astro:page-load', wireHeroSlide);
 </script>

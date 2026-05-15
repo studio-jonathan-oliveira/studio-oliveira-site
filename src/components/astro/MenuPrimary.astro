@@ -492,8 +492,9 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       transform 0.5s var(--ease-out-editorial);
   }
   .primary-menu__arrow--img {
-    width: clamp(20px, 2.4vw, 36px);
-    height: clamp(20px, 2.4vw, 36px);
+    /* Refonte v3 2026-05-15 (retour Morgan : « réduire la taille un peu »). */
+    width: clamp(14px, 1.5vw, 22px);
+    height: clamp(14px, 1.5vw, 22px);
     object-fit: contain;
     pointer-events: none;
   }
