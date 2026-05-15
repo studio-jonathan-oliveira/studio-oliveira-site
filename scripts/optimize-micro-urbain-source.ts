@@ -24,27 +24,30 @@ interface Variant {
   width: number;
 }
 
+// Qualité augmentée 82 → 92 (retour Morgan 2026-05-15 v4 : qualité pas
+// suffisante sur preview). Widths max augmentés pour avoir des sources
+// retina propres jusqu'à 2400px viewport.
 const variants: Variant[] = [
-  { source: '_assets/micro-urbain/01-hero.jpg', output: `${DIR}/01-hero.jpg`, width: 2200 },
+  { source: '_assets/micro-urbain/01-hero.jpg', output: `${DIR}/01-hero.jpg`, width: 2600 },
   {
     source: '_assets/micro-urbain/02-roof.jpg',
     output: `${DIR}/02-large-top.jpg`,
-    width: 1800,
+    width: 2400,
   },
   {
     source: '_assets/micro-urbain/03-patio.jpg',
     output: `${DIR}/03-diptyque-left.jpg`,
-    width: 1100,
+    width: 1500,
   },
   {
     source: '_assets/micro-urbain/04-patio.jpg',
     output: `${DIR}/04-diptyque-right.jpg`,
-    width: 1300,
+    width: 1800,
   },
   {
     source: '_assets/micro-urbain/05-roof.jpg',
     output: `${DIR}/05-large-bottom.jpg`,
-    width: 1800,
+    width: 2400,
   },
 ];
 
@@ -57,7 +60,7 @@ async function main() {
     await sharp(v.source)
       .rotate()
       .resize({ width: v.width, withoutEnlargement: true })
-      .jpeg({ quality: 82, mozjpeg: true })
+      .jpeg({ quality: 92, mozjpeg: true })
       .toFile(v.output);
     console.log(`${v.output} ok`);
   }

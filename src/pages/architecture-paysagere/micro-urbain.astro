@@ -144,7 +144,7 @@ const schema = jsonLdGraph([
         alt="Terrasse urbaine micro-urbain — projet Studio J Oliveira"
         widths={[960, 1440, 1920, 2560]}
         sizes="100vw"
-        quality={82}
+        quality={92}
         format="webp"
         loading="eager"
         class="mu-hero__img"
@@ -198,7 +198,7 @@ const schema = jsonLdGraph([
         alt="Projet micro urbain — terrasse végétalisée sous ciel d'altitude"
         widths={[960, 1440, 1800]}
         sizes="(min-width: 1024px) 92vw, 96vw"
-        quality={82}
+        quality={92}
         format="webp"
         loading="lazy"
         class="mu-gallery__img"
@@ -212,7 +212,7 @@ const schema = jsonLdGraph([
           alt="Projet micro urbain — escalier patio jardin minéral"
           widths={[480, 720, 1100]}
           sizes="(min-width: 1024px) 38vw, 92vw"
-          quality={82}
+          quality={92}
           format="webp"
           loading="lazy"
           class="mu-gallery__img"
@@ -224,7 +224,7 @@ const schema = jsonLdGraph([
           alt="Projet micro urbain — patio tropical intérieur-extérieur"
           widths={[640, 960, 1300]}
           sizes="(min-width: 1024px) 54vw, 96vw"
-          quality={82}
+          quality={92}
           format="webp"
           loading="lazy"
           class="mu-gallery__img"
@@ -238,7 +238,7 @@ const schema = jsonLdGraph([
         alt="Projet micro urbain — rooftop avec vue panoramique urbaine"
         widths={[960, 1440, 1800]}
         sizes="(min-width: 1024px) 92vw, 96vw"
-        quality={82}
+        quality={92}
         format="webp"
         loading="lazy"
         class="mu-gallery__img"
@@ -360,8 +360,6 @@ const schema = jsonLdGraph([
       object-fit: cover;
       object-position: center;
       display: block;
-      transform: scale(1.04);
-      will-change: transform;
     }
     /* Voile gradient DOUBLE — sombre en haut (zone H1) + sombre en bas
        (zone specs), transparent au milieu. Pas de flou (Jonathan).
@@ -468,18 +466,19 @@ const schema = jsonLdGraph([
       flex-direction: column;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
-    /* Photos « large » pleine largeur — ratio panoramique. Conserve une
-       respiration cinéma au-dessus et en-dessous du diptyque. */
+    /* Photos « large » pleine largeur — ratio cinéma allégé pour montrer
+       plus de l'image (Morgan v4 2026-05-15 : « image 02 trop zoomée »).
+       Passe de 21:9 → 16:10 desktop, 4:3 → 3:2 mobile. */
     .mu-gallery__large {
       margin: 0;
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       background-color: var(--color-black-deep);
     }
     @media (min-width: 1024px) {
       .mu-gallery__large {
-        aspect-ratio: 21 / 9;
+        aspect-ratio: 16 / 10;
       }
     }
     /* Diptyque 03 + 04 — pattern trame Jonathan : portrait gauche plus
@@ -525,12 +524,6 @@ const schema = jsonLdGraph([
       object-fit: cover;
       object-position: center;
       display: block;
-      transition: transform 0.9s var(--ease-out-editorial);
-    }
-    .mu-gallery__large:hover .mu-gallery__img,
-    .mu-gallery__diptyque-left:hover .mu-gallery__img,
-    .mu-gallery__diptyque-right:hover .mu-gallery__img {
-      transform: scale(1.04);
     }
 
     /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
