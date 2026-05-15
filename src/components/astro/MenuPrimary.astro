@@ -350,14 +350,15 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Bouton Fermer — refonte v2 2026-05-15 (Morgan : « passe le avec le
-     même look que le CTA Démarrer un projet : fond rouge, typo crème »). */
+  /* Bouton Fermer — refonte v8 2026-05-15 (Morgan) : repos blanc/ink
+     (cream sur ink-text), hover/focus rouge/cream (bascule vers le look
+     du CTA Démarrer). */
   .primary-menu__close {
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    background: var(--color-red);
-    border: 1px solid var(--color-red);
+    background: var(--color-cream);
+    border: 1px solid var(--color-cream);
     border-radius: 999px;
     padding: 0.5rem 1.15rem;
     font-family: var(--font-heading), sans-serif;
@@ -365,7 +366,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     font-size: 13px;
     letter-spacing: 0;
     text-transform: uppercase;
-    color: var(--color-cream);
+    color: var(--color-black-deep);
     cursor: pointer;
     transition:
       color 0.3s ease,
@@ -373,9 +374,11 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       background-color 0.3s ease;
   }
   .primary-menu__close:hover,
-  .primary-menu__close:focus-visible {
-    background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
-    border-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
+  .primary-menu__close:focus-visible,
+  .primary-menu__close:active {
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+    color: var(--color-cream);
   }
   .primary-menu__close-x {
     position: relative;

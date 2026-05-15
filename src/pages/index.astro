@@ -653,17 +653,14 @@ const typologies = [
       margin-top: clamp(0.4rem, 1vw, 1rem);
     }
 
-    /* Section STUDIO — refonte v3 2026-05-15 (Morgan : « centré entre
-       Identité et CTA + animation justify-multi designbyad »). Le bloc
-       texte est en flex column avec marge auto pour rester centré
-       verticalement dans la section. */
+    /* Section STUDIO — refonte v8 2026-05-15 (retour Morgan : « remonte
+       un peu ce bloc texte + le CTA »). Padding-top réduit pour
+       rapprocher le texte de l'Identité. min-height retiré, gap réduit. */
     .studio-presentation__wrap {
       display: flex;
       flex-direction: column;
-      gap: clamp(3rem, 6vw, 5rem);
-      padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 4rem);
-      min-height: 70vh;
-      justify-content: center;
+      gap: clamp(2rem, 4vw, 3rem);
+      padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
     }
     .studio-presentation__cta {
       display: flex;
@@ -762,12 +759,12 @@ const typologies = [
       font-style: normal;
       text-transform: uppercase;
     }
-    /* Bloc manifeste — refonte v5 2026-05-15 : padding-block asymétrique
-       (top > bottom) pour réduire encore la zone rouge sous la signature
-       (retour Morgan « il faut réduire cet espace rouge vide »). */
+    /* Bloc manifeste — refonte v8 2026-05-15 (retour Morgan « réaugmente
+       un petit peu l'espace vide rouge avant et après »). Padding-block
+       symétrique, valeurs intermédiaires entre v4 (5-9rem) et v5 (2-3.5rem). */
     .manifeste-block {
-      padding-top: clamp(5rem, 10vw, 9rem);
-      padding-bottom: clamp(2rem, 4vw, 3.5rem);
+      padding-top: clamp(7rem, 13vw, 11rem);
+      padding-bottom: clamp(5rem, 10vw, 8rem);
     }
     /* Signature manifeste — refonte v2 2026-05-15 : cream plein + centrée.
        Margin-top réduite pour rapprocher de la signature du bloc texte
@@ -1165,34 +1162,27 @@ const typologies = [
       gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
-      /* v7 2026-05-15 : retrait du padding-left et du padding-right 70vw
-         (qui décalait les panels). Avec panel = 25vw et 5 panels = 125vw,
-         la translation horizontale couvre exactement 25vw (1 panel) pour
-         révéler le 5e à la fin. */
-      padding: 0;
+      /* v8 2026-05-15 : retour au padding 70vw à droite (retour Morgan
+         « scroll sticky jusqu'au bout, la dernière typologie arrive à
+         l'emplacement de la première »). Le padding right pousse le
+         travel horizontal au-delà de la simple révélation de la 5e. */
+      padding: 0 70vw 0 clamp(2rem, 4vw, 5rem);
       will-change: transform;
     }
 
-    /* Panneau — refonte v7 2026-05-15 (retour Morgan « les 4 premières
-       typologies doivent occuper toute la largeur, la 5e doit être hors
-       écran et apparaître au scroll horizontal »). Largeur fixée à 25vw
-       (4 panels = 100vw exact). Léger gap via gap sur le rail. */
+    /* Panneau — refonte v8 2026-05-15 (retour Morgan « re-réduise
+       l'espacement entre les typologies comme avant »). Largeur revient
+       au sizing initial clamp(260-420px) ≈ 26vw, 4 visibles + 5e cropée
+       à droite, scroll horizontal long via padding 70vw du rail. */
     .htypo-panel {
-      flex: 0 0 25vw;
+      flex: 0 0 clamp(260px, 26vw, 420px);
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 0 clamp(0.5rem, 1.2vw, 1.5rem) clamp(2rem, 5vh, 4rem);
+      padding-bottom: clamp(2rem, 5vh, 4rem);
       text-decoration: none;
       color: inherit;
-    }
-    @media (max-width: 767px) {
-      /* Sur mobile, on garde des panels plus larges (1 panel ~ 70vw)
-         pour permettre un swipe touch confortable. */
-      .htypo-panel {
-        flex: 0 0 70vw;
-      }
     }
 
     .htypo-card {

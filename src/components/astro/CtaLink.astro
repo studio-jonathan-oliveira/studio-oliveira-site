@@ -150,17 +150,18 @@ const rel = external ? 'noopener noreferrer' : undefined;
     object-fit: contain;
     pointer-events: none;
   }
+  /* Tailles réduites v8 2026-05-15 (retour Morgan sur le CTA "Découvrir le studio"). */
   .cta-link--sm .cta-link__arrow--img {
+    width: 12px;
+    height: 12px;
+  }
+  .cta-link--md .cta-link__arrow--img {
     width: 14px;
     height: 14px;
   }
-  .cta-link--md .cta-link__arrow--img {
-    width: 18px;
-    height: 18px;
-  }
   .cta-link--lg .cta-link__arrow--img {
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
   }
 
   /* ───────── Variantes tone ───────── */
