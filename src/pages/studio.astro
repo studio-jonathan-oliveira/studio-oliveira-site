@@ -205,7 +205,11 @@ const parcours = [
           />
         </div>
 
-        <ol class="studio-parcours__timeline" data-reveal-stagger="0.1" data-reveal="up">
+        {
+          /* Pas de data-reveal-stagger sur l'OL (retour Morgan v2 :
+           timeline invisible). Les LI s'affichent en flux normal. */
+        }
+        <ol class="studio-parcours__timeline">
           {
             parcours.map((p) => (
               <li class="studio-parcours__row">
@@ -269,7 +273,9 @@ const parcours = [
       font-size: clamp(1rem, 1.15vw, 1.15rem);
       line-height: 1.65;
       color: color-mix(in oklab, var(--color-cream) 92%, transparent);
-      text-align: justify;
+      /* Aligné gauche (retour Morgan v2 2026-05-15) — la trame Jonathan
+         montre les paragraphes en flag-left, pas en justify. */
+      text-align: left;
       margin: 0;
     }
     /* Visuel droite : portrait/jardin pleine hauteur de la grille en
@@ -386,20 +392,21 @@ const parcours = [
     .studio-architectures__icon--open {
       transform: rotate(45deg);
     }
-    /* Animation height pure CSS via grid-template-rows 0fr↔1fr (technique
-       pas-de-mesure-JS). Le wrapper .collapse a un grid 1 col qui passe
-       de 0fr à 1fr, l'enfant prend min-height 0 + overflow hidden. */
+    /* Animation max-height + opacity (retour Morgan v2 2026-05-15 :
+       le grid-rows-trick ne tenait pas, panneaux visibles au repos).
+       Pattern bulletproof : max-height 0 + overflow hidden + opacity 0
+       au repos, max-height grande valeur + opacity 1 ouvert. */
     .studio-architectures__collapse {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.45s var(--ease-out-editorial);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        max-height 0.5s var(--ease-out-editorial),
+        opacity 0.3s ease;
     }
     .studio-architectures__collapse--open {
-      grid-template-rows: 1fr;
-    }
-    .studio-architectures__collapse > .studio-architectures__panel {
-      min-height: 0;
-      overflow: hidden;
+      max-height: 60rem;
+      opacity: 1;
     }
     .studio-architectures__panel {
       padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
