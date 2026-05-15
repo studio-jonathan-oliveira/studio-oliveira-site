@@ -653,16 +653,14 @@ const typologies = [
       margin-top: clamp(0.4rem, 1vw, 1rem);
     }
 
-    /* Section STUDIO — refonte v10 2026-05-15 (retour Morgan : « remonte
-       légèrement pour être centré entre le texte du dessus et le CTA »).
-       min-height intermédiaire + justify-center → centrage propre. */
+    /* Section STUDIO — refonte v13 2026-05-15 (retour Morgan : « remonte
+       un peu le texte »). min-height retiré, padding-top réduit ; le bloc
+       se cale en haut au lieu de centrer verticalement. */
     .studio-presentation__wrap {
       display: flex;
       flex-direction: column;
       gap: clamp(2.5rem, 5vw, 4rem);
-      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
-      min-height: 55vh;
-      justify-content: center;
+      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
     }
     .studio-presentation__cta {
       display: flex;
