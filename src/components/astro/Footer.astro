@@ -1,9 +1,15 @@
 ---
 /*
  * Footer — refonte v2 2026-05-15 (retours Morgan : « tu n'as pas
- * respecté les dispositions de la trame »). 2 colonnes :
+ * respecté les dispositions de la trame »). 2 colonnes par défaut :
  *   - gauche  : SIEGE SOCIAL STUDIO + TERRITOIRES D'INTERVENTION (empilés)
  *   - droite  : SERVICES + STUDIO (empilés, alignés droite)
+ *
+ * Variante 3 colonnes (page /studio, trame Jonathan 2026-05-15) :
+ *   - col 1 : SIEGE + TERRITOIRES (empilés, gauche)
+ *   - col 2 : SERVICES (droite)
+ *   - col 3 : STUDIO (droite)
+ *   Activée automatiquement quand pathname commence par /studio.
  *
  * Fond noir profond, écritures cream. Logo en haut-gauche + dot
  * décoratif. Filet cream fin séparateur, mentions légales en bas.
@@ -14,6 +20,8 @@
 
 const currentYear = new Date().getFullYear();
 const currentPath = Astro.url.pathname;
+// Variant studio = 3 colonnes (au lieu de 2 par défaut). Activé sur /studio.
+const isStudio = currentPath === '/studio' || currentPath.startsWith('/studio/');
 
 const services = [
   { href: '/architecture-paysagere', label: 'Architecture paysagère' },
@@ -39,7 +47,7 @@ const studio = [
       <span class="site-footer__dot" aria-hidden="true"></span>
     </header>
 
-    <div class="site-footer__grid">
+    <div class:list={['site-footer__grid', isStudio && 'site-footer__grid--studio']}>
       <div class="site-footer__col site-footer__col--left">
         <section aria-labelledby="footer-siege">
           <h2 id="footer-siege" class="site-footer__heading">Siège social Studio</h2>
@@ -176,6 +184,20 @@ const studio = [
     .site-footer__grid {
       grid-template-columns: 1fr 1fr;
       gap: clamp(2rem, 6vw, 5rem);
+    }
+    /* Variante studio : 3 colonnes (trame Jonathan 2026-05-15). On
+       casse le wrapper .site-footer__col--right via display: contents
+       pour que SERVICES et STUDIO deviennent des grid items indépendants. */
+    .site-footer__grid--studio {
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+    }
+    .site-footer__grid--studio .site-footer__col--right {
+      display: contents;
+    }
+    .site-footer__grid--studio .site-footer__col--right > section {
+      text-align: right;
+      align-self: start;
     }
   }
   .site-footer__col {

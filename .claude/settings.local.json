@@ -101,7 +101,8 @@
       "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"c:\\\\tmp\\\\trame home page.png\"\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
       "Bash(git ls-remote *)",
       "Bash(python -c \"from PIL import Image; im=Image.open\\('c:/tmp/trame page studio.png'\\); print\\(im.size\\)\")",
-      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('c:\\\\tmp\\\\trame page studio.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))"
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('c:\\\\tmp\\\\trame page studio.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(echo \"---EXIT $?---\")"
     ],
     "additionalDirectories": [
       "\\tmp"
