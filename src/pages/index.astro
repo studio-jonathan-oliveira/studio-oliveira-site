@@ -259,10 +259,14 @@ const typologies = [
     class="pull-quote-section full-bleed-bg relative overflow-hidden bg-[var(--color-red)] text-[var(--color-cream)]"
     aria-label="Citation Jonathan Oliveira"
   >
+    {
+      /* Refonte v4 2026-05-15 (retour Morgan) : retrait du min-h-[100vh] et
+       du justify-center qui créaient une zone rouge excédentaire sous la
+       signature. Padding-block symétrique pour que le rouge avant le texte
+       et le rouge après la signature aient la même hauteur. */
+    }
     <div class="pull-quote-sticky">
-      <div
-        class="mx-auto flex min-h-[100vh] max-w-[108rem] flex-col justify-center px-6 py-12 md:pr-8 md:pl-10"
-      >
+      <div class="manifeste-block mx-auto max-w-[108rem] px-6 md:pr-8 md:pl-10">
         <blockquote
           class="manifeste-fade"
           data-words-fade
@@ -274,10 +278,6 @@ const typologies = [
           Je vends par une méthode précise, une réflexion et une structuration globale qui sécurise un
           résultat final pour garantir une expérience d'usage durable.
         </blockquote>
-        {
-          /* Signature — refonte 2026-05-15 (retour Morgan) : passée en cream
-           plein + centrée sur la page. */
-        }
         <footer class="manifeste-signature">
           Jonathan OLIVEIRA, fondateur et designer-gérant du studio
         </footer>
@@ -322,15 +322,12 @@ const typologies = [
       <div class="htypo-rail" data-hscroll-rail>
         {
           typologies.map((t, i) => (
-            <a
-              href={`/architecture-paysagere/${t.slug}`}
-              class="htypo-panel group"
-              data-hscroll-panel
-              aria-label={`${t.cta} la typologie ${t.nom}`}
-            >
+            <div class="htypo-panel" data-hscroll-panel>
               <div class="htypo-card">
-                {/* Architecture publique → ExtraLight 200 + lowercase
-                    (retour Morgan : « n'écris pas ça en gras »). */}
+                {/* Refonte v4 2026-05-15 (retour Morgan) : le <a> n'englobe
+                    plus toute la card mais UNIQUEMENT l'image. Le nom n'est
+                    plus cliquable (« le clic doit être possible que dans
+                    les images des typologies »). */}
                 <h3
                   class:list={[
                     'htypo-name',
@@ -339,10 +336,13 @@ const typologies = [
                 >
                   {t.nom}
                 </h3>
-                <div class="htypo-visual" data-cursor-label={t.cta} data-cursor-tooltip={t.tagline}>
-                  {/* <picture> + srcset 1x/2x pour rendu retina. Cadrage
-                      object-position 50% 85% (bottom-center) à la requête
-                      Jonathan, comme les images hero. */}
+                <a
+                  href={`/architecture-paysagere/${t.slug}`}
+                  class="htypo-visual"
+                  data-cursor-label={t.cta}
+                  data-cursor-tooltip={t.tagline}
+                  aria-label={`${t.cta} la typologie ${t.nom}`}
+                >
                   <picture>
                     <source
                       type="image/webp"
@@ -357,9 +357,9 @@ const typologies = [
                       class="htypo-img"
                     />
                   </picture>
-                </div>
+                </a>
               </div>
-            </a>
+            </div>
           ))
         }
       </div>
@@ -762,11 +762,16 @@ const typologies = [
       font-style: normal;
       text-transform: uppercase;
     }
-    /* Signature manifeste — refonte v2 2026-05-15 (retour Morgan) :
-       cream plein + centrée sur la page. ExtraLight 200, casse respectée
-       (Jonathan OLIVEIRA garde OLIVEIRA en caps). */
+    /* Bloc manifeste — refonte v4 2026-05-15 : padding-block symétrique
+       pour équilibrer le rouge avant/après le contenu (retour Morgan). */
+    .manifeste-block {
+      padding-block: clamp(5rem, 10vw, 9rem);
+    }
+    /* Signature manifeste — refonte v2 2026-05-15 : cream plein + centrée.
+       Margin-top réduite pour rapprocher de la signature du bloc texte
+       (gain de zone rouge en bas). */
     .manifeste-signature {
-      margin-top: clamp(2.5rem, 5vw, 4rem);
+      margin-top: clamp(1.5rem, 3vw, 2.5rem);
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(0.95rem, 1.05vw, 1.15rem);
@@ -1115,12 +1120,12 @@ const typologies = [
       overflow: hidden;
     }
 
-    /* Header — texte intro Jonathan, plus gros + plus près des images
-       (refonte 2026-04-30 retours #2). Position rapprochée du rail
-       (top mid-viewport au lieu de juste sous le header site). */
+    /* Header — refonte v4 2026-05-15 (retour Morgan) : remonté en haut
+       de la section (« qu'il soit au début de cette section »). top réduit
+       de clamp(7-11rem) à clamp(3-6rem). */
     .htypo-header {
       position: absolute;
-      top: clamp(7rem, 16vh, 11rem);
+      top: clamp(3rem, 7vh, 6rem);
       left: 2rem;
       right: 2rem;
       z-index: 3;
@@ -1211,10 +1216,14 @@ const typologies = [
        en hauteur, libérant de l'espace entre l'intro et le rail. */
     .htypo-visual {
       position: relative;
+      display: block;
       width: 100%;
       aspect-ratio: 1 / 1;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
+      /* Refonte v4 2026-05-15 (retour Morgan) : seul l'<a> autour de l'image
+         est cliquable. Le h3 .htypo-name au-dessus n'est plus un lien. */
+      cursor: none; /* curseur custom takes over */
     }
     .htypo-img {
       width: 100%;
