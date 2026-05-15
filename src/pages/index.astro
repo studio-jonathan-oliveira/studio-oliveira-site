@@ -1137,9 +1137,10 @@ const typologies = [
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
       /* ExtraLight 200 + lowercase + 1res lettres capitalisées dans le HTML.
-         Justify designbyad sur toute la largeur (retour Morgan 2026-05-15). */
+         Justify designbyad sur toute la largeur. v9 2026-05-15 :
+         taille augmentée (clamp 1.4-2.6 → 1.7-3.2rem). */
       font-weight: 200;
-      font-size: clamp(1.4rem, 2.4vw, 2.6rem);
+      font-size: clamp(1.7rem, 3vw, 3.2rem);
       line-height: 1.4;
       letter-spacing: 0;
       text-transform: none;
@@ -1162,20 +1163,22 @@ const typologies = [
       gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
-      /* v8 2026-05-15 : retour au padding 70vw à droite (retour Morgan
-         « scroll sticky jusqu'au bout, la dernière typologie arrive à
-         l'emplacement de la première »). Le padding right pousse le
-         travel horizontal au-delà de la simple révélation de la 5e. */
-      padding: 0 70vw 0 clamp(2rem, 4vw, 5rem);
+      /* v9 2026-05-15 : padding-right calibré à 75vw pour qu'au bout du
+         scroll horizontal, le panel 5 (Architecture publique) arrive
+         exactement à la position du panel 1 (Micro urbain). Calcul :
+         panels 5×22vw=110vw, padding-left 3vw, viewport 100vw → travel
+         = 110+3+75-100 = 88vw = position panel 5 - position panel 1. */
+      padding: 0 75vw 0 clamp(2rem, 4vw, 5rem);
       will-change: transform;
     }
 
-    /* Panneau — refonte v8 2026-05-15 (retour Morgan « re-réduise
-       l'espacement entre les typologies comme avant »). Largeur revient
-       au sizing initial clamp(260-420px) ≈ 26vw, 4 visibles + 5e cropée
-       à droite, scroll horizontal long via padding 70vw du rail. */
+    /* Panneau — refonte v9 2026-05-15 (retour Morgan « 4 premières
+       typologies visibles sur la largeur, 5e croppée à droite »).
+       Largeur fixée à 22vw (sans clamp restrictif) : 4 panels = 88vw,
+       le padding-left (~3vw) + amorce de la 5e (~9vw) remplissent les
+       12vw restants. La 5e typologie est donc visible cropée. */
     .htypo-panel {
-      flex: 0 0 clamp(260px, 26vw, 420px);
+      flex: 0 0 22vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -1183,6 +1186,12 @@ const typologies = [
       padding-bottom: clamp(2rem, 5vh, 4rem);
       text-decoration: none;
       color: inherit;
+    }
+    @media (max-width: 767px) {
+      /* Sur mobile, panels plus larges pour swipe touch confortable. */
+      .htypo-panel {
+        flex: 0 0 70vw;
+      }
     }
 
     .htypo-card {

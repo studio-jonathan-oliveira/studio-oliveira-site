@@ -17,15 +17,22 @@ import { join, parse } from 'node:path';
 const SRC_DIR = '_assets/hero-source';
 const OUT_DIR = 'public/hero';
 
-// Refonte 2026-05-15 (retour Morgan : « images un peu pixelisées ») :
-// double sortie 1x et 2x pour piloter srcset retina. La 2x couvre les
-// écrans haute densité (laptop retina, iPad Pro, 4K desktop) sans pénaliser
-// les écrans 1080p qui ne chargent que la 1x. Position bottom center à la
-// requête Jonathan (cadrage bas-centré la plupart du temps).
 const VARIANTS = [
   { suffix: '', width: 1920, height: 1080, quality: 86 }, // 1x baseline
   { suffix: '@2x', width: 3840, height: 2160, quality: 80 }, // 2x retina
 ];
+
+// Position du crop par fichier (refonte v8 2026-05-15 retour Morgan :
+// « on voit trop le haut, pas assez le bas » sur 01-villa). 'south' force
+// le crop sharp à conserver le bas de l'image source.
+type SharpPosition = 'attention' | 'centre' | 'south' | 'east' | 'north';
+const POSITION_BY_FILE: Record<string, SharpPosition> = {
+  '01-villa': 'south',
+  '02-cypres': 'attention',
+  '03-terrasse-salon': 'attention',
+  '04-pergola-palmiers': 'attention',
+  '05-ruelle': 'attention',
+};
 
 await mkdir(OUT_DIR, { recursive: true });
 
@@ -47,10 +54,11 @@ for (const file of files) {
   const { name } = parse(file);
   const baseName = name.toLowerCase();
 
+  const position = POSITION_BY_FILE[baseName] ?? 'attention';
   for (const v of VARIANTS) {
     const pipeline = sharp(srcPath).resize(v.width, v.height, {
       fit: 'cover',
-      position: 'attention', // crop intelligent autour du sujet principal
+      position,
     });
 
     const webp = await pipeline.clone().webp({ quality: v.quality, effort: 5 }).toBuffer();
