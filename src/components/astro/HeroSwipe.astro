@@ -1,0 +1,349 @@
+---
+/*
+ * HeroSwipe — slideshow d'images horizontal swipe-friendly (refonte DA
+ * Jonathan 2026-05-15 — trame home).
+ *
+ * Remplace l'ancien HeroSlideshow vidéo (4 .mp4 cross-fade) par 5 images
+ * fixes (1920×1080 webp + jpg fallback) qui glissent horizontalement à la
+ * manière d'un doigt sur tablette.
+ *
+ * Interactions :
+ *  - pointer drag (souris ou touch) → translateX live, snap au relâchement
+ *  - flèches clavier ← → → slide précédent / suivant
+ *  - dots cliquables → goto direct
+ *  - auto-advance toutes les 6s (pause au hover ou pointer down)
+ *
+ * Accessibilité : prefers-reduced-motion désactive l'auto-advance.
+ * SEO/LCP : la 1re image est en eager + fetchpriority=high pour piloter le
+ * LCP de la home. Les 4 autres en lazy.
+ */
+const slides = [
+  { src: '/hero/01-villa.webp', jpg: '/hero/01-villa.jpg', label: 'Villa et jardin paysager' },
+  {
+    src: '/hero/02-cypres.webp',
+    jpg: '/hero/02-cypres.jpg',
+    label: 'Cyprès et statues méditerranéennes',
+  },
+  {
+    src: '/hero/03-terrasse-salon.webp',
+    jpg: '/hero/03-terrasse-salon.jpg',
+    label: 'Terrasse et salon outdoor végétalisé',
+  },
+  {
+    src: '/hero/04-pergola-palmiers.webp',
+    jpg: '/hero/04-pergola-palmiers.jpg',
+    label: 'Pergola et palmiers',
+  },
+  {
+    src: '/hero/05-ruelle.webp',
+    jpg: '/hero/05-ruelle.jpg',
+    label: 'Ruelle végétalisée',
+  },
+];
+---
+
+<div class="hero-swipe" data-hero-swipe>
+  <div class="hero-swipe__track" data-hero-swipe-track>
+    {
+      slides.map((slide, i) => (
+        <div class="hero-swipe__slide" data-hero-swipe-slide={i}>
+          <picture>
+            <source srcset={slide.src} type="image/webp" />
+            <img
+              src={slide.jpg}
+              alt={slide.label}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              draggable="false"
+            />
+          </picture>
+          <div class="hero-swipe__veil" aria-hidden="true" />
+          {/* Wordmark "STUDIO J. OLIVEIRA" en overlay rouge ExtraLight CAPS,
+              ancré bas-gauche (cf. trame Jonathan). Exception singulière à la
+              règle "ExtraLight = lowercase" — wordmark visuel traité comme cas
+              spécial. Présent sur chaque slide pour rester visible peu importe
+              l'image active. */}
+          <p class="hero-swipe__wordmark" aria-hidden="true">
+            STUDIO J.
+            <br />
+            OLIVEIRA
+          </p>
+        </div>
+      ))
+    }
+  </div>
+  {/* Dots indicateurs en bas — cliquables pour goto direct. */}
+  <div class="hero-swipe__dots" role="tablist" aria-label="Sélecteur de visuel hero">
+    {
+      slides.map((_, i) => (
+        <button
+          type="button"
+          class="hero-swipe__dot"
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-label={`Aller au visuel ${i + 1}`}
+          data-hero-swipe-dot={i}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .hero-swipe {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    /* Garde le focus clavier dans le container pour les flèches ←/→. */
+    outline: none;
+    touch-action: pan-y;
+  }
+  .hero-swipe__track {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    will-change: transform;
+    /* Snap transition activé par défaut. Désactivée pendant un drag actif
+       via .is-dragging (classe posée par le JS). */
+    transition: transform 0.75s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  .hero-swipe.is-dragging .hero-swipe__track {
+    transition: none;
+  }
+  .hero-swipe__slide {
+    flex: 0 0 20%;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+  .hero-swipe__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+  /* Voile sombre subtil sur les bords bas+haut pour assurer le contraste
+     du wordmark + topbar. Centre transparent → l'image respire. */
+  .hero-swipe__veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0.15) 12%,
+      rgba(0, 0, 0, 0) 28%,
+      rgba(0, 0, 0, 0) 65%,
+      rgba(0, 0, 0, 0.4) 88%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+  }
+
+  /* Wordmark "STUDIO J. OLIVEIRA" — refonte trame Jonathan 2026-05-15.
+     ExtraLight 200 + CAPS + couleur rouge — exception au pattern global
+     (cf. CSS .text-display-thin qui force lowercase). Ancré bas-gauche,
+     taille monumentale. */
+  .hero-swipe__wordmark {
+    position: absolute;
+    left: clamp(1.5rem, 4vw, 4rem);
+    bottom: clamp(4rem, 9vh, 7rem);
+    margin: 0;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(3rem, 8.5vw, 9.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    color: var(--color-red);
+    /* Drop shadow douce pour rester lisible quel que soit le visuel. */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Dots indicateurs — coin bas-centre, 5 pastilles cream/ semi-transparent
+     qui deviennent pleines quand le slide correspondant est actif. */
+  .hero-swipe__dots {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(1rem, 3vh, 1.75rem);
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.625rem;
+    z-index: 3;
+    padding: 0.5rem 0.75rem;
+  }
+  .hero-swipe__dot {
+    appearance: none;
+    background: transparent;
+    width: 8px;
+    height: 8px;
+    border: 1px solid color-mix(in oklab, var(--color-cream) 70%, transparent);
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    transition:
+      background-color 0.3s var(--ease-out-editorial),
+      transform 0.3s var(--ease-out-editorial),
+      border-color 0.3s var(--ease-out-editorial);
+  }
+  .hero-swipe__dot[aria-selected='true'] {
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+    transform: scale(1.25);
+  }
+  .hero-swipe__dot:hover {
+    border-color: var(--color-cream);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-swipe__track {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * Wire HeroSwipe — drag horizontal + clavier + dots + auto-advance.
+   * Une seule instance attendue par page (la home).
+   */
+  function wireHeroSwipe() {
+    const root = document.querySelector<HTMLElement>('[data-hero-swipe]');
+    if (!root) return;
+    if (root.dataset.swipeWired === 'true') return;
+    root.dataset.swipeWired = 'true';
+
+    const track = root.querySelector<HTMLElement>('[data-hero-swipe-track]');
+    const slides = root.querySelectorAll<HTMLElement>('[data-hero-swipe-slide]');
+    const dots = root.querySelectorAll<HTMLButtonElement>('[data-hero-swipe-dot]');
+    if (!track || slides.length === 0) return;
+
+    const total = slides.length;
+    let index = 0;
+    let isDragging = false;
+    let startX = 0;
+    let currentDeltaX = 0;
+    let pointerId: number | null = null;
+    let autoTimer: number | null = null;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const AUTO_INTERVAL = 6000; // ms entre changements auto
+    const DRAG_THRESHOLD = 0.18; // 18% de la largeur du slide pour valider le swipe
+
+    const applyTransform = (extraPx = 0) => {
+      const slideWidth = root.clientWidth;
+      const x = -index * slideWidth + extraPx;
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+
+    const updateDots = () => {
+      dots.forEach((d, i) => {
+        d.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+    };
+
+    const goto = (next: number) => {
+      index = (next + total) % total;
+      applyTransform(0);
+      updateDots();
+      restartAuto();
+    };
+
+    const startAuto = () => {
+      if (reducedMotion) return;
+      autoTimer = window.setInterval(() => goto(index + 1), AUTO_INTERVAL);
+    };
+    const stopAuto = () => {
+      if (autoTimer !== null) {
+        window.clearInterval(autoTimer);
+        autoTimer = null;
+      }
+    };
+    const restartAuto = () => {
+      stopAuto();
+      startAuto();
+    };
+
+    // Drag pointer (souris + touch)
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      isDragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      currentDeltaX = 0;
+      root.classList.add('is-dragging');
+      root.setPointerCapture(e.pointerId);
+      stopAuto();
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      currentDeltaX = e.clientX - startX;
+      applyTransform(currentDeltaX);
+    };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      isDragging = false;
+      pointerId = null;
+      root.classList.remove('is-dragging');
+      const ratio = currentDeltaX / root.clientWidth;
+      let next = index;
+      if (ratio < -DRAG_THRESHOLD) next = index + 1;
+      else if (ratio > DRAG_THRESHOLD) next = index - 1;
+      goto(next);
+    };
+    const onPointerCancel = (e: PointerEvent) => {
+      if (!isDragging || e.pointerId !== pointerId) return;
+      isDragging = false;
+      pointerId = null;
+      root.classList.remove('is-dragging');
+      applyTransform(0);
+      restartAuto();
+    };
+
+    root.addEventListener('pointerdown', onPointerDown);
+    root.addEventListener('pointermove', onPointerMove);
+    root.addEventListener('pointerup', onPointerUp);
+    root.addEventListener('pointercancel', onPointerCancel);
+
+    // Clavier — flèches ←/→ quand le curseur est dans le hero (entry tab focus
+    // sur les dots déclenche déjà le focus dans le hero).
+    document.addEventListener('keydown', (e) => {
+      const rect = root.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return; // hors viewport
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goto(index - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goto(index + 1);
+      }
+    });
+
+    // Dots
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goto(i));
+    });
+
+    // Pause auto sur hover
+    root.addEventListener('mouseenter', stopAuto);
+    root.addEventListener('mouseleave', () => {
+      if (!isDragging) startAuto();
+    });
+
+    // Re-calcul du transform au resize.
+    window.addEventListener('resize', () => applyTransform(0), { passive: true });
+
+    applyTransform(0);
+    updateDots();
+    startAuto();
+  }
+
+  wireHeroSwipe();
+  document.addEventListener('astro:page-load', wireHeroSwipe);
+</script>

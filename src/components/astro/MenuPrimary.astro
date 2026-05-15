@@ -53,18 +53,9 @@ const sections = [
       { href: '/realisations', label: 'Réalisations' },
     ],
   },
-  {
-    /* Pages locales (refonte 2026-05-11, audit SEO P0) : pilier SEO local
-      Brive/Bordeaux/Limoges. Lien depuis le menu primaire pour
-      sortir ces pages de l'orphelinat et activer le crawl. */
-    href: '/zones',
-    label: 'Territoires',
-    sub: [
-      { href: '/zones/brive-la-gaillarde', label: 'Brive-la-Gaillarde' },
-      { href: '/zones/bordeaux', label: 'Bordeaux' },
-      { href: '/zones/limoges', label: 'Limoges' },
-    ],
-  },
+  /* Refonte DA 2026-05-15 : entrée "Territoires" retirée du menu pour
+     suivre la trame Jonathan strictement (5 sections + CTA). Les pages
+     /zones/* restent indexables via le Footer + le sitemap. */
 ];
 
 const cta = {
@@ -299,16 +290,15 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
-  /* Refonte 2026-04-28 (Jonathan) : MENU PLEIN partout, fond couleur signature.
-     Plus de zone forest séparée pour l'aside — tout est en couleur signature unie,
-     texte crème. Épuration : grain texture + radial-gradient retirés.
-     2026-04-30 : bascule de bleu Klein vers rouge latérite (demande Jonathan). */
+  /* Refonte DA Jonathan 2026-05-15 (trame home) : fond noir profond + texte cream.
+     L'accent rouge est réservé au pill CTA topbar et à la section manifeste —
+     le menu reste sobre, noir, et laisse la typographie occuper l'espace. */
   .primary-menu__inner {
     width: 100vw;
     max-width: 100vw;
     height: 100dvh;
     min-height: 0;
-    background: var(--color-laterite);
+    background: var(--color-black-deep);
     color: var(--color-cream);
     display: flex;
     flex-direction: column;
@@ -368,7 +358,7 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__close:hover,
   .primary-menu__close:focus-visible {
-    color: var(--color-laterite);
+    color: var(--color-black-deep);
     background-color: var(--color-cream);
     border-color: var(--color-cream);
   }
@@ -474,38 +464,42 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       transform 0.45s var(--ease-out-editorial),
       color 0.4s var(--ease-out-editorial);
   }
-  /* Flèche ↗ — toujours visible (capture Morgan). Sur hover de son
-     propre lien : translate-X amont + scale léger pour un retour visuel. */
+  /* Flèche ↗ — refonte DA Jonathan 2026-05-15 : masquée au repos,
+     apparaît uniquement au hover (annotation trame : « la flèche apparaît
+     également pour inciter au clic »). */
   .primary-menu__arrow {
     display: inline-block;
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(1rem, 2vw, 1.55rem);
     line-height: 1;
     color: var(--color-cream);
-    opacity: 0.85;
+    opacity: 0;
+    transform: translate(8px, 4px);
     transition:
       opacity 0.3s var(--ease-out-editorial),
       transform 0.5s var(--ease-out-editorial);
   }
 
-  /* Hover focus/blur sur la nav — items non-survolés dim, item survolé
-     reste à 1 + label glisse de 6px à droite, flèche vers le haut-droit. */
+  /* Hover focus/blur sur la nav — refonte DA Jonathan 2026-05-15 :
+     au repos seuls les titres principaux sont visibles. Au hover d'un item,
+     sa flèche ↗ et ses sous-items apparaissent ; les autres items se dim.
+     Effet focus/blur signature, mais avec apparition contrôlée des sous-textes. */
   @media (hover: hover) and (min-width: 768px) {
-    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__label-main,
-    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__arrow,
-    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__sub a {
+    .primary-menu__nav ol:hover .primary-menu__item .primary-menu__label-main {
       opacity: 0.35;
     }
-    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__label-main,
-    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__arrow,
-    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__sub a {
-      opacity: 1;
-    }
     .primary-menu__nav ol .primary-menu__item:hover .primary-menu__label-main {
+      opacity: 1;
       transform: translateX(-10px);
     }
     .primary-menu__nav ol .primary-menu__item:hover .primary-menu__arrow {
-      transform: translate(-4px, -4px) scale(1.15);
+      opacity: 0.95;
+      transform: translate(0, 0) scale(1.05);
+    }
+    .primary-menu__nav ol .primary-menu__item:hover .primary-menu__sub {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
     /* Sous-sections : underline qui se trace au hover individuel. */
     .primary-menu__nav ol .primary-menu__item:hover .primary-menu__sub a:hover {
@@ -527,14 +521,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     opacity: 0.95;
   }
 
-  /* État actif : flèche fixe pleine opacité. */
+  /* État actif : flèche fixe pleine opacité + sous-item courant souligné
+     (refonte trame Jonathan : page active marquée par l'underline du sous-lien). */
   .primary-menu__item.is-active .primary-menu__arrow {
-    opacity: 1;
+    opacity: 0.95;
+    transform: translate(0, 0);
+  }
+  .primary-menu__sub a[aria-current='page'] {
+    color: var(--color-cream);
+    border-bottom-color: var(--color-cream);
   }
 
-  /* Sous-sections — refonte 2026-05-02 (Morgan, capture) :
-     toujours visibles, plus de reveal au hover. Alignées droite sous le
-     titre principal. UPPERCASE Jost gras (au lieu de mono 11px). */
+  /* Sous-sections — refonte DA Jonathan 2026-05-15 :
+     masquées au repos, apparaissent au hover du titre parent. Alignées
+     droite sous le titre principal. UPPERCASE Inter (light). */
   .primary-menu__sub {
     list-style: none;
     margin: 0;
@@ -542,6 +542,12 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem 1.4rem;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition:
+      opacity 0.35s var(--ease-out-editorial),
+      transform 0.45s var(--ease-out-editorial);
   }
   @media (min-width: 768px) {
     .primary-menu__sub {
@@ -550,6 +556,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       padding: 0.5rem 0 1.2rem 0;
     }
   }
+  /* Mobile / touch (pas de hover) : sous-items + flèches toujours visibles
+     pour rester utilisables. La logique hover-to-reveal est desktop only. */
+  @media (hover: none), (max-width: 767px) {
+    .primary-menu__sub {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+    .primary-menu__arrow {
+      opacity: 0.85;
+      transform: none;
+    }
+  }
+
   .primary-menu__sub a {
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(0.78rem, 0.95vw, 0.95rem);

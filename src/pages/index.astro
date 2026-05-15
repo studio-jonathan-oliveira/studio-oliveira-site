@@ -19,25 +19,15 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
-// IntroBumper désactivé 2026-04-24 : couvrait l'écran en noir si la vidéo
-// logo ne jouait pas (fallback 3.5s + dismiss parfois laggy). Morgan
-// signalait « accueil toujours noir ». À réactiver quand Jonathan fournira
-// une vidéo logo plus robuste + une seconde de fallback.
+import HeroSwipe from '@/components/astro/HeroSwipe.astro';
 import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, website, person } from '@/lib/schema-org';
 
 const homeSchema = jsonLdGraph([organization(), person(), localBusiness(), website()]);
-// Slideshow hero VIDÉO — refonte 2026-04-29 (Morgan : 3 vidéos Jonathan
-// fournies en full HD, ré-encodées 720p H.264 via scripts/optimize-hero-videos.ts).
-// Cycle infini avec cross-fade 800 ms entre chaque clip.
-// Sources brutes hors repo : _assets/hero-source/ (gitignored).
-import { HERO_LQIP_DATA_URI } from '@/data/hero-lqip';
-const heroVideos = [
-  { src: '/hero/hero-01.mp4', poster: '/hero/hero-01-poster.jpg' },
-  { src: '/hero/hero-02.mp4', poster: '/hero/hero-02-poster.jpg' },
-  { src: '/hero/hero-03.mp4', poster: '/hero/hero-03-poster.jpg' },
-  { src: '/hero/hero-04.mp4', poster: '/hero/hero-04-poster.jpg' },
-];
+// Refonte DA Jonathan 2026-05-15 (trame home) : abandon du slideshow vidéo
+// au profit d'un slideshow image swipe (5 visuels). Pipeline :
+// scripts/optimize-hero-images.ts → public/hero/01-05.{webp,jpg}.
+// Composant HeroSwipe encapsule drag/clavier/dots/auto-advance.
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
@@ -125,21 +115,18 @@ const typologies = [
   }
   <Fragment slot="head">
     {
-      /* Preload du poster de la 1re vidéo : paint instantané dès le HTML parse,
-        sert aussi de fallback (prefers-reduced-motion, JS désactivé, autoplay
-        refusé). Le streaming de la vidéo elle-même est piloté par l'attribut
-        preload="auto" sur le <video> (pas de link rel=preload as=video qui
-        peut causer des doubles téléchargements selon les heuristiques cache). */
+      /* Preload du 1er visuel hero pour piloter le LCP de la home. WebP
+       1920x1080 ~340 KB, sert aussi d'image principale du slideshow swipe. */
     }
     <link
       rel="preload"
       as="image"
-      href="/hero/hero-01-poster.jpg"
-      type="image/jpeg"
+      href="/hero/01-villa.webp"
+      type="image/webp"
       fetchpriority="high"
     />
     {
-      /* JSON-LD home : Organization + Person + LocalBusiness (siège Brive) + WebSite (SearchAction). Pilier consolidation autorité topique Google. */
+      /* JSON-LD home : Organization + Person + LocalBusiness (siège Brive) + WebSite (SearchAction). */
     }
     <script type="application/ld+json" is:inline set:html={homeSchema} />
   </Fragment>
@@ -152,210 +139,31 @@ const typologies = [
       la zone Header sans coupure visuelle. */
   }
 
-  <!-- 01 · HERO IMMERSIF — sticky "recouvrement" style Polestar 5 (mail Jonathan).
-       Le hero reste fixé en arrière-plan pendant que la section suivante
-       vient se superposer au scroll (pas un défilement classique). -->
   {
-    /* LQIP base64 inliné comme background-image initial sur la section (~0.5 KB,
-      0 RTT réseau, affichage instantané dès le HTML parse). Sert de fond ultime
-      sous le slideshow vidéo : si la 1re vidéo n'a pas encore son poster décodé,
-      le LQIP empêche tout flash noir. Une fois la vidéo en lecture, le LQIP
-      est intégralement recouvert. */
+    /* 01 · HERO — refonte DA Jonathan 2026-05-15 (trame home). Slideshow
+       SWIPE 5 images. Le composant <HeroSwipe /> encapsule la mécanique
+       (drag/clavier/dots/auto-advance). La section reste sticky pour la
+       transition de superposition avec #identite. */
   }
   <section
     id="hero"
     data-section-label="Accueil"
     data-theme="dark"
-    class="hero-immersive hero-sticky full-bleed relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
-    style={`background-image: url("${HERO_LQIP_DATA_URI}"); background-size: cover; background-position: center; background-repeat: no-repeat;`}
+    class="hero-immersive hero-sticky full-bleed relative isolate overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     data-hero-bg
   >
     {
-      /* H1 SEO — invisible à l'œil, lu par Google et lecteurs d'écran.
-        Porte tous les keywords cibles (CLAUDE.md §2 : top-3 « designer végétal
-        [zone] »). Le titre visuel STUDIO J OLIVEIRA ci-dessous est rétrogradé
-        en <p> pour garantir un seul H1 par page (règle SEO stricte). */
+      /* H1 SEO sr-only — riche en keywords métier + zones. Le wordmark
+        visuel "STUDIO J. OLIVEIRA" rendu par <HeroSwipe /> est en <p>
+        aria-hidden pour garantir un seul H1 par page. */
     }
     <h1 class="sr-only">
       Studio J Oliveira — designer paysagiste et design biophilique à Brive-la-Gaillarde, Bordeaux
       et Limoges. Conception de jardins, aménagements végétalisés et architecture paysagère pour
       particuliers, hôtellerie-restauration, bureaux et collectivités.
     </h1>
-    {
-      /* Logo Oliveira en haut-gauche du hero — refonte 2026-04-30 (Jonathan) :
-        comme le Header est caché par défaut sur darkHero (auto-hide), on
-        rajoute le logo directement dans le hero pour qu'il reste toujours
-        visible au-dessus du slideshow vidéo. */
-    }
-    <a href="/" class="hero-logo" aria-label="Studio J Oliveira — accueil">
-      <img
-        src="/brand/wordmark-cream.png?v=3"
-        alt="Studio J Oliveira"
-        width="1200"
-        height="288"
-        loading="eager"
-        decoding="async"
-      />
-    </a>
-    {
-      /* Stacking explicite (Morgan 2026-04-27 « tout noir le fond ») :
-        slideshow z-0 par-dessus le bg ink de la section, contenu z-10
-        par-dessus. On retire isolate sur la section qui scopait -z-10
-        en dessous du paint background. */
-    }
-    {
-      /* DEBUG 2026-04-27 : Morgan voit toujours du noir. data-hero-zoom retiré
-        (peut set des filter/transform incorrects), gradient overlay réécrit
-        en style inline (la syntaxe Tailwind 4 from-[var(...)]/92 peut ne pas
-        compiler le color-mix correctement), opacity 1 forcée inline sur le
-        1er slide pour bypass tout CSS récalcitrant. */
-    }
-    {
-      /* Slideshow VIDÉO — refonte 2026-04-29 (Morgan : 3 vidéos Jonathan en
-        fond, en boucle continue avec transition fluide entre chaque clip).
-        Architecture : 2 éléments <video> qui alternent (stage 0 / 1).
-        Pendant qu'un stage joue, l'autre précharge le clip suivant. À ~800 ms
-        de la fin du stage actif, on lance le suivant en cross-fade opacity.
-        Cycle infini sur les 3 clips. Chaque <video> a son poster JPG en
-        fallback (paint instantané + reduced-motion + JS désactivé). */
-    }
-    <div
-      class="absolute inset-0 z-0"
-      data-hero-slideshow
-      data-hero-videos={JSON.stringify(heroVideos.map((v) => v.src))}
-      data-hero-posters={JSON.stringify(heroVideos.map((v) => v.poster))}
-    >
-      {
-        /* Fallback poster : <img> du 1er frame, toujours affiché derrière les
-          videos. Si autoplay/preload échoue ou si le browser refuse la lecture
-          pour une raison quelconque, on a au moins une image fixe qui couvre
-          le hero. Les videos passent par-dessus quand elles jouent. */
-      }
-      <img
-        src={heroVideos[0]!.poster}
-        alt=""
-        aria-hidden="true"
-        class="hero-video-fallback"
-        fetchpriority="high"
-        decoding="async"
-      />
-      {
-        /* Stage 0 — visible et en lecture au démarrage. <source> enfant (plus
-          robuste que src attribute pour autoplay sur Safari iOS notamment). */
-      }
-      <video
-        class="hero-video is-active"
-        data-hero-stage="0"
-        poster={heroVideos[0]!.poster}
-        muted
-        playsinline
-        preload="auto"
-        autoplay
-        aria-hidden="true"
-      >
-        <source src={heroVideos[0]!.src} type="video/mp4" />
-      </video>
-      {
-        /* Stage 1 — préchargé invisible avec le 2ᵉ clip, devient visible quand
-          le stage 0 termine (cross-fade 800 ms). Le <source> est en place dès
-          le SSR pour que preload="auto" puisse commencer à streamer en background. */
-      }
-      <video
-        class="hero-video"
-        data-hero-stage="1"
-        poster={heroVideos[1]!.poster}
-        muted
-        playsinline
-        preload="auto"
-        aria-hidden="true"
-      >
-        <source src={heroVideos[1]!.src} type="video/mp4" />
-      </video>
-      <!-- Overlay lisibilité — voile vignette top/bottom uniquement. La zone
-           H1 (top: 22-70%) reste totalement transparente : le mix-blend du
-           H1 voit la vidéo en direct → effet inverse exact comme le cursor. -->
-      <div
-        class="absolute inset-0"
-        aria-hidden="true"
-        style="background: linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.20) 10%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.45) 86%, rgba(0,0,0,0.92) 100%);"
-      >
-      </div>
-    </div>
 
-    {
-      /* Hero asymétrique — refonte 2026-04-27 (brief Morgan : « le texte n'est
-        pas obligé d'être à gauche »). Layout cassé inspiré designbyad : eyebrow
-        en haut-droit, "Designer" en milieu-gauche, "paysagiste" Gloock énorme
-        décalé bas-droite (déborde la grille), manifesto bas-gauche, CTA + cue
-        à des coins différents. Le H1 se lit en diagonale → narration spatiale. */
-    }
-    <div class="hero-asymmetric relative min-h-[100svh] w-full" data-hero-sequence>
-      {/* Eyebrow — haut-droit, vertical signature */}
-      <p
-        data-hero="eyebrow"
-        class="hero-eyebrow font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase"
-      >
-        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        Brive‑la‑Gaillarde &nbsp;·&nbsp; Aquitaine &nbsp;·&nbsp; Est. 2021
-      </p>
-
-      {
-        /* H1 éclaté — refonte 2026-04-27 : passage en CAPS pour gain de poids
-          visuel (style designbyad). Plus de jambages descendants problématiques
-          (Y, p, g, j). Letter-spacing resserré pour cohésion du bloc. */
-      }
-      {
-        /* H1 inverse vidéo permanent (refonte 2026-04-28 #2 Jonathan) :
-          texte blanc + mix-blend-mode: difference au niveau de chaque ligne.
-          Pas de bandeau coloré — la couleur inverse se fait directement
-          contre la photo / le fond, en permanence. Lisible sur n'importe
-          quel arrière-plan, vidéo comprise. */
-      }
-      {
-        /* H1 hero — refonte 2026-04-29 (Morgan, retours bloc) :
-          - Position bas-droite (matched le pattern designbyad final)
-          - Taille réduite (text-5xl mobile, text-hero desktop comme le H2
-            studio biophilique « Design végétal en Aquitaine, Limousin »)
-          - Couleur cream pleine (plus de mix-blend-difference)
-          - DESIGNER en Jost gras (font-heading 700)
-          - PAYSAGISTE en Gloock gras (.display = font-display 700)
-          - Écart entre lignes pb-0.05/0.12em (match studio biophilique) */
-      }
-      {
-        /* Titre visuel hero — refonte 2026-05-11 (Morgan) : « STUDIO J OLIVEIRA »
-          Jost gras, ink, bas-droite. Rétrogradé de <h1> en <p> 2026-05-11 :
-          le vrai H1 SEO (sr-only, riche en keywords métier+zones) est en haut
-          du <section>. Règle stricte : un seul H1 par page. */
-      }
-      <p
-        class="hero-title-bottom font-[family-name:var(--font-heading)] text-[clamp(3.2rem,7vw,8.5rem)] leading-[1.02] font-bold text-[var(--color-ink)]"
-        data-hero-mask
-        aria-hidden="true"
-      >
-        <span data-mask-line class="block pb-[0.05em]">STUDIO J OLIVEIRA</span>
-      </p>
-
-      {
-        /* Manifesto bas-gauche + 2 CTAs hero retirés 2026-04-28 (Jonathan) :
-          le hero respire désormais autour du seul H1 inverse vidéo. */
-      }
-
-      {
-        /* /01 retiré 2026-04-27 (Morgan : « se balade en haut à gauche »).
-          Le marqueur faisait artefact visuel sans valeur — pas de référence
-          designbyad réelle. */
-      }
-
-      <div
-        data-hero="cue"
-        class="scroll-cue pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-[var(--color-cream)]/60"
-      >
-        <div class="flex flex-col items-center gap-3">
-          <span class="font-mono text-[10px] tracking-[0.32em] uppercase">Scroll</span>
-          <span class="scroll-cue-line block h-10 w-px bg-[var(--color-cream)]/40"></span>
-        </div>
-      </div>
-    </div>
+    <HeroSwipe />
   </section>
 
   {
@@ -1394,163 +1202,9 @@ const typologies = [
     }
   </style>
 
-  <script>
-    // Hero slideshow VIDÉO — refonte 2026-04-29.
-    //
-    // 4 vidéos Jonathan jouent en boucle continue avec cross-fade 800 ms
-    // entre chaque clip. Architecture : 2 éléments <video> qui alternent
-    // (stage 0 et stage 1). Pendant qu'un stage joue, l'autre précharge le
-    // clip suivant (src = next URL, video.load(), reste invisible). À 800 ms
-    // de la fin du clip actif, on déclenche le cross-fade : l'autre stage
-    // play() + classe .is-active → opacity 1, le stage actif perd .is-active
-    // → opacity 0. Quand l'animation est terminée, on prépare le clip d'après
-    // sur le stage qui vient d'être désactivé. Cycle infini.
-    //
-    // Reduced-motion : aucune vidéo ne joue, on affiche juste le poster du
-    // 1er clip (paint instantané, comportement statique respectueux).
-    function initHeroVideoSlideshow() {
-      const container = document.querySelector<HTMLElement>('[data-hero-slideshow]');
-      if (!container) return;
-      if (container.dataset.slideshowWired === 'true') return;
-
-      const stages = Array.from(
-        container.querySelectorAll<HTMLVideoElement>('video[data-hero-stage]'),
-      );
-      if (stages.length < 2) return;
-
-      let videos: string[] = [];
-      try {
-        videos = JSON.parse(container.dataset.heroVideos || '[]') as string[];
-      } catch {
-        videos = [];
-      }
-      if (videos.length < 1) return;
-      container.dataset.slideshowWired = 'true';
-
-      // Reduced-motion : on laisse le poster de la 1re vidéo, pas de play.
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) {
-        stages[0]!.classList.add('is-active');
-        return;
-      }
-
-      // Crossfade window : on enchaîne ~CROSSFADE_MS avant la fin pour cacher
-      // le swap dans la transition. Doit matcher la transition CSS opacity.
-      const CROSSFADE_MS = 800;
-
-      let activeIdx = 0; // 0 = stage 0 visible, 1 = stage 1 visible
-      let nextVideoIdx = 1 % videos.length; // prochain clip à charger
-      let switching = false;
-
-      // Précharge le clip suivant sur le stage inactif. On compare
-      // `currentSrc` (URL résolue, fonctionne avec <source> et avec src=)
-      // pour éviter de recharger inutilement quand le stage a déjà le
-      // bon clip (notamment au 1er appel — stage 1 a déjà clip 1 via SSR).
-      // IMPORTANT : on reset currentTime=0 même quand l'URL est déjà bonne,
-      // sinon au tour suivant du cycle (clip déjà joué une fois), play()
-      // reprend à la frame courante → "démarre en cours de route".
-      const preload = () => {
-        const inactive = stages[1 - activeIdx]!;
-        const url = videos[nextVideoIdx]!;
-        if (inactive.currentSrc.endsWith(url)) {
-          try {
-            inactive.currentTime = 0;
-          } catch {}
-          return;
-        }
-        inactive.src = url;
-        inactive.load();
-      };
-
-      const swap = () => {
-        if (switching) return;
-        const active = stages[activeIdx]!;
-        const inactive = stages[1 - activeIdx]!;
-        // Le stage inactif doit avoir son src prêt (préchargé). On le lance
-        // muet (autoplay garanti) avant de basculer l'opacité pour éviter
-        // un flash noir si la frame n'est pas encore décodée.
-        switching = true;
-        // Garantie démarrage à zéro — si le clip a déjà été joué dans un
-        // tour précédent du cycle, son currentTime n'est pas remis à 0 par
-        // preload() (short-circuit URL identique). On force ici.
-        try {
-          inactive.currentTime = 0;
-        } catch {}
-        const startNext = () => {
-          inactive.classList.add('is-active');
-          active.classList.remove('is-active');
-          activeIdx = 1 - activeIdx;
-          nextVideoIdx = (nextVideoIdx + 1) % videos.length;
-          // Au bout du fade-out (≥ CROSSFADE_MS), on remet l'ex-active à 0
-          // et on précharge le clip d'après dessus.
-          window.setTimeout(() => {
-            active.pause();
-            active.currentTime = 0;
-            preload();
-            switching = false;
-          }, CROSSFADE_MS + 50);
-        };
-        const playPromise = inactive.play();
-        if (playPromise && typeof playPromise.then === 'function') {
-          playPromise.then(startNext).catch(startNext);
-        } else {
-          startNext();
-        }
-      };
-
-      // Polling de la position de lecture du stage actif via timeupdate
-      // (déclenché 4 fois/s en moyenne, suffisant pour viser 800 ms avant fin).
-      const onTimeUpdate = (e: Event) => {
-        const v = e.currentTarget as HTMLVideoElement;
-        if (!v.classList.contains('is-active')) return;
-        if (!isFinite(v.duration) || v.duration <= 0) return;
-        if (v.currentTime >= v.duration - CROSSFADE_MS / 1000 - 0.05) {
-          swap();
-        }
-      };
-
-      // Failsafe : si timeupdate ne déclenche pas (rare, ex. tab inactive),
-      // le ended event prend le relais et bascule immédiatement (sans fondu
-      // mais sans freeze).
-      const onEnded = () => {
-        if (!switching) swap();
-      };
-
-      stages.forEach((s) => {
-        s.addEventListener('timeupdate', onTimeUpdate);
-        s.addEventListener('ended', onEnded);
-      });
-
-      // Démarrage : stage 0 = clip 0 visible et en lecture, stage 1 = clip 1
-      // préchargé invisible.
-      stages[0]!.classList.add('is-active');
-      const initialPlay = stages[0]!.play();
-      if (initialPlay && typeof initialPlay.catch === 'function') {
-        // Si l'autoplay est refusé (rare, hors muted+playsinline), on garde
-        // le poster comme fallback. Pas de retry agressif.
-        initialPlay.catch(() => {});
-      }
-      preload();
-
-      // Nettoyage Astro view transitions
-      document.addEventListener(
-        'astro:before-swap',
-        () => {
-          stages.forEach((s) => {
-            s.removeEventListener('timeupdate', onTimeUpdate);
-            s.removeEventListener('ended', onEnded);
-            s.pause();
-          });
-          container.dataset.slideshowWired = '';
-        },
-        { once: true },
-      );
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initHeroVideoSlideshow, { once: true });
-    } else {
-      initHeroVideoSlideshow();
-    }
-    document.addEventListener('astro:page-load', initHeroVideoSlideshow);
-  </script>
+  {
+    /* Script hero slideshow VIDÉO supprimé 2026-05-15 — remplacé par
+      HeroSwipe (5 images swipe). Le composant HeroSwipe.astro embarque son
+      propre script (drag pointer + clavier + dots + auto-advance). */
+  }
 </BaseLayout>
