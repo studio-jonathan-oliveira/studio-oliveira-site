@@ -397,15 +397,16 @@ const schema = jsonLdGraph([
     .mu-hero__bottom {
       width: 100%;
     }
-    /* H1 split — Bold UPPERCASE, 2 lignes empilées tight, posé HAUT-GAUCHE
-       de la photo (retour Morgan 2026-05-15 trame). Pas d'animation : LCP
-       immédiat. Taille calibrée pour cohabiter avec les specs en bas. */
+    /* H1 split — ExtraLight 200 UPPERCASE (retour Morgan v6 2026-05-15 :
+       le titre passe en thin pour respecter la signature designbyad et
+       contraster avec les éventuelles photos hero chargées). 2 lignes
+       empilées tight, posé HAUT-GAUCHE. Pas d'animation : LCP immédiat. */
     .mu-hero__title {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 700;
+      font-weight: 200;
       font-size: clamp(2.6rem, 9vw, 8rem);
-      line-height: 0.9;
-      letter-spacing: -0.025em;
+      line-height: 0.95;
+      letter-spacing: -0.005em;
       text-transform: uppercase;
       color: var(--color-cream);
       margin: 0;
@@ -530,10 +531,13 @@ const schema = jsonLdGraph([
     /* Pattern capture Morgan 2026-05-15 v3 : bloc texte décalé en col DROITE
        sur desktop (col gauche vide pour la respiration), taille de texte
        AGRANDIE (clamp ~1.25-1.6rem), poids regular/light pour rester lisible
-       sur fond noir sans crier. Italique précision en plus petit dessous. */
+       sur fond noir sans crier. Italique précision en plus petit dessous.
+       v6 retour Morgan : padding-right = 0 → la section texte va JUSQU'AU
+       BORD DROIT de l'écran (la col droite du grid 1fr 2fr le fait aller
+       au bord). Padding-left conservé pour la respiration côté gauche. */
     .mu-manifeste {
       width: 100%;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
     }
     .mu-manifeste__inner {
       display: grid;
@@ -559,7 +563,10 @@ const schema = jsonLdGraph([
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 2.2vw, 1.85rem);
-      max-width: 64ch;
+      /* Pas de max-width : le texte va jusqu'au bord droit, respect du
+         retour Morgan v6 « jusqu'au bord droit de l'écran ». Le padding
+         de section pose la marge gauche. */
+      padding-right: clamp(1.5rem, 5vw, 4rem);
     }
     .mu-manifeste__para {
       font-family: var(--font-body), sans-serif;
@@ -585,6 +592,7 @@ const schema = jsonLdGraph([
       color: color-mix(in oklab, var(--color-cream) 80%, transparent);
       text-align: left;
       margin: clamp(2rem, 3.5vw, 3rem) 0 0;
+      padding-right: clamp(1.5rem, 5vw, 4rem);
       max-width: 64ch;
     }
 
