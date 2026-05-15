@@ -615,15 +615,19 @@ const parcours = [
        Pattern inView trigger (pas scroll-driven) + cascade word-by-word
        interne via custom property --i. Le script en bas pose data-revealed
        sur la row quand elle entre dans le viewport. */
+    /* v10 retour Morgan : plus lent + reversible. Le transition-delay
+       sur l'état BASE est appliqué dans les deux sens (reveal +
+       un-reveal), donc la cascade s'inverse naturellement au re-scroll
+       vers le haut. */
     [data-parcours-row] .studio-parcours-word {
       display: inline-block;
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(18px);
       will-change: opacity, transform;
       transition:
-        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-      transition-delay: calc(var(--i, 0) * 22ms);
+        opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i, 0) * 32ms);
     }
     [data-parcours-row][data-revealed] .studio-parcours-word {
       opacity: 1;
@@ -679,15 +683,17 @@ const parcours = [
         });
       });
 
-      // inView trigger : on observe chaque ligne individuellement →
-      // anim démarre seulement quand la ligne entre, et complete en
-      // ~0.5s + cascade interne (sans scroll supplémentaire requis).
+      // inView trigger réversible (v10 retour Morgan) : on toggle
+      // data-revealed selon entry/exit. Re-scroll vers le haut →
+      // la cascade s'inverse naturellement via les mêmes transitions.
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
+            const el = entry.target as HTMLElement;
             if (entry.isIntersecting) {
-              (entry.target as HTMLElement).setAttribute('data-revealed', '');
-              io.unobserve(entry.target);
+              el.setAttribute('data-revealed', '');
+            } else {
+              el.removeAttribute('data-revealed');
             }
           });
         },
