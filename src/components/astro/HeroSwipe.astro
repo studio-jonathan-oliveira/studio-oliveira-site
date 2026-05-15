@@ -303,9 +303,9 @@ const slides = [
     let autoTimer: number | null = null;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // v12 2026-05-15 (retour Morgan) : 2s par image, slide auto only,
-    // pas d'interactivité manuelle (drag/clavier/dots-click retirés).
-    const AUTO_INTERVAL = 2000;
+    // v13 2026-05-15 (retour Morgan) : 3s par image (était 2s), slide
+    // auto only, pas d'interactivité manuelle.
+    const AUTO_INTERVAL = 3000;
 
     const applyTransform = (extraPx = 0) => {
       const slideWidth = root.clientWidth;
