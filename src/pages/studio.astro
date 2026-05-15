@@ -1,20 +1,27 @@
 ---
 /*
- * /studio — page Jonathan Oliveira, portrait + parcours + méthode.
- * Refonte 2026-04-23 : hero split avec portrait Jonathan + section démarche
- * texturée + méthode forest sombre immersif (feedback Morgan : « plus sexy,
- * texture, couleur, photos de Jonathan »).
- * Photos du dossier client : _brief/client-assets/logo-identite/DSC079*, DSC08003.
+ * /studio — refonte DA Jonathan 2026-05-15 (trame "page studio.png").
+ *
+ * Architecture verticale issue de la trame :
+ *   1. Hero Bienvenue (noir profond) — titre Bold UPPERCASE + 5 paragraphes
+ *      Jonathan verbatim + photo végétale (col droite).
+ *   2. Manifeste (rouge plein-bleed) — phrase Bold UPPERCASE justify.
+ *   3. Architectures (rouge) — 4 lignes accordéon (Title Case Jonathan).
+ *      Commit 1 : scaffold statique. Commit 2 : interactivité React island.
+ *   4. Parcours et Expérience (noir) — H2 + portrait Jonathan + frise
+ *      des 6 entrées de formation/expérience (sourcées PDF process).
+ *   5. Footer global 2 cols (sera porté en 3 cols variant au commit 3).
+ *
+ * Contenu Jonathan : VERBATIM extrait de la trame (OCR multi-agents).
+ * Aucun texte inventé. Frise parcours : 6 entrées du studio.astro précédent
+ * (sourcées PDF PROCESS ETUDES STUDIO 2026, validation Morgan 2026-05-15).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/astro/Section.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
 
-import portrait01 from '@/assets/jonathan/portrait-01.webp';
-import portrait02 from '@/assets/jonathan/portrait-02.webp';
+import portraitJonathan from '@/assets/jonathan/portrait-02.webp';
 import textureVegetale from '@/assets/home/hero-biophilie.jpg';
 
 const schema = jsonLdGraph([
@@ -27,7 +34,43 @@ const schema = jsonLdGraph([
   ]),
 ]);
 
-// Parcours factuel sourcé PDF PROCESS ETUDES STUDIO 2026
+// Bienvenue — 5 paragraphes Jonathan VERBATIM trame (OCR consolidé).
+const bienvenue = [
+  "Le studio J Oliveira a été créé en fin 2021 à la suite de 4 ans d'expérience en tant que chef de projet et dessinateur projeteur dans une entreprise d'aménagements paysagers à Limoges.",
+  "Fort d'une expérience de plus de 9 ans dans l'architecture paysagère et diplômé d'une Licence Pro conception paysagère, j'ai construit mon design autour de mon admiration pour les paysages naturels et immersifs ainsi que de la pluralité des architectures qui animent nos espaces de vie.",
+  "Le design est un art qui lie fonctionnalité, ergonomie et esthétique. C'est dans cette dimension que le studio conçoit ses projets.",
+  "Le végétal, quant à lui, représente le liant de l'unité de l'ensemble des composantes spatiales pour créer cet environnement agréable et durable.",
+  "Ce qu'il faut bien comprendre, c'est que je ne vends pas qu'une étude. Je vends par une méthode précise, une réflexion et une structuration globale qui sécurise un résultat final pour garantir une expérience d'usage durable.",
+];
+
+// 4 architectures Jonathan — libellés Title Case (respect strict trame) +
+// descriptifs VERBATIM. Affichage commit 1 = scaffold fermé statique.
+const architectures = [
+  {
+    titre: 'Architecture Bati',
+    description:
+      "L'architecture bati regroupe la dénomination de l'habitat, le lieu où les gens vivent, mangent et dorment naturellement. Cette structure essentielle orchestre la propriété comme un axe central de toutes les circulations et définie le tempo esthétique de toutes les architectures qui gravitent autour.",
+  },
+  {
+    titre: "Architecture d'intérieur",
+    description:
+      "Cette architecture qui anime nos quotidiens intérieurs tant dans le monde du pro que du perso est surement celle qui impacte le plus notre perception et interpretation de l'espace. Elle est le guide de votre personnalité et influence toutes les autres architectures connectées.",
+  },
+  {
+    titre: 'Architecture Paysagère',
+    description:
+      "A tort déconsidérée comme une architecture à part entière, elle se positionne bel et bien comme une structure de la vie à l'extérieur de l'environnement bati et connecté à l'entité de l'habitat. L'architecture paysagère accueille, reçoit, guide et prolonge toutes les expériences de vie de l'extérieur vers l'intérieur et de l'intérieur vers l'extérieur.",
+  },
+  {
+    titre: 'Architecture Biophilique',
+    description:
+      "C'est l'architecture la plus vivante de toutes car elle connecte toutes les architectures en une seule architecture avec comme seul objectif : reproduire le contexte environnemental naturel pour apporter les bénéfices aux usagers des espaces non naturels. Elle prend, dans sa conception, les aspects naturels et les combine aux environnements humains pour rendre une synthèse expérientielle de l'habitat. C'est cette architecture que le Studio J Oliveira vous propose à travers son design.",
+  },
+];
+
+// Parcours — 6 entrées sourcées PDF PROCESS ETUDES STUDIO 2026.
+// Validation Morgan 2026-05-15 (frise placeholder de la trame remplacée
+// par ces données réelles).
 const parcours = [
   { annee: 'BAC ES', detail: 'Diplômé avec mention' },
   { annee: 'Bac Pro Travaux paysagers', detail: '1 an, mention' },
@@ -35,603 +78,434 @@ const parcours = [
   { annee: 'Licence Pro Conception et aménagement paysagers', detail: '1 an, mention' },
   {
     annee: 'Chef de projet / Dessinateur-projeteur',
-    detail: '4,5 ans — entreprise d’aménagements paysagers, Limoges',
+    detail: "4,5 ans — entreprise d'aménagements paysagers, Limoges",
   },
   {
     annee: `Création du Studio J Oliveira — ${SITE.foundedYear}`,
-    detail: 'Studio de design biophilique indépendant, Brive‑la‑Gaillarde',
-  },
-];
-
-const piliers = [
-  {
-    titre: 'Le bâti',
-    description: 'L’architecture du lieu, ses matériaux, son dialogue avec le territoire.',
-  },
-  {
-    titre: 'L’environnement',
-    description: 'Le climat, le sol, les essences adaptées, la biodiversité existante.',
-  },
-  {
-    titre: 'L’humain',
-    description: 'Le mode de vie, les usages réels, le rapport sensible au jardin.',
-  },
-];
-
-const etapesMethode = [
-  {
-    num: '01',
-    label: 'Appel de qualification',
-    duree: '15 — 25 min',
-    detail:
-      'Localisation, typologie, surface, budget global, maturité du projet. Je filtre les projets non alignés et je prépare le rendez-vous.',
-  },
-  {
-    num: '02',
-    label: 'Rendez-vous studio',
-    duree: '1 h 45 — 2 h',
-    detail:
-      "Récit du client, co-construction visuelle à partir d'images de référence, lecture experte du site, définition de l'étude adaptée à la typologie.",
-  },
-  {
-    num: '03',
-    label: 'Validation à distance',
-    duree: '15 min',
-    detail:
-      "Un dernier échange 72 h à 1 semaine après le rendez-vous — lever la dernière hésitation, signer l'étude.",
+    detail: 'Studio de design biophilique indépendant, Brive-la-Gaillarde',
   },
 ];
 ---
 
 <BaseLayout
-  title="Jonathan Oliveira — Designer biophilique à Brive‑la‑Gaillarde"
-  description="Jonathan Oliveira, designer paysagiste indépendant fondateur du Studio de design biophilique à Brive‑la‑Gaillarde. Démarche scientifique et sensible, formation en architecture d'intérieur et ingénierie paysagère."
+  title="Studio J Oliveira — designer d'origine ibérique, architecture & scénographie végétale"
+  description="Bienvenue dans le Studio J Oliveira, studio d'origine ibérique axé sur le design, l'architecture et la scénographie végétale en France. Brive, Bordeaux, Limoges."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {
-    /* ───── HERO SPLIT : portrait Jonathan PLEINE PAGE + texte éditorial ─────
-       Morgan 2026-04-27 « images presque pleine hauteur pour l'immersion ».
-       Section min-h 100svh, portrait droite étire sur la pleine hauteur. */
-  }
+  {/* ═════════ 1 · HERO BIENVENUE (noir profond) ═════════════════════════ */}
   <section
-    id="hero"
+    id="bienvenue"
     data-section-label="Studio"
     data-theme="dark"
-    class="studio-hero relative min-h-[100svh] bg-[var(--color-laterite)] text-[var(--color-cream)]"
+    class="studio-bienvenue full-bleed-bg relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="bienvenue-title"
   >
-    <div
-      class="mx-auto grid min-h-[100svh] max-w-[1500px] grid-cols-1 gap-0 pt-32 md:pt-40 lg:grid-cols-12"
-    >
-      <div
-        class="px-6 pt-8 pb-16 md:px-12 md:pt-16 md:pb-24 lg:col-span-7 lg:col-start-1"
-        data-reveal="up"
-        data-scroll-rise
-        data-scroll-rise-amp="-80"
-      >
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="studio-dot" aria-hidden="true"></span>
-          Le studio · Depuis {SITE.foundedYear}
-        </p>
+    <div class="studio-bienvenue__inner">
+      <div class="studio-bienvenue__text" data-reveal="up">
         {
-          /* H1 cassé designbyad (Morgan 2026-04-27 : « casser les codes
-            visuels ») : nom propre Cormorant italique mid-size, suivi du
-            positionnement DESIGNER BIOPHILIQUE en CAPS Jost monumentales
-            (clamp 3-7rem). Asymétrie visuelle = signature designer. */
+          /* Titre VERBATIM trame Jonathan — Bold UPPERCASE, mots-clés
+           « DESIGN », « ARCHITECTURE », « SCENOGRAPHIE VEGETALE » +
+           appartenance « ORIGINE IBERIQUE » + ancrage « FRANCE ». */
         }
-        <h1
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="studio-h1-broken mt-6 font-[family-name:var(--font-heading)] leading-[1.02]"
-        >
-          <span data-mask-line class="block pb-[0.05em] italic">Jonathan</span>
-          <span data-mask-line class="block pb-[0.05em] italic">Oliveira —</span>
-          <span data-mask-line class="studio-h1-positioning block pb-[0.18em]"
-            >DESIGNER BIOPHILIQUE.</span
-          >
+        <h1 id="bienvenue-title" class="studio-bienvenue__title">
+          BIENVENUE DANS LE STUDIO J OLIVEIRA, STUDIO D'ORIGINE IBERIQUE AXE SUR LE DESIGN,
+          L'ARCHITECTURE ET LA SCENOGRAPHIE VEGETALE EN FRANCE.
         </h1>
-        <p
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
-        >
-          Le Studio J Oliveira est un studio de design spatial spécialisé dans l'aménagement
-          environnemental immersif et expérientiel —
-          <a
-            href="/architecture-paysagere"
-            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
-            >architecture paysagère</a
-          > et <a
-            href="/amenagement-vegetal-interieur"
-            class="border-b border-[var(--color-cream)]/40 hover:border-[var(--color-cream)] hover:text-[var(--color-cream)]"
-            >aménagement végétalisé d'intérieur</a
-          >. J'étudie et conçois des espaces à vivre, en dialogue avec le bâti, l'environnement et
-          l'humain.
-        </p>
+
+        <div class="studio-bienvenue__body">
+          {bienvenue.map((para) => <p>{para}</p>)}
+        </div>
       </div>
 
-      <div class="relative lg:col-span-5 lg:col-start-8 lg:h-full">
-        <div
-          class="studio-portrait relative h-full overflow-hidden"
-          data-img-reveal
-          data-img-reveal-speed="0.95"
-          data-img-reveal-offset="right"
-          data-img-reveal-offset-amp="50"
-        >
-          <Image
-            src={portrait01}
-            alt="Jonathan Oliveira, fondateur du Studio"
-            widths={[480, 720, 960, 1200]}
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            quality={84}
-            format="webp"
-            class="h-full w-full object-cover"
-            loading="eager"
-          />
-          <span class="studio-portrait-caption" aria-hidden="true">
-            <em class="italic">Jonathan Oliveira</em>
-            <span>Fondateur</span>
-          </span>
-        </div>
+      <div class="studio-bienvenue__visual" data-reveal="slow">
+        <Image
+          src={textureVegetale}
+          alt="Jardin biophilique conçu par le Studio J Oliveira — bassin et végétation"
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1024px) 42vw, 100vw"
+          quality={82}
+          format="webp"
+          class="studio-bienvenue__img"
+          loading="eager"
+        />
       </div>
     </div>
   </section>
 
-  {/* ───── 01 · DÉMARCHE — avec texture végétale en fond + piliers ───── */}
+  {/* ═════════ 2 · MANIFESTE (rouge plein-bleed) ═════════════════════════ */}
   <section
-    id="demarche"
-    data-section-label="Démarche"
-    class="studio-demarche relative isolate overflow-hidden bg-[var(--color-laterite)] text-[var(--color-cream)]"
-    data-theme="dark"
-    aria-labelledby="demarche-title"
+    id="manifeste"
+    data-section-label="Manifeste"
+    data-theme="red"
+    class="studio-manifeste full-bleed-bg relative overflow-hidden bg-[var(--color-red)] text-[var(--color-cream)]"
+    aria-label="Manifeste du Studio J Oliveira"
   >
-    <div class="absolute inset-0 -z-10">
-      <Image
-        src={textureVegetale}
-        alt=""
-        widths={[960, 1440, 1920]}
-        sizes="100vw"
-        quality={60}
-        format="webp"
-        class="h-full w-full object-cover object-center"
-        loading="lazy"
-      />
-      <div class="absolute inset-0 bg-[var(--color-laterite)]/82" aria-hidden="true"></div>
-      <div class="studio-demarche-halo" aria-hidden="true"></div>
-    </div>
-
-    <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
-      <div class="grid gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
-        <div data-reveal="up" data-parallax="-0.25">
-          <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-            <span class="text-[var(--color-cream)]/40">01</span> &nbsp;·&nbsp; Démarche
-          </p>
-          <h2
-            id="demarche-title"
-            data-mask-reveal
-            data-mask-stagger="0.14"
-            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
-          >
-            <span data-mask-line class="block pb-[0.05em]">Trois piliers,</span>
-            <span data-mask-line class="block pb-[0.12em]">un même écosystème.</span>
-          </h2>
-        </div>
-
-        <div
-          class="space-y-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
-          data-reveal="up"
-          data-reveal-delay="0.15"
-          data-parallax="0.18"
-        >
-          <p>
-            La conception biophilique est un art de conception architecturale directement inspiré
-            des environnements naturels et de leurs effets sur l'humain. Une démarche
-            <span class="hover-accent">scientifique</span> couplée à la <span class="hover-accent"
-              >technicité</span
-            > architecturale — étudier la nature à l'état primitif, comprendre ses interactions, puis
-            reproduire ses bienfaits dans les espaces que nous habitons.
-          </p>
-          <p>
-            Trois écosystèmes cohabitent dans chaque projet : le bâti, l'environnement, l'humain.
-            C'est cet <span class="hover-accent">équilibre</span> que je cherche — une conception juste,
-            logique avec les besoins du client, en considération de l'environnement dans lequel elle s'implante.
-          </p>
-        </div>
-      </div>
-
-      <ul
-        class="mt-16 grid grid-cols-1 gap-px bg-[var(--color-ink)]/10 sm:grid-cols-3"
-        data-reveal-stagger="0.12"
-        data-reveal="up"
-      >
-        {
-          piliers.map((p, i) => (
-            <li class="bg-[var(--color-cream)]/12 p-8 backdrop-blur-sm md:p-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-                Pilier {String(i + 1).padStart(2, '0')}
-              </p>
-              <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight">
-                <em class="italic">{p.titre}</em>
-              </h3>
-              <p class="mt-4 text-sm leading-relaxed text-[var(--color-cream)]/75">
-                {p.description}
-              </p>
-            </li>
-          ))
-        }
-      </ul>
-
+    <div class="studio-manifeste__inner">
       {
-        /* Bande keywords designbyad (Morgan 2026-04-27 « casser les codes »).
-          Mots-clés issus du contenu de la section démarche (3 piliers + 2
-          adjectifs Jonathan déjà présents : "scientifique", "sensible").
-          data-justify-scroll : oscille spread compact → justify final au
-          scroll. Pattern signature de la home. */
+        /* Phrase manifeste VERBATIM trame. Bold UPPERCASE. Animation
+         words-fade : chaque mot fade-in au scroll (pattern home). */
       }
-      <p
-        class="studio-keywords-band mt-20 md:mt-28"
-        data-reveal="up"
-        data-justify-scroll
-        data-justify-amp="20"
-        data-justify-seed="7"
+      <blockquote
+        class="studio-manifeste__quote"
+        data-words-fade
+        data-words-fade-stagger="0.02"
+        data-words-fade-window="0,0.45"
       >
-        Bâti <span aria-hidden="true">·</span>
-        Environnement <span aria-hidden="true">·</span>
-        Humain <span aria-hidden="true">·</span>
-        Scientifique <span aria-hidden="true">·</span>
-        Sensible
-      </p>
+        CHAQUE ESPACE SE COMPOSE D'UN EXISTANT ET D'UN DEVENIR. COMPRENDRE L'EXISTANT POUR
+        CONSTRUIRE LE DEVENIR NECESSITE UNE REFLEXION STRUCTUREE ET SENSIBLE EN CONSIDERANT TOUTES
+        LES ARCHITECTURES CONNECTEES.
+      </blockquote>
     </div>
   </section>
 
-  {/* ───── 02 · PARCOURS : timeline gauche + portrait + quote aside droite ───── */}
-  <Section variant="laterite" id="parcours" sectionLabel="Parcours" labelledBy="parcours-title">
-    <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:gap-16">
-      <div data-reveal="up" data-parallax="-0.22">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">02</span> &nbsp;·&nbsp; Parcours
-        </p>
-        <h2
-          id="parcours-title"
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
-        >
-          <span data-mask-line class="block pb-[0.05em]"><em class="italic">Formation</em></span>
-          <span data-mask-line class="block pb-[0.05em]">et trajectoire.</span>
-        </h2>
+  {
+    /* ═════════ 3 · ARCHITECTURES — accordéon 4 lignes (rouge) ═══════════
+     Commit 1 : scaffold statique fermé (tous les <details> repliés, JS
+     natif HTML5). Commit 2 : remplacement par un composant React island
+     single-open avec animation height + chevron rotate. */
+  }
+  <section
+    id="architectures"
+    data-section-label="Architectures"
+    data-theme="red"
+    class="studio-architectures full-bleed-bg relative bg-[var(--color-red)] text-[var(--color-cream)]"
+    aria-labelledby="architectures-title"
+  >
+    <h2 id="architectures-title" class="sr-only">Les quatre architectures connectées</h2>
+    <ul class="studio-architectures__list">
+      {
+        architectures.map((arch) => (
+          <li class="studio-architectures__item">
+            <details class="studio-architectures__details">
+              <summary class="studio-architectures__summary">
+                <span class="studio-architectures__title">{arch.titre}</span>
+                <span class="studio-architectures__icon" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <div class="studio-architectures__panel">
+                <p>{arch.description}</p>
+              </div>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 
-        <ol class="mt-12 space-y-0" data-reveal-stagger="0.1" data-reveal="up">
+  {/* ═════════ 4 · PARCOURS ET EXPERIENCE (noir profond) ════════════════ */}
+  <section
+    id="parcours"
+    data-section-label="Parcours"
+    data-theme="dark"
+    class="studio-parcours full-bleed-bg relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="parcours-title"
+  >
+    <div class="studio-parcours__inner">
+      <h2 id="parcours-title" class="studio-parcours__title" data-reveal="up">
+        PARCOURS&nbsp;&nbsp;&nbsp;ET&nbsp;&nbsp;&nbsp;EXPERIENCE
+      </h2>
+
+      <div class="studio-parcours__grid">
+        <div class="studio-parcours__photo" data-reveal="up">
+          <Image
+            src={portraitJonathan}
+            alt="Jonathan Oliveira au travail dans son atelier de design"
+            widths={[480, 720, 960]}
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            quality={82}
+            format="webp"
+            class="studio-parcours__img"
+            loading="lazy"
+          />
+        </div>
+
+        <ol class="studio-parcours__timeline" data-reveal-stagger="0.1" data-reveal="up">
           {
-            parcours.map((p, i) => (
-              <li class="studio-parcours-item group grid grid-cols-[auto_1fr] gap-6 py-6 md:gap-10 md:py-7">
-                <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-                  {String(i + 1).padStart(2, '0')}
-                </p>
-                <div>
-                  <p class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight text-[var(--color-cream)]">
-                    <em class="italic">{p.annee}</em>
-                  </p>
-                  <p class="mt-2 text-sm leading-relaxed text-[var(--color-cream)]/70">
-                    {p.detail}
-                  </p>
-                </div>
+            parcours.map((p) => (
+              <li class="studio-parcours__row">
+                <p class="studio-parcours__row-annee">{p.annee}</p>
+                <p class="studio-parcours__row-detail">{p.detail}</p>
               </li>
             ))
           }
         </ol>
       </div>
-
-      <aside class="studio-parcours-aside flex flex-col gap-8">
-        <div
-          class="studio-parcours-portrait overflow-hidden"
-          data-img-reveal
-          data-img-reveal-speed="0.95"
-          data-img-reveal-offset="left"
-          data-img-reveal-offset-amp="40"
-        >
-          <Image
-            src={portrait02}
-            alt="Jonathan Oliveira, portrait éditorial"
-            widths={[480, 720, 960]}
-            sizes="(min-width: 768px) 42vw, 92vw"
-            quality={82}
-            format="webp"
-            class="h-full w-full object-cover"
-            loading="lazy"
-          />
-        </div>
-        <blockquote
-          class="studio-parcours-quote border-l border-[var(--color-cream)]/40 pl-6"
-          data-reveal="up"
-          data-reveal-delay="0.3"
-        >
-          <p
-            class="font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-[1.25] text-[var(--color-cream)]/85 italic md:text-[length:var(--text-2xl)]"
-          >
-            Dix ans de paysagisme avant de fonder le studio — pour comprendre d'abord le métier par
-            l'intérieur, avant d'en proposer une <em class="text-[var(--color-cream)]/55 not-italic"
-              >autre lecture</em
-            >.
-          </p>
-          <footer
-            class="mt-5 font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase"
-          >
-            — Résumé du parcours
-          </footer>
-        </blockquote>
-      </aside>
-    </div>
-  </Section>
-
-  {/* ───── 03 · MÉTHODE forest immersif avec blockquote géant ───── */}
-  <section
-    id="methode"
-    data-section-label="Méthode"
-    class="studio-methode relative bg-[var(--color-laterite)] text-[var(--color-cream)]"
-    data-theme="dark"
-    aria-labelledby="methode-title"
-  >
-    <div class="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-      <div class="mb-12 md:mb-16" data-reveal="up">
-        <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/40">03</span> &nbsp;·&nbsp; Méthode
-        </p>
-        <h2
-          id="methode-title"
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
-        >
-          <span data-mask-line class="block pb-[0.05em]">Je ne vends pas</span>
-          <span data-mask-line class="block pb-[0.12em]"
-            >une <em class="text-[var(--color-cream)]/55 italic">étude</em>.</span
-          >
-        </h2>
-      </div>
-
-      <blockquote
-        class="studio-quote mx-auto max-w-4xl font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] italic md:text-[length:var(--text-4xl)]"
-        data-reveal="up"
-        data-justify-scroll
-        data-justify-amp="0.55"
-        data-justify-window="0.05,0.65"
-      >
-        Je vends une <em class="text-[var(--color-cream)]/55 not-italic">vision</em>, une
-        <em class="text-[var(--color-cream)]/55 not-italic">méthode</em>, une
-        <em class="text-[var(--color-cream)]/55 not-italic">expérience</em>, une
-        <em class="text-[var(--color-cream)]/55 not-italic">sécurité de résultat</em>. Le client ne
-        doit jamais avoir l'impression d'être vendu, mais plutôt : choisir, co-construire, s'élever
-        vers un projet plus juste et plus qualitatif.
-      </blockquote>
-
-      <p
-        class="mx-auto mt-12 max-w-2xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/75"
-        data-reveal="up"
-        data-reveal-delay="0.2"
-      >
-        Le parcours est simple et volontairement lent — trois temps, pour créer la relation,
-        comprendre le lieu, et positionner la valeur avant de chiffrer.
-      </p>
-
-      <ol class="mt-16 space-y-0 md:mt-20" data-reveal-stagger="0.12" data-reveal="up">
-        {
-          etapesMethode.map((etape) => (
-            <li class="studio-methode-item grid grid-cols-[auto_1fr] items-baseline gap-6 border-t border-[var(--color-cream)]/12 py-8 md:gap-16 md:py-10">
-              <p class="font-mono text-[10px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-                {etape.num}
-              </p>
-              <div>
-                <div class="flex flex-wrap items-baseline gap-4">
-                  <h3 class="font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight md:text-[length:var(--text-3xl)]">
-                    <em class="italic">{etape.label}</em>
-                  </h3>
-                  <span class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
-                    {etape.duree}
-                  </span>
-                </div>
-                <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-cream)]/75">
-                  {etape.detail}
-                </p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
     </div>
   </section>
 
-  {/* ───── CTA final cream ───── */}
-  <Section variant="laterite" topDivider id="contact-cta" sectionLabel="Contact">
-    <div class="text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-        Étape suivante
-      </p>
-      <h2
-        data-mask-reveal
-        data-mask-stagger="0.14"
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] text-[var(--color-cream)]"
-      >
-        <span data-mask-line class="block pb-[0.12em]"
-          >Engager la <em class="text-[var(--color-cream)]/55 italic">conversation</em>.</span
-        >
-      </h2>
-      <p
-        class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70"
-      >
-        Premier échange téléphonique de 15 à 25 minutes pour qualifier le projet.
-      </p>
-      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
-        <a
-          href={`tel:${SITE.contact.phone}`}
-          class="text-sm text-[var(--color-cream)] underline underline-offset-4 hover:text-[var(--color-cream)]"
-        >
-          {SITE.contact.phoneDisplay}
-        </a>
-      </div>
-    </div>
-  </Section>
+  <style is:global>
+    /* ═══════════════════════════════════════════════════════════════════════
+   * /studio — refonte DA Jonathan 2026-05-15.
+   * Tokens hérités du design system home (noir profond + rouge + cream).
+   * ═══════════════════════════════════════════════════════════════════ */
 
-  <style>
-    /* H1 cassé designbyad — nom propre Cormorant italique mid-size + ligne
-       positionnement DESIGNER BIOPHILIQUE Jost CAPS monumentales. */
-    .studio-h1-broken {
-      font-size: clamp(2rem, 5vw, 3.5rem);
+    /* ─── 1 · Hero Bienvenue ─────────────────────────────────────────── */
+    .studio-bienvenue {
+      padding: clamp(7rem, 14vh, 10rem) 0 clamp(4rem, 8vw, 7rem);
     }
-    .studio-h1-positioning {
-      display: block;
-      margin-top: 0.4rem;
-      font-family: var(--font-heading), sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: clamp(2.6rem, 7vw, 5.5rem);
-      line-height: 0.96;
-      letter-spacing: -0.012em;
-    }
-
-    /* Bande keywords designbyad — mots-clés en CAPS justify-scroll, font
-       heading pour gras éditorial, espacement marqué. */
-    .studio-keywords-band {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: clamp(1.25rem, 3.2vw, 2.4rem);
-      line-height: 1.1;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--color-cream);
-      text-align: justify;
-      max-width: 90rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .studio-keywords-band > span[aria-hidden] {
-      display: inline-block;
-      margin: 0 0.4em;
-      color: var(--color-cream);
-      opacity: 0.4;
-      font-weight: 400;
-    }
-
-    /* Dot pulsant (signature) — passé en cream/60 (monochrome Morgan 2026-04-27) */
-    .studio-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 0.4rem;
-      border-radius: 50%;
-      background-color: color-mix(in oklab, var(--color-cream) 60%, transparent);
-      vertical-align: middle;
-      animation: studio-pulse 2.6s ease-in-out infinite;
-    }
-    @keyframes studio-pulse {
-      0%,
-      100% {
-        opacity: 0.55;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.3);
-      }
-    }
-
-    /* Portrait Jonathan — pleine hauteur sur desktop (immersion Morgan
-       2026-04-27). Mobile : aspect-ratio classique pour préserver lisibilité. */
-    .studio-portrait {
-      aspect-ratio: 4 / 5;
-      background-color: var(--color-forest);
-      position: relative;
+    .studio-bienvenue__inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2.5rem, 5vw, 4rem);
     }
     @media (min-width: 1024px) {
-      .studio-portrait {
-        aspect-ratio: auto;
-        height: 100%;
-        min-height: 100svh;
+      .studio-bienvenue__inner {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
       }
     }
-    .studio-portrait-caption {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 10px;
-      letter-spacing: 0.28em;
+    /* Titre Bold UPPERCASE (règle stricte Jonathan). Casse signature
+     visuelle, mis en valeur par contre-respiration du body en dessous. */
+    .studio-bienvenue__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.3rem, 2.6vw, 2.3rem);
+      line-height: 1.25;
+      letter-spacing: -0.005em;
       text-transform: uppercase;
       color: var(--color-cream);
-      padding: 0.5rem 0.75rem;
-      background-color: color-mix(in oklab, var(--color-forest) 85%, transparent);
-      backdrop-filter: blur(4px);
+      margin: 0 0 clamp(2rem, 4vw, 3.5rem) 0;
+      max-width: 60ch;
     }
-    .studio-portrait-caption em {
-      font-family: var(--font-heading), serif;
-      font-size: 14px;
-      letter-spacing: 0;
-      text-transform: none;
-      color: var(--color-cream);
-      font-variation-settings:
-        'opsz' 144,
-        'SOFT' 70;
+    .studio-bienvenue__body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 1.6vw, 1.5rem);
+      max-width: 56ch;
     }
-
-    /* Halo latérite dans la section Démarche forest */
-    .studio-demarche-halo {
-      position: absolute;
-      top: -25%;
-      right: -20%;
-      width: 70%;
-      height: 70%;
-      background: radial-gradient(
-        circle at center,
-        color-mix(in oklab, var(--color-cream) 18%, transparent) 0%,
-        transparent 65%
-      );
-      pointer-events: none;
-      opacity: 0.7;
+    .studio-bienvenue__body p {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1rem, 1.15vw, 1.15rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 92%, transparent);
+      text-align: justify;
+      margin: 0;
     }
-
-    /* Parcours timeline hover */
-    .studio-parcours-item {
-      border-bottom: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
-      transition:
-        background-color 0.3s ease,
-        padding-left 0.4s var(--ease-out-editorial);
-    }
-    .studio-parcours-item:first-child {
-      border-top: 1px solid color-mix(in oklab, var(--color-forest) 12%, transparent);
-    }
-    .studio-parcours-item:hover {
-      background-color: color-mix(in oklab, var(--color-cream) 6%, transparent);
-      padding-left: 0.5rem;
-    }
-
-    /* Blockquote de méthode */
-    .studio-quote {
+    /* Visuel droite : portrait/jardin pleine hauteur de la grille en
+     desktop, plus contenu en mobile. */
+    .studio-bienvenue__visual {
       position: relative;
-      padding-left: 2rem;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background-color: var(--color-ink);
     }
-    .studio-quote::before {
-      content: '“';
-      position: absolute;
-      left: -0.5rem;
-      top: -0.6em;
-      font-family: var(--font-heading), serif;
-      font-size: 6rem;
+    @media (min-width: 1024px) {
+      .studio-bienvenue__visual {
+        aspect-ratio: auto;
+        align-self: stretch;
+        min-height: 540px;
+      }
+    }
+    .studio-bienvenue__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ─── 2 · Manifeste rouge ──────────────────────────────────────────── */
+    .studio-manifeste {
+      padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem);
+    }
+    .studio-manifeste__inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+    /* Phrase manifeste Bold UPPERCASE — règle stricte Jonathan + cohérence
+     home (.manifeste-bold). Justifié, mots cliquablement aérés via
+     word-spacing 10px global déjà actif via body. */
+    .studio-manifeste__quote {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3.2vw, 3rem);
+      line-height: 1.25;
+      letter-spacing: -0.005em;
+      text-transform: uppercase;
+      text-align: justify;
+      color: var(--color-cream);
+      margin: 0;
+      max-width: 100%;
+      hyphens: none;
+    }
+    /* Mots animés words-fade — chaque <span class="word"> inline-block. */
+    .studio-manifeste__quote .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
+    }
+
+    /* ─── 3 · Architectures (scaffold accordéon) ───────────────────────── */
+    .studio-architectures {
+      padding: clamp(1rem, 2vw, 2rem) 0 clamp(3rem, 6vw, 5rem);
+    }
+    .studio-architectures__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
+    }
+    .studio-architectures__item {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
+    }
+    .studio-architectures__details {
+      width: 100%;
+    }
+    .studio-architectures__summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
+      transition: background-color 0.3s ease;
+    }
+    .studio-architectures__summary::-webkit-details-marker {
+      display: none;
+    }
+    .studio-architectures__summary:hover {
+      background-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+    }
+    /* Title Case Jonathan respecté (rupture vs règle home UPPERCASE).
+     Inter Medium pour lisibilité maximale sur fond rouge. */
+    .studio-architectures__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      letter-spacing: -0.005em;
+      color: var(--color-cream);
+    }
+    .studio-architectures__icon {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
       line-height: 1;
       color: var(--color-cream);
-      opacity: 0.3;
-      font-style: italic;
+      transition: transform 0.3s var(--ease-out-editorial);
+    }
+    .studio-architectures__details[open] .studio-architectures__icon {
+      transform: rotate(45deg);
+    }
+    .studio-architectures__panel {
+      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+      max-width: 78ch;
+    }
+    .studio-architectures__panel p {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1rem, 1.15vw, 1.2rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 95%, transparent);
+      text-align: justify;
+      margin: 0;
     }
 
-    /* Étapes méthode hover */
-    .studio-methode-item {
-      transition: padding-left 0.4s var(--ease-out-editorial);
+    /* ─── 4 · Parcours et expérience ──────────────────────────────────── */
+    .studio-parcours {
+      padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem);
     }
-    .studio-methode-item:hover {
-      padding-left: 0.5rem;
+    .studio-parcours__inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+    /* Titre étalé sur toute la largeur, casse Bold UPPERCASE + espaces
+     non-sécables pour reproduire la respiration verbatim de la trame. */
+    .studio-parcours__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 6vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--color-cream);
+      margin: 0 0 clamp(3rem, 6vw, 5rem) 0;
+    }
+    .studio-parcours__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2.5rem, 5vw, 4rem);
+    }
+    @media (min-width: 1024px) {
+      .studio-parcours__grid {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+    }
+    .studio-parcours__photo {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      background-color: var(--color-ink);
+    }
+    .studio-parcours__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .studio-parcours__timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
+    }
+    .studio-parcours__row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
+    }
+    @media (min-width: 768px) {
+      .studio-parcours__row {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+        gap: clamp(1rem, 2vw, 2rem);
+        align-items: baseline;
+      }
+    }
+    .studio-parcours__row-annee {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .studio-parcours__row-detail {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      line-height: 1.55;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      margin: 0;
+    }
+
+    /* full-bleed-bg : sécurité au cas où le layout pose des marges latérales
+     non désirées sur les sections (cohérence avec home). */
+    .studio-bienvenue,
+    .studio-manifeste,
+    .studio-architectures,
+    .studio-parcours {
+      width: 100%;
     }
   </style>
 </BaseLayout>
