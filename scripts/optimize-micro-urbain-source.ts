@@ -20,13 +20,16 @@ interface Variant {
 }
 
 const variants: Variant[] = [
-  // Hero — photo 01 (entrée). Largeur généreuse pour overlay H1 full-bleed.
-  { source: `${DIR}/01-entree.png`, output: `${DIR}/01-hero.jpg`, width: 1800 },
-  // Galerie — 3 photos en quinconce magazine. 02-details = format large.
-  { source: `${DIR}/02-details.png`, output: `${DIR}/02-large.jpg`, width: 1600 },
-  // 03/04 = format moyen, juxtaposées en row asymétrique.
-  { source: `${DIR}/03-vue.png`, output: `${DIR}/03-row-left.jpg`, width: 1200 },
-  { source: `${DIR}/04-vue.png`, output: `${DIR}/04-row-right.jpg`, width: 1200 },
+  // Hero — terrasse-salon (Morgan 2026-05-15 : photo dédiée pour overlay H1
+  // haut-gauche + specs en overlay bas). Source brute dans _assets/hero-source/
+  // (hors index astro:assets), output dans src/assets pour import typé.
+  {
+    source: '_assets/hero-source/03-terrasse-salon.jpg',
+    output: `${DIR}/01-hero.jpg`,
+    width: 2200,
+  },
+  // Galerie — 3 photos en quinconce magazine. Sources brutes déjà optimisées
+  // en commit précédent, on ne les retraite pas (purge déjà passée).
 ];
 
 async function main() {
@@ -42,10 +45,11 @@ async function main() {
       .toFile(v.output);
     console.log(`${v.output} ok`);
   }
-  // Purge des sources PNG une fois les JPG produits — évite qu'astro:assets
-  // les indexe (PNG = ~10x plus lourds).
+  // Purge UNIQUEMENT des sources PNG dans DIR (évite qu'astro:assets indexe
+  // les PNG ~10x plus lourds). Ne touche PAS aux sources brutes hors DIR
+  // (_assets/hero-source/* est partagé avec d'autres pipelines).
   for (const v of variants) {
-    if (existsSync(v.source)) {
+    if (v.source.startsWith(DIR) && v.source.endsWith('.png') && existsSync(v.source)) {
       unlinkSync(v.source);
       console.log(`purged ${v.source}`);
     }

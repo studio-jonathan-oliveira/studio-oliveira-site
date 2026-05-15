@@ -5,14 +5,17 @@
  * `[slug].astro`, donc les 3 autres typologies (coeur-urbain, frange-urbaine,
  * domaine-caractere) gardent l'ancien template inchangé.
  *
- * Architecture issue de la trame (PNG OCR multi-agents) :
- *   1. Hero photo plein-bleed + H1 split « MICRO / URBAIN » overlay bas-gauche
- *   2. Bandeau 4 specs (Secteur géo / Surface / Contexte / Complexité)
- *   3. Galerie quinconce 3 photos en mosaïque éditoriale asymétrique
- *   4. Manifeste 2 paragraphes ExtraLight + 1 italique petit (verbatim
+ * Architecture issue de la trame Jonathan (re-lecture Morgan 2026-05-15) :
+ *   1. Hero photo plein-bleed (terrasse-salon) :
+ *      - H1 split « MICRO / URBAIN » en HAUT-GAUCHE
+ *      - 4 specs (Secteur géo / Surface / Contexte / Complexité) en
+ *        overlay sur le BAS de la photo (pas section séparée)
+ *      - Voile gradient double (haut + bas) pour lisibilité
+ *   2. Galerie quinconce 3 photos en mosaïque éditoriale asymétrique
+ *   3. Manifeste 2 paragraphes ExtraLight + 1 italique petit (verbatim
  *      Jonathan, fautes typo évidentes corrigées)
- *   5. FAQ discrète 3 questions (densification SEO légère sur fond noir)
- *   6. CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » + pill rouge
+ *   4. FAQ discrète 3 questions (densification SEO légère sur fond noir)
+ *   5. CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » + pill rouge
  *
  * Contenu Jonathan : verbatim trame, fautes typo évidentes corrigées
  * (Morgan 2026-05-15) — « connectes » → « connectés », « soit pas une » →
@@ -113,7 +116,14 @@ const schema = jsonLdGraph([
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO photo + H1 overlay bas-gauche ═════════════════════ */}
+  {
+    /* ═════════ 1 · HERO photo + H1 haut-gauche + specs overlay bas ════════
+     Refonte 2026-05-15 (retour Morgan trame) :
+     - H1 « MICRO / URBAIN » en HAUT-GAUCHE de la photo (pas bas)
+     - Les 4 specs sont POSÉES en overlay sur le BAS de la photo hero,
+       pas dans une section noire séparée. Voile gradient double (haut +
+       bas) pour lisibilité simultanée H1 et specs. */
+  }
   <section
     id="hero"
     data-section-label="Micro urbain"
@@ -133,39 +143,36 @@ const schema = jsonLdGraph([
         class="mu-hero__img"
       />
       {
-        /* Voile gradient bas-gauche → haut-droite transparent. Garantit la
-          lisibilité du H1 overlay sans flou (Jonathan déteste les blurs). */
+        /* Voile gradient double — assombrit haut (lisibilité H1) ET bas
+          (lisibilité specs), milieu transparent. Pas de flou (Jonathan). */
       }
       <div class="mu-hero__veil" aria-hidden="true"></div>
     </div>
 
     <div class="mu-hero__overlay">
-      <h1 id="hero-title" class="mu-hero__title">
-        <span class="mu-hero__title-line">MICRO</span>
-        <span class="mu-hero__title-line">URBAIN</span>
-      </h1>
+      <div class="mu-hero__top">
+        <h1 id="hero-title" class="mu-hero__title">
+          <span class="mu-hero__title-line">MICRO</span>
+          <span class="mu-hero__title-line">URBAIN</span>
+        </h1>
+      </div>
+
+      <div class="mu-hero__bottom">
+        <dl class="mu-hero__specs" aria-label="Caractéristiques typologie">
+          {
+            specs.map((s) => (
+              <div class="mu-hero__spec-row">
+                <dt class="mu-hero__spec-label">{s.label}</dt>
+                <dd class="mu-hero__spec-value">{s.valeur}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
     </div>
   </section>
 
-  {/* ═════════ 2 · BANDEAU 4 SPECS ═══════════════════════════════════════ */}
-  <section
-    data-theme="dark"
-    class="mu-specs bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-label="Caractéristiques de la typologie micro urbain"
-  >
-    <dl class="mu-specs__list">
-      {
-        specs.map((s) => (
-          <div class="mu-specs__row">
-            <dt class="mu-specs__label">{s.label}</dt>
-            <dd class="mu-specs__value">{s.valeur}</dd>
-          </div>
-        ))
-      }
-    </dl>
-  </section>
-
-  {/* ═════════ 3 · GALERIE QUINCONCE — 3 photos asymétrique ══════════════ */}
+  {/* ═════════ 2 · GALERIE QUINCONCE — 3 photos asymétrique ══════════════ */}
   <section
     data-theme="dark"
     class="mu-gallery bg-[var(--color-black-deep)]"
@@ -212,7 +219,7 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 4 · MANIFESTE typologie ════════════════════════════════════ */}
+  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
   <section
     id="manifeste"
     data-section-label="Manifeste"
@@ -235,7 +242,7 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 5 · FAQ discrète ══════════════════════════════════════════ */}
+  {/* ═════════ 4 · FAQ discrète ══════════════════════════════════════════ */}
   <section
     id="faq"
     data-section-label="FAQ"
@@ -266,7 +273,7 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 6 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ══ */}
+  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ══ */}
   <section
     data-theme="dark"
     class="mu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
@@ -299,7 +306,7 @@ const schema = jsonLdGraph([
      * sur les inners pour la respiration designbyad).
      * ═══════════════════════════════════════════════════════════════════ */
 
-    /* ─── 1 · Hero photo + H1 overlay ───────────────────────────────────── */
+    /* ─── 1 · Hero photo + H1 haut-gauche + specs overlay bas ───────────── */
     .mu-hero {
       position: relative;
       width: 100%;
@@ -320,15 +327,21 @@ const schema = jsonLdGraph([
       transform: scale(1.04);
       will-change: transform;
     }
-    /* Voile gradient bas-gauche pour lisibilité H1 sans flou. */
+    /* Voile gradient DOUBLE — sombre en haut (zone H1) + sombre en bas
+       (zone specs), transparent au milieu. Pas de flou (Jonathan).
+       Garantit la lisibilité du texte cream overlay sur n'importe quelle
+       photo, sans rogner la zone visuelle centrale de l'image. */
     .mu-hero__veil {
       position: absolute;
       inset: 0;
       background: linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--color-black-deep) 65%, transparent) 0%,
-        color-mix(in oklab, var(--color-black-deep) 35%, transparent) 35%,
-        transparent 70%
+        180deg,
+        color-mix(in oklab, var(--color-black-deep) 72%, transparent) 0%,
+        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 20%,
+        transparent 45%,
+        transparent 60%,
+        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 80%,
+        color-mix(in oklab, var(--color-black-deep) 75%, transparent) 100%
       );
       pointer-events: none;
     }
@@ -337,17 +350,28 @@ const schema = jsonLdGraph([
       z-index: 1;
       min-height: 100svh;
       display: flex;
-      align-items: flex-end;
-      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 7vw, 5.5rem);
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
     }
-    /* H1 split — Bold UPPERCASE, 2 lignes empilées tight. Bloc en bas à
-       gauche comme la trame. Pas d'animation : LCP visible immédiatement. */
+    .mu-hero__top {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .mu-hero__bottom {
+      width: 100%;
+    }
+    /* H1 split — Bold UPPERCASE, 2 lignes empilées tight, posé HAUT-GAUCHE
+       de la photo (retour Morgan 2026-05-15 trame). Pas d'animation : LCP
+       immédiat. Taille calibrée pour cohabiter avec les specs en bas. */
     .mu-hero__title {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(3.5rem, 14vw, 13rem);
-      line-height: 0.88;
-      letter-spacing: -0.03em;
+      font-size: clamp(2.6rem, 9vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.025em;
       text-transform: uppercase;
       color: var(--color-cream);
       margin: 0;
@@ -357,53 +381,50 @@ const schema = jsonLdGraph([
       display: block;
     }
 
-    /* ─── 2 · Bandeau 4 specs ───────────────────────────────────────────── */
-    .mu-specs {
-      width: 100%;
-      padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-    }
-    .mu-specs__list {
+    /* Specs overlay bas — 4 paires label/valeur en 2 colonnes desktop,
+       posées sur la photo (pas de fond noir séparé, le voile gradient bas
+       du veil suffit à les rendre lisibles). Border-top fine cream pour
+       les détacher du visuel sans rompre la continuité de la photo. */
+    .mu-hero__specs {
+      margin: 0;
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(1.25rem, 2.5vw, 2rem);
-      margin: 0;
+      gap: clamp(0.85rem, 1.5vw, 1.25rem);
+      padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
     }
     @media (min-width: 768px) {
-      .mu-specs__list {
+      .mu-hero__specs {
         grid-template-columns: 1fr 1fr;
         column-gap: clamp(2.5rem, 6vw, 5rem);
-        row-gap: clamp(1.5rem, 2.5vw, 2.25rem);
+        row-gap: clamp(0.85rem, 1.5vw, 1.25rem);
       }
     }
-    .mu-specs__row {
+    .mu-hero__spec-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(1rem, 2vw, 2rem);
       align-items: baseline;
-      padding-bottom: clamp(0.5rem, 1vw, 0.85rem);
-      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 12%, transparent);
     }
-    .mu-specs__label {
+    .mu-hero__spec-label {
       font-family: var(--font-body), sans-serif;
       font-weight: 200;
-      font-size: clamp(0.85rem, 1vw, 1rem);
-      line-height: 1.4;
-      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      line-height: 1.35;
+      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
       margin: 0;
     }
-    .mu-specs__value {
+    .mu-hero__spec-value {
       font-family: var(--font-body), sans-serif;
-      font-weight: 200;
-      font-size: clamp(0.85rem, 1vw, 1rem);
-      line-height: 1.4;
+      font-weight: 400;
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      line-height: 1.35;
       color: var(--color-cream);
       text-align: right;
       margin: 0;
     }
 
-    /* ─── 3 · Galerie quinconce ─────────────────────────────────────────── */
+    /* ─── 2 · Galerie quinconce ─────────────────────────────────────────── */
     .mu-gallery {
       width: 100%;
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
@@ -470,7 +491,7 @@ const schema = jsonLdGraph([
       transform: scale(1.04);
     }
 
-    /* ─── 4 · Manifeste ─────────────────────────────────────────────────── */
+    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
     .mu-manifeste {
       width: 100%;
       padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
@@ -519,7 +540,7 @@ const schema = jsonLdGraph([
       max-width: 56ch;
     }
 
-    /* ─── 5 · FAQ discrète ──────────────────────────────────────────────── */
+    /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
     .mu-faq {
       width: 100%;
       padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
@@ -621,7 +642,7 @@ const schema = jsonLdGraph([
       max-width: 60ch;
     }
 
-    /* ─── 6 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ────── */
+    /* ─── 5 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ────── */
     .mu-cta {
       width: 100%;
       padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
@@ -673,7 +694,6 @@ const schema = jsonLdGraph([
 
     /* full-bleed garde-fou — pas de marge latérale parasite sur les sections. */
     .mu-hero,
-    .mu-specs,
     .mu-gallery,
     .mu-manifeste,
     .mu-faq,
