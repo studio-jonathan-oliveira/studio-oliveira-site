@@ -43,6 +43,20 @@
       --cursor-fill: var(--color-cream);
       --cursor-text: var(--color-laterite);
     }
+    /* Variante red (refonte DA 2026-05-15) — quand le pointeur passe sur
+       une section data-theme="red" (manifeste home), curseur en cream
+       sur fond rouge. Reste lisible et garde la signature graphique. */
+    .custom-cursor.is-on-red {
+      --cursor-fill: var(--color-black-deep);
+      --cursor-text: var(--color-cream);
+    }
+    /* Surcharge home (body.is-home) : sur sections sombres de la home,
+       on remplace cream par rouge pour le dot/ring. Effet : curseur rouge
+       sur fond noir, noir sur fond rouge, cohérent avec la DA Jonathan. */
+    body.is-home .custom-cursor.is-on-dark {
+      --cursor-fill: var(--color-red);
+      --cursor-text: var(--color-cream);
+    }
 
     /* Masque le curseur natif uniquement en fine pointer. */
     :global(html),
@@ -217,7 +231,7 @@
     // on a assez scrollé »). On cherche la section[data-theme] sous le
     // pointeur via elementsFromPoint, et on bascule la classe is-on-dark
     // sur le cursor → le CSS choisit alors latérite/cream pile poil.
-    let lastTheme: 'light' | 'dark' | null = null;
+    let lastTheme: 'light' | 'dark' | 'red' | null = null;
     const detectThemeUnderPointer = () => {
       // Le cursor est position:fixed z=9999 → il faut le cacher temporairement
       // pour que elementsFromPoint ne le retourne pas en premier.
@@ -225,18 +239,20 @@
       cursor.style.pointerEvents = 'none';
       const els = document.elementsFromPoint(mouseX, mouseY);
       cursor.style.pointerEvents = prevPe;
-      let theme: 'light' | 'dark' = 'light';
+      let theme: 'light' | 'dark' | 'red' = 'light';
       for (const el of els) {
         if (!(el instanceof HTMLElement)) continue;
         const sec = el.closest('[data-theme]') as HTMLElement | null;
         if (sec) {
-          theme = sec.dataset.theme === 'dark' ? 'dark' : 'light';
+          const t = sec.dataset.theme;
+          theme = t === 'dark' ? 'dark' : t === 'red' ? 'red' : 'light';
           break;
         }
       }
       if (theme !== lastTheme) {
         lastTheme = theme;
         cursor.classList.toggle('is-on-dark', theme === 'dark');
+        cursor.classList.toggle('is-on-red', theme === 'red');
       }
     };
 

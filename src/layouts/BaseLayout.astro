@@ -44,6 +44,11 @@ const {
 // 3. Fallback /og-default.jpg
 const resolvedOgImage = ogImage ?? getOgImagePath(Astro.url.pathname) ?? '/og-default.jpg';
 
+// is-home : classe body posée sur la page d'accueil uniquement. Permet de
+// scoper la nouvelle DA noir + rouge (curseur, overrides) sans toucher les
+// autres pages encore en cream/ink. Propagation page par page à venir.
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
 // OG image : utilise PUBLIC_SITE_URL en priorité (prod), puis VERCEL_URL
@@ -133,7 +138,9 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
     <slot name="head" />
   </head>
 
-  <body class="text-[length:var(--text-base)] font-[var(--font-body)]">
+  <body
+    class:list={['text-[length:var(--text-base)] font-[var(--font-body)]', isHome && 'is-home']}
+  >
     <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>
 
     {

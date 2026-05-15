@@ -105,24 +105,27 @@ const { darkHero = false } = Astro.props;
     mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* CTA pill — refonte 2026-05-02 (Morgan) : fond cream + texte ink Jost gras. */
+  /* CTA pill — refonte DA Jonathan 2026-05-15 (trame home) : fond rouge plein
+     + texte cream Inter bold UPPERCASE. Signature graphique du studio sur
+     toutes les pages : un point rouge focal toujours visible en haut. */
   .cta-pill {
-    background-color: var(--color-cream);
-    color: var(--color-ink);
-    border: 1px solid var(--color-cream);
+    background-color: var(--color-red);
+    color: var(--color-cream);
+    border: 1px solid var(--color-red);
     font-family: var(--font-heading), sans-serif;
     font-weight: 700;
+    text-transform: uppercase;
     transition:
       background-color 0.3s var(--ease-out-editorial),
       border-color 0.3s var(--ease-out-editorial),
       color 0.3s var(--ease-out-editorial);
   }
   .cta-pill:hover {
-    background-color: color-mix(in oklab, var(--color-cream) 88%, var(--color-ink));
-    border-color: color-mix(in oklab, var(--color-cream) 88%, var(--color-ink));
+    background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
+    border-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
   }
   .cta-pill .cta-dot {
-    background-color: var(--color-ink);
+    background-color: var(--color-cream);
     transition: transform 0.4s var(--ease-out-editorial);
   }
   .cta-pill:hover .cta-dot {

@@ -88,6 +88,19 @@
   --color-accent: var(--color-ink);
   --color-gold: var(--color-cream);
 
+  /* Refonte DA Jonathan 2026-05-15 (trame home) — palette noir + rouge vermillon.
+     Le rouge est le NOUVEL accent signature, à utiliser sur :
+       - pill CTA topbar "Démarrer un projet"
+       - section Manifeste (fond plein-bleed)
+       - overlays texte typologies au hover
+       - liens "découvrir le studio", curseur custom sur sections sombres
+     Le black-deep est utilisé sur les sections sombres de la home
+     (Identité, Studio, Typologies, Footer). Cream reste actif pour les
+     autres pages (architecture-paysagere/*, studio, pros, etc.) le temps
+     de la propagation. */
+  --color-red: #ff0d00;
+  --color-black-deep: #0a0a0a;
+
   /* Typographies — bascule Inter 2026-05-15 (demande Jonathan, proxy
      OSS de Segoe UI hébergeable cross-OS).
      Inter = humaniste géométrique lisible (titres + corps)
@@ -257,6 +270,16 @@ header.intro-revealing {
     text-rendering: optimizeLegibility;
     /* Fallback si Header pas encore mesuré (JS load). Override par JS sur mount. */
     --header-height: 80px;
+  }
+
+  /* Signature typographique Jonathan (DA 2026-05-15) — letter-spacing 0
+     + word-spacing 10px partout par défaut. Les eyebrows / labels mono
+     conservent leurs propres letter-spacing via .eyebrow / --tracking-eyebrow.
+     Le word-spacing 10px est ce que Jonathan a annoté sur sa trame ; il
+     produit une respiration nette entre les mots, signature de la DA. */
+  body {
+    letter-spacing: 0;
+    word-spacing: 10px;
   }
 
   /*
@@ -471,6 +494,26 @@ header.intro-revealing {
  * Effet « monte d'en bas comme si elle venait d'ailleurs » (brief Morgan).
  * Aucun CSS spécifique requis — les attributs data-* font tout le travail.
  */
+
+/*
+ * Utilitaires typo refonte DA Jonathan 2026-05-15 (trame home) —
+ * 2 traitements canoniques, à appliquer partout sur le site :
+ *   - .text-display-bold = Inter Bold 700 + UPPERCASE
+ *   - .text-display-thin = Inter ExtraLight 200 + lowercase
+ * Règle Jonathan : ce qui est bold est en MAJUSCULES, ce qui est extra-light
+ * est en minuscules. Pas d'autre poids/casse autorisé pour le display.
+ * Exception singulière : wordmark hero "STUDIO J. OLIVEIRA" en ExtraLight CAPS.
+ */
+.text-display-bold {
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.text-display-thin {
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 200;
+  text-transform: lowercase;
+}
 
 /* Micro-preloader — overlay full-bleed en forest qui fade-out 0.45s
    après first paint. Évite l'impression de chargement "nu" sans
