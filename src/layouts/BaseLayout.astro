@@ -44,11 +44,17 @@ const {
 // 3. Fallback /og-default.jpg
 const resolvedOgImage = ogImage ?? getOgImagePath(Astro.url.pathname) ?? '/og-default.jpg';
 
-// is-home / is-studio : classes body pour scoper la DA noir+rouge
-// (curseur rouge sur sections sombres, etc.). Étendu à /studio 2026-05-15
-// (page studio refondue trame Jonathan).
+// is-home / is-studio / is-typologie : classes body pour scoper la DA
+// noir+rouge (curseur rouge sur sections sombres, etc.). Étendu à /studio
+// 2026-05-15 (page studio refondue trame Jonathan). Étendu à
+// /architecture-paysagere/[slug] (sauf index + architecture-publique) au
+// portage du pilote micro-urbain (trame typologies Jonathan).
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const isStudio = Astro.url.pathname === '/studio' || Astro.url.pathname.startsWith('/studio/');
+const isTypologie =
+  Astro.url.pathname.startsWith('/architecture-paysagere/') &&
+  Astro.url.pathname !== '/architecture-paysagere/' &&
+  Astro.url.pathname !== '/architecture-paysagere/architecture-publique';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
@@ -144,6 +150,7 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
       'text-[length:var(--text-base)] font-[var(--font-body)]',
       isHome && 'is-home',
       isStudio && 'is-studio',
+      isTypologie && 'is-typologie',
     ]}
   >
     <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>

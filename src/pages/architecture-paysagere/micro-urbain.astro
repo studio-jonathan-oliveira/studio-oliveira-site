@@ -1,0 +1,684 @@
+---
+/*
+ * /architecture-paysagere/micro-urbain — page typologie pilote (refonte trame
+ * Jonathan 2026-05-15). Route statique : Astro priorise ce fichier sur
+ * `[slug].astro`, donc les 3 autres typologies (coeur-urbain, frange-urbaine,
+ * domaine-caractere) gardent l'ancien template inchangé.
+ *
+ * Architecture issue de la trame (PNG OCR multi-agents) :
+ *   1. Hero photo plein-bleed + H1 split « MICRO / URBAIN » overlay bas-gauche
+ *   2. Bandeau 4 specs (Secteur géo / Surface / Contexte / Complexité)
+ *   3. Galerie quinconce 3 photos en mosaïque éditoriale asymétrique
+ *   4. Manifeste 2 paragraphes ExtraLight + 1 italique petit (verbatim
+ *      Jonathan, fautes typo évidentes corrigées)
+ *   5. FAQ discrète 3 questions (densification SEO légère sur fond noir)
+ *   6. CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » + pill rouge
+ *
+ * Contenu Jonathan : verbatim trame, fautes typo évidentes corrigées
+ * (Morgan 2026-05-15) — « connectes » → « connectés », « soit pas une » →
+ * « soit par une », « accéssibilité » → « accessibilité », « voir
+ * obligatoire » → « voire obligatoire ». H1 sans accent et « COEUR » sans
+ * ligature respectés (esthétique designbyad signée Jonathan).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaLink from '@/components/astro/CtaLink.astro';
+import { Image } from 'astro:assets';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+  faqPage,
+} from '@/lib/schema-org';
+
+import heroPhoto from '@/assets/typologies/micro-urbain/01-hero.jpg';
+import photo02 from '@/assets/typologies/micro-urbain/02-large.jpg';
+import photo03 from '@/assets/typologies/micro-urbain/03-row-left.jpg';
+import photo04 from '@/assets/typologies/micro-urbain/04-row-right.jpg';
+
+const typologie = SITE.typologies.find((t) => t.slug === 'micro-urbain')!;
+
+// 4 specs hero — verbatim trame Jonathan, ordre exact.
+const specs = [
+  { label: 'Secteur géographique', valeur: 'Hyper urbain' },
+  { label: 'Moyenne surface jardin', valeur: 'Moins de 100m² (hors cas spécifique)' },
+  { label: 'Contexte environnemental', valeur: 'Roof-top / patios / micro jardins' },
+  {
+    label: 'Complexité spatiale et environnementale',
+    valeur: 'Hauteur / accès / exposition / poids',
+  },
+];
+
+// Manifeste — texte Jonathan trame, fautes typo évidentes corrigées
+// (validation Morgan 2026-05-15). Style et verbe conservés.
+const manifeste = {
+  bloc1:
+    'La typologie micro urbaine se caractérise par des espaces de vie réduits, en hauteur ou encore enclavés entre les murs intérieurs du bâti.',
+  bloc2:
+    "Ce sont des espaces fortement connectés à la vie des habitations, soit par des perspectives directes depuis l'intérieur, soit par une accessibilité directe voire obligatoire depuis les circulations de l'intérieur vers l'extérieur.",
+  precision:
+    "Les contraintes liées à l'exposition aux vents forts et la portance structurelle pour les terrasses, l'ombre excessive et le taux élevé de l'hygrométrie pour les patios ou encore les accès difficiles à ces différents espaces établissent des contraintes très spécifiques dans l'élaboration de l'étude et la réalisation des ouvrages.",
+};
+
+// FAQ discrète — 3 questions à réponse validée (pas de placeholder draft
+// pour ne pas polluer le pilote). Reformulations issues du process Jonathan
+// + audit business existant sur /architecture-paysagere.
+const faq = [
+  {
+    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
+    answer:
+      "Parce que c'est le cœur du métier. L'étude comprend le plan masse, les plans de plantations, le DCE, la mise en concurrence des entreprises et le suivi de chantier. Le chiffrage travaux vient ensuite, précisément.",
+  },
+  {
+    question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
+    answer:
+      "Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).",
+  },
+  {
+    question: 'Vous réalisez les travaux vous-mêmes ?',
+    answer:
+      'Non. Je conçois et je coordonne — je sélectionne et je pilote des entreprises mises en concurrence sur chaque lot (terrassement, maçonnerie paysagère, arrosage, éclairage, plantations).',
+  },
+];
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: typologie.nomProprietaire, item: `/architecture-paysagere/${typologie.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: typologie.h1Seo,
+    slug: typologie.slug,
+    description: `${typologie.h1Seo} — Studio J Oliveira, designer paysagiste biophilique. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}.`,
+    priceRangeMin: typologie.coutEtudeNumeric,
+    priceRangeMax: typologie.coutEtudeNumeric,
+  }),
+  faqPage(faq),
+  breadcrumbs(breadcrumbItems),
+]);
+---
+
+<BaseLayout
+  title={`${typologie.h1Seo} — Micro urbain`}
+  description={`${typologie.h1Seo} avec le Studio J Oliveira — terrasse, rooftop, patio. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
+  darkHero
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  {/* ═════════ 1 · HERO photo + H1 overlay bas-gauche ═════════════════════ */}
+  <section
+    id="hero"
+    data-section-label="Micro urbain"
+    data-theme="dark"
+    class="mu-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="hero-title"
+  >
+    <div class="mu-hero__media">
+      <Image
+        src={heroPhoto}
+        alt="Terrasse urbaine micro-urbain — projet Studio J Oliveira"
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={82}
+        format="webp"
+        loading="eager"
+        class="mu-hero__img"
+      />
+      {
+        /* Voile gradient bas-gauche → haut-droite transparent. Garantit la
+          lisibilité du H1 overlay sans flou (Jonathan déteste les blurs). */
+      }
+      <div class="mu-hero__veil" aria-hidden="true"></div>
+    </div>
+
+    <div class="mu-hero__overlay">
+      <h1 id="hero-title" class="mu-hero__title">
+        <span class="mu-hero__title-line">MICRO</span>
+        <span class="mu-hero__title-line">URBAIN</span>
+      </h1>
+    </div>
+  </section>
+
+  {/* ═════════ 2 · BANDEAU 4 SPECS ═══════════════════════════════════════ */}
+  <section
+    data-theme="dark"
+    class="mu-specs bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-label="Caractéristiques de la typologie micro urbain"
+  >
+    <dl class="mu-specs__list">
+      {
+        specs.map((s) => (
+          <div class="mu-specs__row">
+            <dt class="mu-specs__label">{s.label}</dt>
+            <dd class="mu-specs__value">{s.valeur}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  {/* ═════════ 3 · GALERIE QUINCONCE — 3 photos asymétrique ══════════════ */}
+  <section
+    data-theme="dark"
+    class="mu-gallery bg-[var(--color-black-deep)]"
+    aria-label="Sélection de projets micro urbain"
+  >
+    <figure class="mu-gallery__hero" data-reveal="image-rise">
+      <Image
+        src={photo02}
+        alt="Projet micro urbain — détail aménagement"
+        widths={[960, 1440, 1920]}
+        sizes="(min-width: 1024px) 88vw, 96vw"
+        quality={82}
+        format="webp"
+        loading="lazy"
+        class="mu-gallery__img"
+      />
+    </figure>
+
+    <div class="mu-gallery__row">
+      <figure class="mu-gallery__row-left" data-reveal="image-rise">
+        <Image
+          src={photo03}
+          alt="Projet micro urbain — vue d'ensemble terrasse"
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1024px) 52vw, 96vw"
+          quality={82}
+          format="webp"
+          loading="lazy"
+          class="mu-gallery__img"
+        />
+      </figure>
+      <figure class="mu-gallery__row-right" data-reveal="image-rise">
+        <Image
+          src={photo04}
+          alt="Projet micro urbain — perspective urbaine"
+          widths={[480, 720, 960]}
+          sizes="(min-width: 1024px) 36vw, 96vw"
+          quality={82}
+          format="webp"
+          loading="lazy"
+          class="mu-gallery__img"
+        />
+      </figure>
+    </div>
+  </section>
+
+  {/* ═════════ 4 · MANIFESTE typologie ════════════════════════════════════ */}
+  <section
+    id="manifeste"
+    data-section-label="Manifeste"
+    data-theme="dark"
+    class="mu-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="manifeste-title"
+  >
+    <div class="mu-manifeste__inner">
+      <h2 id="manifeste-title" class="sr-only">La typologie micro urbain</h2>
+      <div
+        class="mu-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="mu-manifeste__para">{manifeste.bloc1}</p>
+        <p class="mu-manifeste__para">{manifeste.bloc2}</p>
+      </div>
+      <p class="mu-manifeste__precision">{manifeste.precision}</p>
+    </div>
+  </section>
+
+  {/* ═════════ 5 · FAQ discrète ══════════════════════════════════════════ */}
+  <section
+    id="faq"
+    data-section-label="FAQ"
+    data-theme="dark"
+    class="mu-faq bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="faq-title"
+  >
+    <div class="mu-faq__inner">
+      <p class="mu-faq__eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title" class="mu-faq__title">Avant d'appeler.</h2>
+      <ul class="mu-faq__list">
+        {
+          faq.map((item) => (
+            <li class="mu-faq__item">
+              <details class="mu-faq__details group">
+                <summary class="mu-faq__summary">
+                  <span>{item.question}</span>
+                  <span class="mu-faq__plus" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="mu-faq__answer">{item.answer}</p>
+              </details>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ═════════ 6 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ══ */}
+  <section
+    data-theme="dark"
+    class="mu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="cta-title"
+  >
+    <a href="/realisations" class="mu-cta__link" data-cursor-label="VOIR">
+      <h2
+        id="cta-title"
+        class="mu-cta__title"
+        data-justify-multi
+        data-justify-amp="50"
+        data-justify-line-step="0.15"
+        data-justify-line-window="0.55"
+      >
+        <span class="mu-cta__title-line" data-justify-line data-justify-direction="from-right">
+          DECOUVRIR LES PROJETS MICRO URBAIN
+        </span>
+      </h2>
+    </a>
+    <div class="mu-cta__pill">
+      <CtaLink href="/demarrer-un-projet" label="Démarrer un projet" tone="accent" size="md" />
+    </div>
+  </section>
+
+  <style is:global>
+    /* ═══════════════════════════════════════════════════════════════════════
+     * /architecture-paysagere/micro-urbain — refonte trame Jonathan 2026-05-15.
+     * Pattern noir + cream + accent rouge. Reproduit les tokens et conventions
+     * des pages home + studio (full-bleed sections, padding cohérent, no max-width
+     * sur les inners pour la respiration designbyad).
+     * ═══════════════════════════════════════════════════════════════════ */
+
+    /* ─── 1 · Hero photo + H1 overlay ───────────────────────────────────── */
+    .mu-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      isolation: isolate;
+    }
+    .mu-hero__media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .mu-hero__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transform: scale(1.04);
+      will-change: transform;
+    }
+    /* Voile gradient bas-gauche pour lisibilité H1 sans flou. */
+    .mu-hero__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--color-black-deep) 65%, transparent) 0%,
+        color-mix(in oklab, var(--color-black-deep) 35%, transparent) 35%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+    .mu-hero__overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 7vw, 5.5rem);
+    }
+    /* H1 split — Bold UPPERCASE, 2 lignes empilées tight. Bloc en bas à
+       gauche comme la trame. Pas d'animation : LCP visible immédiatement. */
+    .mu-hero__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(3.5rem, 14vw, 13rem);
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      margin: 0;
+      max-width: none;
+    }
+    .mu-hero__title-line {
+      display: block;
+    }
+
+    /* ─── 2 · Bandeau 4 specs ───────────────────────────────────────────── */
+    .mu-specs {
+      width: 100%;
+      padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+    }
+    .mu-specs__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.25rem, 2.5vw, 2rem);
+      margin: 0;
+    }
+    @media (min-width: 768px) {
+      .mu-specs__list {
+        grid-template-columns: 1fr 1fr;
+        column-gap: clamp(2.5rem, 6vw, 5rem);
+        row-gap: clamp(1.5rem, 2.5vw, 2.25rem);
+      }
+    }
+    .mu-specs__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(1rem, 2vw, 2rem);
+      align-items: baseline;
+      padding-bottom: clamp(0.5rem, 1vw, 0.85rem);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 12%, transparent);
+    }
+    .mu-specs__label {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      line-height: 1.4;
+      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
+      margin: 0;
+    }
+    .mu-specs__value {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      line-height: 1.4;
+      color: var(--color-cream);
+      text-align: right;
+      margin: 0;
+    }
+
+    /* ─── 3 · Galerie quinconce ─────────────────────────────────────────── */
+    .mu-gallery {
+      width: 100%;
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    .mu-gallery__hero {
+      margin: 0;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .mu-gallery__hero {
+        aspect-ratio: 21 / 9;
+      }
+    }
+    .mu-gallery__row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 768px) {
+      .mu-gallery__row {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+    }
+    .mu-gallery__row-left,
+    .mu-gallery__row-right {
+      margin: 0;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    .mu-gallery__row-left {
+      aspect-ratio: 4 / 3;
+    }
+    .mu-gallery__row-right {
+      aspect-ratio: 3 / 4;
+    }
+    @media (min-width: 768px) {
+      .mu-gallery__row-left {
+        aspect-ratio: 5 / 4;
+      }
+      .mu-gallery__row-right {
+        aspect-ratio: 4 / 5;
+        align-self: end;
+        max-height: 75%;
+      }
+    }
+    .mu-gallery__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.9s var(--ease-out-editorial);
+    }
+    .mu-gallery__hero:hover .mu-gallery__img,
+    .mu-gallery__row-left:hover .mu-gallery__img,
+    .mu-gallery__row-right:hover .mu-gallery__img {
+      transform: scale(1.04);
+    }
+
+    /* ─── 4 · Manifeste ─────────────────────────────────────────────────── */
+    .mu-manifeste {
+      width: 100%;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .mu-manifeste__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+    @media (min-width: 1024px) {
+      .mu-manifeste__inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+    }
+    .mu-manifeste__body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 1.8vw, 1.5rem);
+      max-width: 36ch;
+    }
+    .mu-manifeste__para {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      line-height: 1.65;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .mu-manifeste__body .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
+    }
+    .mu-manifeste__precision {
+      font-family: var(--font-body), sans-serif;
+      font-style: italic;
+      font-weight: 200;
+      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+      line-height: 1.7;
+      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      text-align: justify;
+      margin: 0;
+      max-width: 56ch;
+    }
+
+    /* ─── 5 · FAQ discrète ──────────────────────────────────────────────── */
+    .mu-faq {
+      width: 100%;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .mu-faq__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 1024px) {
+      .mu-faq__inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+    }
+    .mu-faq__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .mu-faq__title {
+      grid-column: 1;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    @media (min-width: 1024px) {
+      .mu-faq__eyebrow,
+      .mu-faq__title {
+        grid-column: 1;
+      }
+    }
+    .mu-faq__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      grid-column: 1;
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    @media (min-width: 1024px) {
+      .mu-faq__list {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+    .mu-faq__item {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .mu-faq__summary {
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+      line-height: 1.3;
+      color: var(--color-cream);
+      list-style: none;
+      transition: color 0.3s ease;
+    }
+    .mu-faq__summary::-webkit-details-marker {
+      display: none;
+    }
+    .mu-faq__summary:hover {
+      color: color-mix(in oklab, var(--color-cream) 85%, var(--color-red));
+    }
+    .mu-faq__plus {
+      flex-shrink: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+      line-height: 1;
+      transition: transform 0.35s var(--ease-out-editorial);
+      transform-origin: center;
+    }
+    .mu-faq__details[open] .mu-faq__plus {
+      transform: rotate(45deg);
+    }
+    .mu-faq__answer {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      margin: 0;
+      padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+      max-width: 60ch;
+    }
+
+    /* ─── 6 · CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » ────── */
+    .mu-cta {
+      width: 100%;
+      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
+    .mu-cta__link {
+      display: block;
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      text-decoration: none;
+      color: inherit;
+    }
+    .mu-cta__title {
+      width: 100%;
+      margin: 0;
+    }
+    .mu-cta__title-line {
+      display: block;
+      width: 100%;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 5.5vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) {
+      .mu-cta__title-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+    .mu-cta__pill {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* full-bleed garde-fou — pas de marge latérale parasite sur les sections. */
+    .mu-hero,
+    .mu-specs,
+    .mu-gallery,
+    .mu-manifeste,
+    .mu-faq,
+    .mu-cta {
+      box-sizing: border-box;
+    }
+  </style>
+</BaseLayout>

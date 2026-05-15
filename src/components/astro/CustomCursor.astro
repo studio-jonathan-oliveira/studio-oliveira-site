@@ -61,11 +61,13 @@
       --cursor-fill: var(--color-black-deep);
       --cursor-text: var(--color-cream);
     }
-    /* Surcharge pages DA noir/rouge (home + studio) : sur sections sombres,
-       on remplace cream par rouge pour le dot/ring. Effet : curseur rouge
-       sur fond noir, noir sur fond rouge, cohérent avec la DA Jonathan. */
+    /* Surcharge pages DA noir/rouge (home + studio + typologies) : sur
+       sections sombres, on remplace cream par rouge pour le dot/ring. Effet :
+       curseur rouge sur fond noir, noir sur fond rouge, cohérent avec la DA
+       Jonathan. Étendu à .is-typologie 2026-05-15 (pilote micro-urbain). */
     body.is-home .custom-cursor.is-on-dark,
-    body.is-studio .custom-cursor.is-on-dark {
+    body.is-studio .custom-cursor.is-on-dark,
+    body.is-typologie .custom-cursor.is-on-dark {
       --cursor-fill: var(--color-red);
       --cursor-text: var(--color-cream);
     }
