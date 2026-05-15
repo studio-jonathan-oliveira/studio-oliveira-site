@@ -20,75 +20,48 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import HeroSwipe from '@/components/astro/HeroSwipe.astro';
-import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, website, person } from '@/lib/schema-org';
 
 const homeSchema = jsonLdGraph([organization(), person(), localBusiness(), website()]);
-// Refonte DA Jonathan 2026-05-15 (trame home) : abandon du slideshow vidéo
-// au profit d'un slideshow image swipe (5 visuels). Pipeline :
-// scripts/optimize-hero-images.ts → public/hero/01-05.{webp,jpg}.
-// Composant HeroSwipe encapsule drag/clavier/dots/auto-advance.
-import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
-import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
-import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
-import typoDomaine from '@/assets/typologies/domaine-caractere.webp';
 
-// Typologies — refonte 2026-04-30 (Jonathan, capture typologies-01.png).
-// Le carousel scrolle horizontalement vers la gauche, la 5e (Architecture
-// publique) n'apparaît que cropée à droite avant scroll.
-// Tooltip 3 lignes (`tagline` séparée par " / ") affiché en haut-droite du
-// curseur au hover de l'image, indépendamment de la bulle CTA "Choisir".
-// CTA = "Choisir" partout, sauf "Explorer" pour Architecture publique
-// (typologie marché public, parcours différent du parcours particulier).
+// Refonte DA Jonathan 2026-05-15 : 5 images typologies fournies par Jonathan,
+// optimisées via scripts/optimize-typologies-images.ts → public/typologies/.
+// Pattern <picture>+srcset 1x/2x pour rendu retina.
 const typologies = [
   {
     slug: 'micro-urbain',
-    index: '01',
+    file: '01-micro-urbain',
     nom: 'Micro urbain',
     tagline: 'ROOF TOPS / PATIOS / MICRO JARDINS',
     cta: 'Choisir',
-    image: typoMicroUrbain,
-    imagePosition: 'center 65%',
-    imageNote: '[À FOURNIR — image définitive Micro-urbain, placeholder actuel évocateur]',
   },
   {
     slug: 'coeur-urbain',
-    index: '02',
+    file: '02-coeur-urbain',
     nom: 'Cœur urbain',
     tagline: 'COURS / JARDINS CONFINÉS / JARDINS HYPER URBAINS',
     cta: 'Choisir',
-    image: typoCoeurUrbain,
-    imagePosition: 'center 55%',
   },
   {
     slug: 'frange-urbaine',
-    index: '03',
+    file: '03-frange-urbaine',
     nom: 'Frange urbaine',
     tagline: 'JARDINS RÉSIDENTIELS / PROPRIÉTÉS PRINCIPALES / PROPRIÉTÉS SECONDAIRES',
     cta: 'Choisir',
-    image: typoFrangeUrbaine,
-    imagePosition: 'center 50%',
   },
   {
     slug: 'domaine-caractere',
-    index: '04',
+    file: '04-domaine-caractere',
     nom: 'Domaine & Caractère',
     tagline: 'CHÂTEAUX & MANOIRS / PROPRIÉTÉS FAMILIALES / PROPRIÉTÉS PATRIMONIALES',
     cta: 'Choisir',
-    image: typoDomaine,
-    imagePosition: 'center 40%',
   },
   {
     slug: 'architecture-publique',
-    index: '05',
+    file: '05-architecture-publique',
     nom: 'Architecture publique',
     tagline: 'GÉNIE VÉGÉTAL / DESIGN BIOPHILIQUE / SECTEUR PUBLIC',
     cta: 'Explorer',
-    // Image temporaire (réutilise domaine-caractere) en attendant un visuel dédié.
-    image: typoDomaine,
-    imagePosition: 'center 50%',
-    imageNote:
-      '[À FOURNIR — image définitive Architecture publique (marchés publics, génie végétal). Placeholder actuel = domaine-caractere.]',
   },
 ];
 
@@ -194,18 +167,27 @@ const typologies = [
     class="identite-band full-bleed-bg relative overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-label="Identité du studio"
   >
-    <div class="px-6 py-32 md:px-10 md:py-44">
-      <div class="identite-grid">
-        <span class="identite-word" data-reveal="up">ARCHITECTURE</span>
-        <span class="identite-word" data-reveal="up">PAYSAGE</span>
-        <span class="identite-word identite-word--right" data-reveal="up">DESIGN</span>
-        <span class="identite-word" data-reveal="up">ERGONOMIE</span>
-        <span class="identite-word" data-reveal="up">BIOPHILIE</span>
-        <span class="identite-word identite-word--right" data-reveal="up">CONCEPTION</span>
-        <span class="identite-word" data-reveal="up">VEGETAL</span>
-        <span class="identite-word identite-word--gap" aria-hidden="true"></span>
-        <span class="identite-word identite-word--right" data-reveal="up">PILOTAGE</span>
-      </div>
+    {
+      /* Refonte v2 2026-05-15 (retour Morgan) : retour à l'animation
+       justify-multi designbyad — chaque ligne en text-align: justify CSS
+       natif, JS pose le pas directionnel au scroll (motion-enhance.ts). */
+    }
+    <div
+      class="px-6 py-32 md:px-10 md:py-44"
+      data-justify-multi
+      data-justify-amp="80"
+      data-justify-line-step="0.15"
+      data-justify-line-window="0.6"
+    >
+      <p class="identite-line" data-justify-line data-justify-direction="from-right">
+        ARCHITECTURE PAYSAGE DESIGN
+      </p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-left">
+        ERGONOMIE BIOPHILIE CONCEPTION
+      </p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-right">
+        VEGETAL PILOTAGE
+      </p>
     </div>
   </section>
 
@@ -223,11 +205,16 @@ const typologies = [
   >
     <div class="px-6 pt-24 pb-24 md:px-10 md:pt-36 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
+      {
+        /* Texte verbatim Jonathan — ExtraLight 200 lowercase + 1res lettres
+          des 2 phrases capitalisées (règle Jonathan 2026-05-15). Full-justify
+          "designbyad" sur toute la largeur via .studio-presentation-text. */
+      }
       <p class="studio-presentation-text">
-        LE STUDIO J OLIVEIRA EST UN STUDIO DE DESIGN SPATIAL SPECIALISE DANS L'AMENAGEMENT
-        ENVIRONNEMENTAL IMMERSIF ET EXPERIENTIEL. SA MISSION EST D'ETUDIER ET CONCEVOIR DES ESPACES
-        EXTERIEURS COMME INTERIEURS EN DIALOGUE AVEC LE BATI, L'ENVIRONNEMENT ET L'HUMAIN, DE LA
-        CONCEPTION JUSQU'AU PILOTAGE CHANTIER.
+        Le studio j oliveira est un studio de design spatial specialisé dans l'aménagement
+        environnemental immersif et expérientiel. Sa mission est d'étudier et concevoir des espaces
+        extérieurs comme intérieurs en dialogue avec le bâti, l'environnement et l'humain, de la
+        conception jusqu'au pilotage chantier.
       </p>
       <div class="mt-12 flex justify-center md:mt-16">
         <CtaLink
@@ -236,86 +223,18 @@ const typologies = [
           tone="dark"
           size="lg"
           magnetic={0.3}
+          showDot={false}
         />
       </div>
     </div>
   </section>
 
   {
-    /* 05 · TYPOLOGIES — refonte DA Jonathan 2026-05-15 (trame home).
-       Bascule en dark theme (fond noir-deep + texte cream). Carousel
-       horizontal scroll-driven (vers la gauche), 4 visibles + 5e cropée.
-       Le curseur custom affiche "CHOISIR" (4 typos privées) ou "EXPLORER"
-       (architecture-publique uniquement) au hover de chaque card. */
-  }
-  <section
-    id="typologies"
-    data-section-label="Typologies"
-    data-theme="dark"
-    data-hscroll-typologies
-    class="htypo-section full-bleed-bg relative border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="typologies-title"
-  >
-    <div class="htypo-sticky">
-      <!-- Header fixe : intro Jonathan -->
-      <header class="htypo-header">
-        <p class="htypo-intro">
-          Chaque projet appartient à une typologie de jardin conforme à ses potentiels et
-          contraintes qui définit le type d'étude paysagère adaptée à votre projet.
-        </p>
-        <h2 id="typologies-title" class="sr-only">Typologies de jardins & propriétés</h2>
-      </header>
-
-      <!-- Rail horizontal : 5 panneaux (4 visibles + 5e cropée).
-           Bulle CTA "Choisir/Explorer" + tooltip 3 lignes attachés à htypo-visual
-           (donc visibles uniquement quand le curseur survole l'image, pas le
-           nom au-dessus ni le CTA en dessous). -->
-      <div class="htypo-rail" data-hscroll-rail>
-        {
-          typologies.map((t, i) => (
-            <a
-              href={`/architecture-paysagere/${t.slug}`}
-              class="htypo-panel group"
-              data-hscroll-panel
-              aria-label={`${t.cta} la typologie ${t.nom}`}
-            >
-              <div class="htypo-card">
-                <h3 class="htypo-name">{t.nom}</h3>
-                <div class="htypo-visual" data-cursor-label={t.cta} data-cursor-tooltip={t.tagline}>
-                  <Image
-                    src={t.image}
-                    alt={`Typologie ${t.nom} — ${t.tagline}`}
-                    widths={[480, 720, 960, 1280]}
-                    sizes="(min-width: 1024px) 24vw, 70vw"
-                    quality={82}
-                    format="webp"
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    class="htypo-img"
-                    style={`object-position: ${t.imagePosition ?? 'center'}`}
-                  />
-                </div>
-                {/* Petits CTA « Choisir / Explorer » retirés 2026-05-02
-                    (Morgan) : la photo entière est cliquable, le texte
-                    redondant n'apporte rien. Tooltip au hover suffit. */}
-              </div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  {/* Section méthode migrée vers /demarrer-un-projet (refonte 2026-04-28). */}
-
-  {/* Section Vitrine « Quelques études récentes » supprimée 2026-04-29 (Morgan). */}
-
-  {
-    /* 04 · MANIFESTE — refonte DA Jonathan 2026-05-15 (trame home).
-       Fond rouge plein-bleed, texte cream. Bloc rouge unique de toute la home.
+    /* 04 · MANIFESTE — refonte DA Jonathan 2026-05-15. Déplacé AVANT
+       les typologies (retour Morgan : « le manifeste doit être juste après
+       la section studio, avant les 5 typologies »). Fond rouge plein-bleed,
        data-theme="red" → le curseur custom bascule en cream/black via la
-       détection theme JS (cf. CustomCursor.astro). Texte verbatim trame :
-       ajout de "UNE REFLEXION ET" + "POUR GARANTIR UNE EXPERIENCE D'USAGE
-       DURABLE" vs version précédente. */
+       détection theme JS (CustomCursor.astro). */
   }
   <section
     id="manifeste"
@@ -340,15 +259,10 @@ const typologies = [
           résultat final pour garantir une expérience d'usage durable.
         </blockquote>
         {
-          /* Casse respectée 2026-05-02 (Morgan) : `uppercase` retiré pour
-            préserver « Jonathan OLIVEIRA » (seul OLIVEIRA en caps) +
-            le reste en minuscules.
-            Signature passée en Jost (font-heading) + taille augmentée à
-            15-17px (2026-05-11 Morgan : « augmenter légèrement »). */
+          /* Signature — refonte 2026-05-15 (retour Morgan) : passée en cream
+           plein + centrée sur la page. */
         }
-        <footer
-          class="mt-16 font-[family-name:var(--font-heading)] text-[15px] tracking-[0.06em] text-[var(--color-ink)]/70 md:text-[17px]"
-        >
+        <footer class="manifeste-signature">
           Jonathan OLIVEIRA, fondateur et designer-gérant du studio
         </footer>
       </div>
@@ -356,10 +270,86 @@ const typologies = [
   </section>
 
   {
-    /* 06 · Section CTA contact final retirée 2026-04-30 (demande Jonathan).
-      Le nouveau Footer global (refondu) joue désormais le rôle de section
-      finale unifiée — NAP + territoires + services + studio + mentions légales,
-      fond latérite plein. Cf. Footer.astro. */
+    /* 05 · TYPOLOGIES — refonte DA Jonathan 2026-05-15 (trame home).
+       Bascule en dark theme (fond noir-deep + texte cream). Carousel
+       horizontal scroll-driven (vers la gauche), 4 visibles + 5e cropée.
+       Le curseur custom affiche "CHOISIR" (4 typos privées) ou "EXPLORER"
+       (architecture-publique uniquement) au hover de chaque card. */
+  }
+  <section
+    id="typologies"
+    data-section-label="Typologies"
+    data-theme="dark"
+    data-hscroll-typologies
+    class="htypo-section full-bleed-bg relative border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="typologies-title"
+  >
+    <div class="htypo-sticky">
+      <!-- Header fixe : intro Jonathan -->
+      <header class="htypo-header">
+        {
+          /* Texte verbatim trame Jonathan (retour Morgan 2026-05-15) :
+            ExtraLight 200 lowercase + 1res lettres des phrases capitalisées. */
+        }
+        <p class="htypo-intro">
+          Chaque projet appartient à une typologie de jardin. L'architecture bâti, le contexte
+          environnemental et géographique ainsi que les contraintes structurelles du lieu
+          définissent le type d'étude paysagère adaptée à votre projet. Découvrez votre typologie.
+        </p>
+        <h2 id="typologies-title" class="sr-only">Typologies de jardins & propriétés</h2>
+      </header>
+
+      <!-- Rail horizontal : 5 panneaux (4 visibles + 5e cropée).
+           Bulle CTA "Choisir/Explorer" + tooltip 3 lignes attachés à htypo-visual
+           (donc visibles uniquement quand le curseur survole l'image, pas le
+           nom au-dessus ni le CTA en dessous). -->
+      <div class="htypo-rail" data-hscroll-rail>
+        {
+          typologies.map((t, i) => (
+            <a
+              href={`/architecture-paysagere/${t.slug}`}
+              class="htypo-panel group"
+              data-hscroll-panel
+              aria-label={`${t.cta} la typologie ${t.nom}`}
+            >
+              <div class="htypo-card">
+                <h3 class="htypo-name">{t.nom}</h3>
+                <div class="htypo-visual" data-cursor-label={t.cta} data-cursor-tooltip={t.tagline}>
+                  {/* <picture> + srcset 1x/2x pour rendu retina. Cadrage
+                      object-position 50% 85% (bottom-center) à la requête
+                      Jonathan, comme les images hero. */}
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcset={`/typologies/${t.file}.webp 1x, /typologies/${t.file}@2x.webp 2x`}
+                    />
+                    <img
+                      src={`/typologies/${t.file}.jpg`}
+                      srcset={`/typologies/${t.file}.jpg 1x, /typologies/${t.file}@2x.jpg 2x`}
+                      alt={`Typologie ${t.nom} — ${t.tagline}`}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      class="htypo-img"
+                    />
+                  </picture>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* Section méthode migrée vers /demarrer-un-projet (refonte 2026-04-28). */}
+  {
+    /* Section Vitrine retirée 2026-04-29. Section Manifeste déplacée
+     AVANT typologies 2026-05-15 (retour Morgan). */
+  }
+
+  {
+    /* Section CTA contact final retirée 2026-04-30 (Jonathan) :
+     le Footer global joue le rôle de section finale unifiée. */
   }
 
   <style>
@@ -615,60 +605,45 @@ const typologies = [
       }
     }
 
-    /* Bloc IDENTITÉ — refonte DA Jonathan 2026-05-15 (trame home).
-       Grille 3 colonnes × 3 lignes (3/3/2 mots — col centrale ligne 3 vide).
-       Inter Bold UPPERCASE, alignement gauche / centre / droite par colonne. */
-    .identite-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(1rem, 2.5vw, 2.4rem) clamp(1rem, 4vw, 3rem);
-    }
-    .identite-word {
+    /* Bloc IDENTITÉ — refonte v2 2026-05-15 : retour à l'animation
+       justify-multi designbyad sur 3 lignes. Inter Bold UPPERCASE, chaque
+       ligne en text-align: justify CSS natif (JS hook setupJustifyMulti
+       dans motion-enhance.ts anime le calage des mots au scroll). */
+    .identite-line {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
       font-size: clamp(1.4rem, 5vw, 4.5rem);
-      line-height: 1;
+      line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
       color: var(--color-cream);
-      text-align: left;
+      margin: 0;
+      hyphens: none;
       white-space: nowrap;
+      overflow: hidden;
     }
-    /* Colonne centrale alignée centre, colonne droite alignée droite —
-       reproduit le pattern de la trame (axe gauche / axe centre / axe droit). */
-    .identite-grid > .identite-word:nth-child(3n + 2) {
-      text-align: center;
-    }
-    .identite-grid > .identite-word--right {
-      text-align: right;
-    }
-    .identite-word--gap {
-      display: none; /* placeholder cellule vide ligne 3 col centrale */
-    }
-    @media (max-width: 640px) {
-      .identite-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .identite-grid > .identite-word--gap {
-        display: none;
-      }
+    .identite-line + .identite-line {
+      margin-top: clamp(0.4rem, 1vw, 1rem);
     }
 
-    /* Bloc STUDIO (présentation) — refonte DA Jonathan 2026-05-15 (trame home).
-       Texte ADN UPPERCASE full-justified Inter Bold 700 (règle Jonathan :
-       bold→UPPERCASE). Bloc large centré, marge gauche/droite sym. */
+    /* Bloc STUDIO (présentation) — refonte DA Jonathan 2026-05-15
+       (retours v2) : ExtraLight 200 lowercase, première lettre de chaque
+       phrase capitalisée (gérée dans le texte HTML, pas via CSS). Full-justify
+       "designbyad" sur toute la largeur de la page. */
     .studio-presentation-text {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.1rem, 1.7vw, 1.8rem);
-      line-height: 1.45;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 2.4vw, 2.6rem);
+      line-height: 1.4;
       letter-spacing: 0;
-      text-transform: uppercase;
+      text-transform: none;
       text-align: justify;
-      text-align-last: center;
+      text-align-last: left;
       color: var(--color-cream);
-      max-width: 70rem;
-      margin: 0 auto;
+      max-width: 100%;
+      margin: 0;
     }
 
     /* Placeholder marqueur (Morgan 2026-05-11) — signale l'emplacement à
@@ -726,6 +701,18 @@ const typologies = [
       font-weight: 700;
       font-style: normal;
       text-transform: uppercase;
+    }
+    /* Signature manifeste — refonte v2 2026-05-15 (retour Morgan) :
+       cream plein + centrée sur la page. ExtraLight 200, casse respectée
+       (Jonathan OLIVEIRA garde OLIVEIRA en caps). */
+    .manifeste-signature {
+      margin-top: clamp(2.5rem, 5vw, 4rem);
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.05vw, 1.15rem);
+      letter-spacing: 0;
+      text-align: center;
+      color: var(--color-cream);
     }
 
     /* Archi-intro constellation — refonte 2026-04-28 (Jonathan).
@@ -1089,17 +1076,18 @@ const typologies = [
        clamp 1.2/2.2/2 → 1.6/3/2.8rem. */
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
-      /* ExtraLight 200 + lowercase (refonte DA Jonathan 2026-05-15) —
-         règle stricte Jonathan : extralight = minuscule. */
+      /* ExtraLight 200 + lowercase + 1res lettres capitalisées dans le HTML.
+         Justify designbyad sur toute la largeur (retour Morgan 2026-05-15). */
       font-weight: 200;
-      font-size: clamp(1.6rem, 3vw, 2.8rem);
-      line-height: 1.3;
+      font-size: clamp(1.4rem, 2.4vw, 2.6rem);
+      line-height: 1.4;
       letter-spacing: 0;
-      text-transform: lowercase;
+      text-transform: none;
       color: var(--color-cream);
-      max-width: 70ch;
-      margin: 0 auto;
-      text-align: center;
+      max-width: 100%;
+      margin: 0;
+      text-align: justify;
+      text-align-last: left;
     }
 
     /* Rail horizontal — 5 panneaux, ~30vw + gap (4 visibles + 5e cropée).

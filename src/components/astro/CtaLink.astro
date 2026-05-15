@@ -30,6 +30,7 @@ interface Props {
   external?: boolean;
   ariaLabel?: string;
   class?: string;
+  showDot?: boolean; // affiche le dot pulsant à gauche (true par défaut)
 }
 
 const {
@@ -41,6 +42,7 @@ const {
   external = false,
   ariaLabel,
   class: className = '',
+  showDot = true,
 } = Astro.props as Props;
 
 const target = external ? '_blank' : undefined;
@@ -56,7 +58,7 @@ const rel = external ? 'noopener noreferrer' : undefined;
   rel={rel}
   aria-label={ariaLabel}
 >
-  <span class="cta-link__dot" aria-hidden="true"></span>
+  {showDot && <span class="cta-link__dot" aria-hidden="true" />}
   <span class="cta-link__label">{label}</span>
   <span class="cta-link__arrow" aria-hidden="true">{external ? '↗' : '→'}</span>
 </a>

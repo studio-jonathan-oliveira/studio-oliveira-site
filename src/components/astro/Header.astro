@@ -55,6 +55,8 @@ const { darkHero = false } = Astro.props;
     <a
       href="/demarrer-un-projet"
       class="cta-pill group inline-flex items-center gap-2 justify-self-center rounded-full px-3 py-2 text-[12px] tracking-[0.04em] transition-all sm:gap-3 sm:px-5 sm:py-3 sm:text-[13px]"
+      data-magnetic="0.25"
+      data-cursor-skip
     >
       <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
       <span class="hidden sm:inline">Démarrer un projet</span>
@@ -106,10 +108,11 @@ const { darkHero = false } = Astro.props;
     mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* CTA pill — refonte DA Jonathan 2026-05-15 (trame home) : fond rouge plein
-     + texte cream Inter bold UPPERCASE. Signature graphique du studio sur
-     toutes les pages : un point rouge focal toujours visible en haut. */
+  /* CTA pill — refonte v2 2026-05-15 (retour Morgan) : magnetic + dot
+     clignotant + halo respirant pour inciter au clic. Fond rouge plein +
+     texte cream Inter bold UPPERCASE. */
   .cta-pill {
+    position: relative;
     background-color: var(--color-red);
     color: var(--color-cream);
     border: 1px solid var(--color-red);
@@ -119,18 +122,57 @@ const { darkHero = false } = Astro.props;
     transition:
       background-color 0.3s var(--ease-out-editorial),
       border-color 0.3s var(--ease-out-editorial),
-      color 0.3s var(--ease-out-editorial);
+      color 0.3s var(--ease-out-editorial),
+      box-shadow 0.4s var(--ease-out-editorial);
+    will-change: transform, box-shadow;
+    /* Halo rouge respirant — pulse douce sur l'extérieur du pill pour
+       attirer l'œil sans agresser. Synchronisé avec le dot. */
+    animation: cta-pill-halo 2.6s ease-in-out infinite;
   }
   .cta-pill:hover {
     background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
     border-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
+    /* Le hover renforce le halo (état activé) et fige le pulse interne. */
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-red) 32%, transparent);
+    animation-play-state: paused;
   }
+  @keyframes cta-pill-halo {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-red) 40%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 8px color-mix(in oklab, var(--color-red) 0%, transparent);
+    }
+  }
+  /* Dot interne — clignotement signature (pulse opacity + scale). */
   .cta-pill .cta-dot {
     background-color: var(--color-cream);
     transition: transform 0.4s var(--ease-out-editorial);
+    animation: cta-pill-dot 1.4s ease-in-out infinite;
+  }
+  @keyframes cta-pill-dot {
+    0%,
+    100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.45);
+    }
   }
   .cta-pill:hover .cta-dot {
-    transform: scale(1.4);
+    transform: scale(1.55);
+    opacity: 1;
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-pill,
+    .cta-pill .cta-dot {
+      animation: none;
+    }
   }
 
   /* Burger ↔ X — animation préservée (refonte 2026-04-24 designbyad). */

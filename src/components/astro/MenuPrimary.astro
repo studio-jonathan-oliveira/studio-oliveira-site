@@ -101,9 +101,15 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
                   data-menu-link
                   aria-current={currentPath === section.href ? 'page' : undefined}
                 >
-                  <span class="primary-menu__arrow" aria-hidden="true">
-                    ↗
-                  </span>
+                  {/* Flèche image (fournie par Jonathan, version blanche). */}
+                  <img
+                    src="/brand/fleche-white.webp"
+                    alt=""
+                    aria-hidden="true"
+                    class="primary-menu__arrow primary-menu__arrow--img"
+                    width="32"
+                    height="32"
+                  />
                   <span class="primary-menu__label-main">{section.label}</span>
                 </a>
 
@@ -133,7 +139,14 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
             ]}
           >
             <a href={cta.href} class="primary-menu__link" data-menu-link>
-              <span class="primary-menu__arrow" aria-hidden="true"> ↗ </span>
+              <img
+                src="/brand/fleche-white.webp"
+                alt=""
+                aria-hidden="true"
+                class="primary-menu__arrow primary-menu__arrow--img"
+                width="32"
+                height="32"
+              />
               <span class="primary-menu__label-main">{cta.label}</span>
             </a>
           </li>
@@ -337,17 +350,20 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     }
   }
 
+  /* Bouton Fermer — refonte v2 2026-05-15 (Morgan : « passe le avec le
+     même look que le CTA Démarrer un projet : fond rouge, typo crème »). */
   .primary-menu__close {
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    background: transparent;
-    border: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
+    background: var(--color-red);
+    border: 1px solid var(--color-red);
     border-radius: 999px;
     padding: 0.5rem 1.15rem;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    letter-spacing: 0.26em;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var(--color-cream);
     cursor: pointer;
@@ -358,9 +374,8 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
   }
   .primary-menu__close:hover,
   .primary-menu__close:focus-visible {
-    color: var(--color-black-deep);
-    background-color: var(--color-cream);
-    border-color: var(--color-cream);
+    background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
+    border-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
   }
   .primary-menu__close-x {
     position: relative;
@@ -464,20 +479,23 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
       transform 0.45s var(--ease-out-editorial),
       color 0.4s var(--ease-out-editorial);
   }
-  /* Flèche ↗ — refonte DA Jonathan 2026-05-15 : masquée au repos,
-     apparaît uniquement au hover (annotation trame : « la flèche apparaît
-     également pour inciter au clic »). */
+  /* Flèche image (refonte v2 2026-05-15) : remplace l'ancienne flèche
+     glyphe ↗ par les PNG fournis par Jonathan (fleche-white.webp).
+     Masquée au repos, apparaît au hover du titre parent. */
   .primary-menu__arrow {
     display: inline-block;
-    font-family: var(--font-heading), sans-serif;
-    font-size: clamp(1rem, 2vw, 1.55rem);
     line-height: 1;
-    color: var(--color-cream);
     opacity: 0;
     transform: translate(8px, 4px);
     transition:
       opacity 0.3s var(--ease-out-editorial),
       transform 0.5s var(--ease-out-editorial);
+  }
+  .primary-menu__arrow--img {
+    width: clamp(20px, 2.4vw, 36px);
+    height: clamp(20px, 2.4vw, 36px);
+    object-fit: contain;
+    pointer-events: none;
   }
 
   /* Hover focus/blur sur la nav — refonte DA Jonathan 2026-05-15 :
