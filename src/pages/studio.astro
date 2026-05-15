@@ -237,13 +237,15 @@ const parcours = [
         </div>
 
         {
-          /* Pas de data-reveal-stagger sur l'OL (retour Morgan v2 :
-           timeline invisible). Les LI s'affichent en flux normal. */
+          /* Chaque ligne porte data-parcours-row → inView trigger
+           individuel + cascade word-by-word interne (script en bas de
+           page). Reveal style « CHAQUE ESPACE » mais déclenché ligne
+           par ligne au scroll. */
         }
         <ol class="studio-parcours__timeline">
           {
             parcours.map((p) => (
-              <li class="studio-parcours__row">
+              <li class="studio-parcours__row" data-parcours-row>
                 <p class="studio-parcours__row-annee">{p.annee}</p>
                 <p class="studio-parcours__row-detail">{p.detail}</p>
               </li>
@@ -607,6 +609,35 @@ const parcours = [
       margin: 0;
     }
 
+    /* Wave reveal par ligne — v9 retour Morgan « comme dans CHAQUE
+       ESPACE, déclenché ligne par ligne au scroll, mais la ligne
+       s'affiche entièrement sans avoir besoin de continuer à scroller ».
+       Pattern inView trigger (pas scroll-driven) + cascade word-by-word
+       interne via custom property --i. Le script en bas pose data-revealed
+       sur la row quand elle entre dans le viewport. */
+    [data-parcours-row] .studio-parcours-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(14px);
+      will-change: opacity, transform;
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i, 0) * 22ms);
+    }
+    [data-parcours-row][data-revealed] .studio-parcours-word {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-parcours-row] .studio-parcours-word,
+      [data-parcours-row][data-revealed] .studio-parcours-word {
+        transition: opacity 0.2s linear;
+        transition-delay: 0s;
+        transform: none;
+      }
+    }
+
     /* full-bleed-bg : sécurité au cas où le layout pose des marges latérales
      non désirées sur les sections (cohérence avec home). */
     .studio-bienvenue,
@@ -616,4 +647,54 @@ const parcours = [
       width: 100%;
     }
   </style>
+
+  {
+    /* Script inline pour la wave reveal par ligne du parcours.
+     1. Split annee + detail en spans .studio-parcours-word avec --i
+     2. IntersectionObserver par ligne → ajoute data-revealed à l'entrée. */
+  }
+  <script>
+    (() => {
+      const rows = document.querySelectorAll<HTMLElement>('[data-parcours-row]');
+      if (rows.length === 0) return;
+
+      rows.forEach((row) => {
+        // Split chaque <p> enfant en mots, en preservant les espaces.
+        row.querySelectorAll<HTMLElement>('p').forEach((p) => {
+          const text = p.textContent ?? '';
+          p.textContent = '';
+          let i = 0;
+          text.split(/(\s+)/).forEach((token) => {
+            if (/^\s+$/.test(token)) {
+              p.appendChild(document.createTextNode(token));
+            } else if (token) {
+              const span = document.createElement('span');
+              span.className = 'studio-parcours-word';
+              span.style.setProperty('--i', String(i));
+              span.textContent = token;
+              p.appendChild(span);
+              i++;
+            }
+          });
+        });
+      });
+
+      // inView trigger : on observe chaque ligne individuellement →
+      // anim démarre seulement quand la ligne entre, et complete en
+      // ~0.5s + cascade interne (sans scroll supplémentaire requis).
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).setAttribute('data-revealed', '');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.1 },
+      );
+
+      rows.forEach((row) => io.observe(row));
+    })();
+  </script>
 </BaseLayout>
