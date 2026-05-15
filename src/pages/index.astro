@@ -1086,18 +1086,14 @@ const typologies = [
       }
     }
 
-    /* Pull-quote scroll-pin — 120vh pour fluidité (feedback Morgan 2026-04-23 :
-     * « très sticky, faudrait davantage de fluidité »). 120vh = 20vh de sticky
-     * actif, assez pour voir la coloration, pas assez pour se sentir collé. */
+    /* Pull-quote — refonte v7 2026-05-15 (retour Morgan « espace rouge
+       énorme sous la signature »). Sticky 100vh retiré → la section prend
+       sa hauteur naturelle, plus de zone rouge vide à la fin. */
     .pull-quote-section {
-      min-height: 120vh;
       position: relative;
     }
     .pull-quote-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
+      position: relative;
     }
     [data-quote-word] {
       transition: opacity 60ms linear;
@@ -1169,22 +1165,34 @@ const typologies = [
       gap: clamp(0.6rem, 1.2vw, 1.4rem);
       height: 100%;
       width: max-content;
-      padding: 0 70vw 0 clamp(2rem, 4vw, 5rem);
+      /* v7 2026-05-15 : retrait du padding-left et du padding-right 70vw
+         (qui décalait les panels). Avec panel = 25vw et 5 panels = 125vw,
+         la translation horizontale couvre exactement 25vw (1 panel) pour
+         révéler le 5e à la fin. */
+      padding: 0;
       will-change: transform;
     }
 
-    /* Panneau simplifié 2026-04-30 (Jonathan, capture typologies-01.png) :
-       carte simple = nom au-dessus + image en dessous + CTA. Largeur ~30vw
-       pour avoir 4 visibles + 5e cropée à droite. */
+    /* Panneau — refonte v7 2026-05-15 (retour Morgan « les 4 premières
+       typologies doivent occuper toute la largeur, la 5e doit être hors
+       écran et apparaître au scroll horizontal »). Largeur fixée à 25vw
+       (4 panels = 100vw exact). Léger gap via gap sur le rail. */
     .htypo-panel {
-      flex: 0 0 clamp(260px, 26vw, 420px);
+      flex: 0 0 25vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding-bottom: clamp(2rem, 5vh, 4rem);
+      padding: 0 clamp(0.5rem, 1.2vw, 1.5rem) clamp(2rem, 5vh, 4rem);
       text-decoration: none;
       color: inherit;
+    }
+    @media (max-width: 767px) {
+      /* Sur mobile, on garde des panels plus larges (1 panel ~ 70vw)
+         pour permettre un swipe touch confortable. */
+      .htypo-panel {
+        flex: 0 0 70vw;
+      }
     }
 
     .htypo-card {
