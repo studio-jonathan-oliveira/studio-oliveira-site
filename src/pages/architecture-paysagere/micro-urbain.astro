@@ -541,13 +541,15 @@ const schema = jsonLdGraph([
       gap: clamp(2rem, 4vw, 3.5rem);
     }
     @media (min-width: 1024px) {
+      /* Retour Morgan v5 2026-05-15 : le bloc texte doit occuper les 2/3
+         DROITS de la largeur (1/3 vide à gauche pour la respiration).
+         Grid 1fr 2fr donne pile ce ratio. */
       .mu-manifeste__inner {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 2fr;
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      /* Texte + précision posés en colonne DROITE — la col gauche reste
-         vide, comme sur la trame. Effet « le texte sort à droite ». */
+      /* Texte + précision posés en colonne DROITE (2/3). */
       .mu-manifeste__body,
       .mu-manifeste__precision {
         grid-column: 2;
@@ -557,7 +559,7 @@ const schema = jsonLdGraph([
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 2.2vw, 1.85rem);
-      max-width: 30ch;
+      max-width: 64ch;
     }
     .mu-manifeste__para {
       font-family: var(--font-body), sans-serif;
@@ -583,7 +585,7 @@ const schema = jsonLdGraph([
       color: color-mix(in oklab, var(--color-cream) 80%, transparent);
       text-align: left;
       margin: clamp(2rem, 3.5vw, 3rem) 0 0;
-      max-width: 52ch;
+      max-width: 64ch;
     }
 
     /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
