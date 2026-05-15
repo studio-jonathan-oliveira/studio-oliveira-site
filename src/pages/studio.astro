@@ -38,8 +38,9 @@ const schema = jsonLdGraph([
 ]);
 
 // Bienvenue — 5 paragraphes Jonathan VERBATIM trame (OCR consolidé).
+// v5 2026-05-15 : « Studio » majuscule + point après le « J » sur P1.
 const bienvenue = [
-  "Le studio J Oliveira a été créé en fin 2021 à la suite de 4 ans d'expérience en tant que chef de projet et dessinateur projeteur dans une entreprise d'aménagements paysagers à Limoges.",
+  "Le Studio J. Oliveira a été créé en fin 2021 à la suite de 4 ans d'expérience en tant que chef de projet et dessinateur projeteur dans une entreprise d'aménagements paysagers à Limoges.",
   "Fort d'une expérience de plus de 9 ans dans l'architecture paysagère et diplômé d'une Licence Pro conception paysagère, j'ai construit mon design autour de mon admiration pour les paysages naturels et immersifs ainsi que de la pluralité des architectures qui animent nos espaces de vie.",
   "Le design est un art qui lie fonctionnalité, ergonomie et esthétique. C'est dans cette dimension que le studio conçoit ses projets.",
   "Le végétal, quant à lui, représente le liant de l'unité de l'ensemble des composantes spatiales pour créer cet environnement agréable et durable.",
@@ -112,17 +113,59 @@ const parcours = [
     <div class="studio-bienvenue__inner">
       <div class="studio-bienvenue__text" data-reveal="up">
         {
-          /* Titre VERBATIM trame Jonathan — Bold UPPERCASE, mots-clés
-           « DESIGN », « ARCHITECTURE », « SCENOGRAPHIE VEGETALE » +
-           appartenance « ORIGINE IBERIQUE » + ancrage « FRANCE ». */
+          /* H1 VERBATIM trame Jonathan — justify-multi designbyad
+           (retour Morgan v5 2026-05-15). 4 lignes Bold UPPERCASE
+           alternées from-right/from-left, calage scroll via
+           setupJustifyMulti (motion-enhance.ts). */
         }
-        <h1 id="bienvenue-title" class="studio-bienvenue__title">
-          BIENVENUE DANS LE STUDIO J OLIVEIRA, STUDIO D'ORIGINE IBERIQUE AXE SUR LE DESIGN,
-          L'ARCHITECTURE ET LA SCENOGRAPHIE VEGETALE EN FRANCE.
+        <h1
+          id="bienvenue-title"
+          class="studio-bienvenue__title"
+          data-justify-multi
+          data-justify-amp="60"
+          data-justify-line-step="0.13"
+          data-justify-line-window="0.55"
+        >
+          <span
+            class="studio-bienvenue__title-line"
+            data-justify-line
+            data-justify-direction="from-right">BIENVENUE DANS LE STUDIO</span
+          >
+          <span
+            class="studio-bienvenue__title-line"
+            data-justify-line
+            data-justify-direction="from-left">J OLIVEIRA, STUDIO</span
+          >
+          <span
+            class="studio-bienvenue__title-line"
+            data-justify-line
+            data-justify-direction="from-right">D'ORIGINE IBERIQUE AXE</span
+          >
+          <span
+            class="studio-bienvenue__title-line"
+            data-justify-line
+            data-justify-direction="from-left">SUR LE DESIGN, L'ARCHITECTURE</span
+          >
+          <span
+            class="studio-bienvenue__title-line"
+            data-justify-line
+            data-justify-direction="from-right">ET LA SCENOGRAPHIE VEGETALE EN FRANCE.</span
+          >
         </h1>
 
+        {
+          /* Paragraphes : pattern data-words-fade identique au manifeste
+           home (Je ne vends pas qu'une étude). Chaque <p> a son propre
+           observer + cascade mot-par-mot au scroll. */
+        }
         <div class="studio-bienvenue__body">
-          {bienvenue.map((para) => <p>{para}</p>)}
+          {
+            bienvenue.map((para) => (
+              <p data-words-fade data-words-fade-stagger="0.02" data-words-fade-window="0,0.5">
+                {para}
+              </p>
+            ))
+          }
         </div>
       </div>
 
@@ -269,18 +312,37 @@ const parcours = [
         align-items: start;
       }
     }
-    /* Titre Bold UPPERCASE (règle stricte Jonathan). Casse signature
-     visuelle, mis en valeur par contre-respiration du body en dessous. */
+    /* Titre H1 — justify-multi designbyad (retour Morgan v5 2026-05-15).
+       5 lignes Bold UPPERCASE en text-align: justify CSS natif, calage
+       scroll-driven via setupJustifyMulti (motion-enhance.ts). */
     .studio-bienvenue__title {
+      margin: 0 0 clamp(2rem, 4vw, 3.5rem) 0;
+    }
+    .studio-bienvenue__title-line {
+      display: block;
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(1.3rem, 2.6vw, 2.3rem);
-      line-height: 1.25;
+      font-size: clamp(1.3rem, 2.6vw, 2.6rem);
+      line-height: 1.2;
       letter-spacing: -0.005em;
       text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
       color: var(--color-cream);
-      margin: 0 0 clamp(2rem, 4vw, 3.5rem) 0;
-      max-width: 60ch;
+      margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .studio-bienvenue__title-line + .studio-bienvenue__title-line {
+      margin-top: clamp(0.2rem, 0.6vw, 0.5rem);
+    }
+    @media (max-width: 767px) {
+      .studio-bienvenue__title-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
     }
     .studio-bienvenue__body {
       display: flex;
@@ -298,6 +360,15 @@ const parcours = [
          montre les paragraphes en flag-left, pas en justify. */
       text-align: left;
       margin: 0;
+    }
+    /* Words-fade pattern (retour Morgan v5 2026-05-15) — identique au
+       manifeste home. setupWordsFade pose un span.word par mot et
+       interpole opacity + translateY au scroll dans la window définie. */
+    .studio-bienvenue__body p .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
     }
     /* Visuel droite : portrait/jardin pleine hauteur de la grille en
      desktop, plus contenu en mobile. */
@@ -441,41 +512,36 @@ const parcours = [
       margin: 0;
       max-width: none;
     }
-    /* État repos d'un mot : invisible, légèrement décalé bas, flou. */
+    /* État repos d'un mot — invisible, légèrement décalé bas.
+       v5 2026-05-15 (retour Morgan) : blur retiré (« Jonathan n'aime pas
+       les flous »), durations + stagger plus rapides pour une vague nette. */
     .studio-architectures__word {
       display: inline-block;
       opacity: 0;
-      transform: translateY(18px);
-      filter: blur(8px);
-      will-change: opacity, transform, filter;
-      /* Retour vers l'état repos : rapide et sans stagger (fermeture). */
+      transform: translateY(14px);
+      will-change: opacity, transform;
       transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        filter 0.25s ease;
+        opacity 0.15s ease,
+        transform 0.15s ease;
     }
-    /* État ouvert : chaque mot révélé avec un delay basé sur --i.
-       Stagger 16ms par mot — donne une vague fluide sans s'éterniser sur
-       les longs paragraphes. Le 120ms initial laisse le temps au panel
-       de s'ouvrir avant que la cascade ne commence. */
+    /* État ouvert : chaque mot révélé avec stagger basé sur --i.
+       Stagger 10ms (vs 16ms) + duration 0.5s (vs 0.85s) + delay initial
+       80ms (vs 120ms) → vague plus rapide, plus snappy. */
     .studio-architectures__collapse--open .studio-architectures__word {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
       transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.7s ease-out;
-      transition-delay: calc(var(--i, 0) * 16ms + 120ms);
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i, 0) * 10ms + 80ms);
     }
-    /* Reduced motion : disable wave, montre tout d'un coup. */
+    /* Reduced motion — désactive la vague. */
     @media (prefers-reduced-motion: reduce) {
       .studio-architectures__word,
       .studio-architectures__collapse--open .studio-architectures__word {
-        transition: opacity 0.2s linear !important;
+        transition: opacity 0.15s linear !important;
         transition-delay: 0s !important;
         transform: none;
-        filter: none;
       }
     }
     .studio-architectures__panel p {
