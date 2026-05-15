@@ -94,7 +94,14 @@
       "Bash(cat > *)",
       "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2 public/fonts/inter-variable-latin.woff2)",
       "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2 public/fonts/inter-variable-latin-ext.woff2)",
-      "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2 public/fonts/inter-variable-latin-italic.woff2)"
+      "Bash(cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2 public/fonts/inter-variable-latin-italic.woff2)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"c:\\\\tmp\\\\trame home page.png\"\\); \"$\\($img.Width\\)x$\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(python -c \"from PIL import Image; im=Image.open\\(r'c:/tmp/trame home page.png'\\); print\\(im.size\\)\")",
+      "PowerShell($img = New-Object System.Drawing.Bitmap\\(\"c:\\\\tmp\\\\trame home page.png\"\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"c:\\\\tmp\\\\trame home page.png\"\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(git ls-remote *)",
+      "Bash(python -c \"from PIL import Image; im=Image.open\\('c:/tmp/trame page studio.png'\\); print\\(im.size\\)\")",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('c:\\\\tmp\\\\trame page studio.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\))"
     ],
     "additionalDirectories": [
       "\\tmp"

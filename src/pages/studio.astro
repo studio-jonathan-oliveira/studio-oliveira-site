@@ -20,6 +20,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
+import ArchitecturesAccordion from '@/components/islands/ArchitecturesAccordion';
 
 import portraitJonathan from '@/assets/jonathan/portrait-02.webp';
 import textureVegetale from '@/assets/home/hero-biophilie.jpg';
@@ -163,9 +164,8 @@ const parcours = [
 
   {
     /* ═════════ 3 · ARCHITECTURES — accordéon 4 lignes (rouge) ═══════════
-     Commit 1 : scaffold statique fermé (tous les <details> repliés, JS
-     natif HTML5). Commit 2 : remplacement par un composant React island
-     single-open avec animation height + chevron rotate. */
+     Island React single-open. Hydratation client:visible (section bas de
+     page, hors LCP). Animation height via grid-template-rows 0fr↔1fr. */
   }
   <section
     id="architectures"
@@ -175,25 +175,7 @@ const parcours = [
     aria-labelledby="architectures-title"
   >
     <h2 id="architectures-title" class="sr-only">Les quatre architectures connectées</h2>
-    <ul class="studio-architectures__list">
-      {
-        architectures.map((arch) => (
-          <li class="studio-architectures__item">
-            <details class="studio-architectures__details">
-              <summary class="studio-architectures__summary">
-                <span class="studio-architectures__title">{arch.titre}</span>
-                <span class="studio-architectures__icon" aria-hidden="true">
-                  +
-                </span>
-              </summary>
-              <div class="studio-architectures__panel">
-                <p>{arch.description}</p>
-              </div>
-            </details>
-          </li>
-        ))
-      }
-    </ul>
+    <ArchitecturesAccordion items={architectures} client:visible />
   </section>
 
   {/* ═════════ 4 · PARCOURS ET EXPERIENCE (noir profond) ════════════════ */}
@@ -359,12 +341,17 @@ const parcours = [
     .studio-architectures__item {
       border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
     }
-    .studio-architectures__details {
-      width: 100%;
-    }
+    /* Bouton header de chaque ligne — full-width, reset bordures par
+       défaut du <button>, transition fond au hover. */
     .studio-architectures__summary {
-      list-style: none;
+      appearance: none;
+      background: transparent;
+      border: 0;
+      width: 100%;
       cursor: pointer;
+      color: inherit;
+      font: inherit;
+      text-align: left;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -372,11 +359,10 @@ const parcours = [
       padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
       transition: background-color 0.3s ease;
     }
-    .studio-architectures__summary::-webkit-details-marker {
-      display: none;
-    }
-    .studio-architectures__summary:hover {
-      background-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+    .studio-architectures__summary:hover,
+    .studio-architectures__summary:focus-visible {
+      background-color: color-mix(in oklab, var(--color-ink) 10%, transparent);
+      outline: none;
     }
     /* Title Case Jonathan respecté (rupture vs règle home UPPERCASE).
      Inter Medium pour lisibilité maximale sur fond rouge. */
@@ -389,15 +375,31 @@ const parcours = [
       color: var(--color-cream);
     }
     .studio-architectures__icon {
+      flex-shrink: 0;
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(1.8rem, 3.2vw, 2.6rem);
       line-height: 1;
       color: var(--color-cream);
-      transition: transform 0.3s var(--ease-out-editorial);
+      transition: transform 0.35s var(--ease-out-editorial);
     }
-    .studio-architectures__details[open] .studio-architectures__icon {
+    .studio-architectures__icon--open {
       transform: rotate(45deg);
+    }
+    /* Animation height pure CSS via grid-template-rows 0fr↔1fr (technique
+       pas-de-mesure-JS). Le wrapper .collapse a un grid 1 col qui passe
+       de 0fr à 1fr, l'enfant prend min-height 0 + overflow hidden. */
+    .studio-architectures__collapse {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s var(--ease-out-editorial);
+    }
+    .studio-architectures__collapse--open {
+      grid-template-rows: 1fr;
+    }
+    .studio-architectures__collapse > .studio-architectures__panel {
+      min-height: 0;
+      overflow: hidden;
     }
     .studio-architectures__panel {
       padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
