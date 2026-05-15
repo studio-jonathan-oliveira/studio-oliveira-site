@@ -42,77 +42,81 @@ const studio = [
     </header>
 
     <div class="site-footer__grid">
-      <div class="site-footer__col">
-        <section aria-labelledby="footer-siege">
-          <h2 id="footer-siege" class="site-footer__heading">Siège social Studio</h2>
-          <address class="site-footer__address">
-            <span>41 Rue Général Souham</span>
-            <span>19100 BRIVE</span>
-            <a href="tel:+33661088444" class="site-footer__link">06 61 08 84 44</a>
-            <a href="mailto:contact.jonathanbiodesign@gmail.com" class="site-footer__link">
-              contact.jonathanbiodesign@gmail.com
-            </a>
-          </address>
-        </section>
+      <section aria-labelledby="footer-siege" class="site-footer__col">
+        <h2 id="footer-siege" class="site-footer__heading">Siège social Studio</h2>
+        <address class="site-footer__address">
+          <span>41 Rue Général Souham</span>
+          <span>19100 BRIVE</span>
+          <a href="tel:+33661088444" class="site-footer__link">06 61 08 84 44</a>
+          <a href="mailto:contact.jonathanbiodesign@gmail.com" class="site-footer__link">
+            contact.jonathanbiodesign@gmail.com
+          </a>
+        </address>
+      </section>
 
-        <section aria-labelledby="footer-territoires" class="site-footer__block">
-          <h2 id="footer-territoires" class="site-footer__heading">Territoires d'intervention</h2>
+      <section aria-labelledby="footer-services" class="site-footer__col">
+        <h2 id="footer-services" class="site-footer__heading">Services</h2>
+        <ul class="site-footer__list">
           {
-            /* Liens vers les pages /zones/* — refonte 2026-05-11 (audit SEO P0 :
-              les pages locales étaient orphelines, jamais crawlées). Le footer
-              global les link désormais sitewide, ce qui les sort de l'orphelinat
-              et active le pilier SEO local Brive/Bordeaux/Limoges. */
+            services.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class="site-footer__link"
+                  aria-current={currentPath === s.href ? 'page' : undefined}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
           }
-          <ul class="site-footer__list">
-            <li>
-              <a href="/zones/brive-la-gaillarde" class="site-footer__link">Brive et alentours</a>
-            </li>
-            <li><a href="/zones/bordeaux" class="site-footer__link">Bordeaux et Gironde</a></li>
-            <li><a href="/zones/limoges" class="site-footer__link">Limoges et Haute-Vienne</a></li>
-            <li><a href="/zones" class="site-footer__link">Toutes les zones →</a></li>
-          </ul>
-        </section>
-      </div>
+        </ul>
+      </section>
 
-      <div class="site-footer__col site-footer__col--right">
-        <section aria-labelledby="footer-services">
-          <h2 id="footer-services" class="site-footer__heading">Services</h2>
-          <ul class="site-footer__list">
-            {
-              services.map((s) => (
-                <li>
-                  <a
-                    href={s.href}
-                    class="site-footer__link"
-                    aria-current={currentPath === s.href ? 'page' : undefined}
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+      {
+        /* Refonte DA Jonathan 2026-05-15 (trame home) : nouvelle nomenclature
+          des territoires — "Région Nord/Sud Aquitaine" + ville bold. Les
+          pages /zones/* restent indexables (un lien par zone). */
+      }
+      <section aria-labelledby="footer-territoires" class="site-footer__col">
+        <h2 id="footer-territoires" class="site-footer__heading">Territoires d'intervention</h2>
+        <ul class="site-footer__list">
+          <li>
+            <a href="/zones/brive-la-gaillarde" class="site-footer__link">
+              Bassin de Brive et alentours
+            </a>
+          </li>
+          <li>
+            <a href="/zones/limoges" class="site-footer__link">
+              Région Nord — Aquitaine, <strong>Limoges</strong>
+            </a>
+          </li>
+          <li>
+            <a href="/zones/bordeaux" class="site-footer__link">
+              Région Sud — Aquitaine, <strong>Bordeaux</strong>
+            </a>
+          </li>
+        </ul>
+      </section>
 
-        <section aria-labelledby="footer-studio" class="site-footer__block">
-          <h2 id="footer-studio" class="site-footer__heading">Studio</h2>
-          <ul class="site-footer__list">
-            {
-              studio.map((s) => (
-                <li>
-                  <a
-                    href={s.href}
-                    class="site-footer__link"
-                    aria-current={currentPath === s.href ? 'page' : undefined}
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
-      </div>
+      <section aria-labelledby="footer-studio" class="site-footer__col">
+        <h2 id="footer-studio" class="site-footer__heading">Studio</h2>
+        <ul class="site-footer__list">
+          {
+            studio.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  class="site-footer__link"
+                  aria-current={currentPath === s.href ? 'page' : undefined}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </div>
 
     <div class="site-footer__legal">
@@ -127,7 +131,9 @@ const studio = [
 
 <style>
   .site-footer {
-    background-color: var(--color-laterite);
+    /* Refonte DA Jonathan 2026-05-15 (trame home) : bascule fond
+       latérite → noir profond, cohérent avec le reste de la home. */
+    background-color: var(--color-black-deep);
     color: var(--color-cream);
     margin-top: 0;
   }
@@ -165,33 +171,29 @@ const studio = [
     opacity: 0.85;
   }
 
+  /* Grille 4 colonnes — refonte DA Jonathan 2026-05-15 (trame home) :
+     SIEGE · SERVICES · TERRITOIRES · STUDIO. Empile en 2x2 sur tablette
+     et en colonne unique sur mobile. */
   .site-footer__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(2rem, 4vw, 3rem);
   }
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .site-footer__grid {
       grid-template-columns: 1fr 1fr;
-      gap: clamp(2rem, 6vw, 5rem);
+      gap: clamp(2rem, 5vw, 4rem);
+    }
+  }
+  @media (min-width: 1024px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
     }
   }
   .site-footer__col {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-  }
-  .site-footer__col--right {
-    text-align: left;
-  }
-  @media (min-width: 768px) {
-    .site-footer__col--right {
-      text-align: right;
-      align-items: flex-end;
-    }
-  }
-  .site-footer__block {
-    margin-top: 0;
   }
 
   /* Tailles augmentées 2026-05-02 v2 (Morgan, capture footer-screenshot) :

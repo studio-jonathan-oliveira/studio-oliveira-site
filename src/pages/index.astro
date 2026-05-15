@@ -177,69 +177,58 @@ const typologies = [
       section-01-identite-studio.png). */
   }
 
-  <!-- 02 · IDENTITÉ — 3 lignes de mots-clés en justify scroll-driven.
-       Refonte 2026-04-30 (Jonathan, capture section-01-identite-studio.png) :
-       split de l'ancien bandeau studio-lead en 2 sections distinctes.
-       Mots refondus par Jonathan ; ligne 1 droite→gauche, lignes 2+3 inverse
-       (sens directionnel piloté par data-justify-line-step alterné). -->
+  {
+    /* 02 · IDENTITÉ — refonte DA Jonathan 2026-05-15 (trame home).
+       Grille 3/3/2 mots-clés Bold UPPERCASE sur fond noir profond.
+       Animation reveal scroll-driven (mask) "comme designbyad" (annotation
+       Jonathan). Ordre exact verbatim trame :
+         architecture · paysage · design
+         ergonomie · biophilie · conception
+         vegetal . (vide) · pilotage
+   */
+  }
   <section
     id="identite"
     data-section-label="Identité"
     data-theme="dark"
-    class="identite-band full-bleed-bg relative overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-laterite)] text-[var(--color-cream)]"
+    class="identite-band full-bleed-bg relative overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-label="Identité du studio"
   >
-    <div
-      class="px-6 py-32 md:px-10 md:py-44"
-      data-justify-multi
-      data-justify-amp="80"
-      data-justify-line-step="0.15"
-      data-justify-line-window="0.6"
-    >
-      <p class="identite-line" data-justify-line data-justify-direction="from-right">
-        ARCHITECTURE PAYSAGE DESIGN
-      </p>
-      <p class="identite-line" data-justify-line data-justify-direction="from-left">
-        ERGONOMIE BIOPHILIE PILOTAGE
-      </p>
-      <p class="identite-line" data-justify-line data-justify-direction="from-left">
-        VEGETAL CONCEPTION
-      </p>
+    <div class="px-6 py-32 md:px-10 md:py-44">
+      <div class="identite-grid">
+        <span class="identite-word" data-reveal="up">ARCHITECTURE</span>
+        <span class="identite-word" data-reveal="up">PAYSAGE</span>
+        <span class="identite-word identite-word--right" data-reveal="up">DESIGN</span>
+        <span class="identite-word" data-reveal="up">ERGONOMIE</span>
+        <span class="identite-word" data-reveal="up">BIOPHILIE</span>
+        <span class="identite-word identite-word--right" data-reveal="up">CONCEPTION</span>
+        <span class="identite-word" data-reveal="up">VEGETAL</span>
+        <span class="identite-word identite-word--gap" aria-hidden="true"></span>
+        <span class="identite-word identite-word--right" data-reveal="up">PILOTAGE</span>
+      </div>
     </div>
   </section>
 
-  <!-- 02b · STUDIO — texte présentation + CTA "Découvrir le Studio".
-       Refonte 2026-04-30 (Jonathan, capture section-01-identite-studio.png) :
-       second morceau du split, en continuité visuelle avec #identite (même
-       fond latérite). Texte explicatif court + lien magnétique vers /studio. -->
+  {
+    /* 02b · STUDIO — refonte DA Jonathan 2026-05-15 (trame home).
+       Texte ADN UPPERCASE full-justified, fourni par Jonathan via la trame.
+       Lien magnétique "Découvrir le Studio J Oliveira" + pastille rouge. */
+  }
   <section
     id="studio-presentation"
     data-section-label="Studio"
     data-theme="dark"
-    class="studio-presentation relative bg-[var(--color-laterite)] text-[var(--color-cream)]"
+    class="studio-presentation relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-labelledby="studio-presentation-title"
   >
-    {
-      /* pt-24/pb-24 (refonte 2026-05-11) : depuis le retrait du placeholder
-        MAJUSCULES, le bloc n'avait que pb-24 → la section devenait courte et
-        le hero sticky restait visible au-dessus du CTA. Padding symétrique
-        pour couvrir le hero proprement, quel que soit le contenu interne. */
-    }
     <div class="px-6 pt-24 pb-24 md:px-10 md:pt-36 md:pb-36" data-reveal="up">
       <h2 id="studio-presentation-title" class="sr-only">Le studio</h2>
-      {
-        /* Placeholder marqueur visible (Morgan 2026-05-11) : visible en prod
-          et preview pour signaler clairement l'emplacement à Jonathan, sans
-          paraître comme une copy officielle. Sera remplacé par le texte ADN
-          final dès que Jonathan fournit (cf. _brief/contenus-manquants.md
-          §home-studio). Styling cream/40 italique non-uppercase pour le
-          distinguer d'une vraie copy éditoriale. */
-      }
-      <p class="studio-presentation-placeholder">[Texte ADN du studio — à fournir par Jonathan]</p>
-      {
-        /* CTA recentré 2026-05-02 (Morgan) : « plein milieu de la section,
-          plus aligné à gauche ». flex justify-center sur le wrapper. */
-      }
+      <p class="studio-presentation-text">
+        LE STUDIO J OLIVEIRA EST UN STUDIO DE DESIGN SPATIAL SPECIALISE DANS L'AMENAGEMENT
+        ENVIRONNEMENTAL IMMERSIF ET EXPERIENTIEL. SA MISSION EST D'ETUDIER ET CONCEVOIR DES ESPACES
+        EXTERIEURS COMME INTERIEURS EN DIALOGUE AVEC LE BATI, L'ENVIRONNEMENT ET L'HUMAIN, DE LA
+        CONCEPTION JUSQU'AU PILOTAGE CHANTIER.
+      </p>
       <div class="mt-12 flex justify-center md:mt-16">
         <CtaLink
           href="/studio"
@@ -252,16 +241,19 @@ const typologies = [
     </div>
   </section>
 
-  <!-- 03 · TYPOLOGIES — refonte 2026-04-30 (Jonathan, capture typologies-01.png).
-       Carousel horizontal scroll-driven (vers la gauche), 4 visibles + 5e cropée.
-       Layout simplifié : nom aligné gauche au-dessus de l'image, pas de meta dense.
-       Tagline custom par typo affichée en cursor-label au hover. -->
+  {
+    /* 05 · TYPOLOGIES — refonte DA Jonathan 2026-05-15 (trame home).
+       Bascule en dark theme (fond noir-deep + texte cream). Carousel
+       horizontal scroll-driven (vers la gauche), 4 visibles + 5e cropée.
+       Le curseur custom affiche "CHOISIR" (4 typos privées) ou "EXPLORER"
+       (architecture-publique uniquement) au hover de chaque card. */
+  }
   <section
     id="typologies"
     data-section-label="Typologies"
-    data-theme="light"
+    data-theme="dark"
     data-hscroll-typologies
-    class="htypo-section full-bleed-bg relative border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
+    class="htypo-section full-bleed-bg relative border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
@@ -317,30 +309,25 @@ const typologies = [
 
   {/* Section Vitrine « Quelques études récentes » supprimée 2026-04-29 (Morgan). */}
 
-  <!-- 05 · PULL-QUOTE SCROLL-PIN — fond uni ink (mail Jonathan 2026-04-24) -->
+  {
+    /* 04 · MANIFESTE — refonte DA Jonathan 2026-05-15 (trame home).
+       Fond rouge plein-bleed, texte cream. Bloc rouge unique de toute la home.
+       data-theme="red" → le curseur custom bascule en cream/black via la
+       détection theme JS (cf. CustomCursor.astro). Texte verbatim trame :
+       ajout de "UNE REFLEXION ET" + "POUR GARANTIR UNE EXPERIENCE D'USAGE
+       DURABLE" vs version précédente. */
+  }
   <section
     id="manifeste"
     data-section-label="Manifeste"
-    data-theme="light"
-    class="pull-quote-section full-bleed-bg relative overflow-hidden border-t border-[var(--color-ink)]/10 bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="red"
+    class="pull-quote-section full-bleed-bg relative overflow-hidden bg-[var(--color-red)] text-[var(--color-cream)]"
     aria-label="Citation Jonathan Oliveira"
   >
     <div class="pull-quote-sticky">
-      {
-        /* Bloc élargi (Morgan 2026-05-11, 2e passe) : max-w 92rem → 108rem
-          + pl-16 → pl-10. Le manifeste s'étale sur quasi toute la largeur
-          utile, juste un petit retrait pour respirer la sidebar ScrollNav. */
-      }
       <div
         class="mx-auto flex min-h-[100vh] max-w-[108rem] flex-col justify-center px-6 py-12 md:pr-8 md:pl-10"
       >
-        {/* Eyebrow Manifeste retiré 2026-04-28 #B8. */}
-        {
-          /* Refonte 2026-04-28 (Jonathan) : retrait du justify qu'il n'aimait
-            pas. Manifeste simple, fade-in mot par mot au scroll
-            (data-words-fade — setupWordsFade dans motion-enhance.ts).
-            Texte Jonathan inchangé. */
-        }
         <blockquote
           class="manifeste-fade"
           data-words-fade
@@ -349,8 +336,8 @@ const typologies = [
         >
           <strong class="manifeste-bold">Je ne vends pas qu'une étude.</strong>
           {' '}
-          Je vends par une méthode précise, une structuration globale qui sécurise un résultat final et
-          garantit une expérience d'usage durable.
+          Je vends par une méthode précise, une réflexion et une structuration globale qui sécurise un
+          résultat final pour garantir une expérience d'usage durable.
         </blockquote>
         {
           /* Casse respectée 2026-05-02 (Morgan) : `uppercase` retiré pour
@@ -628,44 +615,60 @@ const typologies = [
       }
     }
 
-    /* Bloc IDENTITÉ — refonte 2026-04-30 (Jonathan, capture identite-studio).
-       3 lignes de mots Jost MAJ Gras avec animation directionnelle scroll-driven
-       (data-justify-multi + data-justify-direction par ligne).
-       white-space: nowrap force tous les mots d'une ligne à tenir sans wrap ;
-       on calibre la taille via clamp pour que ça rentre jusqu'en mobile. */
-    .identite-line {
+    /* Bloc IDENTITÉ — refonte DA Jonathan 2026-05-15 (trame home).
+       Grille 3 colonnes × 3 lignes (3/3/2 mots — col centrale ligne 3 vide).
+       Inter Bold UPPERCASE, alignement gauche / centre / droite par colonne. */
+    .identite-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1rem, 2.5vw, 2.4rem) clamp(1rem, 4vw, 3rem);
+    }
+    .identite-word {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
       font-size: clamp(1.4rem, 5vw, 4.5rem);
-      line-height: 1.1;
+      line-height: 1;
       letter-spacing: -0.01em;
       text-transform: uppercase;
-      text-align: justify;
-      text-align-last: justify;
       color: var(--color-cream);
-      margin: 0;
-      hyphens: none;
+      text-align: left;
       white-space: nowrap;
-      overflow: hidden;
     }
-    .identite-line + .identite-line {
-      margin-top: clamp(0.4rem, 1vw, 1rem);
+    /* Colonne centrale alignée centre, colonne droite alignée droite —
+       reproduit le pattern de la trame (axe gauche / axe centre / axe droit). */
+    .identite-grid > .identite-word:nth-child(3n + 2) {
+      text-align: center;
+    }
+    .identite-grid > .identite-word--right {
+      text-align: right;
+    }
+    .identite-word--gap {
+      display: none; /* placeholder cellule vide ligne 3 col centrale */
+    }
+    @media (max-width: 640px) {
+      .identite-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .identite-grid > .identite-word--gap {
+        display: none;
+      }
     }
 
-    /* Bloc STUDIO (présentation) — texte court + CTA magnétique.
-       Refonte 2026-04-30 : taille augmentée. v5 (Jonathan) : alignement
-       gauche + pleine largeur (plus de max-width / centrage), en cohérence
-       avec la zone IDENTITÉ qui est elle aussi pleine largeur. */
+    /* Bloc STUDIO (présentation) — refonte DA Jonathan 2026-05-15 (trame home).
+       Texte ADN UPPERCASE full-justified Inter Bold 700 (règle Jonathan :
+       bold→UPPERCASE). Bloc large centré, marge gauche/droite sym. */
     .studio-presentation-text {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: clamp(1.4rem, 2.4vw, 2.4rem);
-      line-height: 1.35;
-      letter-spacing: 0.01em;
+      font-weight: 700;
+      font-size: clamp(1.1rem, 1.7vw, 1.8rem);
+      line-height: 1.45;
+      letter-spacing: 0;
       text-transform: uppercase;
-      text-align: left;
+      text-align: justify;
+      text-align-last: center;
       color: var(--color-cream);
-      margin: 0;
+      max-width: 70rem;
+      margin: 0 auto;
     }
 
     /* Placeholder marqueur (Morgan 2026-05-11) — signale l'emplacement à
@@ -691,13 +694,14 @@ const typologies = [
        désormais quasi toute la largeur du conteneur 108rem. */
     .manifeste-fade {
       font-family: var(--font-heading), sans-serif;
-      /* Thin 100 (demande Jonathan 2026-05-15) — contraste fort avec les
-         titres heading bold, accentue le ton manifeste sobre. */
-      font-weight: 100;
+      /* ExtraLight 200 + lowercase (refonte DA Jonathan 2026-05-15) —
+         exception : la phrase d'ouverture en gras conserve UPPERCASE.
+         Reste du manifeste en minuscules pour respecter la règle Jonathan. */
+      font-weight: 200;
       font-size: clamp(1.6rem, 3.4vw, 3.2rem);
-      line-height: 1.25;
-      letter-spacing: -0.005em;
-      text-transform: uppercase;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: lowercase;
       text-align: left;
       color: inherit;
       hyphens: none;
@@ -716,10 +720,12 @@ const typologies = [
        expérience / sécurité de résultat. Le <strong> fournit le poids,
        on désactive juste l'italique éventuel et on garde la même couleur. */
     .manifeste-fade .manifeste-bold {
-      /* Bascule Thin 100 globale 2026-05-15 — la première phrase reste
-         distinguée par sa position en ouverture, plus par le poids. */
-      font-weight: 100;
+      /* Refonte 2026-05-15 (trame Jonathan) : la phrase d'ouverture
+         repasse en BOLD + UPPERCASE pour appliquer la règle stricte
+         "bold→UPPERCASE / extralight→lowercase". */
+      font-weight: 700;
       font-style: normal;
+      text-transform: uppercase;
     }
 
     /* Archi-intro constellation — refonte 2026-04-28 (Jonathan).
@@ -1083,16 +1089,17 @@ const typologies = [
        clamp 1.2/2.2/2 → 1.6/3/2.8rem. */
     .htypo-intro {
       font-family: var(--font-heading), sans-serif;
-      /* Thin 100 (demande Jonathan 2026-05-15) — accentue le caractère
-         "phrase d'introduction" face aux titres typologie bold. */
-      font-weight: 100;
+      /* ExtraLight 200 + lowercase (refonte DA Jonathan 2026-05-15) —
+         règle stricte Jonathan : extralight = minuscule. */
+      font-weight: 200;
       font-size: clamp(1.6rem, 3vw, 2.8rem);
-      line-height: 1.25;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-      color: var(--color-ink);
-      max-width: 56ch;
-      margin: 0;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: lowercase;
+      color: var(--color-cream);
+      max-width: 70ch;
+      margin: 0 auto;
+      text-align: center;
     }
 
     /* Rail horizontal — 5 panneaux, ~30vw + gap (4 visibles + 5e cropée).
@@ -1137,9 +1144,9 @@ const typologies = [
       font-weight: 700;
       font-size: clamp(0.85rem, 1.05vw, 1.05rem);
       line-height: 1.2;
-      letter-spacing: 0.04em;
+      letter-spacing: 0;
       text-transform: uppercase;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
     }
 
