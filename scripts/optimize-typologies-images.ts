@@ -28,12 +28,15 @@ const VARIANTS = [
 //   - 04-domaine-caractere : 'east' → centrer un peu plus à droite pour
 //     apercevoir la statue
 //   - les autres : 'attention' (sharp = smart-crop autour du sujet principal)
-type SharpPosition = 'attention' | 'centre' | 'south' | 'east';
+type SharpPosition = 'attention' | 'centre' | 'south' | 'east' | 'west';
 const POSITION_BY_FILE: Record<string, SharpPosition> = {
   '01-micro-urbain': 'attention',
   '02-coeur-urbain': 'south',
   '03-frange-urbaine': 'attention',
-  '04-domaine-caractere': 'east',
+  // Refonte v6 2026-05-15 : 'east' → 'centre' (Morgan « redécale vers la
+  // gauche, la tour doit apparaître sur la partie droite »). Centrer garde
+  // la tour à droite du frame final au lieu de la pousser au centre.
+  '04-domaine-caractere': 'centre',
   '05-architecture-publique': 'attention',
 };
 
