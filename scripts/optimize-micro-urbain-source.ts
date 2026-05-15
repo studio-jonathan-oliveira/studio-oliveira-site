@@ -1,14 +1,19 @@
 /*
  * Optimize micro-urbain typologie source images — one-shot.
  *
- * Sources brutes : src/assets/typologies/micro-urbain/*.png (4 fichiers).
- * Sortie : src/assets/typologies/micro-urbain/*.jpg compressés mozjpeg q82,
- * largeurs adaptées (1800 hero, 1400 galerie). Les PNG sources sont
- * supprimées en fin de run pour éviter qu'astro:assets sélectionne la
- * version lourde au build.
+ * Sources brutes : _assets/micro-urbain/0X-*.jpg (5 fichiers fournis par
+ * Jonathan / Morgan 2026-05-15). Sortie : src/assets/typologies/micro-urbain/
+ * en mozjpeg q82, largeurs adaptées au rôle (hero / large / diptyque).
+ *
+ * Disposition cible (trame Jonathan) :
+ *   01-hero          → hero plein-bleed
+ *   02-large-top     → 1re image grande pleine largeur sous hero
+ *   03-diptyque-left → image diptyque gauche (portrait plus petit)
+ *   04-diptyque-right→ image diptyque droite (portrait plus grand)
+ *   05-large-bottom  → 2e image grande pleine largeur sous diptyque
  */
 import sharp from 'sharp';
-import { mkdirSync, unlinkSync, existsSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 
 const DIR = 'src/assets/typologies/micro-urbain';
 mkdirSync(DIR, { recursive: true });
@@ -20,16 +25,27 @@ interface Variant {
 }
 
 const variants: Variant[] = [
-  // Hero — terrasse-salon (Morgan 2026-05-15 : photo dédiée pour overlay H1
-  // haut-gauche + specs en overlay bas). Source brute dans _assets/hero-source/
-  // (hors index astro:assets), output dans src/assets pour import typé.
+  { source: '_assets/micro-urbain/01-hero.jpg', output: `${DIR}/01-hero.jpg`, width: 2200 },
   {
-    source: '_assets/hero-source/03-terrasse-salon.jpg',
-    output: `${DIR}/01-hero.jpg`,
-    width: 2200,
+    source: '_assets/micro-urbain/02-roof.jpg',
+    output: `${DIR}/02-large-top.jpg`,
+    width: 1800,
   },
-  // Galerie — 3 photos en quinconce magazine. Sources brutes déjà optimisées
-  // en commit précédent, on ne les retraite pas (purge déjà passée).
+  {
+    source: '_assets/micro-urbain/03-patio.jpg',
+    output: `${DIR}/03-diptyque-left.jpg`,
+    width: 1100,
+  },
+  {
+    source: '_assets/micro-urbain/04-patio.jpg',
+    output: `${DIR}/04-diptyque-right.jpg`,
+    width: 1300,
+  },
+  {
+    source: '_assets/micro-urbain/05-roof.jpg',
+    output: `${DIR}/05-large-bottom.jpg`,
+    width: 1800,
+  },
 ];
 
 async function main() {
@@ -45,15 +61,9 @@ async function main() {
       .toFile(v.output);
     console.log(`${v.output} ok`);
   }
-  // Purge UNIQUEMENT des sources PNG dans DIR (évite qu'astro:assets indexe
-  // les PNG ~10x plus lourds). Ne touche PAS aux sources brutes hors DIR
-  // (_assets/hero-source/* est partagé avec d'autres pipelines).
-  for (const v of variants) {
-    if (v.source.startsWith(DIR) && v.source.endsWith('.png') && existsSync(v.source)) {
-      unlinkSync(v.source);
-      console.log(`purged ${v.source}`);
-    }
-  }
+  // PAS de purge des sources brutes : _assets/micro-urbain/ est conservé
+  // pour réutilisation (re-tirage à d'autres tailles si besoin). Sources
+  // sous _assets/ sont gitignored, donc pas de poids repo.
 }
 
 main().catch((e) => {

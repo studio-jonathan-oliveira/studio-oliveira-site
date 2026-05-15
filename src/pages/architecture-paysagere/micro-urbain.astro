@@ -5,26 +5,29 @@
  * `[slug].astro`, donc les 3 autres typologies (coeur-urbain, frange-urbaine,
  * domaine-caractere) gardent l'ancien template inchangé.
  *
- * Architecture issue de la trame Jonathan (re-lecture Morgan 2026-05-15) :
- *   1. Hero photo plein-bleed (terrasse-salon) :
+ * Architecture issue de la trame Jonathan (re-lecture Morgan 2026-05-15 v3) :
+ *   1. Hero photo plein-bleed (01-hero / terrasse-salon) :
  *      - H1 split « MICRO / URBAIN » en HAUT-GAUCHE
  *      - 4 specs (Secteur géo / Surface / Contexte / Complexité) en
  *        overlay sur le BAS de la photo (pas section séparée)
  *      - Voile gradient double (haut + bas) pour lisibilité
- *   2. Galerie quinconce 3 photos en mosaïque éditoriale asymétrique
- *   3. Manifeste 2 paragraphes ExtraLight + 1 italique petit (verbatim
- *      Jonathan, fautes typo évidentes corrigées)
+ *   2. Galerie magazine 4 photos :
+ *      - 02-large-top (full-width 21:9)
+ *      - 03 + 04 diptyque portraits asymétrique (38% + 54%)
+ *      - 05-large-bottom (full-width 21:9)
+ *   3. Manifeste — bloc texte décalé colonne DROITE sur desktop,
+ *      taille agrandie (~1.2-1.65rem), précision italique petit dessous
  *   4. FAQ discrète 3 questions (densification SEO légère sur fond noir)
- *   5. CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » + pill rouge
+ *   5. CTA full-width « DECOUVRIR LES PROJETS MICRO URBAIN » + pill ROUGE
+ *      plein (fond rouge + texte cream, ancien tone="accent" était invisible
+ *      car laterite re-aliased en ink, cf. purge latérite 2026-05-02)
  *
- * Contenu Jonathan : verbatim trame, fautes typo évidentes corrigées
- * (Morgan 2026-05-15) — « connectes » → « connectés », « soit pas une » →
- * « soit par une », « accéssibilité » → « accessibilité », « voir
- * obligatoire » → « voire obligatoire ». H1 sans accent et « COEUR » sans
- * ligature respectés (esthétique designbyad signée Jonathan).
+ * Contenu Jonathan : VERBATIM trame (retour Morgan v3 — restauration des
+ * fautes typo conservées) : « connectes », « soit pas une », « accéssibilité »,
+ * « voir obligatoire ». H1 sans accent + « COEUR » sans ligature respectés
+ * (esthétique designbyad signée Jonathan). À valider ensuite avec Jonathan.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '@/lib/site-config';
 import {
@@ -37,9 +40,10 @@ import {
 } from '@/lib/schema-org';
 
 import heroPhoto from '@/assets/typologies/micro-urbain/01-hero.jpg';
-import photo02 from '@/assets/typologies/micro-urbain/02-large.jpg';
-import photo03 from '@/assets/typologies/micro-urbain/03-row-left.jpg';
-import photo04 from '@/assets/typologies/micro-urbain/04-row-right.jpg';
+import largeTop from '@/assets/typologies/micro-urbain/02-large-top.jpg';
+import diptyqueLeft from '@/assets/typologies/micro-urbain/03-diptyque-left.jpg';
+import diptyqueRight from '@/assets/typologies/micro-urbain/04-diptyque-right.jpg';
+import largeBottom from '@/assets/typologies/micro-urbain/05-large-bottom.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'micro-urbain')!;
 
@@ -54,13 +58,16 @@ const specs = [
   },
 ];
 
-// Manifeste — texte Jonathan trame, fautes typo évidentes corrigées
-// (validation Morgan 2026-05-15). Style et verbe conservés.
+// Manifeste — texte Jonathan VERBATIM trame, fautes typo conservées
+// (retour Morgan 2026-05-15 v3 : restauration verbatim, on n'invente
+// rien et on garde la voix Jonathan brute, à valider ensuite avec lui).
+// Mots à NE PAS corriger ici : « connectes », « soit pas une »,
+// « accéssibilité », « voir obligatoire ».
 const manifeste = {
   bloc1:
     'La typologie micro urbaine se caractérise par des espaces de vie réduits, en hauteur ou encore enclavés entre les murs intérieurs du bâti.',
   bloc2:
-    "Ce sont des espaces fortement connectés à la vie des habitations, soit par des perspectives directes depuis l'intérieur, soit par une accessibilité directe voire obligatoire depuis les circulations de l'intérieur vers l'extérieur.",
+    "Ce sont des espaces fortement connectes à la vie des habitations, soit par des perspectives directes depuis l'intérieur, soit pas une accéssibilité directe voir obligatoire depuis les circulations de l'intérieur vers l'extérieur.",
   precision:
     "Les contraintes liées à l'exposition aux vents forts et la portance structurelle pour les terrasses, l'ombre excessive et le taux élevé de l'hygrométrie pour les patios ou encore les accès difficiles à ces différents espaces établissent des contraintes très spécifiques dans l'élaboration de l'étude et la réalisation des ouvrages.",
 };
@@ -172,18 +179,25 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 2 · GALERIE QUINCONCE — 3 photos asymétrique ══════════════ */}
+  {
+    /* ═════════ 2 · GALERIE — 4 photos rythme magazine ════════════════════
+     Disposition trame Jonathan (capture Morgan 2026-05-15) :
+       (1) photo large pleine largeur (02-large-top)
+       (2) diptyque deux portraits : 03 plus petit gauche + 04 plus grand droite
+       (3) photo large pleine largeur (05-large-bottom)
+     Gouttières noires généreuses, aucun bord-à-bord. */
+  }
   <section
     data-theme="dark"
     class="mu-gallery bg-[var(--color-black-deep)]"
     aria-label="Sélection de projets micro urbain"
   >
-    <figure class="mu-gallery__hero" data-reveal="image-rise">
+    <figure class="mu-gallery__large" data-reveal="image-rise">
       <Image
-        src={photo02}
-        alt="Projet micro urbain — détail aménagement"
-        widths={[960, 1440, 1920]}
-        sizes="(min-width: 1024px) 88vw, 96vw"
+        src={largeTop}
+        alt="Projet micro urbain — terrasse végétalisée sous ciel d'altitude"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
         quality={82}
         format="webp"
         loading="lazy"
@@ -191,25 +205,25 @@ const schema = jsonLdGraph([
       />
     </figure>
 
-    <div class="mu-gallery__row">
-      <figure class="mu-gallery__row-left" data-reveal="image-rise">
+    <div class="mu-gallery__diptyque">
+      <figure class="mu-gallery__diptyque-left" data-reveal="image-rise">
         <Image
-          src={photo03}
-          alt="Projet micro urbain — vue d'ensemble terrasse"
-          widths={[640, 960, 1280]}
-          sizes="(min-width: 1024px) 52vw, 96vw"
+          src={diptyqueLeft}
+          alt="Projet micro urbain — escalier patio jardin minéral"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 38vw, 92vw"
           quality={82}
           format="webp"
           loading="lazy"
           class="mu-gallery__img"
         />
       </figure>
-      <figure class="mu-gallery__row-right" data-reveal="image-rise">
+      <figure class="mu-gallery__diptyque-right" data-reveal="image-rise">
         <Image
-          src={photo04}
-          alt="Projet micro urbain — perspective urbaine"
-          widths={[480, 720, 960]}
-          sizes="(min-width: 1024px) 36vw, 96vw"
+          src={diptyqueRight}
+          alt="Projet micro urbain — patio tropical intérieur-extérieur"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 54vw, 96vw"
           quality={82}
           format="webp"
           loading="lazy"
@@ -217,6 +231,19 @@ const schema = jsonLdGraph([
         />
       </figure>
     </div>
+
+    <figure class="mu-gallery__large" data-reveal="image-rise">
+      <Image
+        src={largeBottom}
+        alt="Projet micro urbain — rooftop avec vue panoramique urbaine"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
+        quality={82}
+        format="webp"
+        loading="lazy"
+        class="mu-gallery__img"
+      />
+    </figure>
   </section>
 
   {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
@@ -293,9 +320,18 @@ const schema = jsonLdGraph([
         </span>
       </h2>
     </a>
-    <div class="mu-cta__pill">
-      <CtaLink href="/demarrer-un-projet" label="Démarrer un projet" tone="accent" size="md" />
-    </div>
+    <a href="/demarrer-un-projet" class="mu-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
+      <span class="mu-cta__pill-dot" aria-hidden="true"></span>
+      <span class="mu-cta__pill-label">Démarrer un projet</span>
+      <img
+        src="/brand/fleche-white.webp"
+        alt=""
+        aria-hidden="true"
+        class="mu-cta__pill-arrow"
+        width="32"
+        height="32"
+      />
+    </a>
   </section>
 
   <style is:global>
@@ -424,7 +460,7 @@ const schema = jsonLdGraph([
       margin: 0;
     }
 
-    /* ─── 2 · Galerie quinconce ─────────────────────────────────────────── */
+    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
     .mu-gallery {
       width: 100%;
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
@@ -432,7 +468,9 @@ const schema = jsonLdGraph([
       flex-direction: column;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
-    .mu-gallery__hero {
+    /* Photos « large » pleine largeur — ratio panoramique. Conserve une
+       respiration cinéma au-dessus et en-dessous du diptyque. */
+    .mu-gallery__large {
       margin: 0;
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -440,41 +478,45 @@ const schema = jsonLdGraph([
       background-color: var(--color-black-deep);
     }
     @media (min-width: 1024px) {
-      .mu-gallery__hero {
+      .mu-gallery__large {
         aspect-ratio: 21 / 9;
       }
     }
-    .mu-gallery__row {
+    /* Diptyque 03 + 04 — pattern trame Jonathan : portrait gauche plus
+       petit (38%) + portrait droite plus grand (54%) + gouttière.
+       Alignement vertical décalé pour effet quinconce magazine. */
+    .mu-gallery__diptyque {
       display: grid;
       grid-template-columns: 1fr;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
     @media (min-width: 768px) {
-      .mu-gallery__row {
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      .mu-gallery__diptyque {
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
         align-items: stretch;
       }
     }
-    .mu-gallery__row-left,
-    .mu-gallery__row-right {
+    .mu-gallery__diptyque-left,
+    .mu-gallery__diptyque-right {
       margin: 0;
       overflow: hidden;
       background-color: var(--color-black-deep);
     }
-    .mu-gallery__row-left {
-      aspect-ratio: 4 / 3;
+    .mu-gallery__diptyque-left {
+      aspect-ratio: 4 / 5;
     }
-    .mu-gallery__row-right {
-      aspect-ratio: 3 / 4;
+    .mu-gallery__diptyque-right {
+      aspect-ratio: 4 / 5;
     }
     @media (min-width: 768px) {
-      .mu-gallery__row-left {
-        aspect-ratio: 5 / 4;
+      .mu-gallery__diptyque-left {
+        aspect-ratio: 3 / 4;
+        align-self: start;
+        max-height: 78%;
       }
-      .mu-gallery__row-right {
+      .mu-gallery__diptyque-right {
         aspect-ratio: 4 / 5;
         align-self: end;
-        max-height: 75%;
       }
     }
     .mu-gallery__img {
@@ -485,16 +527,20 @@ const schema = jsonLdGraph([
       display: block;
       transition: transform 0.9s var(--ease-out-editorial);
     }
-    .mu-gallery__hero:hover .mu-gallery__img,
-    .mu-gallery__row-left:hover .mu-gallery__img,
-    .mu-gallery__row-right:hover .mu-gallery__img {
+    .mu-gallery__large:hover .mu-gallery__img,
+    .mu-gallery__diptyque-left:hover .mu-gallery__img,
+    .mu-gallery__diptyque-right:hover .mu-gallery__img {
       transform: scale(1.04);
     }
 
     /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
+    /* Pattern capture Morgan 2026-05-15 v3 : bloc texte décalé en col DROITE
+       sur desktop (col gauche vide pour la respiration), taille de texte
+       AGRANDIE (clamp ~1.25-1.6rem), poids regular/light pour rester lisible
+       sur fond noir sans crier. Italique précision en plus petit dessous. */
     .mu-manifeste {
       width: 100%;
-      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
     }
     .mu-manifeste__inner {
       display: grid;
@@ -503,22 +549,29 @@ const schema = jsonLdGraph([
     }
     @media (min-width: 1024px) {
       .mu-manifeste__inner {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        grid-template-columns: 1fr 1fr;
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
+      }
+      /* Texte + précision posés en colonne DROITE — la col gauche reste
+         vide, comme sur la trame. Effet « le texte sort à droite ». */
+      .mu-manifeste__body,
+      .mu-manifeste__precision {
+        grid-column: 2;
       }
     }
     .mu-manifeste__body {
       display: flex;
       flex-direction: column;
-      gap: clamp(1rem, 1.8vw, 1.5rem);
-      max-width: 36ch;
+      gap: clamp(1.25rem, 2.2vw, 1.85rem);
+      max-width: 30ch;
     }
     .mu-manifeste__para {
       font-family: var(--font-body), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1rem, 1.2vw, 1.2rem);
-      line-height: 1.65;
+      font-weight: 400;
+      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
+      line-height: 1.45;
+      letter-spacing: -0.005em;
       color: var(--color-cream);
       margin: 0;
     }
@@ -531,13 +584,13 @@ const schema = jsonLdGraph([
     .mu-manifeste__precision {
       font-family: var(--font-body), sans-serif;
       font-style: italic;
-      font-weight: 200;
+      font-weight: 300;
       font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-      line-height: 1.7;
-      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
-      text-align: justify;
-      margin: 0;
-      max-width: 56ch;
+      line-height: 1.6;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      text-align: left;
+      margin: clamp(2rem, 3.5vw, 3rem) 0 0;
+      max-width: 52ch;
     }
 
     /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
@@ -687,9 +740,49 @@ const schema = jsonLdGraph([
         text-align-last: left;
       }
     }
-    .mu-cta__pill {
-      display: flex;
-      justify-content: center;
+    /* Pill rouge plein sous le CTA texte — fond rouge plein, texte cream
+       Bold, dot + flèche. Réplique le pattern du Header (cta-pill) mais
+       visible sur fond noir (l'ancienne variante CtaLink tone="accent"
+       était invisible car accent ≈ ink suite à la purge latérite 2026-05-02). */
+    .mu-cta__pill-red {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1.6rem;
+      background-color: var(--color-red);
+      color: var(--color-cream);
+      border-radius: 9999px;
+      font-family: var(--font-body), sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 1.05vw, 1rem);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: transform 0.35s var(--ease-out-editorial);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .mu-cta__pill-red:hover,
+      .mu-cta__pill-red:focus-visible {
+        transform: scale(1.04);
+      }
+    }
+    .mu-cta__pill-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      flex-shrink: 0;
+    }
+    .mu-cta__pill-label {
+      white-space: nowrap;
+    }
+    .mu-cta__pill-arrow {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
     /* full-bleed garde-fou — pas de marge latérale parasite sur les sections. */
