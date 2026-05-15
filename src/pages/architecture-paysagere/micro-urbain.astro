@@ -564,7 +564,9 @@ const schema = jsonLdGraph([
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 2.2vw, 1.85rem);
-      max-width: 36ch;
+      /* Pas de max-width : le texte va jusqu'au bord droit de la colonne
+         (retour Morgan v9 « le texte va davantage jusqu'au bord droit »).
+         La marge à droite vient du padding section clamp(1.5rem, 5vw, 4rem). */
     }
     .mu-manifeste__para {
       font-family: var(--font-body), sans-serif;
@@ -589,7 +591,8 @@ const schema = jsonLdGraph([
       color: color-mix(in oklab, var(--color-cream) 80%, transparent);
       text-align: left;
       margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
-      max-width: 56ch;
+      /* Pas de max-width : la précision suit la même règle que le body,
+         elle s'étend jusqu'au bord droit de la colonne. */
     }
 
     /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
