@@ -537,7 +537,7 @@ const schema = jsonLdGraph([
        au bord). Padding-left conservé pour la respiration côté gauche. */
     .mu-manifeste {
       width: 100%;
-      padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
     }
     .mu-manifeste__inner {
       display: grid;
@@ -545,15 +545,16 @@ const schema = jsonLdGraph([
       gap: clamp(2rem, 4vw, 3.5rem);
     }
     @media (min-width: 1024px) {
-      /* Retour Morgan v5 2026-05-15 : le bloc texte doit occuper les 2/3
-         DROITS de la largeur (1/3 vide à gauche pour la respiration).
-         Grid 1fr 2fr donne pile ce ratio. */
+      /* Retour Morgan v8 2026-05-15 (nouvelle capture) : le bloc texte
+         commence vers ~42% de la largeur (pas 33%), lignes courtes
+         ~35-40ch, marge à droite naturelle. Grid 1fr 1.35fr donne
+         ~42% vide à gauche + ~58% pour la col texte. */
       .mu-manifeste__inner {
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 1fr 1.35fr;
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      /* Texte + précision posés en colonne DROITE (2/3). */
+      /* Texte + précision posés en colonne DROITE. */
       .mu-manifeste__body,
       .mu-manifeste__precision {
         grid-column: 2;
@@ -563,10 +564,7 @@ const schema = jsonLdGraph([
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 2.2vw, 1.85rem);
-      /* Pas de max-width : le texte va jusqu'au bord droit, respect du
-         retour Morgan v6 « jusqu'au bord droit de l'écran ». Le padding
-         de section pose la marge gauche. */
-      padding-right: clamp(1.5rem, 5vw, 4rem);
+      max-width: 36ch;
     }
     .mu-manifeste__para {
       font-family: var(--font-body), sans-serif;
