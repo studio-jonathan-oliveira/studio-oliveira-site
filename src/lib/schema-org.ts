@@ -148,16 +148,11 @@ export const KEYWORDS_METIER = [
   'Paysagiste Bordeaux',
   'Paysagiste Limoges',
   'Paysagiste Haute-Vienne',
-  'Paysagiste Toulouse',
-  'Paysagiste Haute-Garonne',
-  'Paysagiste Occitanie',
   'Designer végétal Bordeaux',
   'Designer végétal Brive',
   'Designer végétal Limoges',
-  'Designer végétal Toulouse',
   'Architecte paysagiste Aquitaine',
   'Architecte paysagiste Nouvelle-Aquitaine',
-  'Architecte paysagiste Occitanie',
 ];
 
 const SERVICE_TYPES = [

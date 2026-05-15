@@ -1,6 +1,6 @@
 # Studio J Oliveira — Site
 
-Site officiel du **Studio J Oliveira**, designer végétal biophilique à Brive-la-Gaillarde, avec zones d'intervention élargies à Bordeaux, Limoges et Toulouse.
+Site officiel du **Studio J Oliveira**, designer végétal biophilique à Brive-la-Gaillarde, avec zones d'intervention élargies à Bordeaux et Limoges.
 
 > ⚠️ Source de vérité projet : [`_brief/`](_brief/) (briefs, plans, analyses). Voir aussi [CLAUDE.md](CLAUDE.md) pour les règles permanentes (SEO, stack verrouillée, conventions de commit, contenu Jonathan sacré).
 

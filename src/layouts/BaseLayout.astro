@@ -86,15 +86,15 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
     <link rel="icon" href="/favicon.ico" sizes="any" />
 
     {
-      /* Preload fonts critiques (2026-05-12) — Jost latin + Geist Mono latin
+      /* Preload fonts critiques — Inter latin + Geist Mono latin
         servis depuis /public/fonts (cf. global.css @font-face).
-        - Jost = font-heading + font-body, utilisé sur H1 hero (LCP)
+        - Inter = font-heading + font-body, utilisé sur H1 hero (LCP)
         - Geist Mono = eyebrows partout, démarre le rendu visible
         crossorigin obligatoire pour le preload de fonts woff2. */
     }
     <link
       rel="preload"
-      href="/fonts/jost-variable-latin.woff2"
+      href="/fonts/inter-variable-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin

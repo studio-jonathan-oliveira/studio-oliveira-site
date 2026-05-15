@@ -1,41 +1,37 @@
 @import 'tailwindcss';
 
-/* Fonts — Self-hosted depuis /public/fonts (refonte 2026-05-12 — perf P1).
-   Avant : @import '@fontsource-variable/jost' chargeait 6 sous-ensembles
-   (cyrillic, latin-ext, latin × normal/italic) via le CSS @font-face de
-   fontsource, avec URLs hashées par Vite — impossible à preload depuis
-   BaseLayout, donc LCP/CLS dégradés.
-   Maintenant : 4 fichiers woff2 ciblés (latin + latin-ext + italic Jost +
-   latin Geist Mono) servis depuis /public/fonts, preload des 2 critiques
-   (Jost latin normal + Geist Mono latin) dans BaseLayout. ~105 KB total
-   sur le critical path, le navigateur n'attend plus la cascade @import. */
+/* Fonts — Self-hosted depuis /public/fonts.
+   Bascule Jost → Inter le 2026-05-15 (demande Jonathan : esthétique proche
+   Segoe UI, hébergeable cross-OS contrairement à Segoe propriétaire MS).
+   Inter = humaniste géométrique très lisible, métriques proches Segoe UI.
+   3 fichiers ciblés (latin + latin-ext + italic Inter) + Geist Mono. */
 @font-face {
-  font-family: 'Jost Variable';
+  font-family: 'Inter Variable';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('/fonts/jost-variable-latin.woff2') format('woff2-variations');
+  src: url('/fonts/inter-variable-latin.woff2') format('woff2-variations');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Jost Variable';
+  font-family: 'Inter Variable';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('/fonts/jost-variable-latin-ext.woff2') format('woff2-variations');
+  src: url('/fonts/inter-variable-latin-ext.woff2') format('woff2-variations');
   unicode-range:
     U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
     U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
     U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Jost Variable';
+  font-family: 'Inter Variable';
   font-style: italic;
   font-display: swap;
   font-weight: 100 900;
-  src: url('/fonts/jost-variable-latin-italic.woff2') format('woff2-variations');
+  src: url('/fonts/inter-variable-latin-italic.woff2') format('woff2-variations');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -92,12 +88,13 @@
   --color-accent: var(--color-ink);
   --color-gold: var(--color-cream);
 
-  /* Typographies — refonte Jonathan 2026-04-24
-     Jost* = alternative OSS à Futura (titres + corps)
+  /* Typographies — bascule Inter 2026-05-15 (demande Jonathan, proxy
+     OSS de Segoe UI hébergeable cross-OS).
+     Inter = humaniste géométrique lisible (titres + corps)
      Gloock = serif affichage (mots-clés, compléments titre, hover-accent)
      Geist Mono = eyebrows / labels techniques */
-  --font-heading: 'Jost Variable', 'Futura', 'Avenir Next', system-ui, sans-serif;
-  --font-body: 'Jost Variable', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  --font-heading: 'Inter Variable', 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
   --font-display: 'Gloock', 'Playfair Display', 'Georgia', serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 
@@ -319,7 +316,7 @@ header.intro-revealing {
   h5,
   h6 {
     font-family: var(--font-heading);
-    /* Jost Bold (700) — caractère géométrique premium, équivalent Futura Bold */
+    /* Inter Bold (700) — humaniste contemporain, métriques proches Segoe UI */
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 0.98;

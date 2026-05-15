@@ -25,7 +25,7 @@ export const OG_PAGES: OgPage[] = [
   {
     path: '/',
     filename: 'home',
-    eyebrow: 'Studio J Oliveira · Brive · Bordeaux · Limoges · Toulouse',
+    eyebrow: 'Studio J Oliveira · Brive · Bordeaux · Limoges',
     title: 'Designer végétal biophilique',
     variant: 'dark',
   },
@@ -132,13 +132,6 @@ export const OG_PAGES: OgPage[] = [
     filename: 'zones/limoges',
     eyebrow: 'Zone · Haute-Vienne (87) · Bureau d’études',
     title: 'Paysagiste designer à Limoges',
-    variant: 'light',
-  },
-  {
-    path: '/zones/toulouse',
-    filename: 'zones/toulouse',
-    eyebrow: 'Zone · Haute-Garonne (31)',
-    title: 'Paysagiste designer à Toulouse',
     variant: 'light',
   },
 ];

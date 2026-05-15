@@ -7,7 +7,7 @@
 
 ## 1. Contexte projet
 
-**Client** : Studio J Oliveira — designer végétal biophilique indépendant. Siège : 41 rue Général Souham, 19100 Brive-la-Gaillarde. Zones d'intervention : Brive + Bordeaux + Limoges + Toulouse (prospection).
+**Client** : Studio J Oliveira — designer végétal biophilique indépendant. Siège : 41 rue Général Souham, 19100 Brive-la-Gaillarde. Zones d'intervention : Brive + Bordeaux + Limoges (Toulouse retiré 2026-05-15, périmètre à redéfinir).
 
 **Objectif business** : faire du site le canal n°1 d'acquisition de prospects qualifiés (particuliers HNW, hôtellerie-restauration, bureaux corporate, architectes prescripteurs). Positionnement **studio de design premium** — jamais « artisan jardinier ».
 

@@ -15,10 +15,10 @@
  * Idempotent : ré-exécuter écrase les fichiers existants. Ajouter des
  * pages dans `src/lib/og-pages.ts`.
  *
- * Police : Jost Variable depuis `public/fonts/jost-variable-latin.woff2`.
+ * Police : Inter Variable depuis `public/fonts/inter-variable-latin.woff2`.
  * Sharp ne peut pas embarquer woff2 dans un SVG `<text>` sans fallback —
  * on inline les glyphes via SVG path en pratique difficile. Solution
- * pragmatique : SVG `<text>` avec font-family Jost ET valeur en majuscules
+ * pragmatique : SVG `<text>` avec font-family Inter ET valeur en majuscules
  * pour minimiser les besoins de glyphes complexes. Sharp utilise la police
  * système si elle est installée ; sinon le fallback "system-ui" prend le
  * relais. Pour un rendu garanti partout, on peut migrer plus tard vers
@@ -92,7 +92,7 @@ function buildSvg(page: OgPage): string {
       <text
         x="${padding}"
         y="${padding + 22}"
-        font-family="Jost Variable, Jost, Futura, Avenir Next, system-ui, sans-serif"
+        font-family="Inter Variable, Inter, Segoe UI, Helvetica Neue, system-ui, sans-serif"
         font-weight="600"
         font-size="22"
         letter-spacing="6"
@@ -116,7 +116,7 @@ function buildSvg(page: OgPage): string {
           return `<text
             x="${padding}"
             y="${y}"
-            font-family="Jost Variable, Jost, Futura, Avenir Next, system-ui, sans-serif"
+            font-family="Inter Variable, Inter, Segoe UI, Helvetica Neue, system-ui, sans-serif"
             font-weight="500"
             font-size="${titleSize}"
             letter-spacing="-1.2"

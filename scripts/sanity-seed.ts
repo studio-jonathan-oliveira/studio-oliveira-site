@@ -133,7 +133,7 @@ async function seedServices() {
 }
 
 // ----------------------------------------------------------------------------
-// Locations / zones (4 docs : Brive, Bordeaux, Limoges, Toulouse)
+// Locations / zones (3 docs : Brive, Bordeaux, Limoges)
 // ----------------------------------------------------------------------------
 
 async function seedLocations() {
