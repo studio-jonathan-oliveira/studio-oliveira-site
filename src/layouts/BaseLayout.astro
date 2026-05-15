@@ -44,10 +44,11 @@ const {
 // 3. Fallback /og-default.jpg
 const resolvedOgImage = ogImage ?? getOgImagePath(Astro.url.pathname) ?? '/og-default.jpg';
 
-// is-home : classe body posée sur la page d'accueil uniquement. Permet de
-// scoper la nouvelle DA noir + rouge (curseur, overrides) sans toucher les
-// autres pages encore en cream/ink. Propagation page par page à venir.
+// is-home / is-studio : classes body pour scoper la DA noir+rouge
+// (curseur rouge sur sections sombres, etc.). Étendu à /studio 2026-05-15
+// (page studio refondue trame Jonathan).
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const isStudio = Astro.url.pathname === '/studio' || Astro.url.pathname.startsWith('/studio/');
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
@@ -139,7 +140,11 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
   </head>
 
   <body
-    class:list={['text-[length:var(--text-base)] font-[var(--font-body)]', isHome && 'is-home']}
+    class:list={[
+      'text-[length:var(--text-base)] font-[var(--font-body)]',
+      isHome && 'is-home',
+      isStudio && 'is-studio',
+    ]}
   >
     <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>
 

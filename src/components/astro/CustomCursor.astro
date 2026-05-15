@@ -61,10 +61,11 @@
       --cursor-fill: var(--color-black-deep);
       --cursor-text: var(--color-cream);
     }
-    /* Surcharge home (body.is-home) : sur sections sombres de la home,
+    /* Surcharge pages DA noir/rouge (home + studio) : sur sections sombres,
        on remplace cream par rouge pour le dot/ring. Effet : curseur rouge
        sur fond noir, noir sur fond rouge, cohérent avec la DA Jonathan. */
-    body.is-home .custom-cursor.is-on-dark {
+    body.is-home .custom-cursor.is-on-dark,
+    body.is-studio .custom-cursor.is-on-dark {
       --cursor-fill: var(--color-red);
       --cursor-text: var(--color-cream);
     }

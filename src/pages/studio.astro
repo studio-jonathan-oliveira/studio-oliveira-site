@@ -406,16 +406,15 @@ const parcours = [
       padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
       transition: background-color 0.3s ease;
     }
-    .studio-architectures__summary:hover,
     .studio-architectures__summary:focus-visible {
-      background-color: color-mix(in oklab, var(--color-ink) 10%, transparent);
-      outline: none;
+      outline: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
+      outline-offset: -1px;
     }
     /* Title Case Jonathan respecté (rupture vs règle home UPPERCASE).
-     Inter Medium pour lisibilité maximale sur fond rouge. */
+       v7 retour Morgan : passe en Inter ExtraLight 200. */
     .studio-architectures__title {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
+      font-weight: 200;
       font-size: clamp(1.5rem, 3vw, 2.6rem);
       line-height: 1.15;
       letter-spacing: -0.005em;
