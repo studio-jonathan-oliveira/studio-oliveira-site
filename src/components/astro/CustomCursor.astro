@@ -14,8 +14,19 @@
     <span class="cursor-label" id="cursor-label"></span>
     <!-- Tooltip flottant haut-droite du ring (refonte 2026-04-30 Jonathan).
          Utilisation : <a data-cursor-tooltip="LIGNE1 / LIGNE2 / LIGNE3"> -
-         le séparateur " / " produit des sauts de ligne. Suit le ring (lerp). -->
-    <div class="cursor-tooltip" id="cursor-tooltip"></div>
+         le séparateur " / " produit des sauts de ligne. Suit le ring (lerp).
+         v5 2026-05-15 : flèche rouge Jonathan au-dessus du premier mot. -->
+    <div class="cursor-tooltip" id="cursor-tooltip">
+      <img
+        src="/brand/fleche-red.webp"
+        alt=""
+        aria-hidden="true"
+        class="cursor-tooltip__arrow"
+        width="32"
+        height="32"
+      />
+      <span class="cursor-tooltip__text" id="cursor-tooltip-text"></span>
+    </div>
   </div>
 </div>
 
@@ -170,9 +181,8 @@
        contraste lisible quel que soit le fond de section.
        Refonte v4 : font 14px + white-space: pre pour que chaque ligne
        tienne sur une seule ligne sans wrap (largeur auto-fit). */
-    /* Tooltip typologies — refonte v3 2026-05-15 (retour Morgan) :
-       transparent + texte rouge Inter Bold UPPERCASE, BEAUCOUP plus gros
-       pour bien voir (taille proche de la trame Jonathan). Pas d'ombrage. */
+    /* Tooltip typologies — refonte v5 2026-05-15 : flèche rouge Jonathan
+       au-dessus du premier mot + texte. Wrapper en flex column.  */
     .cursor-tooltip {
       position: absolute;
       left: 100%;
@@ -181,6 +191,23 @@
       margin-top: -8px;
       padding: 6px 0;
       background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s var(--ease-out-editorial);
+      will-change: transform, opacity;
+      z-index: 1;
+    }
+    .cursor-tooltip__arrow {
+      width: clamp(18px, 1.8vw, 28px);
+      height: clamp(18px, 1.8vw, 28px);
+      object-fit: contain;
+      display: block;
+    }
+    .cursor-tooltip__text {
       color: var(--color-red);
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
@@ -189,11 +216,6 @@
       line-height: 1.25;
       text-transform: uppercase;
       white-space: pre;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s var(--ease-out-editorial);
-      will-change: transform, opacity;
-      z-index: 1;
     }
     .custom-cursor.is-tooltipped .cursor-tooltip {
       opacity: 1;
@@ -296,6 +318,7 @@
     // liens vers /projets /realisations /conceptions, flèche '→' sinon.
     const labelEl = document.getElementById('cursor-label');
     const tooltipEl = document.getElementById('cursor-tooltip');
+    const tooltipTextEl = document.getElementById('cursor-tooltip-text');
     document.addEventListener(
       'pointerover',
       (e) => {
@@ -311,9 +334,10 @@
         const cursorSkip = target?.closest?.('[data-cursor-skip]');
         // Tooltip flottant 3 lignes (refonte 2026-04-30 typologies). Affiché
         // au-dessus du ring sans agrandir ce dernier — coexiste avec is-labeled.
-        if (tooltipAncestor && tooltipEl) {
+        if (tooltipAncestor && tooltipEl && tooltipTextEl) {
           const raw = tooltipAncestor.dataset.cursorTooltip || '';
-          tooltipEl.textContent = raw.split(' / ').join('\n');
+          // v5 : on écrit dans le span dédié pour préserver la flèche image.
+          tooltipTextEl.textContent = raw.split(' / ').join('\n');
           cursor.classList.add('is-tooltipped');
         }
         if (labeledAncestor && labelEl) {

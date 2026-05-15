@@ -762,10 +762,12 @@ const typologies = [
       font-style: normal;
       text-transform: uppercase;
     }
-    /* Bloc manifeste — refonte v4 2026-05-15 : padding-block symétrique
-       pour équilibrer le rouge avant/après le contenu (retour Morgan). */
+    /* Bloc manifeste — refonte v5 2026-05-15 : padding-block asymétrique
+       (top > bottom) pour réduire encore la zone rouge sous la signature
+       (retour Morgan « il faut réduire cet espace rouge vide »). */
     .manifeste-block {
-      padding-block: clamp(5rem, 10vw, 9rem);
+      padding-top: clamp(5rem, 10vw, 9rem);
+      padding-bottom: clamp(2rem, 4vw, 3.5rem);
     }
     /* Signature manifeste — refonte v2 2026-05-15 : cream plein + centrée.
        Margin-top réduite pour rapprocher de la signature du bloc texte
@@ -1203,11 +1205,10 @@ const typologies = [
       margin: 0;
     }
     /* Variante .htypo-name--light → Architecture publique en ExtraLight 200
-       lowercase (retour Morgan : « n'écris pas ça en gras »). Garde la
-       même taille pour rester cohérent dans l'alignement de la grille. */
+       UPPERCASE (retour v5 Morgan : « doit être écris en MAJUSCULE mais
+       en extra light 200 »). Garde la casse héritée de .htypo-name. */
     .htypo-name--light {
       font-weight: 200;
-      text-transform: lowercase;
     }
 
     /* Images réduites 2026-05-02 (Morgan : « réduit un peu, faut un peu
