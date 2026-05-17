@@ -629,6 +629,18 @@ const typologies = [
         height: auto;
       }
     }
+    /* Mobile / tablette (Morgan 2026-05-17 : lag scroll iOS Safari) — le
+       `position: sticky` 100vh est une source notoire de jank iOS Safari à
+       cause de la barre URL dynamique qui force un reflow continu pendant
+       tout le scroll. Sur petit écran l'effet « recouvrement » du sticky
+       n'est pas perçu (les sections sombres se succèdent), on bascule en
+       relative pour libérer le compositeur. */
+    @media (max-width: 1023px) {
+      .hero-sticky {
+        position: relative;
+        height: 100vh;
+      }
+    }
 
     /* Bloc IDENTITÉ — refonte v2 2026-05-15 : retour à l'animation
        justify-multi designbyad sur 3 lignes. Inter Bold UPPERCASE, chaque
