@@ -81,19 +81,28 @@ export function initThemeObserver() {
   // Scroll fallback throttlé via rAF — sinon recompute fire à chaque event
   // et les getBoundingClientRect N×par-scroll font laguer (feedback
   // 2026-04-24 : « le scrolling lag un peu »).
-  let rafPending = false;
-  const onScroll = () => {
-    if (rafPending) return;
-    rafPending = true;
-    requestAnimationFrame(() => {
-      rafPending = false;
-      recompute();
+  //
+  // Perf 2026-05-17 (Morgan : lag scroll iPhone) — sur mobile on skip ce
+  // scroll fallback : getBoundingClientRect sur N sections à chaque rAF
+  // créait du layout thrashing iPhone. L'IntersectionObserver ci-dessus
+  // suffit à détecter les transitions de section sur mobile (l'edge case
+  // résolu en 2026-04-24 concernait le desktop sticky uniquement).
+  const isMobileScroll = window.matchMedia('(pointer: coarse), (max-width: 1023px)').matches;
+  if (!isMobileScroll) {
+    let rafPending = false;
+    const onScroll = () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        recompute();
+      });
+    };
+    window.addEventListener('scroll', onScroll, {
+      passive: true,
+      signal: scrollController.signal,
     });
-  };
-  window.addEventListener('scroll', onScroll, {
-    passive: true,
-    signal: scrollController.signal,
-  });
+  }
 
   // Initialisation : détecter la section active au chargement
   const initial = sections.find((s) => {
