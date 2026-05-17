@@ -334,6 +334,16 @@ header.intro-revealing {
     opacity: 0.035;
     mix-blend-mode: multiply;
   }
+  /* Perf 2026-05-17 (Morgan : lag scroll iOS) — `mix-blend-mode: multiply`
+     plein viewport en `position: fixed` force le compositeur à recalculer
+     tout l'écran à chaque frame de scroll. À 3.5% d'opacité le grain est
+     imperceptible sur petit écran, on le coupe sur mobile pour libérer
+     entièrement le GPU. (Doublon avec Grain.astro qui est aussi coupé.) */
+  @media (max-width: 1023px) {
+    body::before {
+      display: none;
+    }
+  }
 
   h1,
   h2,

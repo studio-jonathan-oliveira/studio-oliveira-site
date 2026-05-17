@@ -131,6 +131,17 @@ const slides = [
     will-change: transform;
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
   }
+  /* Perf 2026-05-17 (Morgan : lag scroll iPhone) — le track 300% width avec
+     3 images plein écran HQ + `will-change: transform` permanent crée une
+     couche GPU ÉNORME promue en permanence (3× la mémoire VRAM normale).
+     Sur mobile c'est un coût constant. On retire `will-change` : le browser
+     promouvra le track temporairement pendant la transition CSS (auto-géré),
+     pas en permanence. Aucun impact visuel sur la qualité du slide. */
+  @media (max-width: 1023px) {
+    .hero-slide__track {
+      will-change: auto;
+    }
+  }
   .hero-slide.is-dragging .hero-slide__track {
     transition: none;
   }
@@ -343,6 +354,32 @@ const slides = [
     // v12 2026-05-15 (retour Morgan) : slideshow auto only, drag/clavier/
     // dots-click retirés. Les dots restent visuels (indicateur de progress).
     void dots;
+
+    /*
+     * Perf 2026-05-17 (Morgan : lag scroll iPhone) — pause le slideshow auto
+     * pendant que l'utilisateur scroll sur mobile/tablette. La transition CSS
+     * 950ms sur le track 300% width interpolait en parallèle du scroll,
+     * forçant le compositeur GPU à composer track HQ + scroll en même temps.
+     * On stoppe l'interval au scroll, on le relance 600ms après l'arrêt.
+     * Aucun effet visuel sauf que l'image ne change pas pile pendant que tu
+     * scroll : ce qui est imperceptible et préférable au jank.
+     */
+    const isMobile = window.matchMedia('(pointer: coarse), (max-width: 1023px)').matches;
+    if (isMobile) {
+      let resumeT: number | null = null;
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (autoTimer !== null) stopAuto();
+          if (resumeT !== null) window.clearTimeout(resumeT);
+          resumeT = window.setTimeout(() => {
+            resumeT = null;
+            if (autoTimer === null) startAuto();
+          }, 600);
+        },
+        { passive: true },
+      );
+    }
 
     window.addEventListener('resize', () => applyTransform(0), { passive: true });
 

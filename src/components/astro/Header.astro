@@ -298,7 +298,12 @@ const { darkHero = false } = Astro.props;
     headerWired = true;
     lastScrollY = window.scrollY;
 
-    const onScroll = () => {
+    // Perf 2026-05-17 (Morgan : lag scroll mobile) — rAF-throttle le scroll
+    // listener du header. À chaque scroll event (jusqu'à 120Hz sur iPhone
+    // ProMotion), il faisait classList.toggle qui peut déclencher des CSS
+    // transitions/repaints du header fixed. rAF coalesce à 1 update par
+    // frame max.
+    const scrollWork = () => {
       const y = window.scrollY;
       const delta = y - lastScrollY;
       header.classList.toggle('is-scrolled', y > TOP_THRESHOLD_PX);
@@ -318,7 +323,16 @@ const { darkHero = false } = Astro.props;
 
       lastScrollY = y;
     };
-    onScroll();
+    let rafPending = false;
+    const onScroll = () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        scrollWork();
+      });
+    };
+    scrollWork();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 

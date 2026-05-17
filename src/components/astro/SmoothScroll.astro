@@ -22,6 +22,15 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion) return;
 
+    // Mobile / touch : pas de Lenis. iOS Safari et Android Chrome ont un
+    // momentum scroll natif excellent ; Lenis tournait un rAF en continu pour
+    // rien (avec syncTouch:false il n'orchestrait pas le touch, mais la boucle
+    // tournait quand même → CPU/batterie + jank cumulé avec les scroll-driven
+    // animations). Garde pointer:coarse OU viewport < 1024px pour couvrir
+    // iPad portrait et tablette Android. (Morgan 2026-05-17.)
+    const isMobile = window.matchMedia('(pointer: coarse), (max-width: 1023px)').matches;
+    if (isMobile) return;
+
     // Si déjà initialisé, on détruit l'ancienne instance (navigation avec View Transitions)
     if (window.__lenis) {
       window.__lenis.destroy();
