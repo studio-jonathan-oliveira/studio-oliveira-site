@@ -472,13 +472,45 @@ function setupJustifyMulti(root: ParentNode) {
     const target = targetSel ? document.querySelector<HTMLElement>(targetSel) : group;
     if (!target) return;
 
+    const lines = Array.from(group.querySelectorAll<HTMLElement>('[data-justify-line]'));
+    if (lines.length === 0) return;
+
+    /*
+     * Mobile fallback (Morgan 2026-05-17 : lag scroll iPhone même avec rAF
+     * throttle) — l'effet spread écrit `style.transform` sur ~20 mots à
+     * chaque frame de scroll, ce qui sature le compositeur iPhone même
+     * après les optims précédentes. Sur mobile on bascule sur un simple
+     * fade-in à l'entrée viewport, one-shot, aucun calcul pendant le scroll.
+     * Le texte arrive directement en position justify finale avec un
+     * fondu propre — le rendu final est identique, seul l'effet « spread »
+     * en cours de scroll est sacrifié. Desktop intact.
+     */
+    if (IS_MOBILE) {
+      lines.forEach((line, i) => {
+        line.style.opacity = '0';
+        line.style.transform = 'translateY(12px)';
+        line.style.transition =
+          'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+        line.style.transitionDelay = `${i * 0.08}s`;
+      });
+      inView(
+        group,
+        () => {
+          lines.forEach((line) => {
+            line.style.opacity = '1';
+            line.style.transform = 'translateY(0)';
+          });
+          return undefined;
+        },
+        { margin: '0px 0px -10% 0px' },
+      );
+      return;
+    }
+
     const rawAmp = parseFloat(group.dataset.justifyAmp || '55');
     const intensity = rawAmp > 1 ? Math.min(0.85, rawAmp / 65) : Math.min(0.85, rawAmp);
     const lineStep = parseFloat(group.dataset.justifyLineStep || '0.12');
     const lineWindow = parseFloat(group.dataset.justifyLineWindow || '0.3');
-
-    const lines = Array.from(group.querySelectorAll<HTMLElement>('[data-justify-line]'));
-    if (lines.length === 0) return;
 
     /*
      * Direction par ligne (refonte 2026-04-30 IDENTITÉ Jonathan) :
@@ -1161,6 +1193,30 @@ function setupWordsFade(root: ParentNode) {
   nodes.forEach((el) => {
     if (el.dataset.wordsFadeDone) return;
     el.dataset.wordsFadeDone = 'true';
+
+    /*
+     * Mobile fallback (Morgan 2026-05-17 : lag scroll iPhone même avec rAF
+     * throttle) — l'animation mot-par-mot scroll-driven écrit opacity +
+     * transform sur N mots à chaque frame, ce qui sature le compositeur
+     * iPhone. Sur mobile on remplace par un fade-in du bloc entier à
+     * l'entrée viewport, one-shot. Le rendu final est identique.
+     */
+    if (IS_MOBILE) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(14px)';
+      el.style.transition =
+        'opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+      inView(
+        el,
+        () => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+          return undefined;
+        },
+        { margin: '0px 0px -10% 0px' },
+      );
+      return;
+    }
 
     const split = new SplitType(el, { types: 'words' });
     const words = (split.words as HTMLElement[] | null) || [];
