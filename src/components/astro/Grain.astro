@@ -43,4 +43,16 @@
       display: none;
     }
   }
+
+  /* Perf 2026-05-17 (Morgan : lag scroll iOS) — le `mix-blend-mode: multiply`
+     full-viewport en `position: fixed` force le compositeur à recalculer le
+     blend sur tout l'écran à chaque frame de scroll. À 2.5% d'opacité le
+     grain est imperceptible sur petit écran (signature esthétique pensée
+     pour desktop), on le désactive sur mobile/tablette pour libérer
+     entièrement le compositeur. Zéro impact visuel observable. */
+  @media (max-width: 1023px) {
+    .grain-overlay {
+      display: none;
+    }
+  }
 </style>
