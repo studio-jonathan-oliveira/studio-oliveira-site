@@ -23,6 +23,72 @@ import SplitType from 'split-type';
 
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+/*
+ * Optims mobile uniquement (Morgan 2026-05-17) — sur desktop on garde le
+ * comportement historique (callbacks directs, will-change permanent). Sur
+ * mobile / tablette tactile on rAF-throttle les callbacks scroll et on
+ * toggle le will-change au viewport pour ne pas saturer le compositeur
+ * iPhone (ProMotion 120Hz × N writes par frame → jank).
+ *
+ * Détection : pointer coarse (touch) OU viewport < 1024px. On évalue à
+ * l'init et sur resize via matchMedia.
+ */
+const MOBILE_MQ = '(pointer: coarse), (max-width: 1023px)';
+let IS_MOBILE = typeof window !== 'undefined' ? window.matchMedia(MOBILE_MQ).matches : false;
+if (typeof window !== 'undefined') {
+  window.matchMedia(MOBILE_MQ).addEventListener('change', (e) => {
+    IS_MOBILE = e.matches;
+  });
+}
+
+/*
+ * rAF-batched scroll callback — Motion `scroll()` invoque le callback à chaque
+ * scroll event (iPhone ProMotion : jusqu'à 120Hz). Quand le callback écrit
+ * dans le DOM (style.transform sur plusieurs nodes), ça sature le compositeur
+ * mobile. On garde uniquement le dernier progress reçu et on flush à la frame
+ * suivante. Sur desktop : passthrough, callback direct (comportement original).
+ */
+function rafThrottle(cb: (progress: number) => void): (progress: number) => void {
+  if (!IS_MOBILE) return cb;
+  let pending = false;
+  let last = 0;
+  return (progress: number) => {
+    last = progress;
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      pending = false;
+      cb(last);
+    });
+  };
+}
+
+/*
+ * Toggle `will-change` au passage dans le viewport. Poser `will-change` en
+ * permanence sur des dizaines de nodes (words, chars) sature la mémoire GPU
+ * iPhone : chaque node devient une couche composée même hors-écran.
+ * Sur desktop : pose `will-change` une seule fois (comportement original).
+ */
+function toggleWillChange(host: HTMLElement, nodes: HTMLElement[], value: string) {
+  if (!IS_MOBILE) {
+    nodes.forEach((n) => {
+      n.style.willChange = value;
+    });
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.some((e) => e.isIntersecting);
+      const next = visible ? value : 'auto';
+      nodes.forEach((n) => {
+        n.style.willChange = next;
+      });
+    },
+    { rootMargin: '200px 0px 200px 0px' },
+  );
+  observer.observe(host);
+}
+
 type RevealVariant = 'up' | 'fade' | 'slide-left' | 'slow' | 'image-rise';
 
 interface RevealSpec {
@@ -162,10 +228,10 @@ function setupParallax(root: ParentNode) {
     // super vivant et fluide ». Factor typique 0.2 → ±104px d'amplitude,
     // 0.4 → ±208px. Sections concernées sont overflow-hidden.
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         const offset = (progress - 0.5) * factor * 520;
         el.style.transform = `translate3d(0, ${offset}px, 0)`;
-      },
+      }),
       { target: el },
     );
   });
@@ -238,31 +304,32 @@ function setupSplitReveals(root: ParentNode) {
     const targets = types === 'lines' ? split.lines : types === 'words' ? split.words : split.chars;
     if (!targets || targets.length === 0) return;
 
-    targets.forEach((t) => {
-      (t as HTMLElement).style.display = 'inline-block';
-      (t as HTMLElement).style.transform = 'translateY(110%)';
-      (t as HTMLElement).style.willChange = 'transform';
+    const targetEls = targets.map((t) => t as HTMLElement);
+    targetEls.forEach((t) => {
+      t.style.display = 'inline-block';
+      t.style.transform = 'translateY(110%)';
     });
     if (getComputedStyle(el).overflow === 'visible') {
       el.style.overflow = 'hidden';
       el.style.paddingBottom = '0.1em';
     }
+    toggleWillChange(el, targetEls, 'transform');
 
     // Scroll-driven RÉVERSIBLE (feedback Morgan 2026-04-24).
     // Window compacte 0.15 → 0.35 : les textes se révèlent dès que le target
     // entre dans le viewport (évite « il faut scroll beaucoup pour les voir
     // s'afficher entier, sinon ils tombent »). Stagger court entre targets.
     scroll(
-      (progress: number) => {
-        const count = targets.length;
-        targets.forEach((t, i) => {
+      rafThrottle((progress: number) => {
+        const count = targetEls.length;
+        targetEls.forEach((t, i) => {
           const localStart = 0.15 + (i / Math.max(count, 1)) * 0.08;
           const localEnd = localStart + 0.18;
           const local = Math.max(0, Math.min(1, (progress - localStart) / (localEnd - localStart)));
           const translateY = (1 - local) * 110;
-          (t as HTMLElement).style.transform = `translateY(${translateY}%)`;
+          t.style.transform = `translateY(${translateY}%)`;
         });
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
@@ -314,11 +381,11 @@ function setupJustifiedScroll(root: ParentNode) {
 
     words.forEach((w) => {
       w.style.display = 'inline-block';
-      w.style.willChange = 'transform';
       // Empêche le navigateur de couper un mot à un hyphen littéral
       // (ex: "sur-mesure", "micro-urbain") — feedback Morgan 2026-04-27.
       w.style.whiteSpace = 'nowrap';
     });
+    toggleWillChange(el, words, 'transform');
 
     // Mesure des positions justify naturelles (état final).
     // On laisse le navigateur calculer la justify, puis on capture par mot.
@@ -360,7 +427,7 @@ function setupJustifiedScroll(root: ParentNode) {
     });
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         // Window paramétrable via data-justify-window (default 0.1 → 0.75).
         const t = Math.max(0, Math.min(1, (progress - wStart) / Math.max(0.01, wEnd - wStart)));
         const closure = (1 - t) * intensity;
@@ -370,7 +437,7 @@ function setupJustifiedScroll(root: ParentNode) {
           // left-aligned (compact, gauche). En fin de scroll, plus de translate.
           w.style.transform = `translate3d(${dx * closure}px, 0, 0)`;
         });
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
@@ -438,9 +505,9 @@ function setupJustifyMulti(root: ParentNode) {
       const words = (split.words as HTMLElement[] | null) || [];
       words.forEach((w) => {
         w.style.display = 'inline-block';
-        w.style.willChange = 'transform';
         w.style.whiteSpace = 'nowrap';
       });
+      toggleWillChange(line, words, 'transform');
 
       const direction: Direction =
         line.dataset.justifyDirection === 'from-right' ? 'from-right' : 'from-left';
@@ -488,7 +555,7 @@ function setupJustifyMulti(root: ParentNode) {
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         linesData.forEach(({ words, justifyLefts, compactLefts }, idx) => {
           const wStart = idx * lineStep;
           const wEnd = wStart + lineWindow;
@@ -500,7 +567,7 @@ function setupJustifyMulti(root: ParentNode) {
             w.style.transform = `translate3d(${dx * closure}px, 0, 0)`;
           });
         });
-      },
+      }),
       { target: target, offset: ['start end', 'end start'] as never },
     );
   });
@@ -542,16 +609,17 @@ function setupCharDrift(root: ParentNode) {
     const offsetsY = chars.map(() => (rng() - 0.5) * 2);
     const phases = chars.map(() => rng() * 0.5);
 
-    chars.forEach((c) => {
-      (c as HTMLElement).style.display = 'inline-block';
-      (c as HTMLElement).style.willChange = 'transform';
+    const charEls = chars.map((c) => c as HTMLElement);
+    charEls.forEach((c) => {
+      c.style.display = 'inline-block';
     });
+    toggleWillChange(el, charEls, 'transform');
 
     scroll(
-      (progress: number) => {
-        chars.forEach((c, i) => {
-          if (i === 0 || i === chars.length - 1) {
-            (c as HTMLElement).style.transform = '';
+      rafThrottle((progress: number) => {
+        charEls.forEach((c, i) => {
+          if (i === 0 || i === charEls.length - 1) {
+            c.style.transform = '';
             return;
           }
           const phase = phases[i] ?? 0;
@@ -559,10 +627,9 @@ function setupCharDrift(root: ParentNode) {
           const eased = Math.sin(t * Math.PI);
           const ox = offsetsX[i] ?? 0;
           const oy = offsetsY[i] ?? 0;
-          (c as HTMLElement).style.transform =
-            `translate3d(${eased * ampX * ox}px, ${eased * ampY * oy}px, 0)`;
+          c.style.transform = `translate3d(${eased * ampX * ox}px, ${eased * ampY * oy}px, 0)`;
         });
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
@@ -586,16 +653,16 @@ function setupScrollRise(root: ParentNode) {
     if (el.dataset.scrollRiseDone) return;
     el.dataset.scrollRiseDone = 'true';
     const amp = parseFloat(el.dataset.scrollRiseAmp || '80');
-    el.style.willChange = 'transform';
+    toggleWillChange(el, [el], 'transform');
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         // progress 0 = bord bas viewport touche haut élément ;
         // progress 1 = bord haut viewport touche bas élément.
         // y = (1 - 2*p) * amp : +amp → -amp au passage = monte plus vite
         // que le scroll, l'image quitte le viewport plus tôt que prévu.
         const y = (1 - 2 * progress) * amp;
         el.style.transform = `translate3d(0, ${y}px, 0)`;
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
@@ -663,11 +730,11 @@ function setupImageReveals(root: ParentNode) {
     const offsetDir = el.dataset.imgRevealOffset; // "left" | "right" | undefined
     const offsetAmp = parseFloat(el.dataset.imgRevealOffsetAmp || '40'); // px
     const startX = offsetDir === 'left' ? -offsetAmp : offsetDir === 'right' ? offsetAmp : 0;
-    el.style.willChange = startX !== 0 ? 'clip-path, transform' : 'clip-path';
     el.style.clipPath = 'inset(100% 0 0 0)';
     if (startX !== 0) el.style.transform = `translate3d(${startX}px, 0, 0)`;
+    toggleWillChange(el, [el], startX !== 0 ? 'clip-path, transform' : 'clip-path');
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         const linear = Math.max(0, Math.min(1, progress / speed));
         // Ease-out cubic : se révèle vite au début, achève doucement
         const eased = 1 - Math.pow(1 - linear, 3);
@@ -677,7 +744,7 @@ function setupImageReveals(root: ParentNode) {
           const x = (1 - eased) * startX;
           el.style.transform = `translate3d(${x}px, 0, 0)`;
         }
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
@@ -753,14 +820,14 @@ function setupHeroZoom(root: ParentNode) {
     if (!container) return;
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         const scale = 1 + progress * 0.22;
         const translate = progress * -40;
         const brightness = 1 - progress * 0.45;
         const blur = progress * 6;
         el.style.transform = `translate3d(0, ${translate}px, 0) scale(${scale})`;
         el.style.filter = `brightness(${brightness}) blur(${blur}px)`;
-      },
+      }),
       { target: container, offset: ['start start', 'end start'] as never },
     );
   });
@@ -824,7 +891,7 @@ function setupQuoteScroll(root: ParentNode) {
     const section = (container.closest('section') as HTMLElement | null) ?? container;
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         // Section 120vh + sticky 100vh → période sticky : progress 0.45 à 0.55.
         // Fenêtre coloration 0.30 → 0.72 : le début se compose vite, la fin
         // ralentit (feedback Morgan 2026-04-23 : « ralentir légèrement la
@@ -839,7 +906,7 @@ function setupQuoteScroll(root: ParentNode) {
           const local = Math.max(0, Math.min(1, active - i));
           w.style.opacity = String(0.15 + local * 0.85);
         });
-      },
+      }),
       { target: section, offset: ['start end', 'end start'] as never },
     );
   });
@@ -866,16 +933,16 @@ function setupScrollytelling(root: ParentNode) {
     slides.forEach((s, i) => {
       s.style.opacity = i === 0 ? '1' : '0';
       s.style.transform = 'scale(1)';
-      s.style.willChange = 'opacity, transform';
     });
     chapters.forEach((c, i) => {
       c.style.opacity = i === 0 ? '1' : '0';
       c.style.transform = i === 0 ? 'translateY(0px)' : 'translateY(30px)';
-      c.style.willChange = 'opacity, transform';
     });
+    toggleWillChange(section, slides, 'opacity, transform');
+    toggleWillChange(section, chapters, 'opacity, transform');
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         // Progress global → position [0, n] dans les slides
         const eased = Math.max(0, Math.min(1, progress));
         const activeFloat = eased * n;
@@ -919,7 +986,7 @@ function setupScrollytelling(root: ParentNode) {
             tick.style.opacity = '0.3';
           }
         });
-      },
+      }),
       { target: section, offset: ['start start', 'end end'] as never },
     );
   });
@@ -1103,8 +1170,8 @@ function setupWordsFade(root: ParentNode) {
       w.style.display = 'inline-block';
       w.style.opacity = '0';
       w.style.transform = 'translateY(10px)';
-      w.style.willChange = 'opacity, transform';
     });
+    toggleWillChange(el, words, 'opacity, transform');
 
     const winRaw = (el.dataset.wordsFadeWindow || '0.0,0.55').split(',');
     const winStart = parseFloat(winRaw[0] ?? '0') || 0;
@@ -1114,7 +1181,7 @@ function setupWordsFade(root: ParentNode) {
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
     scroll(
-      (progress: number) => {
+      rafThrottle((progress: number) => {
         const count = words.length;
         words.forEach((w, i) => {
           const localStart = winStart + i * stagger;
@@ -1129,7 +1196,7 @@ function setupWordsFade(root: ParentNode) {
         });
         // Avoid out-of-bound when many words: clip stagger to fit window
         void count;
-      },
+      }),
       { target: el, offset: ['start end', 'end start'] as never },
     );
   });
