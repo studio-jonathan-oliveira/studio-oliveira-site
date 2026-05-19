@@ -231,8 +231,10 @@ const schema = jsonLdGraph([
     aria-labelledby="faq-title"
   >
     <div class="mu-faq__inner">
-      <p class="mu-faq__eyebrow">Questions fréquentes</p>
-      <h2 id="faq-title" class="mu-faq__title">Avant d'appeler.</h2>
+      <div class="mu-faq__head">
+        <p class="mu-faq__eyebrow">Questions fréquentes</p>
+        <h2 id="faq-title" class="mu-faq__title">Avant d'appeler.</h2>
+      </div>
       <FaqAccordion items={faq} client:visible />
     </div>
   </section>
@@ -436,6 +438,15 @@ const schema = jsonLdGraph([
         align-items: start;
       }
     }
+    /* Eyebrow + title groupés dans `.mu-faq__head` (refonte 2026-05-19
+       v2 : Morgan voulait « Avant d'appeler » juste sous « Questions
+       fréquentes »). Avant, ils étaient 2 grid items séparés avec
+       l'inner-gap entre les deux. Maintenant 1 seul cellule flex tight. */
+    .mu-faq__head {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.4rem, 0.8vw, 0.7rem);
+    }
     .mu-faq__eyebrow {
       font-family: var(--font-mono), monospace;
       font-size: 11px;
@@ -445,28 +456,20 @@ const schema = jsonLdGraph([
       margin: 0;
     }
     .mu-faq__title {
-      grid-column: 1;
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(1.8rem, 3.5vw, 3rem);
       line-height: 1.05;
       letter-spacing: -0.01em;
       color: var(--color-cream);
-      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
-    }
-    @media (min-width: 1024px) {
-      .mu-faq__eyebrow,
-      .mu-faq__title {
-        grid-column: 1;
-      }
+      margin: 0;
     }
     /* FAQ : la liste est rendue par <FaqAccordion> (classes `.faq-acc__*`
-       dans global.css). On garde juste le positionnement grid du wrapper
-       sur desktop pour que l'accordéon prenne la colonne droite. */
+       dans global.css). Sélecteur descendant pour capturer le `<ul>` à
+       travers le wrapper `<astro-island>` (client:visible). */
     @media (min-width: 1024px) {
-      .mu-faq__inner > .faq-acc__list {
+      .mu-faq__inner .faq-acc__list {
         grid-column: 2;
-        grid-row: 1 / span 2;
       }
     }
 

@@ -233,8 +233,10 @@ const schema = jsonLdGraph([
     aria-labelledby="faq-title"
   >
     <div class="cu-faq__inner">
-      <p class="cu-faq__eyebrow">Questions fréquentes</p>
-      <h2 id="faq-title" class="cu-faq__title">Avant d'appeler.</h2>
+      <div class="cu-faq__head">
+        <p class="cu-faq__eyebrow">Questions fréquentes</p>
+        <h2 id="faq-title" class="cu-faq__title">Avant d'appeler.</h2>
+      </div>
       <FaqAccordion items={faq} client:visible />
     </div>
   </section>
@@ -436,6 +438,11 @@ const schema = jsonLdGraph([
         align-items: start;
       }
     }
+    .cu-faq__head {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.4rem, 0.8vw, 0.7rem);
+    }
     .cu-faq__eyebrow {
       font-family: var(--font-mono), monospace;
       font-size: 11px;
@@ -445,28 +452,17 @@ const schema = jsonLdGraph([
       margin: 0;
     }
     .cu-faq__title {
-      grid-column: 1;
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(1.8rem, 3.5vw, 3rem);
       line-height: 1.05;
       letter-spacing: -0.01em;
       color: var(--color-cream);
-      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+      margin: 0;
     }
     @media (min-width: 1024px) {
-      .cu-faq__eyebrow,
-      .cu-faq__title {
-        grid-column: 1;
-      }
-    }
-    /* FAQ : la liste est rendue par <FaqAccordion> (classes `.faq-acc__*`
-       dans global.css). On garde juste le positionnement grid du wrapper
-       sur desktop pour que l'accordéon prenne la colonne droite. */
-    @media (min-width: 1024px) {
-      .cu-faq__inner > .faq-acc__list {
+      .cu-faq__inner .faq-acc__list {
         grid-column: 2;
-        grid-row: 1 / span 2;
       }
     }
 
