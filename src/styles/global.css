@@ -688,3 +688,32 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   margin: 0;
   max-width: 60ch;
 }
+/* Wave reveal mot par mot — pattern repris à `/studio` ArchitecturesAccordion.
+   Chaque mot est positionné via `--i` (index) qui pilote `transition-delay`.
+   État repos : opacity 0 + translateY 10px. Ouverture : cascade ~7ms entre
+   mots, durée individuelle 0.38-0.42s easing soft. */
+.faq-acc__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  will-change: opacity, transform;
+  transition:
+    opacity 0.08s ease,
+    transform 0.08s ease;
+}
+.faq-acc__collapse--open .faq-acc__word {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 7ms + 50ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq-acc__word,
+  .faq-acc__collapse--open .faq-acc__word {
+    transition: opacity 0.15s linear !important;
+    transition-delay: 0s !important;
+    transform: none;
+  }
+}

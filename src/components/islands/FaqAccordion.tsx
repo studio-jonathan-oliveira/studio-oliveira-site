@@ -12,6 +12,9 @@
  *   - single-open : ouvrir une question ferme la précédente
  *   - close 0.26s cubic-bezier ease-in-out, open 0.32s spring-out tendu
  *   - icône + qui rotate 45° → ×
+ *   - wave reveal mot par mot : chaque mot a `--i` (index) sur lequel le
+ *     CSS calcule le `transition-delay` pour staggerer l'apparition
+ *     (« le texte apparaît petit à petit » comme dans /studio)
  *   - accessibilité aria-expanded + aria-controls + role="region"
  *
  * Hydratation `client:visible` — FAQ toujours en bas de page, hors LCP.
@@ -76,7 +79,23 @@ function FaqRow({ item, index, isOpen, onToggle }: RowProps) {
         style={{ height: `${height}px` }}
       >
         <div ref={panelRef} className="faq-acc__panel">
-          <p className="faq-acc__answer">{item.answer}</p>
+          {/* Wave reveal : chaque mot a une custom property --i pour
+              staggerer le delay d'apparition via CSS pur (pattern
+              /studio ArchitecturesAccordion). */}
+          <p className="faq-acc__answer">
+            {item.answer.split(/(\s+)/).map((token, wi) => {
+              if (/^\s+$/.test(token)) return token;
+              return (
+                <span
+                  key={wi}
+                  className="faq-acc__word"
+                  style={{ ['--i' as never]: wi } as React.CSSProperties}
+                >
+                  {token}
+                </span>
+              );
+            })}
+          </p>
         </div>
       </div>
     </li>
