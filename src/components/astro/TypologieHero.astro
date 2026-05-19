@@ -7,12 +7,14 @@
  *   - Photo plein-bleed 100svh + voile gradient DOUBLE (haut pour H1,
  *     bas pour specs) avec milieu transparent
  *   - H1 split 2 lignes posé HAUT-GAUCHE (ExtraLight 200 UPPERCASE)
- *   - 4 specs en BAS du hero, séparées du reste de la photo par un trait
- *     blanc horizontal pleine largeur (border-top cream 35% alpha)
+ *   - 4 specs occupant ~1/3 BAS du hero, chaque ligne avec son PROPRE
+ *     trait blanc horizontal en dessous (4 traits, pas un seul global).
+ *     Cf. capture Morgan « hero coeur urbain.png » + trame originale.
  *   - Chaque ligne specs en flex `space-between` (label gauche, valeur
  *     collée au bord droit, photo visible entre) — PAS un grid 2-colonnes
  *     resserré (trame Jonathan : les valeurs sont aussi loin que possible
  *     à droite, pas centrées)
+ *   - Typo specs ~1.1rem (assez grande pour être lisible sur photo)
  *   - Mobile <768px : passage colonne (label/valeur empilés)
  *
  * Les 4 LABELS sont FIGÉS (taxonomie commune aux 4 typologies). Seules les
@@ -130,6 +132,10 @@ const LABELS = [
   /* Overlay = bloc HAUT (H1) + bloc BAS (specs) avec espace au milieu
      pour laisser respirer la photo. `justify-content: space-between`
      pousse les 2 blocs aux extrémités du hero (100svh). */
+  /* Overlay : H1 en haut + specs en bas. Padding-bottom plus généreux
+     pour faire « remonter » le bloc specs et qu'il occupe ~1/3 bas du
+     hero (et pas le bord absolu de l'écran). Cf. retour Morgan 2026-05-19
+     v4 : « les informations soient étalées sur le 1/3 du bas de l'image ». */
   .typo-hero__overlay {
     position: relative;
     z-index: 1;
@@ -137,7 +143,7 @@ const LABELS = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
+    padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vh, 6rem);
   }
   .typo-hero__top,
   .typo-hero__bottom {
@@ -157,18 +163,16 @@ const LABELS = [
   .typo-hero__title-line {
     display: block;
   }
-  /* Specs en bas du hero — trait blanc horizontal pleine largeur au-dessus
-     (border-top cream 35% alpha, conformément à la trame Jonathan). Chaque
-     ligne s'étire pleine largeur avec label collé à gauche / valeur collée
-     à droite (flex space-between) pour reproduire la respiration du design
-     trame (les valeurs vont jusqu'au bord droit, pas centrées). */
+  /* Specs : 4 lignes empilées avec UN TRAIT BLANC EN DESSOUS DE CHAQUE
+     ligne (et non plus un seul trait global au-dessus). Cf. capture Morgan
+     « hero coeur urbain.png » : chaque ligne d'info est séparée de la
+     suivante par un fin trait horizontal pleine largeur. Bloc total
+     occupant ~1/3 bas du hero (taille typo + padding lignes + gaps). */
   .typo-hero__specs {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(0.55rem, 1.1vw, 1rem);
-    padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
-    border-top: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
+    gap: 0;
   }
   .typo-hero__spec-row {
     display: flex;
@@ -176,11 +180,20 @@ const LABELS = [
     justify-content: space-between;
     gap: clamp(2rem, 6vw, 6rem);
     width: 100%;
+    padding: clamp(0.85rem, 1.5vw, 1.25rem) 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 38%, transparent);
+  }
+  /* Le 1er row a aussi un trait au-dessus pour fermer le bloc en haut
+     (sinon le bloc « flotterait » entre photo et 1er trait sans cadre).
+     Visuellement on retrouve 5 traits (1 au-dessus + 4 sous chaque ligne)
+     comme dans la trame Jonathan. */
+  .typo-hero__spec-row:first-child {
+    border-top: 1px solid color-mix(in oklab, var(--color-cream) 38%, transparent);
   }
   .typo-hero__spec-label {
     font-family: var(--font-body), sans-serif;
     font-weight: 300;
-    font-size: clamp(0.82rem, 1vw, 1rem);
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
     line-height: 1.35;
     color: var(--color-cream);
     margin: 0;
@@ -190,7 +203,7 @@ const LABELS = [
   .typo-hero__spec-value {
     font-family: var(--font-body), sans-serif;
     font-weight: 400;
-    font-size: clamp(0.82rem, 1vw, 1rem);
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
     line-height: 1.35;
     color: var(--color-cream);
     text-align: right;
