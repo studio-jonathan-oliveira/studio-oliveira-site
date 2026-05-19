@@ -350,10 +350,8 @@ const schema = jsonLdGraph([
     aria-labelledby="faq-title"
   >
     <div class="ap-faq__inner">
-      <p class="ap-faq__eyebrow" data-reveal="up">Questions fréquentes</p>
-      <h2 id="faq-title" class="ap-faq__title" data-reveal="up" data-reveal-delay="0.1">
-        Avant d'appeler.
-      </h2>
+      <p class="ap-faq__eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title" class="ap-faq__title">Avant d'appeler.</h2>
       <FaqAccordion items={pageFaq} client:visible />
     </div>
   </section>
@@ -802,6 +800,9 @@ const schema = jsonLdGraph([
       padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
       border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
     }
+    /* FAQ — strict alignement avec les pages typologies (micro/cœur/frange/
+       domaine) : grid 0.9fr 1.6fr desktop, title forcé en col 1, liste
+       FaqAccordion en col 2 spanning 2 rows. Mobile : empilé en colonne. */
     .ap-faq__inner {
       display: grid;
       grid-template-columns: 1fr;
@@ -813,10 +814,6 @@ const schema = jsonLdGraph([
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      .ap-faq__inner > .faq-acc__list {
-        grid-column: 2;
-        grid-row: 1 / span 2;
-      }
     }
     .ap-faq__eyebrow {
       font-family: var(--font-mono), monospace;
@@ -827,6 +824,7 @@ const schema = jsonLdGraph([
       margin: 0;
     }
     .ap-faq__title {
+      grid-column: 1;
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
       font-size: clamp(1.8rem, 3.5vw, 3rem);
@@ -834,6 +832,18 @@ const schema = jsonLdGraph([
       letter-spacing: -0.01em;
       color: var(--color-cream);
       margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    @media (min-width: 1024px) {
+      .ap-faq__eyebrow,
+      .ap-faq__title {
+        grid-column: 1;
+      }
+      /* Sélecteur descendant (non `>`) pour capturer le `.faq-acc__list`
+         à travers le wrapper `<astro-island>` généré par `client:visible`. */
+      .ap-faq__inner .faq-acc__list {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
     }
 
     /* ─── 6 · CTA final ────────────────────────────────────────────────── */
