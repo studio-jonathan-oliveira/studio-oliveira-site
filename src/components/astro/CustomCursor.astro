@@ -67,7 +67,8 @@
        Jonathan. Étendu à .is-typologie 2026-05-15 (pilote micro-urbain). */
     body.is-home .custom-cursor.is-on-dark,
     body.is-studio .custom-cursor.is-on-dark,
-    body.is-typologie .custom-cursor.is-on-dark {
+    body.is-typologie .custom-cursor.is-on-dark,
+    body.is-paysagere-index .custom-cursor.is-on-dark {
       --cursor-fill: var(--color-red);
       --cursor-text: var(--color-cream);
     }
@@ -307,11 +308,16 @@
       for (const el of els) {
         if (!(el instanceof HTMLElement)) continue;
         const sec = el.closest('[data-theme]') as HTMLElement | null;
-        if (sec) {
-          const t = sec.dataset.theme;
-          theme = t === 'dark' ? 'dark' : t === 'red' ? 'red' : 'light';
-          break;
-        }
+        if (!sec) continue;
+        // Refonte 2026-05-19 (retour Morgan) : on IGNORE le `.site-header`
+        // (topbar fixed avec data-theme="light") qui sinon masque la section
+        // réelle en dessous. Résultat : le curseur reflète bien la couleur
+        // du fond visible derrière la topbar — sur fond noir, il bascule
+        // en rouge (couleur de hover sur les pages DA noir).
+        if (sec.classList.contains('site-header')) continue;
+        const t = sec.dataset.theme;
+        theme = t === 'dark' ? 'dark' : t === 'red' ? 'red' : 'light';
+        break;
       }
       if (theme !== lastTheme) {
         lastTheme = theme;

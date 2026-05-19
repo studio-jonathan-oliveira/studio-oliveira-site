@@ -38,12 +38,16 @@ import {
 // Hero — visuel biophilie déjà utilisé sur la home, cohérent visuellement.
 import heroPhoto from '@/assets/home/hero-biophilie.jpg';
 
-// 5 visuels typologies (cards) — webp optimisés existants.
-import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
-import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
-import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
-import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
-import typoArchitecturePublique from '@/assets/typologies/architecture-publique.webp';
+// 5 visuels typologies — MÊMES images que le scroll horizontal home
+// (retour Morgan 2026-05-19 : « reprend les bonnes images des typologies,
+// les mêmes que dans le scroll horizontale pour chaque typo »).
+// Source : public/typologies/0N-X.webp copiées dans src/assets/ pour la
+// pipeline Astro Image.
+import typoMicroUrbain from '@/assets/typologies/01-micro-urbain-home.webp';
+import typoCoeurUrbain from '@/assets/typologies/02-coeur-urbain-home.webp';
+import typoFrangeUrbaine from '@/assets/typologies/03-frange-urbaine-home.webp';
+import typoDomaineCaractere from '@/assets/typologies/04-domaine-caractere-home.webp';
+import typoArchitecturePublique from '@/assets/typologies/05-architecture-publique-home.webp';
 
 // Tableau enrichi des 5 typologies à afficher en grid. On reprend
 // SITE.typologies (4 jardins) + on ajoute architecture-publique en 5e
@@ -173,11 +177,11 @@ const schema = jsonLdGraph([
     </div>
 
     <div class="ap-hero__overlay">
-      <h1 id="hero-title" class="ap-hero__title">
-        <span class="ap-hero__title-line">ARCHITECTURE</span>
-        <span class="ap-hero__title-line">PAYSAGÈRE</span>
+      <h1 id="hero-title" class="ap-hero__title" data-mask-reveal data-mask-stagger="0.14">
+        <span data-mask-line class="ap-hero__title-line">ARCHITECTURE</span>
+        <span data-mask-line class="ap-hero__title-line">PAYSAGÈRE</span>
       </h1>
-      <p class="ap-hero__lead">
+      <p class="ap-hero__lead" data-reveal="up" data-reveal-delay="0.35">
         Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
         le chantier — sans jamais être juge et partie.
       </p>
@@ -225,7 +229,7 @@ const schema = jsonLdGraph([
     class="ap-typos bg-[var(--color-black-deep)] text-[var(--color-cream)]"
     aria-labelledby="typos-title"
   >
-    <div class="ap-typos__header">
+    <div class="ap-typos__header" data-reveal="up">
       <p class="ap-typos__eyebrow">Les cinq typologies</p>
       <h2 id="typos-title" class="ap-typos__title">Chaque jardin a son territoire.</h2>
     </div>
@@ -242,10 +246,18 @@ const schema = jsonLdGraph([
          Mobile : empilé en colonne. Architecture publique (5e, bientôt)
          a un style distinct (badge + opacité légère). */
     }
-    <ul class="ap-typos__grid" data-typo-cards>
+    <ul
+      class="ap-typos__grid"
+      data-typo-cards
+      data-reveal-stagger
+      data-reveal-stagger-amount="0.12"
+    >
       {
         typologies.map((t, i) => (
-          <li class={`ap-typos__card ap-typos__card--${i + 1}${t.bientot ? ' is-bientot' : ''}`}>
+          <li
+            class={`ap-typos__card ap-typos__card--${i + 1}${t.bientot ? ' is-bientot' : ''}`}
+            data-reveal="up"
+          >
             <a
               href={`/architecture-paysagere/${t.slug}`}
               class="ap-typos__link"
@@ -294,13 +306,13 @@ const schema = jsonLdGraph([
     aria-labelledby="process-title"
   >
     <div class="ap-process__inner">
-      <div class="ap-process__header">
+      <div class="ap-process__header" data-reveal="up">
         <p class="ap-process__eyebrow">Le process</p>
         <h2 id="process-title" class="ap-process__title">Deux études, un suivi.</h2>
       </div>
 
-      <ol class="ap-process__list">
-        <li class="ap-process__item">
+      <ol class="ap-process__list" data-reveal-stagger data-reveal-stagger-amount="0.14">
+        <li class="ap-process__item" data-reveal="up">
           <span class="ap-process__step">Étape 1</span>
           <h3 class="ap-process__step-title">Étude préliminaire</h3>
           <p class="ap-process__step-text">
@@ -308,7 +320,7 @@ const schema = jsonLdGraph([
             fourchette budgétaire. Durée calibrée selon la typologie.
           </p>
         </li>
-        <li class="ap-process__item">
+        <li class="ap-process__item" data-reveal="up">
           <span class="ap-process__step">Étape 2</span>
           <h3 class="ap-process__step-title">Étude projet</h3>
           <p class="ap-process__step-text">
@@ -316,7 +328,7 @@ const schema = jsonLdGraph([
             DCE, budgétisation détaillée.
           </p>
         </li>
-        <li class="ap-process__item">
+        <li class="ap-process__item" data-reveal="up">
           <span class="ap-process__step">Étape 3</span>
           <h3 class="ap-process__step-title">Suivi de chantier</h3>
           <p class="ap-process__step-text">
@@ -338,8 +350,10 @@ const schema = jsonLdGraph([
     aria-labelledby="faq-title"
   >
     <div class="ap-faq__inner">
-      <p class="ap-faq__eyebrow">Questions fréquentes</p>
-      <h2 id="faq-title" class="ap-faq__title">Avant d'appeler.</h2>
+      <p class="ap-faq__eyebrow" data-reveal="up">Questions fréquentes</p>
+      <h2 id="faq-title" class="ap-faq__title" data-reveal="up" data-reveal-delay="0.1">
+        Avant d'appeler.
+      </h2>
       <FaqAccordion items={pageFaq} client:visible />
     </div>
   </section>
@@ -406,7 +420,9 @@ const schema = jsonLdGraph([
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      /* Cadrage recalé vers le bas (Morgan 2026-05-19 : « tu peux la
+         centrée pour voir plus vers le bas de la photo ? »). */
+      object-position: center 72%;
       display: block;
     }
     .ap-hero__veil {
@@ -617,12 +633,8 @@ const schema = jsonLdGraph([
       object-fit: cover;
       object-position: center;
       display: block;
-      transform: scale(1.02);
-      transition: transform 1s var(--ease-out-editorial);
-    }
-    .ap-typos__link:hover .ap-typos__img,
-    .ap-typos__link:focus-visible .ap-typos__img {
-      transform: scale(1.06);
+      /* Pas de zoom au survol (retour Morgan 2026-05-19) — l'arrow et
+         le subtle veil suffisent à signaler l'interactivité. */
     }
     .ap-typos__veil {
       position: absolute;

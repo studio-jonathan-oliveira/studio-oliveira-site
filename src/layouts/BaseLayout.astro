@@ -55,6 +55,12 @@ const isTypologie =
   Astro.url.pathname.startsWith('/architecture-paysagere/') &&
   Astro.url.pathname !== '/architecture-paysagere/' &&
   Astro.url.pathname !== '/architecture-paysagere/architecture-publique';
+// /architecture-paysagere (index) — page pilier refondue 2026-05-19 sur la
+// nouvelle DA noir/cream/rouge. Bénéficie du même curseur rouge que les
+// pages typologies.
+const isPaysagereIndex =
+  Astro.url.pathname === '/architecture-paysagere' ||
+  Astro.url.pathname === '/architecture-paysagere/';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
@@ -151,6 +157,7 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
       isHome && 'is-home',
       isStudio && 'is-studio',
       isTypologie && 'is-typologie',
+      isPaysagereIndex && 'is-paysagere-index',
     ]}
   >
     <div class="site-preloader" id="site-preloader" aria-hidden="true"></div>
