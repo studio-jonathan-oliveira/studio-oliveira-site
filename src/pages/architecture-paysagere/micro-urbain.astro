@@ -51,7 +51,7 @@ const typologie = SITE.typologies.find((t) => t.slug === 'micro-urbain')!;
 const specs = [
   { label: 'Secteur géographique', valeur: 'Hyper urbain' },
   { label: 'Moyenne surface jardin', valeur: 'Moins de 100m² (hors cas spécifique)' },
-  { label: 'Contexte environnemental', valeur: 'Roof-top / patios / micro jardins' },
+  { label: 'Contexte environnemental', valeur: 'Roof tops / patios / micro jardins' },
   {
     label: 'Complexité spatiale et environnementale',
     valeur: 'Hauteur / accès / exposition / poids',
@@ -157,25 +157,21 @@ const schema = jsonLdGraph([
     </div>
 
     <div class="mu-hero__overlay">
-      <div class="mu-hero__top">
-        <h1 id="hero-title" class="mu-hero__title">
-          <span class="mu-hero__title-line">MICRO</span>
-          <span class="mu-hero__title-line">URBAIN</span>
-        </h1>
-      </div>
+      <h1 id="hero-title" class="mu-hero__title">
+        <span class="mu-hero__title-line">MICRO</span>
+        <span class="mu-hero__title-line">URBAIN</span>
+      </h1>
 
-      <div class="mu-hero__bottom">
-        <dl class="mu-hero__specs" aria-label="Caractéristiques typologie">
-          {
-            specs.map((s) => (
-              <div class="mu-hero__spec-row">
-                <dt class="mu-hero__spec-label">{s.label}</dt>
-                <dd class="mu-hero__spec-value">{s.valeur}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </div>
+      <dl class="mu-hero__specs" aria-label="Caractéristiques typologie">
+        {
+          specs.map((s) => (
+            <div class="mu-hero__spec-row">
+              <dt class="mu-hero__spec-label">{s.label}</dt>
+              <dd class="mu-hero__spec-value">{s.valeur}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 
@@ -361,46 +357,36 @@ const schema = jsonLdGraph([
       object-position: center;
       display: block;
     }
-    /* Voile gradient DOUBLE — sombre en haut (zone H1) + sombre en bas
-       (zone specs), transparent au milieu. Pas de flou (Jonathan).
-       Garantit la lisibilité du texte cream overlay sur n'importe quelle
-       photo, sans rogner la zone visuelle centrale de l'image. */
+    /* Voile : assombrissement HAUT uniquement (zone H1 + specs collés
+       sous le H1). Bas de l'image laissé brut. Refactor 2026-05-19 :
+       les specs ont quitté le bas du hero pour se coller sous le H1
+       (capture Morgan + alignement avec coeur-urbain). */
     .mu-hero__veil {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         180deg,
-        color-mix(in oklab, var(--color-black-deep) 72%, transparent) 0%,
-        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 20%,
-        transparent 45%,
+        color-mix(in oklab, var(--color-black-deep) 68%, transparent) 0%,
+        color-mix(in oklab, var(--color-black-deep) 32%, transparent) 35%,
         transparent 60%,
-        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 80%,
-        color-mix(in oklab, var(--color-black-deep) 75%, transparent) 100%
+        transparent 100%
       );
       pointer-events: none;
     }
+    /* Overlay = bloc TOP (H1 + specs collés dessous). Pas de space-between
+       → tout est packé en haut, le bas du hero reste vide. */
     .mu-hero__overlay {
       position: relative;
       z-index: 1;
       min-height: 100svh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
       padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
     }
-    .mu-hero__top {
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-    }
-    .mu-hero__bottom {
-      width: 100%;
-    }
-    /* H1 split — ExtraLight 200 UPPERCASE (retour Morgan v6 2026-05-15 :
-       le titre passe en thin pour respecter la signature designbyad et
-       contraster avec les éventuelles photos hero chargées). 2 lignes
-       empilées tight, posé HAUT-GAUCHE. Pas d'animation : LCP immédiat. */
+    /* H1 split — ExtraLight 200 UPPERCASE. 2 lignes empilées tight, posé
+       HAUT-GAUCHE. Pas d'animation : LCP immédiat. */
     .mu-hero__title {
       font-family: var(--font-heading), sans-serif;
       font-weight: 200;
@@ -416,47 +402,54 @@ const schema = jsonLdGraph([
       display: block;
     }
 
-    /* Specs overlay bas — 4 paires label/valeur en 2 colonnes desktop,
-       posées sur la photo (pas de fond noir séparé, le voile gradient bas
-       du veil suffit à les rendre lisibles). Border-top fine cream pour
-       les détacher du visuel sans rompre la continuité de la photo. */
+    /* Specs : 4 lignes empilées sous le H1. Chaque ligne s'étire pleine
+       largeur, label à gauche / valeur à droite (justify-content:
+       space-between). Pas de grid à colonnes : les valeurs sont collées au
+       bord droit de la zone padding, créant le grand espace photo visible
+       entre les deux colonnes (capture Morgan 2026-05-19, même pattern
+       que coeur-urbain). */
     .mu-hero__specs {
       margin: 0;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(0.85rem, 1.5vw, 1.25rem);
-      padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
-    }
-    @media (min-width: 768px) {
-      .mu-hero__specs {
-        grid-template-columns: 1fr 1fr;
-        column-gap: clamp(2.5rem, 6vw, 5rem);
-        row-gap: clamp(0.85rem, 1.5vw, 1.25rem);
-      }
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.45rem, 0.9vw, 0.85rem);
     }
     .mu-hero__spec-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(1rem, 2vw, 2rem);
+      display: flex;
       align-items: baseline;
+      justify-content: space-between;
+      gap: clamp(2rem, 6vw, 6rem);
+      width: 100%;
     }
     .mu-hero__spec-label {
       font-family: var(--font-body), sans-serif;
-      font-weight: 200;
+      font-weight: 300;
       font-size: clamp(0.78rem, 0.95vw, 0.95rem);
       line-height: 1.35;
-      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      color: var(--color-cream);
       margin: 0;
+      text-align: left;
+      flex: 0 1 auto;
     }
     .mu-hero__spec-value {
       font-family: var(--font-body), sans-serif;
-      font-weight: 400;
+      font-weight: 300;
       font-size: clamp(0.78rem, 0.95vw, 0.95rem);
       line-height: 1.35;
       color: var(--color-cream);
       text-align: right;
       margin: 0;
+      flex: 0 1 auto;
+    }
+    @media (max-width: 767px) {
+      .mu-hero__spec-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+      }
+      .mu-hero__spec-value {
+        text-align: left;
+      }
     }
 
     /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
