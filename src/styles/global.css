@@ -608,3 +608,83 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   opacity: 1;
   color: var(--color-forest);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * FaqAccordion — styles partagés pour le composant island
+ * `src/components/islands/FaqAccordion.tsx`.
+ *
+ * Animation calquée sur `ArchitecturesAccordion` de /studio (retour Morgan
+ * 2026-05-19 « j'aimerai que tu applique la même animation de dépliage »).
+ * Sur fond noir, texte cream — utilisé sur les 4 pages typologies.
+ * ───────────────────────────────────────────────────────────────────── */
+.faq-acc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
+}
+.faq-acc__item {
+  border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
+}
+.faq-acc__summary {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+  transition: background-color 0.3s ease;
+}
+.faq-acc__summary:focus-visible {
+  outline: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
+  outline-offset: -1px;
+}
+.faq-acc__question {
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--color-cream);
+}
+.faq-acc__icon {
+  flex-shrink: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+  line-height: 1;
+  color: var(--color-cream);
+  transition: transform 0.35s var(--ease-out-editorial);
+  transform-origin: center;
+}
+.faq-acc__icon--open {
+  transform: rotate(45deg);
+}
+/* Layout collapse — height JS-measured pour fluidité max (cf. studio v8). */
+.faq-acc__collapse {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.faq-acc__collapse--open {
+  transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.faq-acc__panel {
+  padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+}
+.faq-acc__answer {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 200;
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.65;
+  color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+  margin: 0;
+  max-width: 60ch;
+}

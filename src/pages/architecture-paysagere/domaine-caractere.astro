@@ -19,6 +19,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import TypologieHero from '@/components/astro/TypologieHero.astro';
+import FaqAccordion from '@/components/islands/FaqAccordion';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -101,7 +102,7 @@ const schema = jsonLdGraph([
     h1Lines={['DOMAINES &', 'CARACTERE']}
     valeurs={valeurs}
     sectionLabel="Domaines & Caractère"
-    photoPosition="center 70%"
+    photoPosition="center 80%"
   />
 
   {
@@ -144,23 +145,7 @@ const schema = jsonLdGraph([
     <div class="dc-faq__inner">
       <p class="dc-faq__eyebrow">Questions fréquentes</p>
       <h2 id="faq-title" class="dc-faq__title">Avant d'appeler.</h2>
-      <ul class="dc-faq__list">
-        {
-          faq.map((item) => (
-            <li class="dc-faq__item">
-              <details class="dc-faq__details group">
-                <summary class="dc-faq__summary">
-                  <span>{item.question}</span>
-                  <span class="dc-faq__plus" aria-hidden="true">
-                    +
-                  </span>
-                </summary>
-                <p class="dc-faq__answer">{item.answer}</p>
-              </details>
-            </li>
-          ))
-        }
-      </ul>
+      <FaqAccordion items={faq} client:visible />
     </div>
   </section>
 
@@ -296,64 +281,14 @@ const schema = jsonLdGraph([
         grid-column: 1;
       }
     }
-    .dc-faq__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      grid-column: 1;
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
-    }
+    /* FAQ : la liste est rendue par <FaqAccordion> (classes `.faq-acc__*`
+       dans global.css). On garde juste le positionnement grid du wrapper
+       sur desktop pour que l'accordéon prenne la colonne droite. */
     @media (min-width: 1024px) {
-      .dc-faq__list {
+      .dc-faq__inner > .faq-acc__list {
         grid-column: 2;
         grid-row: 1 / span 2;
       }
-    }
-    .dc-faq__item {
-      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
-    }
-    .dc-faq__summary {
-      cursor: pointer;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1.5rem;
-      padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-      line-height: 1.3;
-      color: var(--color-cream);
-      list-style: none;
-      transition: color 0.3s ease;
-    }
-    .dc-faq__summary::-webkit-details-marker {
-      display: none;
-    }
-    .dc-faq__summary:hover {
-      color: color-mix(in oklab, var(--color-cream) 85%, var(--color-red));
-    }
-    .dc-faq__plus {
-      flex-shrink: 0;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.3rem, 1.8vw, 1.7rem);
-      line-height: 1;
-      transition: transform 0.35s var(--ease-out-editorial);
-      transform-origin: center;
-    }
-    .dc-faq__details[open] .dc-faq__plus {
-      transform: rotate(45deg);
-    }
-    .dc-faq__answer {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 200;
-      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-      line-height: 1.65;
-      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
-      margin: 0;
-      padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
-      max-width: 60ch;
     }
 
     /* ─── 5 · CTA full-width ────────────────────────────────────────────── */
