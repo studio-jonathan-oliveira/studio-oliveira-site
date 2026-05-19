@@ -220,6 +220,14 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 **Contexte** : actuellement le carousel home et la page utilisent `domaine-caractere.webp` comme placeholder. À remplacer par un visuel propre représentatif (espace public végétalisé, parc institutionnel, génie végétal).
 **Deadline suggérée** : avant mise en ligne fin mai 2026.
 
+### TYPOLOGIE-COEUR-URBAIN-MANIFESTE
+
+**Type** : texte long (manifeste typologie + précision technique)
+**Emplacement** : `src/pages/architecture-paysagere/coeur-urbain.astro` — objet `manifeste` (bloc1, bloc2, precision)
+**Volume attendu** : 2 paragraphes ~30-40 mots chacun + 1 précision technique ~60-80 mots
+**Contexte** : Jonathan a recopié dans la trame coeur-urbain le placeholder de la trame micro-urbain (texte identique mot pour mot). Le texte actuellement en place est donc celui de la typologie micro-urbain, à réécrire pour décrire spécifiquement la typologie cœur urbain (cours patrimoniales, maisons de ville, jardins enclavés 100-500 m², contraintes accès / urbanisme / réseaux souterrains).
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
 ### FORMULAIRE-CONTACT
 
 **Type** : texte court (message de confirmation succès)

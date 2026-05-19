@@ -1,0 +1,774 @@
+---
+/*
+ * /architecture-paysagere/coeur-urbain — page typologie 2026-05-19.
+ * Copie structurelle de `micro-urbain.astro` (pilote validé v9). Route
+ * statique : Astro priorise ce fichier sur `[slug].astro`. Mêmes patterns
+ * (hero overlay + specs, galerie magazine, manifeste décalé droite, FAQ,
+ * CTA full-width + pill rouge). Seul différe :
+ *   - Photos (6 vs 5) → la galerie devient diptyque + large + diptyque
+ *     (cf. trame `C:\tmp\trame pages typologies.png`, colonne droite).
+ *   - Specs verbatim trame Jonathan (Cœur urbain).
+ *   - Manifeste : Jonathan a recopié dans la trame le placeholder
+ *     micro-urbain → texte à valider, listé dans `_brief/contenus-manquants.md`
+ *     sous TYPOLOGIE-COEUR-URBAIN-MANIFESTE. On conserve verbatim trame
+ *     pour ne pas inventer.
+ *
+ * H1 sans accent (« COEUR » conservé tel quel — esthétique designbyad,
+ * cf. commentaire pilote micro-urbain). Fautes typo conservées si présentes.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+  faqPage,
+} from '@/lib/schema-org';
+
+import heroPhoto from '@/assets/typologies/coeur-urbain/01-hero.jpg';
+import diptyqueTopLeft from '@/assets/typologies/coeur-urbain/02-diptyque-left.jpg';
+import diptyqueTopRight from '@/assets/typologies/coeur-urbain/03-diptyque-right.jpg';
+import largeMiddle from '@/assets/typologies/coeur-urbain/04-large-middle.jpg';
+import diptyqueBottomLeft from '@/assets/typologies/coeur-urbain/05-diptyque-bottom-left.jpg';
+import diptyqueBottomRight from '@/assets/typologies/coeur-urbain/06-diptyque-bottom-right.jpg';
+
+const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
+
+// 4 specs hero — verbatim trame Jonathan (colonne droite « Coeur urbain »).
+const specs = [
+  { label: 'Secteur géographique', valeur: 'Cœur urbain / cœur de ville et alentour' },
+  { label: 'Moyenne surface jardin', valeur: 'De 100 à 500 m² (hors cas spécifique)' },
+  {
+    label: 'Contexte environnemental',
+    valeur: 'Cours urbaines / jardins enclavés / jardins de ville',
+  },
+  {
+    label: 'Complexité spatiale et environnementale',
+    valeur: 'Accès / exposition / réseaux souterrains / urbanisme',
+  },
+];
+
+// Manifeste — Jonathan a recopié dans la trame coeur-urbain le placeholder
+// micro-urbain. Texte à valider/réécrire avec lui (cf. contenus-manquants.md).
+// On conserve VERBATIM trame ici pour ne pas inventer (rule CLAUDE.md §5).
+const manifeste = {
+  bloc1:
+    'La typologie micro urbaine se caractérise par des espaces de vie réduits, en hauteur ou encore enclavés entre les murs intérieurs du bâti.',
+  bloc2:
+    "Ce sont des espaces fortement connectes à la vie des habitations, soit par des perspectives directes depuis l'intérieur, soit pas une accéssibilité directe voir obligatoire depuis les circulations de l'intérieur vers l'extérieur.",
+  precision:
+    "Les contraintes liées à l'exposition aux vents forts et la portance structurelle pour les terrasses, l'ombre excessive et le taux élevé de l'hygrométrie pour les patios ou encore les accès difficiles à ces différents espaces établissent des contraintes très spécifiques dans l'élaboration de l'étude et la réalisation des ouvrages.",
+};
+
+// FAQ — copie du pilote micro-urbain (pattern réutilisable, prix typologie
+// pris depuis SITE.typologies). À valider par Jonathan pour adapter le ton.
+const faq = [
+  {
+    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
+    answer:
+      "Parce que c'est le cœur du métier. L'étude comprend le plan masse, les plans de plantations, le DCE, la mise en concurrence des entreprises et le suivi de chantier. Le chiffrage travaux vient ensuite, précisément.",
+  },
+  {
+    question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
+    answer:
+      "Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).",
+  },
+  {
+    question: 'Vous réalisez les travaux vous-mêmes ?',
+    answer:
+      'Non. Je conçois et je coordonne — je sélectionne et je pilote des entreprises mises en concurrence sur chaque lot (terrassement, maçonnerie paysagère, arrosage, éclairage, plantations).',
+  },
+];
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: typologie.nomProprietaire, item: `/architecture-paysagere/${typologie.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: typologie.h1Seo,
+    slug: typologie.slug,
+    description: `${typologie.h1Seo} — Studio J Oliveira, designer paysagiste biophilique. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}.`,
+    priceRangeMin: typologie.coutEtudeNumeric,
+    priceRangeMax: typologie.coutEtudeNumeric,
+  }),
+  faqPage(faq),
+  breadcrumbs(breadcrumbItems),
+]);
+---
+
+<BaseLayout
+  title={`${typologie.h1Seo} — Cœur urbain`}
+  description={`${typologie.h1Seo} avec le Studio J Oliveira — maison de ville, cour patrimoniale, jardin enclavé. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
+  darkHero
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  {/* ═════════ 1 · HERO photo + H1 haut-gauche + specs overlay bas ════════ */}
+  <section
+    id="hero"
+    data-section-label="Cœur urbain"
+    data-theme="dark"
+    class="cu-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="hero-title"
+  >
+    <div class="cu-hero__media">
+      <Image
+        src={heroPhoto}
+        alt="Cour urbaine patrimoniale cœur urbain — projet Studio J Oliveira"
+        widths={[960, 1440, 1920, 2560]}
+        sizes="100vw"
+        quality={92}
+        format="webp"
+        loading="eager"
+        class="cu-hero__img"
+      />
+      <div class="cu-hero__veil" aria-hidden="true"></div>
+    </div>
+
+    <div class="cu-hero__overlay">
+      <div class="cu-hero__top">
+        <h1 id="hero-title" class="cu-hero__title">
+          <span class="cu-hero__title-line">COEUR</span>
+          <span class="cu-hero__title-line">URBAIN</span>
+        </h1>
+      </div>
+
+      <div class="cu-hero__bottom">
+        <dl class="cu-hero__specs" aria-label="Caractéristiques typologie">
+          {
+            specs.map((s) => (
+              <div class="cu-hero__spec-row">
+                <dt class="cu-hero__spec-label">{s.label}</dt>
+                <dd class="cu-hero__spec-value">{s.valeur}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  {
+    /* ═════════ 2 · GALERIE — 5 photos rythme magazine ════════════════════
+     Disposition trame Jonathan (colonne droite) :
+       (1) diptyque deux portraits (02 gauche plus petit / 03 droite plus
+           grand) — variante miroir du diptyque micro-urbain
+       (2) photo large pleine largeur (04-large-middle)
+       (3) diptyque deux portraits (05 + 06) — plus équilibré, sans quinconce
+     Gouttières noires généreuses, aucun bord-à-bord. */
+  }
+  <section
+    data-theme="dark"
+    class="cu-gallery bg-[var(--color-black-deep)]"
+    aria-label="Sélection de projets cœur urbain"
+  >
+    <div class="cu-gallery__diptyque cu-gallery__diptyque--top">
+      <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={diptyqueTopLeft}
+          alt="Projet cœur urbain — ruelle de jardin contre maison de ville en pierre"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 38vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+      <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={diptyqueTopRight}
+          alt="Projet cœur urbain — chemin minéral menant à un patio contemporain"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 54vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+    </div>
+
+    <figure class="cu-gallery__large" data-reveal="image-rise">
+      <Image
+        src={largeMiddle}
+        alt="Projet cœur urbain — terrasse couverte jungle intérieur-extérieur"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        class="cu-gallery__img"
+      />
+    </figure>
+
+    <div class="cu-gallery__diptyque cu-gallery__diptyque--bottom">
+      <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={diptyqueBottomLeft}
+          alt="Projet cœur urbain — piscine miroir bordée de végétation"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 50vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+      <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={diptyqueBottomRight}
+          alt="Projet cœur urbain — porche en pierre ouvrant sur une cour végétalisée"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 50vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+    </div>
+  </section>
+
+  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
+  <section
+    id="manifeste"
+    data-section-label="Manifeste"
+    data-theme="dark"
+    class="cu-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="manifeste-title"
+  >
+    <div class="cu-manifeste__inner">
+      <h2 id="manifeste-title" class="sr-only">La typologie cœur urbain</h2>
+      <div
+        class="cu-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="cu-manifeste__para">{manifeste.bloc1}</p>
+        <p class="cu-manifeste__para">{manifeste.bloc2}</p>
+      </div>
+      <p class="cu-manifeste__precision">{manifeste.precision}</p>
+    </div>
+  </section>
+
+  {/* ═════════ 4 · FAQ discrète ══════════════════════════════════════════ */}
+  <section
+    id="faq"
+    data-section-label="FAQ"
+    data-theme="dark"
+    class="cu-faq bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="faq-title"
+  >
+    <div class="cu-faq__inner">
+      <p class="cu-faq__eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title" class="cu-faq__title">Avant d'appeler.</h2>
+      <ul class="cu-faq__list">
+        {
+          faq.map((item) => (
+            <li class="cu-faq__item">
+              <details class="cu-faq__details group">
+                <summary class="cu-faq__summary">
+                  <span>{item.question}</span>
+                  <span class="cu-faq__plus" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="cu-faq__answer">{item.answer}</p>
+              </details>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ══ */}
+  <section
+    data-theme="dark"
+    class="cu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="cta-title"
+  >
+    <a href="/realisations" class="cu-cta__link" data-cursor-label="VOIR">
+      <h2
+        id="cta-title"
+        class="cu-cta__title"
+        data-justify-multi
+        data-justify-amp="50"
+        data-justify-line-step="0.15"
+        data-justify-line-window="0.55"
+      >
+        <span class="cu-cta__title-line" data-justify-line data-justify-direction="from-right">
+          DECOUVRIR LES PROJETS COEUR URBAIN
+        </span>
+      </h2>
+    </a>
+    <a href="/demarrer-un-projet" class="cu-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
+      <span class="cu-cta__pill-dot" aria-hidden="true"></span>
+      <span class="cu-cta__pill-label">Démarrer un projet</span>
+      <img
+        src="/brand/fleche-white.webp"
+        alt=""
+        aria-hidden="true"
+        class="cu-cta__pill-arrow"
+        width="32"
+        height="32"
+      />
+    </a>
+  </section>
+
+  <style is:global>
+    /* ═══════════════════════════════════════════════════════════════════════
+     * /architecture-paysagere/coeur-urbain — copie structurelle micro-urbain
+     * (les classes sont préfixées `cu-` au lieu de `mu-` pour permettre des
+     * divergences futures sans collision, mais la grille de specs / hero /
+     * manifeste / FAQ / CTA reste identique au pilote pour cohérence
+     * inter-typologies). Si une règle doit évoluer sitewide, refactor en
+     * composant partagé `<TypologieLayout>` à la prochaine itération.
+     * ═══════════════════════════════════════════════════════════════════ */
+
+    /* ─── 1 · Hero photo + H1 haut-gauche + specs overlay bas ───────────── */
+    .cu-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      isolation: isolate;
+    }
+    .cu-hero__media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .cu-hero__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .cu-hero__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--color-black-deep) 72%, transparent) 0%,
+        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 20%,
+        transparent 45%,
+        transparent 60%,
+        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 80%,
+        color-mix(in oklab, var(--color-black-deep) 75%, transparent) 100%
+      );
+      pointer-events: none;
+    }
+    .cu-hero__overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
+    }
+    .cu-hero__top {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .cu-hero__bottom {
+      width: 100%;
+    }
+    .cu-hero__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(2.6rem, 9vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.005em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      margin: 0;
+      max-width: none;
+    }
+    .cu-hero__title-line {
+      display: block;
+    }
+
+    .cu-hero__specs {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(0.85rem, 1.5vw, 1.25rem);
+      padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
+    }
+    @media (min-width: 768px) {
+      .cu-hero__specs {
+        grid-template-columns: 1fr 1fr;
+        column-gap: clamp(2.5rem, 6vw, 5rem);
+        row-gap: clamp(0.85rem, 1.5vw, 1.25rem);
+      }
+    }
+    .cu-hero__spec-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(1rem, 2vw, 2rem);
+      align-items: baseline;
+    }
+    .cu-hero__spec-label {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      line-height: 1.35;
+      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      margin: 0;
+    }
+    .cu-hero__spec-value {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      line-height: 1.35;
+      color: var(--color-cream);
+      text-align: right;
+      margin: 0;
+    }
+
+    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
+    .cu-gallery {
+      width: 100%;
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    .cu-gallery__large {
+      margin: 0;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .cu-gallery__large {
+        aspect-ratio: 16 / 10;
+      }
+    }
+    /* Diptyques — pattern trame Jonathan :
+       - top : portrait gauche plus petit (38%) + portrait droite plus grand
+         (54%) avec décalage vertical (quinconce magazine), comme micro-urbain.
+       - bottom : 50/50 plus équilibré, sans quinconce (les deux photos sont
+         de format similaire et se répondent en miroir). */
+    .cu-gallery__diptyque {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 768px) {
+      .cu-gallery__diptyque--top {
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+      .cu-gallery__diptyque--bottom {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .cu-gallery__diptyque-left,
+    .cu-gallery__diptyque-right {
+      margin: 0;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    .cu-gallery__diptyque--top .cu-gallery__diptyque-left {
+      aspect-ratio: 4 / 5;
+    }
+    .cu-gallery__diptyque--top .cu-gallery__diptyque-right {
+      aspect-ratio: 4 / 5;
+    }
+    @media (min-width: 768px) {
+      .cu-gallery__diptyque--top .cu-gallery__diptyque-left {
+        aspect-ratio: 3 / 4;
+        align-self: start;
+        max-height: 78%;
+      }
+      .cu-gallery__diptyque--top .cu-gallery__diptyque-right {
+        aspect-ratio: 4 / 5;
+        align-self: end;
+      }
+    }
+    .cu-gallery__diptyque--bottom .cu-gallery__diptyque-left,
+    .cu-gallery__diptyque--bottom .cu-gallery__diptyque-right {
+      aspect-ratio: 4 / 5;
+    }
+    @media (min-width: 768px) {
+      .cu-gallery__diptyque--bottom .cu-gallery__diptyque-left,
+      .cu-gallery__diptyque--bottom .cu-gallery__diptyque-right {
+        aspect-ratio: 5 / 6;
+      }
+    }
+    .cu-gallery__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
+    .cu-manifeste {
+      width: 100%;
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .cu-manifeste__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+    @media (min-width: 1024px) {
+      .cu-manifeste__inner {
+        grid-template-columns: 1fr 1.35fr;
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+      .cu-manifeste__body,
+      .cu-manifeste__precision {
+        grid-column: 2;
+      }
+    }
+    .cu-manifeste__body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 2.2vw, 1.85rem);
+    }
+    .cu-manifeste__para {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
+      line-height: 1.45;
+      letter-spacing: -0.005em;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .cu-manifeste__body .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
+    }
+    .cu-manifeste__precision {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+      line-height: 1.6;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      text-align: left;
+      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
+    }
+
+    /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
+    .cu-faq {
+      width: 100%;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .cu-faq__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 1024px) {
+      .cu-faq__inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+    }
+    .cu-faq__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .cu-faq__title {
+      grid-column: 1;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    @media (min-width: 1024px) {
+      .cu-faq__eyebrow,
+      .cu-faq__title {
+        grid-column: 1;
+      }
+    }
+    .cu-faq__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      grid-column: 1;
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    @media (min-width: 1024px) {
+      .cu-faq__list {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+    .cu-faq__item {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .cu-faq__summary {
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+      line-height: 1.3;
+      color: var(--color-cream);
+      list-style: none;
+      transition: color 0.3s ease;
+    }
+    .cu-faq__summary::-webkit-details-marker {
+      display: none;
+    }
+    .cu-faq__summary:hover {
+      color: color-mix(in oklab, var(--color-cream) 85%, var(--color-red));
+    }
+    .cu-faq__plus {
+      flex-shrink: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+      line-height: 1;
+      transition: transform 0.35s var(--ease-out-editorial);
+      transform-origin: center;
+    }
+    .cu-faq__details[open] .cu-faq__plus {
+      transform: rotate(45deg);
+    }
+    .cu-faq__answer {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      margin: 0;
+      padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+      max-width: 60ch;
+    }
+
+    /* ─── 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ─────── */
+    .cu-cta {
+      width: 100%;
+      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
+    .cu-cta__link {
+      display: block;
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      text-decoration: none;
+      color: inherit;
+    }
+    .cu-cta__title {
+      width: 100%;
+      margin: 0;
+    }
+    .cu-cta__title-line {
+      display: block;
+      width: 100%;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 5.5vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) {
+      .cu-cta__title-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+    .cu-cta__pill-red {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1.6rem;
+      background-color: var(--color-red);
+      color: var(--color-cream);
+      border-radius: 9999px;
+      font-family: var(--font-body), sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 1.05vw, 1rem);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: transform 0.35s var(--ease-out-editorial);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .cu-cta__pill-red:hover,
+      .cu-cta__pill-red:focus-visible {
+        transform: scale(1.04);
+      }
+    }
+    .cu-cta__pill-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      flex-shrink: 0;
+    }
+    .cu-cta__pill-label {
+      white-space: nowrap;
+    }
+    .cu-cta__pill-arrow {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .cu-hero,
+    .cu-gallery,
+    .cu-manifeste,
+    .cu-faq,
+    .cu-cta {
+      box-sizing: border-box;
+    }
+  </style>
+</BaseLayout>
