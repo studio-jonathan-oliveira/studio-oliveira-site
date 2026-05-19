@@ -2,11 +2,17 @@
 /*
  * <TypologieHero> — hero partagé des 4 pages /architecture-paysagere/[typologie].
  *
- * Pattern validé Morgan 2026-05-19 (cf. mémoire `project_oliveira_typologies_hero_pattern`) :
- *   - Photo plein-bleed 100svh + voile gradient HAUT uniquement
+ * Pattern validé Morgan 2026-05-19 v3 (synthèse trame originale +
+ * retours successifs) :
+ *   - Photo plein-bleed 100svh + voile gradient DOUBLE (haut pour H1,
+ *     bas pour specs) avec milieu transparent
  *   - H1 split 2 lignes posé HAUT-GAUCHE (ExtraLight 200 UPPERCASE)
- *   - 4 specs sous le H1, chaque ligne en flex `space-between` (label gauche,
- *     valeur collée au bord droit, photo visible entre)
+ *   - 4 specs en BAS du hero, séparées du reste de la photo par un trait
+ *     blanc horizontal pleine largeur (border-top cream 35% alpha)
+ *   - Chaque ligne specs en flex `space-between` (label gauche, valeur
+ *     collée au bord droit, photo visible entre) — PAS un grid 2-colonnes
+ *     resserré (trame Jonathan : les valeurs sont aussi loin que possible
+ *     à droite, pas centrées)
  *   - Mobile <768px : passage colonne (label/valeur empilés)
  *
  * Les 4 LABELS sont FIGÉS (taxonomie commune aux 4 typologies). Seules les
@@ -63,21 +69,25 @@ const LABELS = [
   </div>
 
   <div class="typo-hero__overlay">
-    <h1 id="hero-title" class="typo-hero__title">
-      <span class="typo-hero__title-line">{h1Lines[0]}</span>
-      <span class="typo-hero__title-line">{h1Lines[1]}</span>
-    </h1>
+    <div class="typo-hero__top">
+      <h1 id="hero-title" class="typo-hero__title">
+        <span class="typo-hero__title-line">{h1Lines[0]}</span>
+        <span class="typo-hero__title-line">{h1Lines[1]}</span>
+      </h1>
+    </div>
 
-    <dl class="typo-hero__specs" aria-label="Caractéristiques typologie">
-      {
-        LABELS.map((label, i) => (
-          <div class="typo-hero__spec-row">
-            <dt class="typo-hero__spec-label">{label}</dt>
-            <dd class="typo-hero__spec-value">{valeurs[i]}</dd>
-          </div>
-        ))
-      }
-    </dl>
+    <div class="typo-hero__bottom">
+      <dl class="typo-hero__specs" aria-label="Caractéristiques typologie">
+        {
+          LABELS.map((label, i) => (
+            <div class="typo-hero__spec-row">
+              <dt class="typo-hero__spec-label">{label}</dt>
+              <dd class="typo-hero__spec-value">{valeurs[i]}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </div>
 </section>
 
@@ -100,27 +110,38 @@ const LABELS = [
     object-position: center;
     display: block;
   }
+  /* Voile gradient DOUBLE — assombrit HAUT (zone H1) + BAS (zone specs),
+     transparent au milieu. Garantit la lisibilité du H1 en haut ET des
+     specs en bas du hero sans rogner la zone visuelle centrale. */
   .typo-hero__veil {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--color-black-deep) 68%, transparent) 0%,
-      color-mix(in oklab, var(--color-black-deep) 32%, transparent) 35%,
-      transparent 60%,
-      transparent 100%
+      color-mix(in oklab, var(--color-black-deep) 72%, transparent) 0%,
+      color-mix(in oklab, var(--color-black-deep) 30%, transparent) 22%,
+      transparent 45%,
+      transparent 58%,
+      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 80%,
+      color-mix(in oklab, var(--color-black-deep) 78%, transparent) 100%
     );
     pointer-events: none;
   }
+  /* Overlay = bloc HAUT (H1) + bloc BAS (specs) avec espace au milieu
+     pour laisser respirer la photo. `justify-content: space-between`
+     pousse les 2 blocs aux extrémités du hero (100svh). */
   .typo-hero__overlay {
     position: relative;
     z-index: 1;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
+    justify-content: space-between;
     padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
+  }
+  .typo-hero__top,
+  .typo-hero__bottom {
+    width: 100%;
   }
   .typo-hero__title {
     font-family: var(--font-heading), sans-serif;
@@ -136,11 +157,18 @@ const LABELS = [
   .typo-hero__title-line {
     display: block;
   }
+  /* Specs en bas du hero — trait blanc horizontal pleine largeur au-dessus
+     (border-top cream 35% alpha, conformément à la trame Jonathan). Chaque
+     ligne s'étire pleine largeur avec label collé à gauche / valeur collée
+     à droite (flex space-between) pour reproduire la respiration du design
+     trame (les valeurs vont jusqu'au bord droit, pas centrées). */
   .typo-hero__specs {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(0.45rem, 0.9vw, 0.85rem);
+    gap: clamp(0.55rem, 1.1vw, 1rem);
+    padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    border-top: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
   }
   .typo-hero__spec-row {
     display: flex;
@@ -152,7 +180,7 @@ const LABELS = [
   .typo-hero__spec-label {
     font-family: var(--font-body), sans-serif;
     font-weight: 300;
-    font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+    font-size: clamp(0.82rem, 1vw, 1rem);
     line-height: 1.35;
     color: var(--color-cream);
     margin: 0;
@@ -161,8 +189,8 @@ const LABELS = [
   }
   .typo-hero__spec-value {
     font-family: var(--font-body), sans-serif;
-    font-weight: 300;
-    font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+    font-weight: 400;
+    font-size: clamp(0.82rem, 1vw, 1rem);
     line-height: 1.35;
     color: var(--color-cream);
     text-align: right;
