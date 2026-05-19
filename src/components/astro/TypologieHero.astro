@@ -36,9 +36,17 @@ interface Props {
   h1Lines: readonly [string, string];
   valeurs: readonly [string, string, string, string];
   sectionLabel?: string;
+  /**
+   * Cadrage vertical de la photo hero (object-position CSS).
+   * Par défaut `center` (50% 50%). Une valeur comme `center 70%` recale
+   * l'image vers le bas (utile quand le centre de la photo manque
+   * d'information visuelle en bas). Cf. retour Morgan 2026-05-19 sur
+   * domaine-caractère.
+   */
+  photoPosition?: string;
 }
 
-const { photo, alt, h1Lines, valeurs, sectionLabel } = Astro.props;
+const { photo, alt, h1Lines, valeurs, sectionLabel, photoPosition = 'center' } = Astro.props;
 
 // Les 4 labels sont la taxonomie figée du studio — ne pas paramétrer.
 const LABELS = [
@@ -66,6 +74,7 @@ const LABELS = [
       format="webp"
       loading="eager"
       class="typo-hero__img"
+      style={`object-position: ${photoPosition};`}
     />
     <div class="typo-hero__veil" aria-hidden="true"></div>
   </div>
