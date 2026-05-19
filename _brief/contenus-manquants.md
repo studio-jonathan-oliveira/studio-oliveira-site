@@ -228,6 +228,62 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 **Contexte** : Jonathan a recopié dans la trame coeur-urbain le placeholder de la trame micro-urbain (texte identique mot pour mot). Le texte actuellement en place est donc celui de la typologie micro-urbain, à réécrire pour décrire spécifiquement la typologie cœur urbain (cours patrimoniales, maisons de ville, jardins enclavés 100-500 m², contraintes accès / urbanisme / réseaux souterrains).
 **Deadline suggérée** : avant mise en ligne fin mai 2026.
 
+### TYPOLOGIE-FRANGE-URBAINE-SPECS
+
+**Type** : 4 textes courts (valeurs droite du hero)
+**Emplacement** : `src/pages/architecture-paysagere/frange-urbaine.astro` — array `valeurs` (4 items)
+**Volume attendu** : 4 phrases courtes (~5-12 mots chacune) répondant aux labels figés : Secteur géographique / Moyenne surface jardin / Contexte environnemental / Complexité spatiale et environnementale
+**Contexte** : Les 4 labels sont la taxonomie commune aux 4 typologies (cf. `<TypologieHero>`). Seules les valeurs droite changent par typologie. Voir micro-urbain.astro et coeur-urbain.astro pour le ton attendu.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-FRANGE-URBAINE-MANIFESTE
+
+**Type** : texte long (manifeste + précision technique)
+**Emplacement** : `src/pages/architecture-paysagere/frange-urbaine.astro` — objet `manifeste` (bloc1, bloc2, precision)
+**Volume attendu** : 2 paragraphes ~30-40 mots + 1 précision technique ~60-80 mots
+**Contexte** : Décrit la typologie « frange urbaine » : résidences, gîtes, maisons d'architecte, surfaces 300-1500 m². Voir micro-urbain.astro pour le ton (paragraphes courts, voix Jonathan, fautes typo conservées si présentes).
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-FRANGE-URBAINE-GALERIE
+
+**Type** : 4 à 6 photos (formats portrait + paysage mixés selon pattern)
+**Emplacement** : `src/assets/typologies/frange-urbaine/` — fichiers `02-…` à `0n-…` à nommer
+**Volume attendu** : 4-6 photos haute résolution (≥ 1600px largeur), JPEG ou PNG. Mix portrait/paysage pour pattern magazine (diptyque + large alternés).
+**Contexte** : Morgan sélectionnera les images dans ses dossiers et confirmera le pattern de galerie (a: large+diptyque+large comme micro-urbain, ou b: diptyque+large+diptyque comme coeur-urbain). La section gallery est actuellement omise du fichier.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-DOMAINE-CARACTERE-SPECS
+
+**Type** : 4 textes courts (valeurs droite du hero)
+**Emplacement** : `src/pages/architecture-paysagere/domaine-caractere.astro` — array `valeurs` (4 items)
+**Volume attendu** : 4 phrases courtes (~5-12 mots chacune)
+**Contexte** : Idem TYPOLOGIE-FRANGE-URBAINE-SPECS, pour la typologie « Domaines & Caractère » (châteaux, manoirs, domaines familiaux, surface sans limite).
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-DOMAINE-CARACTERE-H1
+
+**Type** : décision éditoriale (1 caractère)
+**Emplacement** : `src/pages/architecture-paysagere/domaine-caractere.astro` — prop `h1Lines` du `<TypologieHero>`
+**Volume attendu** : confirmation oui/non
+**Contexte** : Default `['DOMAINES', 'CARACTERE']` (sans le « & » de la marque, pour cohérence visuelle avec MICRO/URBAIN, COEUR/URBAIN, FRANGE/URBAINE — esthétique designbyad). Morgan doit confirmer s'il veut garder le « & » de la marque : `['DOMAINES &', 'CARACTERE']` ou éventuellement `['DOMAINES', '& CARACTERE']`.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-DOMAINE-CARACTERE-MANIFESTE
+
+**Type** : texte long (manifeste + précision technique)
+**Emplacement** : `src/pages/architecture-paysagere/domaine-caractere.astro` — objet `manifeste`
+**Volume attendu** : idem TYPOLOGIE-FRANGE-URBAINE-MANIFESTE
+**Contexte** : Décrit la typologie « Domaines & Caractère ». Voir micro-urbain.astro pour le ton.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
+### TYPOLOGIE-DOMAINE-CARACTERE-GALERIE
+
+**Type** : 4 à 6 photos
+**Emplacement** : `src/assets/typologies/domaine-caractere/` — fichiers `02-…` à `0n-…`
+**Volume attendu** : idem TYPOLOGIE-FRANGE-URBAINE-GALERIE
+**Contexte** : Morgan sélectionnera les images dans ses dossiers.
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
 ### FORMULAIRE-CONTACT
 
 **Type** : texte court (message de confirmation succès)

@@ -29,6 +29,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
+import TypologieHero from '@/components/astro/TypologieHero.astro';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -47,16 +48,14 @@ import largeBottom from '@/assets/typologies/micro-urbain/05-large-bottom.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'micro-urbain')!;
 
-// 4 specs hero — verbatim trame Jonathan, ordre exact.
-const specs = [
-  { label: 'Secteur géographique', valeur: 'Hyper urbain' },
-  { label: 'Moyenne surface jardin', valeur: 'Moins de 100m² (hors cas spécifique)' },
-  { label: 'Contexte environnemental', valeur: 'Roof tops / patios / micro jardins' },
-  {
-    label: 'Complexité spatiale et environnementale',
-    valeur: 'Hauteur / accès / exposition / poids',
-  },
-];
+// 4 valeurs droite — verbatim dictée Morgan 2026-05-19 (les 4 labels sont
+// figés et viennent du composant `<TypologieHero>` partagé).
+const valeurs = [
+  'Hyper urbain',
+  'Moins de 100m² (hors cas spécifique)',
+  'Roof tops / patios / micro jardins',
+  'Hauteur / accès / exposition / poids',
+] as const;
 
 // Manifeste — texte Jonathan VERBATIM trame, fautes typo conservées
 // (retour Morgan 2026-05-15 v3 : restauration verbatim, on n'invente
@@ -123,57 +122,14 @@ const schema = jsonLdGraph([
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {
-    /* ═════════ 1 · HERO photo + H1 haut-gauche + specs overlay bas ════════
-     Refonte 2026-05-15 (retour Morgan trame) :
-     - H1 « MICRO / URBAIN » en HAUT-GAUCHE de la photo (pas bas)
-     - Les 4 specs sont POSÉES en overlay sur le BAS de la photo hero,
-       pas dans une section noire séparée. Voile gradient double (haut +
-       bas) pour lisibilité simultanée H1 et specs. */
-  }
-  <section
-    id="hero"
-    data-section-label="Micro urbain"
-    data-theme="dark"
-    class="mu-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="hero-title"
-  >
-    <div class="mu-hero__media">
-      <Image
-        src={heroPhoto}
-        alt="Terrasse urbaine micro-urbain — projet Studio J Oliveira"
-        widths={[960, 1440, 1920, 2560]}
-        sizes="100vw"
-        quality={92}
-        format="webp"
-        loading="eager"
-        class="mu-hero__img"
-      />
-      {
-        /* Voile gradient double — assombrit haut (lisibilité H1) ET bas
-          (lisibilité specs), milieu transparent. Pas de flou (Jonathan). */
-      }
-      <div class="mu-hero__veil" aria-hidden="true"></div>
-    </div>
-
-    <div class="mu-hero__overlay">
-      <h1 id="hero-title" class="mu-hero__title">
-        <span class="mu-hero__title-line">MICRO</span>
-        <span class="mu-hero__title-line">URBAIN</span>
-      </h1>
-
-      <dl class="mu-hero__specs" aria-label="Caractéristiques typologie">
-        {
-          specs.map((s) => (
-            <div class="mu-hero__spec-row">
-              <dt class="mu-hero__spec-label">{s.label}</dt>
-              <dd class="mu-hero__spec-value">{s.valeur}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
+  {/* ═════════ 1 · HERO — via composant partagé `<TypologieHero>` ════════ */}
+  <TypologieHero
+    photo={heroPhoto}
+    alt="Terrasse urbaine micro-urbain — projet Studio J Oliveira"
+    h1Lines={['MICRO', 'URBAIN']}
+    valeurs={valeurs}
+    sectionLabel="Micro urbain"
+  />
 
   {
     /* ═════════ 2 · GALERIE — 4 photos rythme magazine ════════════════════
@@ -338,119 +294,8 @@ const schema = jsonLdGraph([
      * sur les inners pour la respiration designbyad).
      * ═══════════════════════════════════════════════════════════════════ */
 
-    /* ─── 1 · Hero photo + H1 haut-gauche + specs overlay bas ───────────── */
-    .mu-hero {
-      position: relative;
-      width: 100%;
-      min-height: 100svh;
-      isolation: isolate;
-    }
-    .mu-hero__media {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-    .mu-hero__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-    /* Voile : assombrissement HAUT uniquement (zone H1 + specs collés
-       sous le H1). Bas de l'image laissé brut. Refactor 2026-05-19 :
-       les specs ont quitté le bas du hero pour se coller sous le H1
-       (capture Morgan + alignement avec coeur-urbain). */
-    .mu-hero__veil {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        color-mix(in oklab, var(--color-black-deep) 68%, transparent) 0%,
-        color-mix(in oklab, var(--color-black-deep) 32%, transparent) 35%,
-        transparent 60%,
-        transparent 100%
-      );
-      pointer-events: none;
-    }
-    /* Overlay = bloc TOP (H1 + specs collés dessous). Pas de space-between
-       → tout est packé en haut, le bas du hero reste vide. */
-    .mu-hero__overlay {
-      position: relative;
-      z-index: 1;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-      padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
-    }
-    /* H1 split — ExtraLight 200 UPPERCASE. 2 lignes empilées tight, posé
-       HAUT-GAUCHE. Pas d'animation : LCP immédiat. */
-    .mu-hero__title {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(2.6rem, 9vw, 8rem);
-      line-height: 0.95;
-      letter-spacing: -0.005em;
-      text-transform: uppercase;
-      color: var(--color-cream);
-      margin: 0;
-      max-width: none;
-    }
-    .mu-hero__title-line {
-      display: block;
-    }
-
-    /* Specs : 4 lignes empilées sous le H1. Chaque ligne s'étire pleine
-       largeur, label à gauche / valeur à droite (justify-content:
-       space-between). Pas de grid à colonnes : les valeurs sont collées au
-       bord droit de la zone padding, créant le grand espace photo visible
-       entre les deux colonnes (capture Morgan 2026-05-19, même pattern
-       que coeur-urbain). */
-    .mu-hero__specs {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.45rem, 0.9vw, 0.85rem);
-    }
-    .mu-hero__spec-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: clamp(2rem, 6vw, 6rem);
-      width: 100%;
-    }
-    .mu-hero__spec-label {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
-      line-height: 1.35;
-      color: var(--color-cream);
-      margin: 0;
-      text-align: left;
-      flex: 0 1 auto;
-    }
-    .mu-hero__spec-value {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
-      line-height: 1.35;
-      color: var(--color-cream);
-      text-align: right;
-      margin: 0;
-      flex: 0 1 auto;
-    }
-    @media (max-width: 767px) {
-      .mu-hero__spec-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.15rem;
-      }
-      .mu-hero__spec-value {
-        text-align: left;
-      }
-    }
+    /* ─── 1 · Hero ── désormais géré par `<TypologieHero>` (composant
+       partagé, refactor 2026-05-19). Plus de CSS hero ici. */
 
     /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
     .mu-gallery {

@@ -18,6 +18,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
+import TypologieHero from '@/components/astro/TypologieHero.astro';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -37,21 +38,14 @@ import diptyqueBottomRight from '@/assets/typologies/coeur-urbain/06-diptyque-bo
 
 const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
 
-// 4 specs hero — verbatim dictée Morgan 2026-05-19 (correction OCR sur la
-// trame : « Zone urbaine » et non « Cœur urbain », « confinés » et non
-// « enclavés », « souterrain » singulier).
-const specs = [
-  { label: 'Secteur géographique', valeur: 'Zone urbaine / cœur de ville et alentours' },
-  { label: 'Moyenne surface jardin', valeur: 'De 100 à 500 m² (hors cas spécifique)' },
-  {
-    label: 'Contexte environnemental',
-    valeur: 'Cours urbaines / jardins confinés / jardins de ville',
-  },
-  {
-    label: 'Complexité spatiale et environnementale',
-    valeur: 'Accès / exposition / réseaux souterrain / urbanisme',
-  },
-];
+// 4 valeurs droite — verbatim dictée Morgan 2026-05-19 (les 4 labels sont
+// figés et viennent du composant `<TypologieHero>` partagé).
+const valeurs = [
+  'Zone urbaine / cœur de ville et alentours',
+  'De 100 à 500 m² (hors cas spécifique)',
+  'Cours urbaines / jardins confinés / jardins de ville',
+  'Accès / exposition / réseaux souterrain / urbanisme',
+] as const;
 
 // Manifeste — Jonathan a recopié dans la trame coeur-urbain le placeholder
 // micro-urbain. Texte à valider/réécrire avec lui (cf. contenus-manquants.md).
@@ -115,46 +109,14 @@ const schema = jsonLdGraph([
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO photo + H1 haut-gauche + specs overlay bas ════════ */}
-  <section
-    id="hero"
-    data-section-label="Cœur urbain"
-    data-theme="dark"
-    class="cu-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="hero-title"
-  >
-    <div class="cu-hero__media">
-      <Image
-        src={heroPhoto}
-        alt="Cour urbaine patrimoniale cœur urbain — projet Studio J Oliveira"
-        widths={[960, 1440, 1920, 2560]}
-        sizes="100vw"
-        quality={92}
-        format="webp"
-        loading="eager"
-        class="cu-hero__img"
-      />
-      <div class="cu-hero__veil" aria-hidden="true"></div>
-    </div>
-
-    <div class="cu-hero__overlay">
-      <h1 id="hero-title" class="cu-hero__title">
-        <span class="cu-hero__title-line">COEUR</span>
-        <span class="cu-hero__title-line">URBAIN</span>
-      </h1>
-
-      <dl class="cu-hero__specs" aria-label="Caractéristiques typologie">
-        {
-          specs.map((s) => (
-            <div class="cu-hero__spec-row">
-              <dt class="cu-hero__spec-label">{s.label}</dt>
-              <dd class="cu-hero__spec-value">{s.valeur}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
+  {/* ═════════ 1 · HERO — via composant partagé `<TypologieHero>` ════════ */}
+  <TypologieHero
+    photo={heroPhoto}
+    alt="Cour urbaine patrimoniale cœur urbain — projet Studio J Oliveira"
+    h1Lines={['COEUR', 'URBAIN']}
+    valeurs={valeurs}
+    sectionLabel="Cœur urbain"
+  />
 
   {
     /* ═════════ 2 · GALERIE — 5 photos rythme magazine ════════════════════
@@ -328,126 +290,16 @@ const schema = jsonLdGraph([
 
   <style is:global>
     /* ═══════════════════════════════════════════════════════════════════════
-     * /architecture-paysagere/coeur-urbain — copie structurelle micro-urbain
-     * (les classes sont préfixées `cu-` au lieu de `mu-` pour permettre des
-     * divergences futures sans collision, mais la grille de specs / hero /
-     * manifeste / FAQ / CTA reste identique au pilote pour cohérence
-     * inter-typologies). Si une règle doit évoluer sitewide, refactor en
-     * composant partagé `<TypologieLayout>` à la prochaine itération.
+     * /architecture-paysagere/coeur-urbain — copie structurelle micro-urbain.
+     * Le hero est désormais factorisé dans `<TypologieHero>` (refactor
+     * 2026-05-19). Galerie / manifeste / FAQ / CTA restent locaux (préfixe
+     * `cu-`) car la galerie diverge par typologie (5 vs 6 photos, layouts
+     * différents) ; le reste est candidat à un futur `<TypologieLayout>`
+     * une fois que les 4 pages auront convergé.
      * ═══════════════════════════════════════════════════════════════════ */
 
-    /* ─── 1 · Hero photo + H1 haut-gauche + specs overlay bas ───────────── */
-    .cu-hero {
-      position: relative;
-      width: 100%;
-      min-height: 100svh;
-      isolation: isolate;
-    }
-    .cu-hero__media {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-    .cu-hero__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-    /* Voile : assombrissement HAUT uniquement (zone H1 + specs collés
-       sous le H1). Bas de l'image laissé brut (les coussins / végétation
-       restent lisibles). Cf. capture Morgan `hero coeur urbain.png`. */
-    .cu-hero__veil {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        color-mix(in oklab, var(--color-black-deep) 68%, transparent) 0%,
-        color-mix(in oklab, var(--color-black-deep) 32%, transparent) 35%,
-        transparent 60%,
-        transparent 100%
-      );
-      pointer-events: none;
-    }
-    /* Overlay = bloc TOP (H1 + specs collés dessous). Pas de flex
-       space-between → tout est packé en haut, le bas du hero reste vide. */
-    .cu-hero__overlay {
-      position: relative;
-      z-index: 1;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-      padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
-    }
-    .cu-hero__title {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(2.6rem, 9vw, 8rem);
-      line-height: 0.95;
-      letter-spacing: -0.005em;
-      text-transform: uppercase;
-      color: var(--color-cream);
-      margin: 0;
-      max-width: none;
-    }
-    .cu-hero__title-line {
-      display: block;
-    }
-
-    /* Specs : 4 lignes empilées, chaque ligne s'étire en pleine largeur
-       avec label à gauche / valeur à droite (justify-content: space-between).
-       Pas de grid à colonnes : les valeurs sont collées au bord droit
-       de la zone padding, créant le grand espace photo visible entre les
-       deux colonnes — comme la capture Morgan. */
-    .cu-hero__specs {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.45rem, 0.9vw, 0.85rem);
-    }
-    .cu-hero__spec-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: clamp(2rem, 6vw, 6rem);
-      width: 100%;
-    }
-    .cu-hero__spec-label {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
-      line-height: 1.35;
-      color: var(--color-cream);
-      margin: 0;
-      text-align: left;
-      flex: 0 1 auto;
-    }
-    .cu-hero__spec-value {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
-      line-height: 1.35;
-      color: var(--color-cream);
-      text-align: right;
-      margin: 0;
-      flex: 0 1 auto;
-    }
-    /* Mobile : à <768px les paires label/value passent en colonne
-       (label au-dessus, valeur dessous) sinon ça serait illisible
-       compressé en largeur de phone. */
-    @media (max-width: 767px) {
-      .cu-hero__spec-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.15rem;
-      }
-      .cu-hero__spec-value {
-        text-align: left;
-      }
-    }
+    /* ─── 1 · Hero ── désormais géré par `<TypologieHero>` (composant
+       partagé, refactor 2026-05-19). Plus de CSS hero ici. */
 
     /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
     .cu-gallery {

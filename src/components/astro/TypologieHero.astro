@@ -1,0 +1,182 @@
+---
+/*
+ * <TypologieHero> — hero partagé des 4 pages /architecture-paysagere/[typologie].
+ *
+ * Pattern validé Morgan 2026-05-19 (cf. mémoire `project_oliveira_typologies_hero_pattern`) :
+ *   - Photo plein-bleed 100svh + voile gradient HAUT uniquement
+ *   - H1 split 2 lignes posé HAUT-GAUCHE (ExtraLight 200 UPPERCASE)
+ *   - 4 specs sous le H1, chaque ligne en flex `space-between` (label gauche,
+ *     valeur collée au bord droit, photo visible entre)
+ *   - Mobile <768px : passage colonne (label/valeur empilés)
+ *
+ * Les 4 LABELS sont FIGÉS (taxonomie commune aux 4 typologies). Seules les
+ * valeurs droite changent par typologie.
+ *
+ * API minimale :
+ *   - photo (ImageMetadata) : image hero
+ *   - alt (string) : alt descriptif SEO
+ *   - h1Lines ([string, string]) : 2 lignes du H1 split (ex: ['MICRO', 'URBAIN'])
+ *   - valeurs ([string, string, string, string]) : 4 valeurs droite, dans l'ordre
+ *     des labels figés (secteur / surface / contexte / complexité)
+ *   - sectionLabel (string, optionnel) : étiquette `data-section-label`
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  photo: ImageMetadata;
+  alt: string;
+  h1Lines: readonly [string, string];
+  valeurs: readonly [string, string, string, string];
+  sectionLabel?: string;
+}
+
+const { photo, alt, h1Lines, valeurs, sectionLabel } = Astro.props;
+
+// Les 4 labels sont la taxonomie figée du studio — ne pas paramétrer.
+const LABELS = [
+  'Secteur géographique',
+  'Moyenne surface jardin',
+  'Contexte environnemental',
+  'Complexité spatiale et environnementale',
+] as const;
+---
+
+<section
+  id="hero"
+  data-section-label={sectionLabel ?? h1Lines.join(' ')}
+  data-theme="dark"
+  class="typo-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+  aria-labelledby="hero-title"
+>
+  <div class="typo-hero__media">
+    <Image
+      src={photo}
+      alt={alt}
+      widths={[960, 1440, 1920, 2560]}
+      sizes="100vw"
+      quality={92}
+      format="webp"
+      loading="eager"
+      class="typo-hero__img"
+    />
+    <div class="typo-hero__veil" aria-hidden="true"></div>
+  </div>
+
+  <div class="typo-hero__overlay">
+    <h1 id="hero-title" class="typo-hero__title">
+      <span class="typo-hero__title-line">{h1Lines[0]}</span>
+      <span class="typo-hero__title-line">{h1Lines[1]}</span>
+    </h1>
+
+    <dl class="typo-hero__specs" aria-label="Caractéristiques typologie">
+      {
+        LABELS.map((label, i) => (
+          <div class="typo-hero__spec-row">
+            <dt class="typo-hero__spec-label">{label}</dt>
+            <dd class="typo-hero__spec-value">{valeurs[i]}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .typo-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    isolation: isolate;
+  }
+  .typo-hero__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .typo-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .typo-hero__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-black-deep) 68%, transparent) 0%,
+      color-mix(in oklab, var(--color-black-deep) 32%, transparent) 35%,
+      transparent 60%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  .typo-hero__overlay {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 5vw, 3.5rem);
+  }
+  .typo-hero__title {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(2.6rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+    max-width: none;
+  }
+  .typo-hero__title-line {
+    display: block;
+  }
+  .typo-hero__specs {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.45rem, 0.9vw, 0.85rem);
+  }
+  .typo-hero__spec-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: clamp(2rem, 6vw, 6rem);
+    width: 100%;
+  }
+  .typo-hero__spec-label {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+    line-height: 1.35;
+    color: var(--color-cream);
+    margin: 0;
+    text-align: left;
+    flex: 0 1 auto;
+  }
+  .typo-hero__spec-value {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+    line-height: 1.35;
+    color: var(--color-cream);
+    text-align: right;
+    margin: 0;
+    flex: 0 1 auto;
+  }
+  @media (max-width: 767px) {
+    .typo-hero__spec-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.15rem;
+    }
+    .typo-hero__spec-value {
+      text-align: left;
+    }
+  }
+</style>

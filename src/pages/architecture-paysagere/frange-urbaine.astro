@@ -1,0 +1,461 @@
+---
+/*
+ * /architecture-paysagere/frange-urbaine — page typologie 2026-05-19.
+ *
+ * Structure identique aux pilotes micro-urbain + coeur-urbain :
+ *   1. TypologieHero (composant partagé) avec H1 split + 4 specs sous H1
+ *   2. Galerie magazine (TODO — Morgan doit sélectionner les images 02 → 0n)
+ *   3. Manifeste typologie (placeholder Jonathan)
+ *   4. FAQ discrète
+ *   5. CTA full-width « DECOUVRIR LES PROJETS FRANGE URBAINE » + pill rouge
+ *
+ * Hero photo : on réutilise l'image du carousel home (cf. brief Morgan
+ * 2026-05-19 : « l'image du HÉRO correspond à l'image qu'on a mis sur la
+ * HomePage pour la typologie en question dans le scroll horizontal »).
+ * Source : public/typologies/03-frange-urbaine@2x.jpg → copiée dans
+ * src/assets/typologies/frange-urbaine/01-hero-home.jpg (Astro a besoin
+ * que l'image soit dans src/assets pour la pipeline Image optimisée).
+ *
+ * Contenus en placeholder explicite (rule CLAUDE.md §5 — ne JAMAIS inventer
+ * de contenu pour Jonathan). Tout est listé dans _brief/contenus-manquants.md
+ * sous les identifiants TYPOLOGIE-FRANGE-URBAINE-*.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TypologieHero from '@/components/astro/TypologieHero.astro';
+import { SITE } from '@/lib/site-config';
+import {
+  jsonLdGraph,
+  breadcrumbs,
+  localBusiness,
+  organization,
+  service as serviceSchema,
+  faqPage,
+} from '@/lib/schema-org';
+
+import heroPhoto from '@/assets/typologies/frange-urbaine/01-hero-home.jpg';
+
+const typologie = SITE.typologies.find((t) => t.slug === 'frange-urbaine')!;
+
+// 4 valeurs droite — PLACEHOLDER : Morgan/Jonathan fournira les textes
+// exacts (cf. _brief/contenus-manquants.md TYPOLOGIE-FRANGE-URBAINE-SPECS).
+// Les 4 labels sont figés et viennent du composant `<TypologieHero>`.
+const valeurs = [
+  '[À FOURNIR : secteur géographique frange urbaine]',
+  '[À FOURNIR : moyenne surface jardin]',
+  '[À FOURNIR : contexte environnemental]',
+  '[À FOURNIR : complexité spatiale et environnementale]',
+] as const;
+
+// Manifeste — PLACEHOLDER (cf. _brief/contenus-manquants.md
+// TYPOLOGIE-FRANGE-URBAINE-MANIFESTE).
+const manifeste = {
+  bloc1: '[À FOURNIR PAR JONATHAN : 1er paragraphe manifeste frange urbaine ~30-40 mots]',
+  bloc2: '[À FOURNIR PAR JONATHAN : 2e paragraphe manifeste frange urbaine ~30-40 mots]',
+  precision: '[À FOURNIR PAR JONATHAN : précision technique frange urbaine ~60-80 mots]',
+};
+
+// FAQ — reprise du pattern micro/coeur urbain (générique inter-typologies).
+const faq = [
+  {
+    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
+    answer:
+      "Parce que c'est le cœur du métier. L'étude comprend le plan masse, les plans de plantations, le DCE, la mise en concurrence des entreprises et le suivi de chantier. Le chiffrage travaux vient ensuite, précisément.",
+  },
+  {
+    question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
+    answer:
+      "Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).",
+  },
+  {
+    question: 'Vous réalisez les travaux vous-mêmes ?',
+    answer:
+      'Non. Je conçois et je coordonne — je sélectionne et je pilote des entreprises mises en concurrence sur chaque lot (terrassement, maçonnerie paysagère, arrosage, éclairage, plantations).',
+  },
+];
+
+const breadcrumbItems = [
+  { name: 'Accueil', item: '/' },
+  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: typologie.nomProprietaire, item: `/architecture-paysagere/${typologie.slug}` },
+];
+
+const schema = jsonLdGraph([
+  organization(),
+  localBusiness(),
+  serviceSchema({
+    name: typologie.h1Seo,
+    slug: typologie.slug,
+    description: `${typologie.h1Seo} — Studio J Oliveira, designer paysagiste biophilique. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}.`,
+    priceRangeMin: typologie.coutEtudeNumeric,
+    priceRangeMax: typologie.coutEtudeNumeric,
+  }),
+  faqPage(faq),
+  breadcrumbs(breadcrumbItems),
+]);
+---
+
+<BaseLayout
+  title={`${typologie.h1Seo} — Frange urbaine`}
+  description={`${typologie.h1Seo} avec le Studio J Oliveira. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
+  darkHero
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={schema} />
+  </Fragment>
+
+  {/* ═════════ 1 · HERO — composant partagé `<TypologieHero>` ═══════════ */}
+  <TypologieHero
+    photo={heroPhoto}
+    alt="Frange urbaine — projet Studio J Oliveira (visuel home carousel)"
+    h1Lines={['FRANGE', 'URBAINE']}
+    valeurs={valeurs}
+    sectionLabel="Frange urbaine"
+  />
+
+  {
+    /* ═════════ 2 · GALERIE — à compléter quand Morgan aura sélectionné
+       les images 02, 03, etc. dans ses dossiers. Pattern à choisir une
+       fois les images vues : (a) large + diptyque + large comme
+       micro-urbain, ou (b) diptyque + large + diptyque comme coeur-urbain.
+       Section omise pour l'instant. */
+  }
+
+  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
+  <section
+    id="manifeste"
+    data-section-label="Manifeste"
+    data-theme="dark"
+    class="fu-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="manifeste-title"
+  >
+    <div class="fu-manifeste__inner">
+      <h2 id="manifeste-title" class="sr-only">La typologie frange urbaine</h2>
+      <div
+        class="fu-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="fu-manifeste__para">{manifeste.bloc1}</p>
+        <p class="fu-manifeste__para">{manifeste.bloc2}</p>
+      </div>
+      <p class="fu-manifeste__precision">{manifeste.precision}</p>
+    </div>
+  </section>
+
+  {/* ═════════ 4 · FAQ discrète ══════════════════════════════════════════ */}
+  <section
+    id="faq"
+    data-section-label="FAQ"
+    data-theme="dark"
+    class="fu-faq bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="faq-title"
+  >
+    <div class="fu-faq__inner">
+      <p class="fu-faq__eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title" class="fu-faq__title">Avant d'appeler.</h2>
+      <ul class="fu-faq__list">
+        {
+          faq.map((item) => (
+            <li class="fu-faq__item">
+              <details class="fu-faq__details group">
+                <summary class="fu-faq__summary">
+                  <span>{item.question}</span>
+                  <span class="fu-faq__plus" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p class="fu-faq__answer">{item.answer}</p>
+              </details>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS FRANGE URBAINE » */}
+  <section
+    data-theme="dark"
+    class="fu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="cta-title"
+  >
+    <a href="/realisations" class="fu-cta__link" data-cursor-label="VOIR">
+      <h2
+        id="cta-title"
+        class="fu-cta__title"
+        data-justify-multi
+        data-justify-amp="50"
+        data-justify-line-step="0.15"
+        data-justify-line-window="0.55"
+      >
+        <span class="fu-cta__title-line" data-justify-line data-justify-direction="from-right">
+          DECOUVRIR LES PROJETS FRANGE URBAINE
+        </span>
+      </h2>
+    </a>
+    <a href="/demarrer-un-projet" class="fu-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
+      <span class="fu-cta__pill-dot" aria-hidden="true"></span>
+      <span class="fu-cta__pill-label">Démarrer un projet</span>
+      <img
+        src="/brand/fleche-white.webp"
+        alt=""
+        aria-hidden="true"
+        class="fu-cta__pill-arrow"
+        width="32"
+        height="32"
+      />
+    </a>
+  </section>
+
+  <style is:global>
+    /* /architecture-paysagere/frange-urbaine — manifeste / FAQ / CTA
+       en copie directe de micro/coeur-urbain (préfixe `fu-`). Le hero
+       est dans `<TypologieHero>` partagé. La galerie sera ajoutée
+       quand Morgan aura sélectionné les images. */
+
+    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
+    .fu-manifeste {
+      width: 100%;
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .fu-manifeste__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+    @media (min-width: 1024px) {
+      .fu-manifeste__inner {
+        grid-template-columns: 1fr 1.35fr;
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+      .fu-manifeste__body,
+      .fu-manifeste__precision {
+        grid-column: 2;
+      }
+    }
+    .fu-manifeste__body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 2.2vw, 1.85rem);
+    }
+    .fu-manifeste__para {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
+      line-height: 1.45;
+      letter-spacing: -0.005em;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .fu-manifeste__body .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
+    }
+    .fu-manifeste__precision {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+      line-height: 1.6;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      text-align: left;
+      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
+    }
+
+    /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
+    .fu-faq {
+      width: 100%;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .fu-faq__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 1024px) {
+      .fu-faq__inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+    }
+    .fu-faq__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .fu-faq__title {
+      grid-column: 1;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    @media (min-width: 1024px) {
+      .fu-faq__eyebrow,
+      .fu-faq__title {
+        grid-column: 1;
+      }
+    }
+    .fu-faq__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      grid-column: 1;
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    @media (min-width: 1024px) {
+      .fu-faq__list {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+    .fu-faq__item {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .fu-faq__summary {
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+      line-height: 1.3;
+      color: var(--color-cream);
+      list-style: none;
+      transition: color 0.3s ease;
+    }
+    .fu-faq__summary::-webkit-details-marker {
+      display: none;
+    }
+    .fu-faq__summary:hover {
+      color: color-mix(in oklab, var(--color-cream) 85%, var(--color-red));
+    }
+    .fu-faq__plus {
+      flex-shrink: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+      line-height: 1;
+      transition: transform 0.35s var(--ease-out-editorial);
+      transform-origin: center;
+    }
+    .fu-faq__details[open] .fu-faq__plus {
+      transform: rotate(45deg);
+    }
+    .fu-faq__answer {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      margin: 0;
+      padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+      max-width: 60ch;
+    }
+
+    /* ─── 5 · CTA full-width ────────────────────────────────────────────── */
+    .fu-cta {
+      width: 100%;
+      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
+    .fu-cta__link {
+      display: block;
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      text-decoration: none;
+      color: inherit;
+    }
+    .fu-cta__title {
+      width: 100%;
+      margin: 0;
+    }
+    .fu-cta__title-line {
+      display: block;
+      width: 100%;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 5.5vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) {
+      .fu-cta__title-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+    .fu-cta__pill-red {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1.6rem;
+      background-color: var(--color-red);
+      color: var(--color-cream);
+      border-radius: 9999px;
+      font-family: var(--font-body), sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 1.05vw, 1rem);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: transform 0.35s var(--ease-out-editorial);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .fu-cta__pill-red:hover,
+      .fu-cta__pill-red:focus-visible {
+        transform: scale(1.04);
+      }
+    }
+    .fu-cta__pill-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      flex-shrink: 0;
+    }
+    .fu-cta__pill-label {
+      white-space: nowrap;
+    }
+    .fu-cta__pill-arrow {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .fu-manifeste,
+    .fu-faq,
+    .fu-cta {
+      box-sizing: border-box;
+    }
+  </style>
+</BaseLayout>
