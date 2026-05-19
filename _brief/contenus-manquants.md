@@ -260,14 +260,6 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 **Contexte** : Idem TYPOLOGIE-FRANGE-URBAINE-SPECS, pour la typologie « Domaines & Caractère » (châteaux, manoirs, domaines familiaux, surface sans limite).
 **Deadline suggérée** : avant mise en ligne fin mai 2026.
 
-### TYPOLOGIE-DOMAINE-CARACTERE-H1
-
-**Type** : décision éditoriale (1 caractère)
-**Emplacement** : `src/pages/architecture-paysagere/domaine-caractere.astro` — prop `h1Lines` du `<TypologieHero>`
-**Volume attendu** : confirmation oui/non
-**Contexte** : Default `['DOMAINES', 'CARACTERE']` (sans le « & » de la marque, pour cohérence visuelle avec MICRO/URBAIN, COEUR/URBAIN, FRANGE/URBAINE — esthétique designbyad). Morgan doit confirmer s'il veut garder le « & » de la marque : `['DOMAINES &', 'CARACTERE']` ou éventuellement `['DOMAINES', '& CARACTERE']`.
-**Deadline suggérée** : avant mise en ligne fin mai 2026.
-
 ### TYPOLOGIE-DOMAINE-CARACTERE-MANIFESTE
 
 **Type** : texte long (manifeste + précision technique)

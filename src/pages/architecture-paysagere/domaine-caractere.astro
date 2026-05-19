@@ -5,10 +5,10 @@
  * Structure identique aux pilotes micro-urbain + coeur-urbain. Voir
  * frange-urbaine.astro pour la doc détaillée (même squelette).
  *
- * H1 split : ['DOMAINES', 'CARACTERE'] par défaut (sans le « & » ni
- * l'accent sur E, pour cohérence visuelle avec MICRO/URBAIN, COEUR/URBAIN,
- * FRANGE/URBAINE — esthétique designbyad). À valider avec Morgan : il
- * peut vouloir garder le « & » de la marque (« DOMAINES & / CARACTERE »).
+ * H1 split : ['DOMAINES &', 'CARACTERE'] — décision Morgan 2026-05-19,
+ * le « & » de la marque est conservé sur la 1re ligne. L'accent sur le
+ * E final de « CARACTERE » reste retiré (esthétique designbyad signée
+ * Jonathan, comme « COEUR » sans diphtongue Œ).
  *
  * Hero photo : carousel home (cf. brief Morgan 2026-05-19).
  * Source : public/typologies/04-domaine-caractere@2x.jpg → copiée dans
@@ -98,7 +98,7 @@ const schema = jsonLdGraph([
   <TypologieHero
     photo={heroPhoto}
     alt="Domaine & Caractère — projet Studio J Oliveira (visuel home carousel)"
-    h1Lines={['DOMAINES', 'CARACTERE']}
+    h1Lines={['DOMAINES &', 'CARACTERE']}
     valeurs={valeurs}
     sectionLabel="Domaines & Caractère"
   />
@@ -163,7 +163,7 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS DOMAINES CARACTERE » */}
+  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS DOMAINES & CARACTERE » */}
   <section
     data-theme="dark"
     class="dc-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
@@ -179,7 +179,7 @@ const schema = jsonLdGraph([
         data-justify-line-window="0.55"
       >
         <span class="dc-cta__title-line" data-justify-line data-justify-direction="from-right">
-          DECOUVRIR LES PROJETS DOMAINES CARACTERE
+          DECOUVRIR LES PROJETS DOMAINES & CARACTERE
         </span>
       </h2>
     </a>
