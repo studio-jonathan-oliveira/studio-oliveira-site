@@ -2,19 +2,28 @@
 /*
  * /architecture-paysagere — page pilier business (PDF l.708-709 PRIORITÉ ABSOLUE).
  *
- * Refonte style Polestar (PDF l.775-777 + audit DA 2026-04-23) :
- *   Hero immersif → manifeste court → 5 chapitres thématiques scroll-zoom
- *   (Végétal, Matières, Textures, Luminaires, Modèles biophiliques) →
- *   grille 4 typologies → process 3 étapes → FAQ étoffée → CTA final.
+ * Refonte DA 2026-05-19 (Morgan) : alignement total avec la nouvelle DA
+ * insufflée sur /studio + les 4 pages typologies (micro/cœur/frange/domaine).
+ * Pattern noir + cream + accent rouge, Inter ExtraLight UPPERCASE pour les
+ * titres, FaqAccordion partagé pour la cohérence des FAQ.
  *
- * Voix éditoriale §2 cahier : retenue, zéro pub, zéro « aucun engagement ».
- * Contenu sourcé PDF Jonathan. Images thèmes = [À FOURNIR PAR JONATHAN],
- * placeholders visuels avec assets existants typologies.
+ * Structure validée Morgan 2026-05-19 :
+ *   1. Hero plein-bleed photo + H1 split « ARCHITECTURE / PAYSAGÈRE »
+ *   2. Manifeste court (col droite, structure typologies)
+ *   3. 5 typologies en grid asymétrique cards cliquables — la 5e
+ *      (architecture publique) est en mode « Prochainement » car la
+ *      page est en cours de repensée par Jonathan (cf. mémoire
+ *      project_oliveira_architecture_publique_orientation)
+ *   4. Process 3 étapes (étude préliminaire / étude projet / suivi chantier)
+ *   5. FAQ étoffée via <FaqAccordion> partagé
+ *   6. CTA final pill rouge
+ *
+ * Voix éditoriale §2 cahier : retenue, zéro pub. Contenu sourcé du PDF
+ * Jonathan + brief existant. Pas de contenu inventé (rule CLAUDE.md §5).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/astro/Section.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
 import { Image } from 'astro:assets';
+import FaqAccordion from '@/components/islands/FaqAccordion';
 import { SITE } from '@/lib/site-config';
 import { isDraft } from '@/lib/drafts';
 import {
@@ -26,93 +35,53 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
-// Assets existants — placeholders visuels en attendant images dédiées Jonathan
-import visuelVegetal from '@/assets/typologies/frange-urbaine.webp';
-import visuelMatieres from '@/assets/typologies/domaine-caractere.webp';
-import visuelTextures from '@/assets/typologies/coeur-urbain.webp';
-import visuelLuminaires from '@/assets/typologies/micro-urbain.webp';
-import visuelBiophilie from '@/assets/home/hero-biophilie.jpg';
+// Hero — visuel biophilie déjà utilisé sur la home, cohérent visuellement.
+import heroPhoto from '@/assets/home/hero-biophilie.jpg';
 
-// Mapping typologie.slug → image pour les cards (enrichit visuel section 02)
+// 5 visuels typologies (cards) — webp optimisés existants.
 import typoMicroUrbain from '@/assets/typologies/micro-urbain.webp';
 import typoCoeurUrbain from '@/assets/typologies/coeur-urbain.webp';
 import typoFrangeUrbaine from '@/assets/typologies/frange-urbaine.webp';
 import typoDomaineCaractere from '@/assets/typologies/domaine-caractere.webp';
+import typoArchitecturePublique from '@/assets/typologies/architecture-publique.webp';
 
-// Image full-bleed de respiration entre typologies et process (Morgan
-// 2026-04-27 : « grand espace vide, faut une image »). Projet livré en
-// nocturne, bonne respiration éditoriale.
-import respirationProcess from '@/assets/projets/coeur-urbain-parenthese/02.webp';
+// Tableau enrichi des 5 typologies à afficher en grid. On reprend
+// SITE.typologies (4 jardins) + on ajoute architecture-publique en 5e
+// avec son flag `bientot` pour le styliser distinctement.
+interface TypoCard {
+  slug: string;
+  nom: string;
+  exemple: string;
+  image: ImageMetadata;
+  bientot?: boolean;
+}
 
-// On construit un tableau enrichi avec les images explicitement associées
-// (pattern plus sûr qu'un Record<string, ImageMetadata> pour <Image> Astro
-// qui peut rater les imports dynamiques au build).
-const typoImageMap: Record<string, ImageMetadata> = {
-  'micro-urbain': typoMicroUrbain,
-  'coeur-urbain': typoCoeurUrbain,
-  'frange-urbaine': typoFrangeUrbaine,
-  'domaine-caractere': typoDomaineCaractere,
-};
-
-const typologies = SITE.typologies;
-
-// 5 chapitres thématiques — titres et copy issus de la démarche Jonathan
-// (cahier §2, PDF « démarche biophilique »).
-const chapitres = [
+const typologies: TypoCard[] = [
+  ...SITE.typologies.map((t) => {
+    const map: Record<string, ImageMetadata> = {
+      'micro-urbain': typoMicroUrbain,
+      'coeur-urbain': typoCoeurUrbain,
+      'frange-urbaine': typoFrangeUrbaine,
+      'domaine-caractere': typoDomaineCaractere,
+    };
+    return {
+      slug: t.slug,
+      nom: t.nomProprietaire,
+      exemple: t.exemple,
+      image: map[t.slug]!,
+    };
+  }),
   {
-    num: '01',
-    titre: 'Végétal',
-    accroche: 'Le vivant comme matériau premier.',
-    phrase:
-      "Chaque essence est choisie pour son comportement dans le lieu — exposition, sol, climat, biodiversité locale. Pas de catalogue, pas d'essence importée pour l'effet.",
-    image: visuelVegetal,
-    imageNote:
-      '[À FOURNIR PAR JONATHAN : image macro végétal — feuillage détail, port d\'une plante, texture de feuille. Placeholder actuel = typologie "frange-urbaine".]',
-  },
-  {
-    num: '02',
-    titre: 'Matières',
-    accroche: 'Ce qui dure, ce qui patine.',
-    phrase:
-      "Pierre locale, bois non-traité, métal brut. Le jardin vieillit bien parce qu'il est fait de matériaux qui prennent le temps avec grâce.",
-    image: visuelMatieres,
-    imageNote:
-      '[À FOURNIR PAR JONATHAN : image macro matière — pierre taillée, bois brut, acier corten, gravier. Placeholder actuel = typologie "domaine-caractere".]',
-  },
-  {
-    num: '03',
-    titre: 'Textures',
-    accroche: 'La peau du lieu.',
-    phrase:
-      'Mousse sur la pierre, herbe rase entre les pas japonais, corten rouillé, bois érodé. Les textures racontent le passage du temps et ancrent le jardin dans son territoire.',
-    image: visuelTextures,
-    imageNote:
-      '[À FOURNIR PAR JONATHAN : image macro texture — détails tactiles, proximité sensorielle. Placeholder = typologie "coeur-urbain".]',
-  },
-  {
-    num: '04',
-    titre: 'Luminaires',
-    accroche: 'La nuit révèle le dessin.',
-    phrase:
-      "L'éclairage architectural n'est pas un add-on. Il prolonge l'usage, sculpte les volumes, met les essences en valeur à la tombée du jour. Étudié avec le dessin, pas après.",
-    image: visuelLuminaires,
-    imageNote:
-      '[À FOURNIR PAR JONATHAN : image nocturne — jardin ou terrasse éclairée, luminaire détail. Placeholder = typologie "micro-urbain".]',
-  },
-  {
-    num: '05',
-    titre: 'Modèles biophiliques',
-    accroche: 'Les 14 principes Browning, Ryan, Clancy.',
-    phrase:
-      "Le design biophilique s'appuie sur 14 principes scientifiques documentés — connexion sensorielle, refuges, prospect, mystère, transitoire. Chaque projet active ceux qui servent le lieu.",
-    image: visuelBiophilie,
-    imageNote:
-      '[À FOURNIR PAR JONATHAN : visuel conceptuel sur les 14 principes ou liste animée. Placeholder = image hero biophilie.]',
+    slug: 'architecture-publique',
+    nom: 'Architecture publique',
+    exemple: 'Marché public, génie végétal, design biophilique',
+    image: typoArchitecturePublique,
+    bientot: true,
   },
 ];
 
-// FAQ étoffée — questions existantes (sourcées PDF) + questions d'objection
-// (audit UX 2026-04-23 §4) en placeholder copie Jonathan.
+// FAQ — questions clé de la page pilier (sourcées PDF Jonathan + audit UX).
+// Les items draft sont filtrés en prod via isDraft().
 const pageFaqAll = [
   {
     question: "Qu'est-ce qu'une typologie de jardin ?",
@@ -150,14 +119,7 @@ const pageFaqAll = [
     answer:
       '[À FOURNIR PAR JONATHAN : 80-120 mots. Angle suggéré : modalités de déplacement, fréquence des visites sur site, outils collaboratifs à distance, planification pour optimiser les allers-retours.]',
   },
-  {
-    question: 'Peut-on voir un projet réalisé avant de commencer ?',
-    answer:
-      '[À FOURNIR PAR JONATHAN : 80-120 mots. Angle suggéré : visite de projets livrés sur demande qualifiée, portfolio Twinmotion accessible, études de cas en journal.]',
-  },
 ];
-
-// Filtre les FAQ draft : ne pollue pas le schema FAQPage ni le rendu visible en prod.
 const pageFaq = pageFaqAll.filter((f) => !isDraft(f.answer));
 
 const schema = jsonLdGraph([
@@ -167,7 +129,7 @@ const schema = jsonLdGraph([
     name: 'Architecture paysagère sur mesure',
     slug: '',
     description:
-      'Studio de design biophilique à Brive‑la‑Gaillarde. Études préliminaires, conception, DCE et suivi de chantier pour 4 typologies de jardin.',
+      'Studio de design biophilique à Brive-la-Gaillarde. Études préliminaires, conception, DCE et suivi de chantier pour 4 typologies de jardin.',
     priceRangeMin: 1200,
     priceRangeMax: 6500,
   }),
@@ -188,451 +150,176 @@ const schema = jsonLdGraph([
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ───── HERO IMMERSIF FOREST — pleine page éditoriale ───── */}
+  {/* ═════════ 1 · HERO — photo plein-bleed + H1 split « ARCHITECTURE / PAYSAGÈRE » */}
   <section
     id="hero"
     data-section-label="Architecture paysagère"
     data-theme="dark"
-    class="ap-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="ap-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="hero-title"
   >
-    <div class="absolute inset-0 -z-10">
+    <div class="ap-hero__media">
       <Image
-        src={visuelBiophilie}
-        alt=""
+        src={heroPhoto}
+        alt="Studio de design paysager biophilique — Brive-la-Gaillarde"
         widths={[960, 1440, 1920, 2560]}
         sizes="100vw"
-        quality={80}
+        quality={92}
         format="webp"
-        class="ap-hero-image h-full w-full object-cover object-center"
         loading="eager"
-        data-hero-zoom
+        class="ap-hero__img"
       />
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/40 to-transparent"
-        aria-hidden="true"
-      >
-      </div>
+      <div class="ap-hero__veil" aria-hidden="true"></div>
     </div>
 
-    <div class="relative flex min-h-[100svh] flex-col justify-end">
-      <div
-        class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-24 md:px-10 md:pt-48 md:pb-32"
-        data-scroll-rise
-        data-scroll-rise-amp="-90"
-      >
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/70 uppercase">
-          <span class="text-[var(--color-cream)]/40">Studio</span>
-          &nbsp;·&nbsp; Architecture paysagère
-        </p>
-        {
-          /* H1 cassé designbyad (Morgan 2026-04-27) : ARCHITECTURE PAYSAGÈRE
-            CAPS Jost monumentales + "sur mesure." italic Cormorant laterite
-            en contrepoint. Asymétrie typo qui signe la voix du studio. */
-        }
-        <h1
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="ap-h1-broken mt-8 font-[family-name:var(--font-heading)] leading-[0.94] tracking-tight"
-        >
-          <span data-mask-line class="ap-h1-positioning block">ARCHITECTURE PAYSAGÈRE</span>
-          <span data-mask-line class="block text-[var(--color-cream)]/55 italic">
-            sur mesure.
-          </span>
-        </h1>
-        <p
-          data-reveal="up"
-          data-reveal-delay="0.4"
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
-        >
-          Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
-          le chantier — sans jamais être juge et partie.
-        </p>
-      </div>
+    <div class="ap-hero__overlay">
+      <h1 id="hero-title" class="ap-hero__title">
+        <span class="ap-hero__title-line">ARCHITECTURE</span>
+        <span class="ap-hero__title-line">PAYSAGÈRE</span>
+      </h1>
+      <p class="ap-hero__lead">
+        Je conçois, je ne réalise pas. Le studio pense le projet, consulte les artisans, coordonne
+        le chantier — sans jamais être juge et partie.
+      </p>
     </div>
   </section>
 
-  {/* ───── MANIFESTE — court, éditorial, en cream ───── */}
-  <Section variant="forest" space="compact">
-    <div class="mx-auto max-w-3xl py-20 md:py-32" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-        <span class="text-[var(--color-ink)]/40">02</span> &nbsp;·&nbsp; Démarche
-      </p>
-      <p
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-[1.18] text-[var(--color-ink)] md:text-[length:var(--text-4xl)]"
-      >
-        Chaque lieu a son <em class="text-[var(--color-ink)]/55 italic">territoire</em>, ses
-        contraintes, son niveau d'étude. La méthode, elle, reste la même —
-        <em class="italic">biophilique, rigoureuse, sensible</em>.
-      </p>
-    </div>
-
-    {
-      /* Bande keywords designbyad — mots-clés CAPS justify-scroll. Mots issus
-        du process Jonathan déjà présents plus bas dans la page (étapes 1/2/3
-        + déclinaisons). Pattern signature du studio. */
-    }
-    <p
-      class="ap-keywords-band mx-auto mt-10 max-w-[1500px] px-6 pb-20 md:px-10 md:pb-28"
-      data-reveal="up"
-      data-justify-scroll
-      data-justify-amp="20"
-      data-justify-seed="11"
-    >
-      Étude préliminaire <span aria-hidden="true">·</span>
-      Conception <span aria-hidden="true">·</span>
-      DCE <span aria-hidden="true">·</span>
-      Coordination <span aria-hidden="true">·</span>
-      Suivi
-    </p>
-  </Section>
-
-  {/* ───── 5 CHAPITRES THÉMATIQUES — style Polestar scroll-driven ───── */}
+  {/* ═════════ 2 · MANIFESTE — col droite, structure typologies ═══════════ */}
   <section
-    id="chapitres"
+    id="manifeste"
     data-section-label="Démarche"
-    data-theme="light"
-    class="ap-chapters relative bg-[var(--color-cream)] text-[var(--color-ink)]"
-    aria-label="Cinq dimensions de l'architecture paysagère"
+    data-theme="dark"
+    class="ap-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="manifeste-title"
   >
-    {
-      chapitres.map((ch, i) => (
-        <article class="ap-chapter" data-ap-chapter aria-labelledby={`chapter-${ch.num}`}>
-          {/* offset alterné par parité — pattern designbyad asymétrique :
-              chapitre pair entre depuis la gauche, impair depuis la droite. */}
-          <div
-            class="ap-chapter-visual"
-            data-ap-chapter-visual
-            data-img-reveal
-            data-img-reveal-speed="1"
-            data-img-reveal-offset={i % 2 === 0 ? 'left' : 'right'}
-            data-img-reveal-offset-amp="60"
-          >
-            <Image
-              src={ch.image}
-              alt={`Chapitre ${ch.num} — ${ch.titre}`}
-              widths={[720, 1080, 1440, 1920]}
-              sizes="(min-width: 1024px) 55vw, 100vw"
-              quality={82}
-              format="webp"
-              loading={i === 0 ? 'eager' : 'lazy'}
-              class="ap-chapter-img"
-              data-ap-chapter-img
-            />
-            <div class="ap-chapter-veil" aria-hidden="true" />
-          </div>
-
-          <div class="ap-chapter-copy">
-            <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
-              {ch.num} · Chapitre
-            </p>
-            <h2
-              id={`chapter-${ch.num}`}
-              class="ap-chapter-title mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.95] md:text-[length:var(--text-hero)]"
-            >
-              <em class="italic">{ch.titre}</em>
-            </h2>
-            <p class="mt-6 max-w-md font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.18] text-[var(--color-ink)]/90 italic">
-              {ch.accroche}
-            </p>
-            <p class="mt-8 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
-              {ch.phrase}
-            </p>
-          </div>
-        </article>
-      ))
-    }
+    <div class="ap-manifeste__inner">
+      <h2 id="manifeste-title" class="sr-only">Démarche du studio</h2>
+      <div
+        class="ap-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="ap-manifeste__para">
+          Chaque lieu a son <em>territoire</em>, ses contraintes, son niveau d'étude.
+        </p>
+        <p class="ap-manifeste__para">
+          La méthode, elle, reste la même — <span class="ap-manifeste__accent"
+            >biophilique, rigoureuse, sensible</span
+          >.
+        </p>
+      </div>
+      <p class="ap-manifeste__precision">
+        Cinq typologies, un même process en trois étapes (étude préliminaire, étude projet, suivi de
+        chantier). L'étude est rémunérée — c'est elle qui garantit la qualité du dessin et
+        l'indépendance vis-à-vis des entreprises.
+      </p>
+    </div>
   </section>
 
-  {/* ───── 4 TYPOLOGIES — grille asymétrique éditoriale ───── */}
-  <Section variant="forest" id="typologies" sectionLabel="Typologies" labelledBy="typologies-title">
-    <div class="mb-16 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-        <span class="text-[var(--color-ink)]/40">03</span> &nbsp;·&nbsp; Les quatre typologies
-      </p>
-      <h2
-        id="typologies-title"
-        data-mask-reveal
-        data-mask-stagger="0.14"
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] md:text-[length:var(--text-5xl)]"
-      >
-        <span data-mask-line class="block pb-[0.12em]"
-          >Chaque jardin a son <em class="text-[var(--color-ink)]/55 italic">territoire</em>.</span
-        >
-      </h2>
+  {/* ═════════ 3 · 5 TYPOLOGIES — grid cards cliquables ══════════════════ */}
+  <section
+    id="typologies"
+    data-section-label="Typologies"
+    data-theme="dark"
+    class="ap-typos bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="typos-title"
+  >
+    <div class="ap-typos__header">
+      <p class="ap-typos__eyebrow">Les cinq typologies</p>
+      <h2 id="typos-title" class="ap-typos__title">Chaque jardin a son territoire.</h2>
     </div>
 
     {
-      /* Animation cards : CSS pure avec animation-delay nth-child + Intersection
-        Observer inline page-level pour trigger au scroll (Morgan 2026-04-27 :
-        « je veux de l'animation sur ces cards, c'est mort »). Pas de
-        data-reveal/-stagger (qui buggaient sur cette grid avec aspect-ratio
-        4/5). Approche bétonnée : observer simple, classe .is-revealed
-        qui démarre l'animation par card avec stagger. */
+      /* Grid asymétrique : 5 cards, layout 2-col desktop avec card grande
+         pour la 1re et la 5e. Ordre :
+            ┌──────┐ ┌──┐
+            │  01  │ │02│
+            └──────┘ ├──┤
+            ┌──┐ ┌──┤03│
+            │04│ │05│
+            └──┘ └──┘
+         Mobile : empilé en colonne. Architecture publique (5e, bientôt)
+         a un style distinct (badge + opacité légère). */
     }
-    <ul data-typo-cards class="grid grid-cols-1 gap-px bg-[var(--color-forest)]/10 md:grid-cols-2">
+    <ul class="ap-typos__grid" data-typo-cards>
       {
-        typologies.map((t) => {
-          const img = typoImageMap[t.slug];
-          return (
-            <li class="ap-typo-card group bg-[var(--color-cream)]">
-              <a href={`/architecture-paysagere/${t.slug}`} class="flex h-full flex-col">
-                {img && (
-                  <div class="ap-typo-card-visual overflow-hidden">
-                    <Image
-                      src={img}
-                      alt={`Typologie ${t.nomProprietaire} — ${t.exemple}`}
-                      widths={[480, 720, 960, 1280]}
-                      sizes="(min-width: 768px) 44vw, 92vw"
-                      quality={80}
-                      format="webp"
-                      class={`ap-typo-card-img h-full w-full object-cover ${t.slug === 'domaine-caractere' ? 'object-top' : 'object-center'}`}
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                <div class="flex flex-1 flex-col justify-between p-8 text-[var(--color-forest)] md:p-12">
-                  <div>
-                    <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/65 uppercase">
-                      {t.surface} · {t.exemple}
-                    </p>
-                    <h3 class="mt-5 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight">
-                      <em class="italic">{t.nomProprietaire}</em>
-                    </h3>
-                    <p class="mt-3 text-sm text-[var(--color-forest)]/70">{t.h1Seo}</p>
-
-                    <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[var(--color-forest)]/15 pt-6 text-xs">
-                      <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
-                          Budget travaux
-                        </dt>
-                        <dd class="mt-1 text-sm">{t.budgetTravaux}</dd>
-                      </div>
-                      <div>
-                        <dt class="font-mono tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
-                          Étude
-                        </dt>
-                        <dd class="mt-1 text-sm text-[var(--color-forest)]/70">
-                          À partir de {t.prixEtude}
-                        </dd>
-                      </div>
-                    </dl>
-                  </div>
-                  <span class="mt-8 inline-flex items-center gap-2 font-mono text-sm tracking-[0.22em] uppercase transition-all group-hover:translate-x-1">
-                    Explorer
-                    <span aria-hidden="true">→</span>
+        typologies.map((t, i) => (
+          <li class={`ap-typos__card ap-typos__card--${i + 1}${t.bientot ? ' is-bientot' : ''}`}>
+            <a
+              href={`/architecture-paysagere/${t.slug}`}
+              class="ap-typos__link"
+              aria-label={`Découvrir la typologie ${t.nom}`}
+            >
+              <div class="ap-typos__visual">
+                <Image
+                  src={t.image}
+                  alt={`Typologie ${t.nom} — ${t.exemple}`}
+                  widths={[480, 720, 960, 1280]}
+                  sizes="(min-width: 1024px) 44vw, 92vw"
+                  quality={86}
+                  format="webp"
+                  class="ap-typos__img"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                />
+                <div class="ap-typos__veil" aria-hidden="true" />
+                {t.bientot && (
+                  <span class="ap-typos__badge" aria-hidden="true">
+                    Prochainement
                   </span>
-                </div>
-              </a>
-            </li>
-          );
-        })
+                )}
+              </div>
+              <div class="ap-typos__copy">
+                <span class="ap-typos__num">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="ap-typos__name">{t.nom}</h3>
+                <p class="ap-typos__tagline">{t.exemple}</p>
+                <span class="ap-typos__cta" aria-hidden="true">
+                  Explorer
+                  <span class="ap-typos__arrow">→</span>
+                </span>
+              </div>
+            </a>
+          </li>
+        ))
       }
     </ul>
-
-    <style>
-      /* Cards typologies — aspect-ratio plus haut sur desktop pour l'immersion
-         (Morgan 2026-04-27). 4/5 portrait desktop = vertical élégant. */
-      .ap-typo-card-visual {
-        aspect-ratio: 4 / 3;
-        background-color: var(--color-forest);
-        overflow: hidden;
-      }
-      @media (min-width: 768px) {
-        .ap-typo-card-visual {
-          aspect-ratio: 4 / 5;
-        }
-      }
-      .ap-typo-card-img {
-        transform: scale(1.04);
-        transition: transform 1.2s var(--ease-out-editorial);
-      }
-      .ap-typo-card:hover .ap-typo-card-img,
-      .ap-typo-card:focus-within .ap-typo-card-img {
-        transform: scale(1.1);
-      }
-
-      /* Animation reveal — pre-state + classe .is-revealed posée par observer
-         inline (script en bas du fichier). Stagger via nth-child : card 1
-         apparait sans delay, puis +0.15s par card. Image sur clip-path qui
-         se révèle, contenu qui fade-up légèrement. */
-      .ap-typo-card {
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 1s var(--ease-out-editorial),
-          transform 1s var(--ease-out-editorial);
-      }
-      .ap-typo-card-visual .ap-typo-card-img {
-        clip-path: inset(100% 0 0 0);
-        transition:
-          clip-path 1.2s var(--ease-out-editorial),
-          transform 1.2s var(--ease-out-editorial);
-      }
-      [data-typo-cards].is-revealed .ap-typo-card {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      [data-typo-cards].is-revealed .ap-typo-card-img {
-        clip-path: inset(0 0 0 0);
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) {
-        transition-delay: 0s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(1) .ap-typo-card-img {
-        transition-delay: 0s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) {
-        transition-delay: 0.12s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(2) .ap-typo-card-img {
-        transition-delay: 0.12s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) {
-        transition-delay: 0.24s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(3) .ap-typo-card-img {
-        transition-delay: 0.24s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) {
-        transition-delay: 0.36s;
-      }
-      [data-typo-cards].is-revealed .ap-typo-card:nth-child(4) .ap-typo-card-img {
-        transition-delay: 0.36s;
-      }
-    </style>
-
-    <script>
-      // Observer simple page-level pour déclencher l'animation des cards
-      // typologies (data-reveal-stagger ne fonctionnait pas sur cette grid,
-      // cause non identifiée). Pattern bétonné : add class .is-revealed dès
-      // que l'élément entre dans le viewport.
-      function initTypoCardsObserver() {
-        const ul = document.querySelector<HTMLElement>('[data-typo-cards]');
-        if (!ul) return;
-        if (ul.dataset.observerWired === 'true') return;
-        ul.dataset.observerWired = 'true';
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                ul.classList.add('is-revealed');
-                observer.disconnect();
-                break;
-              }
-            }
-          },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
-        );
-        observer.observe(ul);
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTypoCardsObserver, { once: true });
-      } else {
-        initTypoCardsObserver();
-      }
-      document.addEventListener('astro:page-load', initTypoCardsObserver);
-    </script>
-  </Section>
-
-  {
-    /* ───── BANDE RESPIRATION full-bleed (Morgan 2026-04-27 : « grand espace
-      vide entre typologies et process, manque une image »). Photo projet
-      livré en bande horizontale 60vh, data-img-reveal lent au scroll pour
-      effet cinématique. Pas de texte par-dessus — pure respiration visuelle. */
-  }
-  <section
-    class="ap-respiration relative overflow-hidden bg-[var(--color-cream)]"
-    aria-hidden="true"
-    data-theme="light"
-  >
-    <div data-img-reveal data-img-reveal-speed="1" class="ap-respiration-frame">
-      <Image
-        src={respirationProcess}
-        alt=""
-        widths={[960, 1440, 1920, 2560]}
-        sizes="100vw"
-        quality={82}
-        format="webp"
-        class="ap-respiration-img h-full w-full object-cover object-center"
-        loading="lazy"
-      />
-    </div>
   </section>
 
-  {
-    /* ───── PROCESS 3 ÉTAPES ─────
-       Padding "default" (compact retiré 2026-04-27 — Morgan : « 3 étapes
-       n'apparaissaient pas, section super vide »). La bande respiration
-       full-bleed au-dessus assure désormais la transition visuelle. */
-  }
-  <Section
-    variant="forest"
-    topDivider
+  {/* ═════════ 4 · PROCESS 3 ÉTAPES ══════════════════════════════════════ */}
+  <section
     id="process"
-    sectionLabel="Process"
-    labelledBy="process-title"
+    data-section-label="Process"
+    data-theme="dark"
+    class="ap-process bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="process-title"
   >
-    <div class="grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
-      <div data-reveal="up">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-          <span class="text-[var(--color-ink)]/40">04</span> &nbsp;·&nbsp; Le process
-        </p>
-        <h2
-          id="process-title"
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
-        >
-          <span data-mask-line class="block pb-[0.05em]">Deux études,</span>
-          <span data-mask-line class="block pb-[0.05em]">un <em class="italic">suivi</em>.</span>
-        </h2>
+    <div class="ap-process__inner">
+      <div class="ap-process__header">
+        <p class="ap-process__eyebrow">Le process</p>
+        <h2 id="process-title" class="ap-process__title">Deux études, un suivi.</h2>
       </div>
 
-      {
-        /* data-reveal retiré 2026-04-27 — même bug que typologies (3 étapes
-         invisibles au load, observer ne déclenche pas). Affichage direct. */
-      }
-      <ol class="space-y-12">
-        <li class="border-l border-[var(--color-ink)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
-            Étape 1
-          </p>
-          <h3
-            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
-          >
-            Étude préliminaire
-          </h3>
-          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+      <ol class="ap-process__list">
+        <li class="ap-process__item">
+          <span class="ap-process__step">Étape 1</span>
+          <h3 class="ap-process__step-title">Étude préliminaire</h3>
+          <p class="ap-process__step-text">
             Contextualisation, diagnostic de site, analyse réglementaire, synthèse graphique,
             fourchette budgétaire. Durée calibrée selon la typologie.
           </p>
         </li>
-        <li class="border-l border-[var(--color-ink)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
-            Étape 2
-          </p>
-          <h3
-            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
-          >
-            Étude projet
-          </h3>
-          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+        <li class="ap-process__item">
+          <span class="ap-process__step">Étape 2</span>
+          <h3 class="ap-process__step-title">Étude projet</h3>
+          <p class="ap-process__step-text">
             Conception approfondie, plan masse, plans d'exécution, palettes végétales et matériaux,
             DCE, budgétisation détaillée.
           </p>
         </li>
-        <li class="border-l border-[var(--color-ink)]/15 pl-6">
-          <p class="font-mono text-[10px] tracking-[0.28em] text-[var(--color-ink)]/55 uppercase">
-            Étape 3
-          </p>
-          <h3
-            class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight"
-          >
-            Suivi de chantier
-          </h3>
-          <p class="mt-3 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75">
+        <li class="ap-process__item">
+          <span class="ap-process__step">Étape 3</span>
+          <h3 class="ap-process__step-title">Suivi de chantier</h3>
+          <p class="ap-process__step-text">
             Coordination des artisans mis en concurrence, pilotage du planning, réunions de
             chantier, respect des intentions de projet jusqu'à la réception. Rémunération de 6 à 12
             % des travaux selon la typologie.
@@ -640,248 +327,596 @@ const schema = jsonLdGraph([
         </li>
       </ol>
     </div>
-  </Section>
+  </section>
 
-  {/* ───── FAQ — 8 questions étoffées ───── */}
-  <Section variant="forest" topDivider id="faq" sectionLabel="FAQ" labelledBy="faq-title">
-    <div class="mb-12 max-w-3xl" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-        <span class="text-[var(--color-ink)]/40">05</span> &nbsp;·&nbsp; Questions fréquentes
-      </p>
-      <h2
-        id="faq-title"
-        data-mask-reveal
-        data-mask-stagger="0.14"
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02]"
-      >
-        <span data-mask-line class="block pb-[0.05em]">Les objections,</span>
-        <span data-mask-line class="block pb-[0.05em]"
-          ><em class="italic">avant d'appeler</em>.</span
-        >
-      </h2>
+  {/* ═════════ 5 · FAQ via <FaqAccordion> partagé ═══════════════════════ */}
+  <section
+    id="faq"
+    data-section-label="FAQ"
+    data-theme="dark"
+    class="ap-faq bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="faq-title"
+  >
+    <div class="ap-faq__inner">
+      <p class="ap-faq__eyebrow">Questions fréquentes</p>
+      <h2 id="faq-title" class="ap-faq__title">Avant d'appeler.</h2>
+      <FaqAccordion items={pageFaq} client:visible />
     </div>
-    <ul class="divide-y divide-[var(--color-ink)]/10 border-y border-[var(--color-ink)]/10">
-      {
-        pageFaq.map((item) => (
-          <li>
-            <details class="group">
-              <summary class="flex cursor-pointer items-start justify-between gap-6 py-6 font-[family-name:var(--font-heading)] text-[length:var(--text-xl)] leading-tight transition-colors hover:text-[var(--color-ink)]">
-                <span>{item.question}</span>
-                <span
-                  class="mt-2 text-base opacity-60 transition-transform group-open:rotate-45"
-                  aria-hidden="true"
-                >
-                  +
-                </span>
-              </summary>
-              <p class="pr-10 pb-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/80">
-                {item.answer}
-              </p>
-            </details>
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
+  </section>
 
-  {/* ───── CTA FINAL forest ───── */}
-  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
-    <div class="text-center">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-        <span class="text-[var(--color-ink)]/40">06</span> &nbsp;·&nbsp; Démarrer
-      </p>
+  {/* ═════════ 6 · CTA final — pill rouge ═══════════════════════════════ */}
+  <section
+    data-theme="dark"
+    class="ap-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    aria-labelledby="cta-title"
+  >
+    <a href="/demarrer-un-projet" class="ap-cta__link" data-cursor-label="DÉMARRER">
       <h2
-        data-mask-reveal
-        data-mask-stagger="0.14"
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[0.98]"
+        id="cta-title"
+        class="ap-cta__title"
+        data-justify-multi
+        data-justify-amp="50"
+        data-justify-line-step="0.15"
+        data-justify-line-window="0.55"
       >
-        <span data-mask-line class="block">Votre jardin est</span>
-        <span data-mask-line class="block text-[var(--color-ink)]/55 italic">
-          une architecture.
+        <span class="ap-cta__title-line" data-justify-line data-justify-direction="from-right">
+          VOTRE JARDIN EST UNE ARCHITECTURE
         </span>
       </h2>
-      <p class="mx-auto mt-10 max-w-xl text-[length:var(--text-base)] leading-relaxed opacity-70">
-        Un appel de 15 à 25 minutes pour qualifier le projet. Sans devis préalable, sans formalisme.
-      </p>
-      <div class="mt-12 flex flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
-        <CtaLink href="/contact" label="Prendre contact" tone="dark" size="lg" magnetic={0} />
-        <a
-          href={`tel:${SITE.contact.phone}`}
-          class="text-sm underline underline-offset-4 hover:text-[var(--color-ink)]"
-        >
-          {SITE.contact.phoneDisplay}
-        </a>
-      </div>
-    </div>
-  </Section>
+    </a>
+    <a href="/demarrer-un-projet" class="ap-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
+      <span class="ap-cta__pill-dot" aria-hidden="true"></span>
+      <span class="ap-cta__pill-label">Démarrer un projet</span>
+      <img
+        src="/brand/fleche-white.webp"
+        alt=""
+        aria-hidden="true"
+        class="ap-cta__pill-arrow"
+        width="32"
+        height="32"
+      />
+    </a>
+  </section>
 
-  <style>
-    /* H1 cassé designbyad — ARCHITECTURE PAYSAGÈRE CAPS monumentales +
-       "sur mesure." italic en contrepoint laterite. */
-    .ap-h1-positioning {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: clamp(2.4rem, 7vw, 6rem);
-      line-height: 0.92;
-      letter-spacing: -0.015em;
-    }
+  <style is:global>
+    /* ═══════════════════════════════════════════════════════════════════════
+     * /architecture-paysagere — page pilier, DA noir + cream + accent rouge.
+     * Réutilise les patterns établis sur les 4 typologies + /studio :
+     *   - Hero plein-bleed + voile gradient haut
+     *   - H1 split Inter ExtraLight 200 UPPERCASE
+     *   - Manifeste décalé col droite avec accent rouge
+     *   - Cards cliquables avec hover scale image + arrow translate
+     *   - FAQ via <FaqAccordion> partagé (CSS .faq-acc__* dans global.css)
+     *   - CTA final pill rouge
+     * ═══════════════════════════════════════════════════════════════════ */
 
-    /* Bande keywords — CAPS justify-scroll, signature studio. */
-    .ap-keywords-band {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 500;
-      font-size: clamp(1.1rem, 2.8vw, 2.1rem);
-      line-height: 1.1;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--color-ink);
-      text-align: justify;
+    /* ─── 1 · Hero ─────────────────────────────────────────────────────── */
+    .ap-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      isolation: isolate;
     }
-    .ap-keywords-band > span[aria-hidden] {
-      display: inline-block;
-      margin: 0 0.35em;
-      color: var(--color-ink);
-      opacity: 0.4;
-      font-weight: 400;
-    }
-
-    /* ───── Bande respiration full-bleed (entre typologies et process) ─────
-       Hauteur 60vh desktop / 50vh mobile, image plein cadre projet livré.
-       Léger zoom in subtil au scroll via parallax pour donner du mouvement. */
-    .ap-respiration {
-      height: 60vh;
-      min-height: 320px;
-    }
-    @media (max-width: 768px) {
-      .ap-respiration {
-        height: 50vh;
-      }
-    }
-    .ap-respiration-frame {
+    .ap-hero__media {
       position: absolute;
       inset: 0;
-    }
-    .ap-respiration-img {
-      transform: scale(1.04);
-      transition: transform 1.4s var(--ease-out-editorial);
-    }
-    .ap-respiration:hover .ap-respiration-img {
-      transform: scale(1.08);
-    }
-
-    /* ───── Hero image — zoom scroll-driven ───── */
-    .ap-hero-image {
-      transform: scale(1.06);
-      transform-origin: center;
-      will-change: transform, filter;
-    }
-
-    /* ───── Chapitres thématiques — scroll-driven zoom ─────
-       Chaque chapitre est pinné en sticky, l'image zoome (scale 1 → 1.15)
-       pendant le scroll, la copy apparaît avec un léger translateY. */
-    .ap-chapters {
-      position: relative;
-    }
-    .ap-chapter {
-      position: relative;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr;
-      align-items: stretch;
-    }
-    @media (min-width: 1024px) {
-      .ap-chapter {
-        grid-template-columns: 55fr 45fr;
-      }
-    }
-    .ap-chapter + .ap-chapter {
-      border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
-    }
-
-    .ap-chapter-visual {
-      position: relative;
       overflow: hidden;
-      min-height: 55vh;
     }
-    @media (min-width: 1024px) {
-      .ap-chapter-visual {
-        min-height: 100vh;
-        position: sticky;
-        top: 0;
-        height: 100vh;
-      }
-    }
-    .ap-chapter-img {
+    .ap-hero__img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transform: scale(1.05);
-      transform-origin: center;
-      will-change: transform, filter;
-      transition: transform 1s var(--ease-out-editorial);
+      display: block;
     }
-    .ap-chapter:hover .ap-chapter-img {
-      transform: scale(1.1);
-    }
-    .ap-chapter-veil {
+    .ap-hero__veil {
       position: absolute;
       inset: 0;
       background: linear-gradient(
-        to bottom right,
-        rgba(26, 43, 31, 0.3) 0%,
-        rgba(26, 43, 31, 0.5) 100%
+        180deg,
+        color-mix(in oklab, var(--color-black-deep) 70%, transparent) 0%,
+        color-mix(in oklab, var(--color-black-deep) 30%, transparent) 30%,
+        transparent 55%,
+        color-mix(in oklab, var(--color-black-deep) 55%, transparent) 100%
       );
       pointer-events: none;
     }
-
-    .ap-chapter-copy {
+    .ap-hero__overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 4rem 2rem 5rem;
-      max-width: 640px;
+      justify-content: flex-end;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vh, 6rem);
     }
-    @media (min-width: 768px) {
-      .ap-chapter-copy {
-        padding: 5rem 4rem;
-      }
+    .ap-hero__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(2.4rem, 8.5vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.005em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      margin: 0;
+      max-width: none;
+    }
+    .ap-hero__title-line {
+      display: block;
+    }
+    .ap-hero__lead {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 1.25vw, 1.25rem);
+      line-height: 1.55;
+      color: color-mix(in oklab, var(--color-cream) 90%, transparent);
+      margin: 0;
+      max-width: 38ch;
+    }
+
+    /* ─── 2 · Manifeste ────────────────────────────────────────────────── */
+    .ap-manifeste {
+      width: 100%;
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .ap-manifeste__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 4vw, 3.5rem);
     }
     @media (min-width: 1024px) {
-      .ap-chapter-copy {
-        padding: 6rem 5rem 6rem 6rem;
-        min-height: 100vh;
+      .ap-manifeste__inner {
+        grid-template-columns: 1fr 1.35fr;
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
+      }
+      .ap-manifeste__body,
+      .ap-manifeste__precision {
+        grid-column: 2;
       }
     }
-
-    .ap-chapter-title em {
-      font-variation-settings:
-        'opsz' 144,
-        'SOFT' 70;
+    .ap-manifeste__body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 2.2vw, 1.85rem);
+    }
+    .ap-manifeste__para {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
+      line-height: 1.45;
+      letter-spacing: -0.005em;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .ap-manifeste__para em {
+      font-style: italic;
+      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
+    }
+    /* Accent rouge sur les 3 adjectifs « biophilique, rigoureuse, sensible » —
+       signature DA accent (cf. home + typologies). */
+    .ap-manifeste__accent {
+      color: var(--color-red);
+      font-style: italic;
+    }
+    .ap-manifeste__body .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      will-change: opacity, transform;
+    }
+    .ap-manifeste__precision {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.9rem, 1vw, 1.05rem);
+      line-height: 1.6;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      text-align: left;
+      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
+      max-width: 60ch;
     }
 
-    /* Alternance visuel/copy : pair à gauche, impair à droite */
+    /* ─── 3 · 5 typologies grid ────────────────────────────────────────── */
+    .ap-typos {
+      width: 100%;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .ap-typos__header {
+      max-width: 60ch;
+      margin: 0 0 clamp(3rem, 6vw, 5rem);
+    }
+    .ap-typos__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .ap-typos__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    /* Grid : empilé en colonne sur mobile, asymétrique 5-cards sur desktop.
+       Layout signature designbyad — pas un grid 2x2 fade carré ennuyeux. */
+    .ap-typos__grid {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
     @media (min-width: 1024px) {
-      .ap-chapter:nth-child(even) {
-        grid-template-columns: 45fr 55fr;
+      /* 12 colonnes virtuelles, layout 5 cards en mosaïque :
+           card 1 (large gauche, span 7)  | card 2 (portrait droit, span 5)
+           card 3 (portrait gauche, span 5) | card 4 (large droit, span 7)
+           card 5 (full-width architecture publique, span 12) */
+      .ap-typos__grid {
+        grid-template-columns: repeat(12, 1fr);
+        gap: clamp(1.5rem, 2.5vw, 2.5rem);
       }
-      .ap-chapter:nth-child(even) .ap-chapter-visual {
-        order: 2;
+      .ap-typos__card--1 {
+        grid-column: span 7;
       }
-      .ap-chapter:nth-child(even) .ap-chapter-copy {
-        order: 1;
-        padding: 6rem 5rem 6rem 6rem;
+      .ap-typos__card--2 {
+        grid-column: span 5;
+      }
+      .ap-typos__card--3 {
+        grid-column: span 5;
+      }
+      .ap-typos__card--4 {
+        grid-column: span 7;
+      }
+      .ap-typos__card--5 {
+        grid-column: span 12;
       }
     }
+    .ap-typos__card {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .ap-typos__link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      height: 100%;
+    }
+    .ap-typos__visual {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      /* Variations de ratio par tile pour rythme magazine. */
+      .ap-typos__card--1 .ap-typos__visual,
+      .ap-typos__card--4 .ap-typos__visual {
+        aspect-ratio: 4 / 3;
+      }
+      .ap-typos__card--2 .ap-typos__visual,
+      .ap-typos__card--3 .ap-typos__visual {
+        aspect-ratio: 3 / 4;
+      }
+      .ap-typos__card--5 .ap-typos__visual {
+        aspect-ratio: 21 / 9;
+      }
+    }
+    .ap-typos__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transform: scale(1.02);
+      transition: transform 1s var(--ease-out-editorial);
+    }
+    .ap-typos__link:hover .ap-typos__img,
+    .ap-typos__link:focus-visible .ap-typos__img {
+      transform: scale(1.06);
+    }
+    .ap-typos__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent 50%,
+        color-mix(in oklab, var(--color-black-deep) 55%, transparent) 100%
+      );
+      pointer-events: none;
+    }
+    /* État « Prochainement » sur architecture-publique : badge + image légèrement
+       désaturée pour signaler qu'elle est en cours de repensée. */
+    .ap-typos__card.is-bientot .ap-typos__img {
+      filter: saturate(0.7) brightness(0.9);
+    }
+    .ap-typos__badge {
+      position: absolute;
+      top: clamp(1rem, 1.5vw, 1.5rem);
+      left: clamp(1rem, 1.5vw, 1.5rem);
+      z-index: 2;
+      display: inline-block;
+      padding: 0.4rem 0.85rem;
+      background-color: var(--color-red);
+      color: var(--color-cream);
+      font-family: var(--font-mono), monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-radius: 9999px;
+    }
+    /* Copy par tile : numéro + nom + tagline + CTA explorer.
+       Posé sur fond noir sous l'image, pas overlay. */
+    .ap-typos__copy {
+      padding: clamp(1.25rem, 2.5vw, 2rem) clamp(0.5rem, 1.5vw, 1rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.4rem, 1vw, 0.75rem);
+    }
+    .ap-typos__num {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    }
+    .ap-typos__name {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      margin: 0;
+    }
+    .ap-typos__tagline {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.9rem, 1vw, 1rem);
+      line-height: 1.5;
+      color: color-mix(in oklab, var(--color-cream) 75%, transparent);
+      margin: 0;
+      max-width: 42ch;
+    }
+    .ap-typos__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: clamp(0.5rem, 1vw, 0.85rem);
+      font-family: var(--font-mono), monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 85%, transparent);
+      transition: color 0.3s ease;
+    }
+    .ap-typos__arrow {
+      display: inline-block;
+      transition: transform 0.35s var(--ease-out-editorial);
+    }
+    .ap-typos__link:hover .ap-typos__cta,
+    .ap-typos__link:focus-visible .ap-typos__cta {
+      color: var(--color-cream);
+    }
+    .ap-typos__link:hover .ap-typos__arrow,
+    .ap-typos__link:focus-visible .ap-typos__arrow {
+      transform: translateX(6px);
+    }
 
-    @media (prefers-reduced-motion: reduce) {
-      .ap-chapter-img {
-        transition: none;
-        transform: scale(1);
+    /* ─── 4 · Process 3 étapes ─────────────────────────────────────────── */
+    .ap-process {
+      width: 100%;
+      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .ap-process__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+    }
+    @media (min-width: 1024px) {
+      .ap-process__inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
       }
-      .ap-hero-image {
-        transform: none;
+    }
+    .ap-process__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .ap-process__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+    .ap-process__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
+    .ap-process__item {
+      padding-left: clamp(1rem, 2vw, 1.5rem);
+      border-left: 1px solid color-mix(in oklab, var(--color-cream) 25%, transparent);
+    }
+    .ap-process__step {
+      font-family: var(--font-mono), monospace;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    }
+    .ap-process__step-title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+      line-height: 1.15;
+      color: var(--color-cream);
+      margin: clamp(0.4rem, 0.8vw, 0.75rem) 0 0;
+    }
+    .ap-process__step-text {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      line-height: 1.65;
+      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+      margin: clamp(0.75rem, 1.2vw, 1rem) 0 0;
+      max-width: 60ch;
+    }
+
+    /* ─── 5 · FAQ ──────────────────────────────────────────────────────── */
+    .ap-faq {
+      width: 100%;
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
+    }
+    .ap-faq__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 1024px) {
+      .ap-faq__inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+        column-gap: clamp(3rem, 6vw, 5rem);
+        align-items: start;
       }
+      .ap-faq__inner > .faq-acc__list {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+    .ap-faq__eyebrow {
+      font-family: var(--font-mono), monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+      margin: 0;
+    }
+    .ap-faq__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+      margin: clamp(0.5rem, 1vw, 0.85rem) 0 0;
+    }
+
+    /* ─── 6 · CTA final ────────────────────────────────────────────────── */
+    .ap-cta {
+      width: 100%;
+      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 4vw, 3rem);
+    }
+    .ap-cta__link {
+      display: block;
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      text-decoration: none;
+      color: inherit;
+    }
+    .ap-cta__title {
+      width: 100%;
+      margin: 0;
+    }
+    .ap-cta__title-line {
+      display: block;
+      width: 100%;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.4rem, 5.5vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-align: justify;
+      text-align-last: justify;
+      color: var(--color-cream);
+      margin: 0;
+      hyphens: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) {
+      .ap-cta__title-line {
+        white-space: normal;
+        text-align: left;
+        text-align-last: left;
+      }
+    }
+    .ap-cta__pill-red {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1.6rem;
+      background-color: var(--color-red);
+      color: var(--color-cream);
+      border-radius: 9999px;
+      font-family: var(--font-body), sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 1.05vw, 1rem);
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: transform 0.35s var(--ease-out-editorial);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .ap-cta__pill-red:hover,
+      .ap-cta__pill-red:focus-visible {
+        transform: scale(1.04);
+      }
+    }
+    .ap-cta__pill-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-cream);
+      flex-shrink: 0;
+    }
+    .ap-cta__pill-label {
+      white-space: nowrap;
+    }
+    .ap-cta__pill-arrow {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .ap-hero,
+    .ap-manifeste,
+    .ap-typos,
+    .ap-process,
+    .ap-faq,
+    .ap-cta {
+      box-sizing: border-box;
     }
   </style>
 </BaseLayout>
