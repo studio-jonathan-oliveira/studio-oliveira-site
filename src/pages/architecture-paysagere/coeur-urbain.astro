@@ -37,17 +37,19 @@ import diptyqueBottomRight from '@/assets/typologies/coeur-urbain/06-diptyque-bo
 
 const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
 
-// 4 specs hero — verbatim trame Jonathan (colonne droite « Coeur urbain »).
+// 4 specs hero — verbatim dictée Morgan 2026-05-19 (correction OCR sur la
+// trame : « Zone urbaine » et non « Cœur urbain », « confinés » et non
+// « enclavés », « souterrain » singulier).
 const specs = [
-  { label: 'Secteur géographique', valeur: 'Cœur urbain / cœur de ville et alentour' },
+  { label: 'Secteur géographique', valeur: 'Zone urbaine / cœur de ville et alentours' },
   { label: 'Moyenne surface jardin', valeur: 'De 100 à 500 m² (hors cas spécifique)' },
   {
     label: 'Contexte environnemental',
-    valeur: 'Cours urbaines / jardins enclavés / jardins de ville',
+    valeur: 'Cours urbaines / jardins confinés / jardins de ville',
   },
   {
     label: 'Complexité spatiale et environnementale',
-    valeur: 'Accès / exposition / réseaux souterrains / urbanisme',
+    valeur: 'Accès / exposition / réseaux souterrain / urbanisme',
   },
 ];
 
