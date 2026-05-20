@@ -78,7 +78,7 @@
 | **Hôtel de Bouilhac**                     | Montignac-Lascaux                                         | 4\* boutique-hôtel, demeure XVIIIe classée Monument Historique, spa.                                                                   | `[DONNÉE À CONFIRMER]` site officiel                                                  |
 | **Domaine des Etangs** (proche, Charente) | Massignac (16, à 1h Nontron)                              | **Relais & Châteaux** 5\*, ferme-château XIIIe, 200 ha, exception. À cibler pour Charente mais à proximité Périgord Vert.              | [Domaine des Etangs](https://domainedesetangs.com/) — cf. fiche 05-cognac-charente.md |
 
-**Synthèse** : ~10-15 établissements 4\* identifiables sur le département, dont **2-3 Relais & Châteaux ou affiliés** (Le Vieux Logis confirmé, Domaine de Rochebois et Château des Vigiers à vérifier statut courant) et **3-4 Teritoria** (Manoir d'Hautegente, Plaza Madeleine, Edward 1er, Manoir de Bellerive à confirmer). C'est un **tissu B2B sensiblement plus dense que la Corrèze**, avec une vraie verticale luxe internationale présente (vs Corrèze purement charme régional). Tickets potentiels Studio Oliveira : **3 500 € à 12 000 € études** + maîtrise d'œuvre 6-12 % sur chantiers de 40 à 250 k€ (parcs étendus, scénographie d'arrivée, jardins clos patrimoniaux à restaurer).
+**Synthèse** : ~10-15 établissements 4\* identifiables, dont **2-3 Relais & Châteaux ou affiliés** (Le Vieux Logis confirmé ; Rochebois et Vigiers à vérifier) et **3-4 Teritoria**. Tissu B2B **sensiblement plus dense que la Corrèze**, vraie verticale luxe internationale présente. Tickets Studio : **3 500-12 000 € études** + MOE 6-12 % sur chantiers 40-250 k€ (parcs étendus, scénographie d'arrivée, jardins clos patrimoniaux à restaurer).
 
 ### 2.2 Restaurants gastronomiques étoilés (Guide Michelin)
 
@@ -155,16 +155,16 @@
 
 ## 5. Accessibilité opérationnelle
 
-- **Brive → Sarlat** : ~52 km, **50 min** par D704/D703. Trajet quotidien réalisable en A/R sans nuitée. **Axe stratégique n°1**.
-- **Brive → Périgueux** : ~110 km, **1h20** par A89. A/R confortable dans la journée.
-- **Brive → Bergerac** : ~130 km, **1h30-1h40** par A89 + D709. A/R faisable sans nuitée mais journée chargée.
-- **Brive → Brantôme / Périgord Vert** : ~120-140 km selon route, 1h45 environ. À la limite de l'A/R confortable.
-- **Brive → Monbazillac (vignobles)** : ~140 km, 1h45. A/R chargé, idéal nuitée si plusieurs rendez-vous.
-- **Périgueux → Paris-Austerlitz** : Intercités via Limoges, ~4h-4h30 ([SNCF Connect Périgueux-Paris](https://www.sncf-connect.com/)). Pas de TGV. Périgueux est néanmoins l'arrêt national le mieux desservi du département.
-- **Bergerac → Paris-Austerlitz** : trajet en deux temps (via Bordeaux ou Libourne TGV), ~5h. Plus pratique en TGV Bergerac-Bordeaux-Paris (Bordeaux-Paris en 2h05 TGV Inoui).
-- **Aéroport Bergerac-Dordogne-Périgord** : ~250 000 passagers/an, lignes saisonnières vers UK (Stansted, Bristol, Birmingham, Southampton, Liverpool) — **canal direct clientèle britannique HNW**. Aéroport Brive-Vallée Dordogne (Souillac) complémentaire côté est.
+- **Brive → Sarlat** : ~52 km, **50 min** (D704/D703). A/R sans nuitée. **Axe stratégique n°1**.
+- **Brive → Périgueux** : ~110 km, **1h20** (A89). A/R confortable.
+- **Brive → Bergerac** : ~130 km, **1h30-1h40** (A89 + D709). A/R faisable, journée chargée.
+- **Brive → Brantôme / Périgord Vert** : ~120-140 km, 1h45. Limite A/R confortable.
+- **Brive → Monbazillac (vignobles)** : ~140 km, 1h45. Nuitée conseillée si plusieurs rendez-vous.
+- **Périgueux → Paris-Austerlitz** : Intercités via Limoges, ~4h-4h30 ([SNCF Connect](https://www.sncf-connect.com/)). Pas de TGV — Périgueux reste l'arrêt national le mieux desservi du département.
+- **Bergerac → Paris** : plus pratique en TGV via Bordeaux (Bordeaux-Paris 2h05 TGV Inoui).
+- **Aéroport Bergerac-Dordogne-Périgord** : lignes saisonnières UK (Stansted, Bristol, Birmingham, Southampton, Liverpool) — **canal direct clientèle britannique HNW**. Aéroport Brive-Vallée Dordogne (Souillac) complémentaire.
 
-**Faisabilité chantier** : pour le **Périgord Noir + Périgord Pourpre nord** (Sarlat, vallée Dordogne, Bergerac), **1 journée A/R sans nuitée** depuis Brive est confortable. Pour Périgord Vert (Brantôme, Nontron) et Périgueux + arc rural, nuitée optionnelle selon densité rendez-vous. **C'est l'extension géographique la plus naturelle après le siège.**
+**Faisabilité chantier** : Périgord Noir + Périgord Pourpre nord = **1 journée A/R sans nuitée** depuis Brive. Périgord Vert et Périgueux + arc rural = nuitée optionnelle. **Extension géographique la plus naturelle après le siège.**
 
 ---
 
@@ -195,11 +195,11 @@
 
 ### 6.2 Actions complémentaires (low effort)
 
-- **Référencement local Google** : pages Studio dédiées « designer paysagiste Sarlat », « designer paysagiste Bergerac », « designer paysagiste Périgueux » + fiches GBP (3 fiches secondaires). Concurrence modérée, top 3 atteignable en 8-10 mois sur Sarlat (concurrence touristique sur le mot-clé).
-- **Page EN du site Studio Oliveira indispensable pour Dordogne** : « Landscape designer Périgord » / « Landscape architect Dordogne » — clientèle UK importante. Linkage avec presse UK expat (The Telegraph, The Times, French Property News). **Volume de trafic UK potentiel > 30 % de la zone**.
-- **Salon Habitat Sarlat / Salon Habitat Périgueux** : présence en visite/networking, pas exposant. Étudier participation Salon Vinitech Bordeaux 2027 (cible viticole).
-- **Instagram Dordogne** : hashtags `#périgordnoir`, `#sarlat`, `#bergerac`, `#dordogne` très utilisés tourisme. Stratégie contenu « avant/après Twinmotion » de réalisations domaines à fort potentiel viral local.
-- **Estimation effort vs ticket** : **5 jours/mois prospection** sur 12 mois → objectif **60-120 k€ CA Périgord** en année 1 (1 chantier B2B référence + 3-5 chantiers HNW domaines + 1 mission viticole). C'est la zone à activer en priorité 1ʳᵉ vague après Brive.
+- **SEO local Google** : pages dédiées « designer paysagiste Sarlat / Bergerac / Périgueux » + 3 fiches GBP secondaires. Top 3 atteignable en 8-10 mois sur Sarlat.
+- **Page EN du site indispensable Dordogne** : « Landscape designer Périgord » / « Landscape architect Dordogne ». Linkage presse UK (Telegraph, Times, French Property News). **Trafic UK potentiel > 30 % de la zone**.
+- **Salons Habitat Sarlat / Périgueux** : visite/networking. Étudier Vinitech Bordeaux 2027 (cible viticole).
+- **Instagram Dordogne** : hashtags `#périgordnoir`, `#sarlat`, `#dordogne` très utilisés tourisme. Contenu « avant/après Twinmotion » à fort potentiel viral.
+- **Estimation effort vs ticket** : **5 jours/mois prospection** sur 12 mois → objectif **60-120 k€ CA Périgord** en année 1 (1 chantier B2B référence + 3-5 chantiers HNW domaines + 1 mission viticole). Zone à activer en 1ʳᵉ vague après Brive.
 
 ---
 
