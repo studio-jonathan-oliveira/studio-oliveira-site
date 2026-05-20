@@ -52,10 +52,12 @@ Score composite agrégé sur 5 axes pondérés :
 
 **A. Volume demande B2C HNW /6**
 
-- 0–1 : < 500 foyers > 100 k€ dans la zone urbaine principale
-- 2–3 : 500–2 000 foyers
-- 4–5 : 2 000–10 000 foyers
-- 6 : > 10 000 foyers ou zone à très forte densité HNW (Cap Ferret, Île de Ré, Biarritz centre)
+L'axe A est désagrégé sur les **4 typologies Jonathan** (cf. §3 bis ci-dessous). Le score /6 est la **somme pondérée** des 4 sous-scores typologie. Justification : une zone qui n'a que des domaines (Périgord profond) ne vaut pas la même chose pour Jonathan qu'une zone mixte (Bordeaux centre + Bassin) — la matrice typologie × zone est centrale pour décider où vendre quoi.
+
+- 0–1 : < 500 foyers > 100 k€ dans la zone urbaine principale, tous foncier confondus
+- 2–3 : 500–2 000 foyers, foncier dominant 1 typologie
+- 4–5 : 2 000–10 000 foyers, foncier diversifié sur 2-3 typologies
+- 6 : > 10 000 foyers ou zone à très forte densité HNW (Cap Ferret, Île de Ré, Biarritz centre) **et** foncier multi-typologie
 
 **B. Volume B2B premium /4**
 
@@ -83,6 +85,40 @@ Score composite agrégé sur 5 axes pondérés :
 - 1 : 2h30–4h
 - 2 : 1h–2h30 ou train direct
 - 3 : < 1h ou desserte TGV/intercités très fluide
+
+---
+
+## 3 bis. Matrice typologie × foncier (axe A désagrégé)
+
+Jonathan vend **4 typologies de projet** distinctes (process studio 2026). Le foncier qui leur correspond est différent — donc chaque zone doit être scorée sur les 4 séparément avant agrégation. C'est ce qui permet de dire à Jonathan « à Bordeaux centre tu pousses du micro-urbain, à Sarlat tu pousses du domaine ».
+
+| Typologie                | Surface jardin | Foncier correspondant                                                                           | Marqueurs INSEE / Notaires                                                                                                 |
+| ------------------------ | -------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Micro-urbain**         | < 50 m²        | Appartements de standing avec terrasse / rooftop / patio, hôtels particuliers urbains compacts  | Densité d'appart. T4+ avec extérieur en centre dense, prix m² > 5 000 €, copropriétés patrimoniales                        |
+| **Cœur urbain**          | 50–300 m²      | Maisons de ville patrimoniales avec cour ou jardin clos, échoppes bordelaises, maisons rétaises | Densité de maisons individuelles centre ancien, prix moyen > 600 k€, secteurs sauvegardés / AVAP                           |
+| **Frange urbaine**       | 300–1500 m²    | Maisons individuelles péri-urbaines avec jardin, résidences secondaires standing                | Densité communes péri-urbaines, transactions 400-900 k€, terrains 500-1500 m² avec jardin                                  |
+| **Domaines & Caractère** | > 1500 m²      | Châteaux, manoirs, propriétés viticoles, demeures historiques avec parc                         | Transactions > 800 k€ avec terrain > 5 000 m², propriétés agricoles convertibles, hôtels particuliers, recensement Mérimée |
+
+**Sous-score par typologie /1.5** (somme = note axe A /6) :
+
+- **0** : typologie inexistante ou ultra-marginale dans la zone
+- **0.5** : présent mais à la marge (< 50 cibles potentielles / an)
+- **1.0** : marché identifié (50-300 cibles / an)
+- **1.5** : marché significatif (> 300 cibles / an ou densité emblématique)
+
+Exemples directionnels (à valider par chaque fiche zone) :
+
+| Zone                   | Micro | Cœur | Frange | Domaines | Total A /6 |
+| ---------------------- | ----- | ---- | ------ | -------- | ---------- |
+| Bordeaux centre + B.A  | 1.5   | 1.5  | 1.0    | 0.5      | 4.5        |
+| Sarlat / Périgord noir | 0     | 1.0  | 1.0    | 1.5      | 3.5        |
+| Île de Ré              | 0     | 1.0  | 1.5    | 0.5      | 3.0        |
+| Cognac / Charente      | 0     | 0.5  | 0.5    | 1.5      | 2.5        |
+| Brive Corrèze          | 0.5   | 0.5  | 0.5    | 0.5      | 2.0        |
+| Limoges                | 0.5   | 1.0  | 0.5    | 0.5      | 2.5        |
+| Côte basque            | 1.5   | 1.0  | 1.0    | 0.5      | 4.0        |
+
+(valeurs à recalculer par chaque fiche zone sur la base de données réelles INSEE + Notaires — ces estimations directionnelles servent juste à illustrer la mécanique)
 
 ---
 
