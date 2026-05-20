@@ -20,7 +20,13 @@
 
   function initLenis() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
+    // Touch / coarse-pointer : on laisse le scroll OS natif (cf. en-tête du
+    // composant). Lenis y ajoute un RAF + des listeners wheel inutiles qui
+    // grippent la fluidité sur smartphone (60 % du trafic).
+    const isTouchMobile = window.matchMedia(
+      '(max-width: 1023px), (hover: none) and (pointer: coarse)',
+    ).matches;
+    if (reduceMotion || isTouchMobile) return;
 
     // Si déjà initialisé, on détruit l'ancienne instance (navigation avec View Transitions)
     if (window.__lenis) {

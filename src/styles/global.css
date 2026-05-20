@@ -487,6 +487,18 @@ header.intro-revealing {
   }
 }
 
+/*
+ * ContactBar mobile — quand la barre est rendue (body.has-contact-bar), on
+ * réserve sa hauteur en bas du document pour que le footer reste accessible
+ * et ne soit pas masqué par la barre fixed. Hauteur = 56px + safe-area
+ * (notch iOS). Désactivé ≥ 768px puisque la barre n'est pas affichée.
+ */
+@media (max-width: 767px) {
+  body.has-contact-bar {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+}
+
 /* Page curtain retiré 2026-04-24 (bloquait la navigation). */
 
 /*
