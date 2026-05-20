@@ -34,17 +34,17 @@
 
 ### 1.2 Patrimoine et IFI
 
-- **Foyers IFI Dordogne** : `[DONNÉE À CONFIRMER]` à la maille départementale. Données DGFiP via Journal du Net pour Sarlat, Bergerac, Périgueux à exploiter ([JDN Impôts 24](https://www.journaldunet.com/economie/impots/dordogne/departement-24)).
-- **Indicateur indirect HNW** : forte densité de propriétés à plus de 1 M€ avec parc, vignobles classés AOP et propriétés Mérimée. Le **stock de châteaux et manoirs habitables ou rénovés** en Dordogne est l'un des plus élevés de France (région historiquement riche en seigneuries médiévales et XVIIIe). Source proxy : recensement Mérimée + base ouverte Monuments Historiques Dordogne.
-- **Foyers fiscaux > 100 k€** : `[DONNÉE À CONFIRMER]`. Estimation directionnelle : 2 000-4 000 sur le département (significativement plus que Corrèze), avec forte concentration **Sarlat + arc Périgord Noir** et **Bergerac/Monbazillac viticole**.
+- **Foyers IFI Dordogne** : `[DONNÉE À CONFIRMER]` maille départementale via DGFiP / [JDN Impôts 24](https://www.journaldunet.com/economie/impots/dordogne/departement-24).
+- **Indicateur indirect HNW** : Dordogne = un des plus forts **stocks de châteaux et manoirs habitables** de France (seigneuries médiévales + XVIIIe). Source proxy : recensement Mérimée + base Monuments Historiques.
+- **Foyers fiscaux > 100 k€** : `[DONNÉE À CONFIRMER]`. Estimation directionnelle : 2 000-4 000 sur le département, concentration **Sarlat + arc Périgord Noir** et **Bergerac/Monbazillac viticole**.
 
 ### 1.3 Marché immobilier
 
-- **Prix moyen au m² Sarlat-la-Canéda** : ~2 100-2 400 €/m² toutes typologies (`[DONNÉE À CONFIRMER]` valeur précise mai 2026 via [MeilleursAgents Sarlat](https://www.meilleursagents.com/prix-immobilier/sarlat-la-caneda-24200/)). Prix tirés vers le haut par la demande résidence secondaire UK + NL.
-- **Prix moyen Bergerac** : ~1 700-1 900 €/m² (`[DONNÉE À CONFIRMER]` via [MeilleursAgents Bergerac](https://www.meilleursagents.com/prix-immobilier/bergerac-24100/)).
-- **Prix moyen Périgueux** : ~1 700-1 900 €/m² (`[DONNÉE À CONFIRMER]` via [MeilleursAgents Périgueux](https://www.meilleursagents.com/prix-immobilier/perigueux-24000/)).
-- **Segment Domaines > 800 k€** : **densité élevée**. Le marché Dordogne est l'un des plus actifs de France sur les **manoirs et châteaux de campagne entre 1 M€ et 5 M€**. Belles Demeures et Sotheby's listent régulièrement 30-80 biens > 800 k€ sur le département ([Belles Demeures Dordogne](https://www.bellesdemeures.com/en/sale/france/aquitaine/dordogne/), `[DONNÉE À CONFIRMER]` volume précis printemps 2026). Biens emblématiques récurrents : domaines viticoles Bergerac avec chai + maison maître, châteaux XV-XVIIIe Périgord Noir avec parc > 10 ha, manoirs périgourdins en pierre ocre vallée Dordogne.
-- **Volumes transactions** : `[DONNÉE À CONFIRMER]` PERVAL Notaires de France base 24 pour tranches > 800 k€. Tendance générale 2024-2025 : marché ralenti sur le primo-accédant local, **soutenu sur le segment international > 1 M€** par la décote euro/livre et l'attrait fiscal France pour résidents UK post-Brexit.
+- **Prix m² Sarlat-la-Canéda** : ~2 100-2 400 €/m² (`[DONNÉE À CONFIRMER]` mai 2026 via [MeilleursAgents Sarlat](https://www.meilleursagents.com/prix-immobilier/sarlat-la-caneda-24200/)). Tiré vers le haut par la demande UK + NL.
+- **Prix m² Bergerac** : ~1 700-1 900 €/m² (`[DONNÉE À CONFIRMER]` via [MeilleursAgents Bergerac](https://www.meilleursagents.com/prix-immobilier/bergerac-24100/)).
+- **Prix m² Périgueux** : ~1 700-1 900 €/m² (`[DONNÉE À CONFIRMER]` via [MeilleursAgents Périgueux](https://www.meilleursagents.com/prix-immobilier/perigueux-24000/)).
+- **Segment Domaines > 800 k€** : **densité élevée**. Dordogne = un des marchés les plus actifs de France sur les **manoirs et châteaux 1-5 M€**. Belles Demeures et Sotheby's listent régulièrement 30-80 biens > 800 k€ sur le département ([Belles Demeures Dordogne](https://www.bellesdemeures.com/en/sale/france/aquitaine/dordogne/)). Biens récurrents : domaines viticoles Bergerac (chai + maison maître), châteaux XV-XVIIIe Périgord Noir (parc > 10 ha), manoirs pierre ocre vallée Dordogne.
+- **Tendance 2024-2025** : marché ralenti côté primo-accédant local, **soutenu sur segment international > 1 M€** (décote euro/livre, attrait fiscal France pour UK post-Brexit). `[DONNÉE À CONFIRMER]` volumes PERVAL Notaires base 24 par tranche.
 
 ### 1.4 Communes & quartiers premium (top 5 nommés)
 
@@ -88,11 +88,11 @@
 
 ### 2.3 Locations atypiques premium & gîtes d'exception
 
-- **Gîtes de France Dordogne 4-5 épis** : annuaire « demeure de caractère » très étoffé ([Gîtes de France Dordogne](https://www.gites-de-france-dordogne.com/)), avec une concentration unique en France de châteaux et manoirs en location. Volume cibles potentielles : **plusieurs centaines** sur le département vs quelques dizaines en Corrèze.
-- **Airbnb premium Dordogne / Welcome Beyond / Le Collectionist** : segment très actif. Tarifs médians top 10 % été haute saison estimés **400-800 €/nuit** pour châteaux et grands manoirs Périgord Noir avec piscine + parc (`[DONNÉE À CONFIRMER]` chiffres AirDNA précis). Cibles : propriétaires-loueurs cherchant à différencier leur produit par la qualité du jardin et la photogénie 3D pour booking.
-- **Châteaux viticoles Bergerac/Monbazillac** : **Château de Monbazillac** (propriété coopérative), Château Tirecul-la-Gravière (Bireau), Château de Saussignac, Château de Tiregand (Creysse), Château Bélingard, Clos Triguedina (cf. Cahors limitrophe), Château La Jaubertie. Plusieurs sont propriétés familiales avec maison maître, parc et capacité d'accueil œnotouristique en développement. **Cible directe Studio** : intervention parc/scénographie d'accueil dégustation + jardins paysagers du château. Tickets 8-50 k€ chantier potentiel.
+- **Gîtes de France Dordogne 4-5 épis** : annuaire « demeure de caractère » très étoffé ([Gîtes de France Dordogne](https://www.gites-de-france-dordogne.com/)), concentration unique en France de châteaux et manoirs en location. Volume cibles : **plusieurs centaines** vs quelques dizaines en Corrèze.
+- **Airbnb premium / Welcome Beyond / Le Collectionist** : tarifs médians top 10 % haute saison estimés **400-800 €/nuit** pour châteaux Périgord Noir avec piscine + parc (`[DONNÉE À CONFIRMER]` chiffres AirDNA). Cibles : propriétaires-loueurs cherchant à différencier leur produit par la photogénie 3D pour booking.
+- **Châteaux viticoles Bergerac/Monbazillac** : Château de Monbazillac (coopérative), Tirecul-la-Gravière, Saussignac, Tiregand (Creysse), Bélingard, La Jaubertie. Propriétés familiales avec maison maître, parc et capacité œnotouristique en développement. **Cible directe Studio** : scénographie d'accueil dégustation + jardins du château. Tickets 8-50 k€.
 
-**Verdict B2B** : 40-70 prospects activables identifiables (4-5\* + restaurants gastro + gîtes 4-5 épis avec piscine et parc > 1500 m² + châteaux viticoles). **Note B = 3/4** confirmée. C'est le **principal levier de la zone** côté chiffre d'affaires Studio.
+**Verdict B2B** : 40-70 prospects activables (4-5\* + gastro + gîtes 4-5 épis parc > 1500 m² + châteaux viticoles). **Note B = 3/4**. **Principal levier de la zone** côté CA Studio.
 
 ---
 
@@ -108,7 +108,7 @@
 | **Architectes Périgueux**              | Périgueux              | Profils mixtes (commande publique préfecture + résidentiel haut-de-gamme)                             | `[DONNÉE À CONFIRMER]` nominatifs                                                                   |
 | **Houzz Dordogne**                     | département            | 30-60 architectes référencés Houzz Dordogne `[DONNÉE À CONFIRMER]`                                    | [Houzz Dordogne architectes](https://www.houzz.fr/professionals/architectes/dordogne-naq-fr-probr0) |
 
-**Volume total estimé** : la région Nouvelle-Aquitaine compte ~2 600 architectes CNOA. Estimation Dordogne : **80-130 architectes inscrits**, dont 30-50 actifs sur la maison individuelle haut-de-gamme + restauration patrimoniale. Spécificité : les architectes Sarlat sont **agréés ABF** par contrainte de secteur sauvegardé — c'est un sous-réseau prescripteur de grande valeur (toute restauration manoir/château passe par leur visa). `[DONNÉE À CONFIRMER]` liste nominative complète.
+**Volume estimé** : Nouvelle-Aquitaine ~2 600 architectes CNOA. Estimation Dordogne : **80-130 inscrits**, dont 30-50 actifs maison individuelle HDG + restauration patrimoniale. Spécificité : architectes Sarlat **agréés ABF** (secteur sauvegardé) — sous-réseau prescripteur à forte valeur (toute restauration manoir/château passe par leur visa). `[DONNÉE À CONFIRMER]` liste nominative.
 
 ### 3.2 Agences immobilières luxe actives sur Dordogne
 
@@ -123,9 +123,9 @@
 | **Maxwell-Baynes (Christie's International)** | Antennes Bordeaux + Bergerac `[DONNÉE À CONFIRMER]` antenne physique Bergerac                    | Vignobles + propriétés sud-Bergerac                                                                            | [maxwell-baynes.com](https://www.maxwell-baynes.com/)                                            |
 | **Beaux Villages Immobilier**                 | Réseau anglophone implanté Dordogne (siège Eymet)                                                | Spécialiste clientèle britannique, néerlandaise, américaine ; couvrent largement Dordogne                      | [beauxvillages.com](https://www.beauxvillages.com/)                                              |
 
-**Spécificité dordogne** : **forte densité d'agences orientées clientèle anglophone** (Beaux Villages, Leggett Immobilier siège Pézenas mais antenne Périgord, Maxwell-Baynes). C'est un canal prescripteur **unique en France** — il faut être lisible côté anglophone (page EN du site Studio Oliveira indispensable pour cette zone).
+**Spécificité Dordogne** : **forte densité d'agences anglophones** (Beaux Villages, Leggett, Maxwell-Baynes). Canal prescripteur **unique en France** — page EN du site Studio Oliveira indispensable.
 
-**Famille offices / gestion patrimoine** : tissu local **faible** à Périgueux/Sarlat ; la clientèle HNW Dordogne est très largement **gérée depuis Paris ou Bordeaux** (family offices parisiens, banques privées Bordeaux). `[DONNÉE À CONFIRMER]` : nombre exact d'agences CGP indépendantes Dordogne. À traiter via canal Paris (cf. fiche 08-paris-sourcing.md).
+**Family offices / CGP** : tissu local **faible** à Périgueux/Sarlat ; clientèle HNW Dordogne **gérée depuis Paris ou Bordeaux**. À traiter via canal Paris (cf. fiche 08-paris-sourcing.md).
 
 ### 3.3 Décorateurs / ensembliers
 
@@ -145,11 +145,11 @@
 
 ### Évaluation stratégique
 
-- **Marché plus saturé qu'en Corrèze** mais **aucun concurrent identifié comme « designer auteur biophilique »** dans la documentation publique. La majorité des paysagistes Dordogne se positionnent sur le triptyque « création + entretien + maçonnerie paysagère ».
-- **Risque concurrentiel principal** : un paysagiste Bordeaux haut-de-gamme (cf. fiche 03) qui descend en mission ponctuelle sur l'ouest-Bergerac. Risque secondaire : un cabinet d'architecte ayant un paysagiste interne (rare en Dordogne, mais à vérifier).
-- **Angle libre pour Studio J Oliveira** : (1) **« designer paysagiste biophilique »** = vocabulaire absent du marché Dordogne, (2) **livraison Twinmotion 3D photoréaliste** = signal différenciant majeur sur le segment châteaux et propriétés > 1 M€ où l'acheteur veut « voir avant », (3) **études dissociées de la maîtrise d'œuvre** = adapté à la clientèle anglophone habituée aux processus « design fee » séparés.
+- **Marché plus saturé qu'en Corrèze** mais **aucun concurrent positionné « designer auteur biophilique »**. Majorité des paysagistes Dordogne = triptyque « création + entretien + maçonnerie paysagère ».
+- **Risque concurrentiel principal** : paysagistes Bordeaux haut-de-gamme (cf. fiche 03) descendant en mission ponctuelle sur l'ouest-Bergerac. Risque secondaire : architecte avec paysagiste interne (rare).
+- **Angle libre Studio** : (1) **« designer paysagiste biophilique »** absent du vocabulaire local, (2) **Twinmotion 3D photoréaliste** différenciant sur châteaux et propriétés > 1 M€, (3) **études dissociées** adaptées à la clientèle anglophone (« design fee » séparés).
 
-**Note D = 2/4** : concurrence plus dense qu'à Brive mais positionnement « auteur » reste vacant. À surveiller en continu via Google Maps top 5 sur les requêtes Sarlat / Bergerac / Périgueux.
+**Note D = 2/4** : concurrence plus dense qu'à Brive mais positionnement « auteur » vacant. À surveiller via Google Maps top 5 sur les requêtes Sarlat / Bergerac / Périgueux.
 
 ---
 

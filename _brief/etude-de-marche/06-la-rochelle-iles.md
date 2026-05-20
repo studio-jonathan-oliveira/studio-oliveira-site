@@ -24,40 +24,35 @@
 
 ### 1.1 Population & catégories socio-professionnelles
 
-- **La Rochelle (commune)** : 76 810 habitants (population légale 2022, [INSEE Dossier complet COM-17300](https://www.insee.fr/fr/statistiques/2011101?geo=COM-17300)).
-- **Communauté d'Agglomération La Rochelle (CdA)** : ~175 000 habitants (28 communes, INSEE 2022).
-- **Île de Ré (Communauté de Communes)** : ~18 500 habitants permanents (population stable), mais **population estivale × 8-10** (jusqu'à 180 000 personnes en août — source CdC Île de Ré).
-- **Île d'Oléron (CdC)** : ~22 000 habitants permanents, ~250 000 résidents l'été (source CdC Île d'Oléron).
-- **Département Charente-Maritime (17)** : 654 957 habitants (INSEE 2022).
-- **Part des cadres et professions intellectuelles supérieures La Rochelle** : ~12-14 % (estimation INSEE RP2022 commune 17300, supérieure à Brive mais inférieure à Bordeaux). `[DONNÉE À CONFIRMER]` valeur exacte.
-- **Île de Ré — Saint-Martin-de-Ré (17369)** : 2 412 habitants permanents. Part résidences secondaires sur la commune : **~55-65 %** (INSEE RP2022). Sur l'ensemble de l'île : **~70 % du parc de logements sont des résidences secondaires** — marqueur emblématique. Source : [INSEE Dossier Saint-Martin-de-Ré](https://www.insee.fr/fr/statistiques/2011101?geo=COM-17369).
-- **Niveau de vie médian Charente-Maritime** : ~22 500 € par UC/an (INSEE Filosofi 2021). À retraiter : la moyenne du département masque l'écart **Rétais résidents permanents (modeste) vs résidents secondaires (très haute valeur)**.
+- **La Rochelle (commune)** : 76 810 habitants (population légale 2022, [INSEE COM-17300](https://www.insee.fr/fr/statistiques/2011101?geo=COM-17300)). CdA La Rochelle (28 communes) : ~175 000 hab.
+- **Île de Ré (CdC)** : ~18 500 hab. permanents, **× 8-10 en été** (jusqu'à 180 000 en août — source CdC Île de Ré). **Île d'Oléron (CdC)** : ~22 000 hab. permanents, ~250 000 l'été.
+- **Charente-Maritime (17)** : 654 957 habitants (INSEE 2022). **Niveau de vie médian** ~22 500 €/UC (Filosofi 2021) — moyenne dépt masque l'écart résidents permanents vs résidents secondaires HNW.
+- **Cadres et professions intellectuelles La Rochelle** : ~12-14 % (estimation INSEE RP2022, supérieure à Brive). `[DONNÉE À CONFIRMER]`.
+- **Saint-Martin-de-Ré (17369)** : 2 412 habitants permanents. **~55-65 % résidences secondaires** sur la commune, **~70 % sur l'ensemble de l'île** (marqueur emblématique). Source : [INSEE Saint-Martin-de-Ré](https://www.insee.fr/fr/statistiques/2011101?geo=COM-17369).
 
 ### 1.2 Patrimoine et IFI
 
-- **Île de Ré — concentration IFI** : `[DONNÉE À CONFIRMER]` par commune via DGFiP, mais signaux convergents (Le Figaro Immo, Capital, Les Échos 2022-2025) indiquent que l'île figure parmi les **5 communes françaises hors Paris/Riviera** à plus forte densité d'IFI relative.
-- **La Rochelle** : tissu HNW urbain modéré, comparable à Cognac centre — pas un pôle de patrimoine, mais marché de cadres supérieurs aisés (universitaires, professions libérales santé, dirigeants PME).
-- **Foyers fiscaux > 100 k€ Charente-Maritime** : `[DONNÉE À CONFIRMER]` au niveau commune. Estimation indirecte via prix immobiliers + densité résidences secondaires : **probable 1 200-2 500 foyers** sur Île de Ré + La Rochelle élargi, dont la majorité non résidents permanents (parisiens, lyonnais, bordelais).
+- **Île de Ré — IFI** : `[DONNÉE À CONFIRMER]` par commune via DGFiP. Signaux presse convergents (Le Figaro Immo, Capital, Les Échos 2022-2025) : l'île figure parmi les **5 communes françaises hors Paris/Riviera** à plus forte densité d'IFI relative.
+- **La Rochelle** : HNW urbain modéré (universitaires, professions libérales santé, dirigeants PME) — pas un pôle de patrimoine.
+- **Foyers fiscaux > 100 k€** : `[DONNÉE À CONFIRMER]` à la maille commune. Estimation indirecte : **1 200-2 500 foyers** Île de Ré + La Rochelle élargi, majoritairement non résidents permanents (parisiens, lyonnais, bordelais).
 
 ### 1.3 Marché immobilier
 
 #### Île de Ré — record France hors Paris/Riviera
 
-- **Prix médian Saint-Martin-de-Ré** : **~13 000-14 000 €/m²** (avril 2026, MeilleursAgents). Fourchette biens d'exception centre Saint-Martin : **15 000 à 20 000 €/m²**. Source : [MeilleursAgents Saint-Martin-de-Ré](https://www.meilleursagents.com/prix-immobilier/saint-martin-de-re-17410/). `[DONNÉE À CONFIRMER]` valeur précise à date.
-- **Prix médian Île de Ré (moyenne pondérée 10 communes)** : ~9 500-11 000 €/m² maisons. Pic Saint-Martin / Loix / Les Portes ; communes plus accessibles Rivedoux / Sainte-Marie 6 000-8 500 €/m². Source : [Notaires de France PERVAL Île de Ré](https://www.immobilier.notaires.fr/fr/prix-immobilier).
-- **Volumes transactions Île de Ré** : ~400-600 transactions/an toutes typologies, dont **~80-120 biens > 1 M€** (estimation Notaires 17). `[DONNÉE À CONFIRMER]` chiffre exact PERVAL.
-- **Segment > 2 M€** : biens emblématiques Saint-Martin-de-Ré centre historique, Loix bord de mer, Les Portes-en-Ré (la commune la plus chère de l'île selon plusieurs classements presse). Maisons rétaises rénovées 200-400 m² avec patio/cour fermée régulièrement listées **2,5 à 6 M€** chez Sotheby's, Barnes, Daniel Féau. Source : [Sotheby's Île de Ré listings](https://www.iledere-sothebysrealty.com/) `[URL À CONFIRMER]`.
+- **Saint-Martin-de-Ré** : **~13 000-14 000 €/m²** médian (avril 2026, MeilleursAgents), fourchette biens d'exception centre **15 000-20 000 €/m²**. Source : [MeilleursAgents Saint-Martin-de-Ré](https://www.meilleursagents.com/prix-immobilier/saint-martin-de-re-17410/). `[DONNÉE À CONFIRMER]` valeur précise.
+- **Moyenne pondérée 10 communes Île de Ré** : ~9 500-11 000 €/m² maisons. Pic Saint-Martin / Loix / Les Portes ; entrée île (Rivedoux / Sainte-Marie) 6 000-8 500 €/m². Source : [Notaires de France PERVAL](https://www.immobilier.notaires.fr/fr/prix-immobilier).
+- **Volumes** : ~400-600 transactions/an, dont **~80-120 biens > 1 M€** (estimation Notaires 17). `[DONNÉE À CONFIRMER]`.
+- **Segment > 2 M€** : maisons rétaises rénovées 200-400 m² avec patio listées **2,5 à 6 M€** chez Sotheby's, Barnes, Daniel Féau. Les Portes-en-Ré = commune la plus chère selon classements Le Figaro Immo. Source : [Sotheby's Île de Ré](https://www.iledere-sothebysrealty.com/) `[URL À CONFIRMER]`.
 
 #### La Rochelle
 
-- **Prix moyen au m² La Rochelle** : ~5 200-5 800 €/m² (avril 2026, MeilleursAgents). Source : [MeilleursAgents La Rochelle](https://www.meilleursagents.com/prix-immobilier/la-rochelle-17000/).
-- **Secteurs premium** : **Le Mail / Les Minimes / Vieux-Port** (échoppes du XIXe, maisons d'armateurs), prix 6 000-9 000 €/m². Quartier **Saint-Nicolas** (rive sud Vieux-Port, anciens entrepôts réhabilités) en montée.
-- **Volumes** : ~1 200-1 500 transactions/an commune (Notaires 17). Segment > 800 k€ : 80-120/an estimation. `[DONNÉE À CONFIRMER]`.
+- **Prix moyen** : ~5 200-5 800 €/m² (avril 2026, MeilleursAgents). Source : [MeilleursAgents La Rochelle](https://www.meilleursagents.com/prix-immobilier/la-rochelle-17000/). Secteurs premium **Le Mail / Les Minimes / Vieux-Port** (échoppes XIXe, maisons d'armateurs) 6 000-9 000 €/m². Saint-Nicolas rive sud en montée.
+- **Volumes** : ~1 200-1 500 transactions/an commune, segment > 800 k€ estimé 80-120/an. `[DONNÉE À CONFIRMER]`.
 
 #### Île d'Oléron
 
-- **Prix médian Île d'Oléron** : ~4 500-6 500 €/m² maisons (avril 2026). Premium **Saint-Trojan-les-Bains** (sud-ouest, plage, pinède) et **Le Château-d'Oléron** (carrelets, ostréiculture chic). Source : [MeilleursAgents Saint-Pierre-d'Oléron](https://www.meilleursagents.com/prix-immobilier/saint-pierre-d-oleron-17310/).
-- **Positionnement vs Ré** : Oléron est **40-50 % moins cher** que Île de Ré au m², avec une montée graduelle depuis 2020 (effet report). Marché émergent, encore peu cartographié par les agences luxe nationales (Sotheby's pas d'antenne dédiée Oléron — à confirmer).
+- **Prix médian** ~4 500-6 500 €/m² maisons. Premium **Saint-Trojan-les-Bains** (plage, pinède), **Le Château-d'Oléron** (citadelle, ostréiculture chic). Source : [MeilleursAgents Saint-Pierre-d'Oléron](https://www.meilleursagents.com/prix-immobilier/saint-pierre-d-oleron-17310/). **40-50 % moins cher que Ré** — marché émergent (effet report depuis 2020), peu cartographié par agences luxe nationales.
 
 ### 1.4 Communes & quartiers premium (top à cibler)
 
@@ -122,31 +117,29 @@ Application §3 bis méthodologie :
 
 ### 2.3 Locations atypiques premium & Airbnb
 
-- **Île de Ré — marché Airbnb premium massif et ultra-documenté** : tarifs maisons rétaises 4-6 chambres en haute saison juillet-août : **800-2 500 €/nuit**, pic à 3 000-4 500 €/nuit pour villas Les Portes/Loix vue mer. Sources presse : Le Monde Argent, Le Figaro Immo, Capital, Les Échos (dossiers 2022-2025 récurrents).
-- **AirDNA Île de Ré** : `[DONNÉE À CONFIRMER]` via souscription, mais signaux convergents indiquent **revenu médian annuel top 10 % maisons location > 80 k€** sur cycle complet (5 mois actifs).
-- **Gîtes de France Charente-Maritime charme 4-5 épis** : annuaire [gites-de-france-17.com](https://www.gites-de-france-17.com/) `[URL À CONFIRMER]` — segment Île de Ré + Oléron + Royan. Niche cible : propriétaires de maisons rétaises restaurées en location haute saison souhaitant repenser leur jardin/patio pour augmenter le tarif/nuit.
-- **Plateformes premium** : **Welcome Beyond**, **Le Collectionist**, **The Plum Guide** référencent toutes Île de Ré avec 30-80 villas par site. Source : [Le Collectionist Île de Ré](https://www.lecollectionist.com/fr/destination/ile-de-re).
+- **Île de Ré — marché Airbnb premium massif** : tarifs maisons rétaises 4-6 chambres haute saison **800-2 500 €/nuit**, pic 3 000-4 500 €/nuit pour villas Les Portes/Loix vue mer. Sources presse : Le Monde Argent, Le Figaro Immo, Capital, Les Échos (dossiers 2022-2025 récurrents). **AirDNA** : `[DONNÉE À CONFIRMER]` ; signaux convergents indiquent **revenu médian top 10 % > 80 k€/an** sur 5 mois actifs.
+- **Plateformes premium** : Welcome Beyond, **Le Collectionist**, The Plum Guide référencent Île de Ré (30-80 villas chacun). Source : [Le Collectionist Île de Ré](https://www.lecollectionist.com/fr/destination/ile-de-re).
+- **Gîtes de France 17 charme 4-5 épis** : niche cible — propriétaires souhaitant repenser jardin/patio pour augmenter le tarif/nuit. Source : [gites-de-france-17.com](https://www.gites-de-france-17.com/) `[URL À CONFIRMER]`.
 
-**Verdict B2B** : **30-60 prospects activables** sur Île de Ré + La Rochelle (4-5\* + Relais & Châteaux + gîtes 5 épis + propriétaires Airbnb premium > 1 500 €/nuit avec jardin). Tickets potentiels Studio Oliveira : **3 000 € à 8 000 € études** + maîtrise d'œuvre 6-12 % de chantiers **40 à 250 k€** (les budgets Île de Ré sont structurellement plus élevés que Corrèze ou Cognac).
+**Verdict B2B** : **30-60 prospects activables** (4-5\* + Relais & Châteaux + gîtes 5 épis + propriétaires Airbnb premium > 1 500 €/nuit avec jardin). Tickets Studio Oliveira : **3 000-8 000 €** études + maîtrise d'œuvre 6-12 % de chantiers **40 à 250 k€** — budgets Île de Ré structurellement supérieurs à Corrèze / Cognac.
 
 ---
 
 ## 3. Prescripteurs activables
 
-### 3.1 Architectes Île de Ré + La Rochelle (recommandation : approcher 8-12 noms)
+### 3.1 Architectes Île de Ré + La Rochelle (approcher 8-12 noms)
 
-| Cabinet                                      | Ville                 | Profil                                                                                                                                               | Source                                                                                                                             |
-| -------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **Atelier Robin & Carbonneau Architectes**   | Saint-Martin-de-Ré    | Spécialistes de la maison rétaise contemporaine, restaurations centre historique sous contrainte Architecte des Bâtiments de France                  | `[URL À CONFIRMER]` via [CNOA annuaire 17](https://www.architectes.org/annuaire)                                                   |
-| **Patrick Vettier Architecte**               | La Flotte             | Restauration et création maisons rétaises, accompagnement HNW Île de Ré                                                                              | `[URL À CONFIRMER]`                                                                                                                |
-| **Atelier Babin-Renaud**                     | Île de Ré             | Architectes ABF référencés, projets résidences secondaires premium                                                                                   | `[DONNÉE À CONFIRMER]`                                                                                                             |
-| **Agence Lemoine Architectes**               | La Rochelle           | Maisons individuelles contemporaines, équipements                                                                                                    | `[URL À CONFIRMER]`                                                                                                                |
-| **Patrice Goulet Architecte**                | La Rochelle           | Patrimoine, restauration échoppes Vieux-Port                                                                                                         | `[DONNÉE À CONFIRMER]`                                                                                                             |
-| **Cabinet Olivier & Cancela**                | La Rochelle           | Maisons sur-mesure, équipements                                                                                                                      | `[DONNÉE À CONFIRMER]`                                                                                                             |
-| **Cabinet de l'Île d'Oléron**                | Saint-Pierre-d'Oléron | `[DONNÉE À CONFIRMER]` — référencé via annuaire CNOA dépt 17                                                                                         | [Houzz Charente-Maritime architectes](https://www.houzz.fr/professionals/architectes/charente-maritime-naq-fr) `[URL À CONFIRMER]` |
-| **Architectes parisiens à portfolio rétais** | Paris                 | **Très important** : nombreuses agences parisiennes spécialisées maison Île de Ré pour clientèle parisienne (ex. Olivier Lempereur, Vincent Bastie…) | `[DONNÉE À CONFIRMER]` — voir fiche `08-paris-sourcing.md`                                                                         |
+| Cabinet                                        | Ville                 | Profil                                                                                                                     | Source                                                                                                                 |
+| ---------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Atelier Robin & Carbonneau Architectes**     | Saint-Martin-de-Ré    | Maison rétaise contemporaine, restaurations centre historique sous contrainte ABF                                          | `[URL À CONFIRMER]` via [CNOA annuaire 17](https://www.architectes.org/annuaire)                                       |
+| **Patrick Vettier Architecte**                 | La Flotte             | Restauration + création maisons rétaises HNW                                                                               | `[URL À CONFIRMER]`                                                                                                    |
+| **Atelier Babin-Renaud**                       | Île de Ré             | ABF, résidences secondaires premium                                                                                        | `[DONNÉE À CONFIRMER]`                                                                                                 |
+| **Agence Lemoine Architectes**                 | La Rochelle           | Maisons individuelles contemporaines, équipements                                                                          | `[URL À CONFIRMER]`                                                                                                    |
+| **Patrice Goulet / Cabinet Olivier & Cancela** | La Rochelle           | Patrimoine, échoppes Vieux-Port, maisons sur-mesure                                                                        | `[DONNÉE À CONFIRMER]`                                                                                                 |
+| **Cabinet Île d'Oléron (Saint-Pierre)**        | Saint-Pierre-d'Oléron | `[DONNÉE À CONFIRMER]` — annuaire CNOA dépt 17                                                                             | [Houzz Charente-Maritime](https://www.houzz.fr/professionals/architectes/charente-maritime-naq-fr) `[URL À CONFIRMER]` |
+| **Architectes parisiens à portfolio rétais**   | Paris                 | **Très important** — nombreuses agences parisiennes spécialisées maison Île de Ré (ex. Olivier Lempereur, Vincent Bastie…) | Cf. fiche `08-paris-sourcing.md`                                                                                       |
 
-**Volume total estimé** : ~120-180 architectes inscrits CNOA dépt 17. Source : [CNOA annuaire 17](https://www.architectes.org/annuaire). `[DONNÉE À CONFIRMER]` chiffre exact. Sous-ensemble actif maison individuelle haut-de-gamme estimé : 30-50 cabinets. **Particularité Île de Ré** : forte proportion de projets pilotés par architectes parisiens — l'axe Paris est donc co-pertinent (cf. fiche `08-paris-sourcing.md`).
+**Volume total estimé** : ~120-180 architectes inscrits CNOA dépt 17 `[DONNÉE À CONFIRMER]`. Sous-ensemble actif maison individuelle haut-de-gamme : 30-50 cabinets. **Particularité Île de Ré** : forte proportion de projets pilotés par architectes parisiens — l'axe Paris est co-pertinent.
 
 ### 3.2 Agences immobilières luxe actives sur Île de Ré + La Rochelle
 
@@ -237,11 +230,11 @@ Application §3 bis méthodologie :
 
 ### 6.2 Actions complémentaires (low effort)
 
-- **Pitch éditorial Côté Ouest édition Île de Ré** : magazine qui touche exactement la clientèle (parisiens propriétaires résidence secondaire). Pitcher un reportage sur un patio rétais reconçu en jardin biophilique. Source : [Côté Ouest](https://www.cotemaison.fr/cote-ouest/).
-- **Référencement local Google** : objectif difficile mais à viser sur « designer jardin Saint-Martin-de-Ré » et « architecte paysagiste La Rochelle » — concurrence forte mais qualité contenu Studio devrait permettre top 5 à 12 mois.
-- **Instagram zone Île de Ré** : hashtags `#iledere`, `#jardinrétais`, `#maisonderé`, `#patiocharentais` modérément saturés sur compte design — opportunité à investir avec contenus Twinmotion photoréalistes.
-- **Présence physique automne 2026** : viser 1 déplacement de 2 jours Île de Ré tous les 6 semaines d'octobre 2026 à mars 2027 (4 déplacements). Permet de réaliser les visites Top 3 cibles + entretien relations + supervision éventuelle chantier 1er projet acquis.
-- **Estimation effort vs ticket** : **6 jours/trimestre prospection + déplacement** sur 18 mois → objectif **1 hôtel B2B signé (40-150 k€ chantier) + 3-5 résidences secondaires HNW Île de Ré (chantiers 50-250 k€ chacun)**. Potentiel cumulé à 18 mois : **150-400 k€ CA**, avec ticket moyen unitaire largement supérieur à Brive / Cognac / Limoges. **Compte tenu de l'effort de pénétration d'un marché club, c'est la zone à investir en priorité 2 (après Bordeaux / Côte basque), mais avec un retour potentiel élevé**.
+- **Pitch éditorial Côté Ouest édition Île de Ré** : magazine qui touche exactement la clientèle parisienne propriétaire de résidence secondaire. Reportage sur patio rétais reconçu en jardin biophilique. Source : [Côté Ouest](https://www.cotemaison.fr/cote-ouest/).
+- **SEO local Google** : objectif difficile mais visable sur « designer jardin Saint-Martin-de-Ré » et « architecte paysagiste La Rochelle » — top 5 à 12 mois si contenu Studio de qualité.
+- **Instagram zone Île de Ré** : hashtags `#iledere`, `#jardinrétais`, `#maisonderé`, `#patiocharentais` modérément saturés sur compte design — investir avec contenus Twinmotion.
+- **Présence physique automne 2026** : 1 déplacement 2 jours/6 semaines d'octobre 2026 à mars 2027 (4 déplacements). Couvre Top 3 cibles + entretien relations + supervision 1er chantier acquis.
+- **Estimation effort vs ticket** : **6 jours/trimestre** sur 18 mois → objectif **1 hôtel B2B signé (40-150 k€ chantier) + 3-5 résidences secondaires HNW (50-250 k€ chacun)**. Potentiel cumulé 18 mois : **150-400 k€ CA**. Ticket moyen unitaire supérieur à Brive / Cognac / Limoges. **Zone à investir en priorité 2 (après Bordeaux / Côte basque) — marché club, retour potentiel élevé**.
 
 ---
 
