@@ -23,6 +23,24 @@ import SplitType from 'split-type';
 
 const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
+/*
+ * Garde mobile / coarse-pointer — 60 % du trafic estimé étant smartphone
+ * (Morgan 2026-05-20), on coupe net les animations scroll-driven qui
+ * exigent un callback Motion à chaque frame : char drift, justify spread,
+ * scroll rise, image reveal clip-path, hero zoom, scrollytelling, words
+ * fade, quote scroll, split per-char. Ces effets faisaient « laguer » sur
+ * iOS Safari / Android Chrome (saccades visibles dès le hero home).
+ *
+ * Les animations one-shot inView (data-reveal, data-mask-reveal,
+ * data-clip-reveal, hero-sequence) restent actives : elles ne paient leur
+ * coût qu'une seule fois à l'entrée viewport et n'introduisent pas de
+ * frame budget continu. Les parallax / horizontal typologies / wheel
+ * horizontal sont déjà gardés sur (hover: hover) ailleurs dans ce module.
+ */
+const REDUCE_MOBILE =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(max-width: 1023px), (hover: none) and (pointer: coarse)').matches;
+
 type RevealVariant = 'up' | 'fade' | 'slide-left' | 'slow' | 'image-rise';
 
 interface RevealSpec {
@@ -227,6 +245,7 @@ function setupMaskReveals(root: ParentNode) {
  *   - data-split-types="chars"   (chars | words | lines — défaut chars)
  */
 function setupSplitReveals(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-split]');
   nodes.forEach((el) => {
     if (el.dataset.splitDone) return;
@@ -286,6 +305,7 @@ function setupSplitReveals(root: ParentNode) {
  *   - data-justify-amp="0.6"  (intensité du regroupement initial, 0→1, default 0.7)
  */
 function setupJustifiedScroll(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-justify-scroll]');
   nodes.forEach((el) => {
     if (el.dataset.justifyDone) return;
@@ -396,6 +416,7 @@ function setupJustifiedScroll(root: ParentNode) {
  * Easing cubic-out → mouvement smooth, jamais brutal (Morgan 2026-04-28).
  */
 function setupJustifyMulti(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const groups = root.querySelectorAll<HTMLElement>('[data-justify-multi]');
   groups.forEach((group) => {
     if (group.dataset.justifyMultiDone) return;
@@ -516,6 +537,7 @@ function setupJustifyMulti(root: ParentNode) {
  * Usage : <span data-char-drift data-char-drift-amp="14">paysagiste</span>
  */
 function setupCharDrift(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-char-drift]');
   nodes.forEach((el) => {
     if (el.dataset.charDriftDone) return;
@@ -581,6 +603,7 @@ function setupCharDrift(root: ParentNode) {
  * Combinable avec data-reveal="image-rise" sur <img> enfant.
  */
 function setupScrollRise(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-scroll-rise]');
   nodes.forEach((el) => {
     if (el.dataset.scrollRiseDone) return;
@@ -648,6 +671,7 @@ function setupWheelHorizontal(root: ParentNode) {
  * Le wrapper doit avoir overflow:hidden pour que le clip soit visible.
  */
 function setupImageReveals(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-img-reveal]');
   nodes.forEach((el) => {
     if (el.dataset.imgRevealDone) return;
@@ -745,6 +769,7 @@ function setupHeroSequence(root: ParentNode) {
  * Hero zoom — scroll-driven sur la sortie haute du viewport.
  */
 function setupHeroZoom(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const zooms = root.querySelectorAll<HTMLElement>('[data-hero-zoom]');
   zooms.forEach((el) => {
     if (el.dataset.heroZoomDone) return;
@@ -809,6 +834,7 @@ function setupClipReveals(root: ParentNode) {
  * compose au scroll" — signature springs.estate / shed.design.
  */
 function setupQuoteScroll(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const quotes = root.querySelectorAll<HTMLElement>('[data-quote-scroll]');
   quotes.forEach((container) => {
     if (container.dataset.quoteDone) return;
@@ -852,6 +878,7 @@ function setupQuoteScroll(root: ParentNode) {
  * associés (même index) s'affichent en parallèle.
  */
 function setupScrollytelling(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const sections = root.querySelectorAll<HTMLElement>('[data-scrolly]');
   sections.forEach((section) => {
     if (section.dataset.scrollyDone) return;
@@ -1090,6 +1117,7 @@ function setupHorizontalTypologies(root: ParentNode) {
  *   - data-words-fade-window="0.0,0.55"  (start,end progress)
  */
 function setupWordsFade(root: ParentNode) {
+  if (REDUCE_MOBILE) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-words-fade]');
   nodes.forEach((el) => {
     if (el.dataset.wordsFadeDone) return;
