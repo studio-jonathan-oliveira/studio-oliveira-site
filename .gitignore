@@ -49,5 +49,6 @@ _assets/
 # Tests
 coverage/
 
-# Étude de marché — HTML intermédiaire généré par scripts/build-etude-marche-report.py
+# Étude de marché — HTML intermédiaires générés par les scripts build-*-report.py
 _brief/etude-de-marche/_export.html
+_brief/etude-de-marche/_export-visibilite.html
