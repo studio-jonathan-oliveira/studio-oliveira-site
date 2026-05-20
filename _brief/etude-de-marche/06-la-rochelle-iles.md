@@ -227,11 +227,11 @@ Application §3 bis méthodologie :
 
 ### 6.2 Actions complémentaires (low effort)
 
-- **Pitch éditorial Côté Ouest édition Île de Ré** : magazine qui touche exactement la clientèle parisienne propriétaire de résidence secondaire. Reportage sur patio rétais reconçu en jardin biophilique. Source : [Côté Ouest](https://www.cotemaison.fr/cote-ouest/).
-- **SEO local Google** : objectif difficile mais visable sur « designer jardin Saint-Martin-de-Ré » et « architecte paysagiste La Rochelle » — top 5 à 12 mois si contenu Studio de qualité.
-- **Instagram zone Île de Ré** : hashtags `#iledere`, `#jardinrétais`, `#maisonderé`, `#patiocharentais` modérément saturés sur compte design — investir avec contenus Twinmotion.
-- **Présence physique automne 2026** : 1 déplacement 2 jours/6 semaines d'octobre 2026 à mars 2027 (4 déplacements). Couvre Top 3 cibles + entretien relations + supervision 1er chantier acquis.
-- **Estimation effort vs ticket** : **6 jours/trimestre** sur 18 mois → objectif **1 hôtel B2B signé (40-150 k€ chantier) + 3-5 résidences secondaires HNW (50-250 k€ chacun)**. Potentiel cumulé 18 mois : **150-400 k€ CA**. Ticket moyen unitaire supérieur à Brive / Cognac / Limoges. **Zone à investir en priorité 2 (après Bordeaux / Côte basque) — marché club, retour potentiel élevé**.
+- **Pitch éditorial Côté Ouest** : reportage patio rétais reconçu en jardin biophilique. Source : [Côté Ouest](https://www.cotemaison.fr/cote-ouest/).
+- **SEO local** : difficile mais visable sur « designer jardin Saint-Martin-de-Ré » / « architecte paysagiste La Rochelle » — top 5 à 12 mois.
+- **Instagram** : `#iledere`, `#jardinrétais`, `#maisonderé`, `#patiocharentais` peu saturés sur compte design — investir Twinmotion.
+- **Présence physique** : 1 déplacement 2 j/6 semaines d'octobre 2026 à mars 2027 (4 déplacements). Couvre Top 3 + relations + 1er chantier.
+- **Effort vs ticket** : **6 j/trimestre** sur 18 mois → objectif **1 hôtel B2B (40-150 k€) + 3-5 résidences secondaires HNW (50-250 k€)**. Potentiel cumulé 18 mois **150-400 k€ CA**. Ticket moyen > Brive/Cognac/Limoges. **Priorité 2 après Bordeaux/Côte basque — marché club, retour élevé**.
 
 ---
 
