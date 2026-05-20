@@ -2,45 +2,70 @@
 
 **Commanditaire** : Morgan (mai 2026).
 **Bénéficiaire final** : Jonathan Oliveira.
-**Objet** : identifier les zones et segments où Studio J Oliveira doit prospecter en priorité pour générer un pipeline qualifié de projets B2C HNW + B2B premium + relais prescripteurs.
+**Objet** : identifier les zones et segments où Studio J Oliveira doit prospecter en priorité pour générer un pipeline qualifié de projets B2C HNW + B2B premium + relais prescripteurs, puis livrer un plan d'action visibilité concret pour booster sa demande de projets.
 
 ---
 
-## Lire dans cet ordre
+## Livrable principal
 
-1. **`00-METHODOLOGIE.md`** — cadre d'analyse, grille de scoring /20, sources de données mobilisées, règles éditoriales.
-2. **`00-SYNTHESE.md`** — _(à produire en Phase 3)_ — synthèse cross-zones, grand tableau comparatif, recommandation de séquence prospection sur 12 mois. **C'est ce doc qui est destiné à être envoyé à Jonathan tel quel** (exportable PDF).
-3. Fiches zones (lecture par ordre de priorité de score) :
-   - `01-brive-correze.md` — Brive-la-Gaillarde + Corrèze (siège)
-   - `02-limoges.md` — Limoges + Haute-Vienne (bureau actif)
-   - `03-bordeaux-arcachon.md` — Bordeaux + Bassin d'Arcachon (point d'études)
-   - `04-perigord.md` — Périgord, Sarlat, Bergerac
-   - `05-cognac-charente.md` — Cognac + Charente
-   - `06-la-rochelle-iles.md` — La Rochelle, Île de Ré, Île d'Oléron
-   - `07-cote-basque.md` — Biarritz, Saint-Jean-de-Luz, Anglet
-   - `08-paris-sourcing.md` — Paris : canal de sourcing prescripteurs (HNW parisiens avec résidence secondaire en Sud-Ouest)
+> 📄 **[`00-SYNTHESE-JONATHAN.md`](00-SYNTHESE-JONATHAN.md)** — **LE document à envoyer à Jonathan** (exportable PDF). ~13 pages clean, structurées par opérationnel, sans jargon. Combine étude de marché synthétique + plan visibilité + top 10 contacts semaine 1.
+
+---
+
+## Documents de travail (pour Morgan, pilotage de la mission)
+
+### Cadrage
+
+- **[`00-METHODOLOGIE.md`](00-METHODOLOGIE.md)** — cadre d'analyse, grille de scoring /20 sur 5 axes, matrice typologie × foncier, sources de données mobilisées, règles éditoriales.
+
+### Fiches zones détaillées (8 zones)
+
+Référence pour aller plus loin sur n'importe quel point évoqué dans la synthèse Jonathan.
+
+| #   | Fiche                                                | Score          | Verdict           |
+| --- | ---------------------------------------------------- | -------------- | ----------------- |
+| 1   | [`01-brive-correze.md`](01-brive-correze.md)         | **11/20**      | Priorité 2        |
+| 2   | [`02-limoges.md`](02-limoges.md)                     | **11/20**      | Priorité 2        |
+| 3   | [`03-bordeaux-arcachon.md`](03-bordeaux-arcachon.md) | **15/20** 🏆   | **Priorité 1**    |
+| 4   | [`04-perigord.md`](04-perigord.md)                   | **13/20**      | Priorité 2 haute  |
+| 5   | [`05-cognac-charente.md`](05-cognac-charente.md)     | **11,5/20**    | Niche prestige    |
+| 6   | [`06-la-rochelle-iles.md`](06-la-rochelle-iles.md)   | **11/20**      | Priorité 2        |
+| 7   | [`07-cote-basque.md`](07-cote-basque.md)             | **14/20** 🏆   | **Priorité 1**    |
+| 8   | [`08-paris-sourcing.md`](08-paris-sourcing.md)       | **8/10 canal** | Canal prioritaire |
+
+---
+
+## Synthèse cross-zones
+
+**Moteur du studio à 12 mois** : Bordeaux + Bassin d'Arcachon (15/20) + Côte Basque (14/20) = 70 % du potentiel pipeline. Périgord (13/20) = 15 %. Les 5 autres zones cumulées = 15 %. Paris = amplificateur transverse.
+
+**Angle libre à occuper** : « designer paysagiste biophilique signature d'auteur, études dissociées de la maîtrise d'œuvre, livraison Twinmotion 3D photoréaliste ». Aucun concurrent du Sud-Ouest ne revendique ce positionnement.
+
+**Top 3 cibles transverses prioritaires** :
+
+1. Marie-Céline Chavanne — Périgord Sotheby's International Realty (Périgueux)
+2. Direction Sotheby's Bordeaux + Cap-Ferret + Barnes Cap-Ferret
+3. Hôtel du Palais Biarritz (5\*) + Brindos Lac & Château (5\* R&C)
 
 ---
 
 ## Statut de production
 
-| Doc                       | Statut      | Date              |
-| ------------------------- | ----------- | ----------------- |
-| `00-METHODOLOGIE.md`      | ✅ v1       | 2026-05-20        |
-| `01-brive-correze.md`     | 🟡 en cours | Phase 1 (pilote)  |
-| `02-limoges.md`           | ⏳ Phase 2  | À venir           |
-| `03-bordeaux-arcachon.md` | ⏳ Phase 2  | À venir           |
-| `04-perigord.md`          | ⏳ Phase 2  | À venir           |
-| `05-cognac-charente.md`   | ⏳ Phase 2  | À venir           |
-| `06-la-rochelle-iles.md`  | ⏳ Phase 2  | À venir           |
-| `07-cote-basque.md`       | ⏳ Phase 2  | À venir           |
-| `08-paris-sourcing.md`    | ⏳ Phase 2  | À venir           |
-| `00-SYNTHESE.md`          | ⏳ Phase 3  | Après les 8 zones |
+| Doc                           | Statut    | Date           |
+| ----------------------------- | --------- | -------------- |
+| `00-METHODOLOGIE.md`          | ✅ v1     | 2026-05-20     |
+| `01-brive-correze.md`         | ✅ v1     | 2026-05-20     |
+| `02-limoges.md`               | ✅ v1     | 2026-05-20     |
+| `03-bordeaux-arcachon.md`     | ✅ v1     | 2026-05-20     |
+| `04-perigord.md`              | ✅ v1     | 2026-05-20     |
+| `05-cognac-charente.md`       | ✅ v1     | 2026-05-20     |
+| `06-la-rochelle-iles.md`      | ✅ v1     | 2026-05-20     |
+| `07-cote-basque.md`           | ✅ v1     | 2026-05-20     |
+| `08-paris-sourcing.md`        | ✅ v1     | 2026-05-20     |
+| **`00-SYNTHESE-JONATHAN.md`** | **✅ v1** | **2026-05-20** |
 
 ---
 
 ## Convention de citation
 
-Chaque chiffre, nom d'acteur, prix, est sourcé par lien inline ou footnote vérifiable. Aucune donnée n'est inventée. Les données absentes sont marquées `[DONNÉE À CONFIRMER]` plutôt que comblées par extrapolation.
-
-Données fraîches privilégiées (2024-2025). Données antérieures explicitement datées.
+Chaque chiffre, nom d'acteur, prix, est sourcé par lien inline ou footnote vérifiable. Aucune donnée n'est inventée. Les données absentes sont marquées `[DONNÉE À CONFIRMER]` plutôt que comblées par extrapolation. Données fraîches privilégiées (2024-2025).
