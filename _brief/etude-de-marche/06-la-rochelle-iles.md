@@ -40,19 +40,19 @@
 
 #### Île de Ré — record France hors Paris/Riviera
 
-- **Saint-Martin-de-Ré** : **~13 000-14 000 €/m²** médian (avril 2026, MeilleursAgents), fourchette biens d'exception centre **15 000-20 000 €/m²**. Source : [MeilleursAgents Saint-Martin-de-Ré](https://www.meilleursagents.com/prix-immobilier/saint-martin-de-re-17410/). `[DONNÉE À CONFIRMER]` valeur précise.
-- **Moyenne pondérée 10 communes Île de Ré** : ~9 500-11 000 €/m² maisons. Pic Saint-Martin / Loix / Les Portes ; entrée île (Rivedoux / Sainte-Marie) 6 000-8 500 €/m². Source : [Notaires de France PERVAL](https://www.immobilier.notaires.fr/fr/prix-immobilier).
-- **Volumes** : ~400-600 transactions/an, dont **~80-120 biens > 1 M€** (estimation Notaires 17). `[DONNÉE À CONFIRMER]`.
-- **Segment > 2 M€** : maisons rétaises rénovées 200-400 m² avec patio listées **2,5 à 6 M€** chez Sotheby's, Barnes, Daniel Féau. Les Portes-en-Ré = commune la plus chère selon classements Le Figaro Immo. Source : [Sotheby's Île de Ré](https://www.iledere-sothebysrealty.com/) `[URL À CONFIRMER]`.
+- **Saint-Martin-de-Ré** : **~13 000-14 000 €/m²** médian (avril 2026, MeilleursAgents), biens d'exception centre **15 000-20 000 €/m²**. Source : [MeilleursAgents Saint-Martin](https://www.meilleursagents.com/prix-immobilier/saint-martin-de-re-17410/) `[À CONFIRMER]`.
+- **Moyenne 10 communes Île de Ré** : ~9 500-11 000 €/m². Pic Saint-Martin / Loix / Les Portes ; entrée île Rivedoux / Sainte-Marie 6 000-8 500 €/m². Source : [Notaires PERVAL](https://www.immobilier.notaires.fr/fr/prix-immobilier).
+- **Volumes** : ~400-600 transactions/an, dont **~80-120 biens > 1 M€** `[À CONFIRMER]`.
+- **Segment > 2 M€** : maisons rétaises 200-400 m² avec patio listées **2,5 à 6 M€** chez Sotheby's/Barnes/Daniel Féau. Les Portes-en-Ré = commune la plus chère (Le Figaro Immo). Source : [Sotheby's Île de Ré](https://www.iledere-sothebysrealty.com/) `[URL À CONFIRMER]`.
 
 #### La Rochelle
 
-- **Prix moyen** : ~5 200-5 800 €/m² (avril 2026, MeilleursAgents). Source : [MeilleursAgents La Rochelle](https://www.meilleursagents.com/prix-immobilier/la-rochelle-17000/). Secteurs premium **Le Mail / Les Minimes / Vieux-Port** (échoppes XIXe, maisons d'armateurs) 6 000-9 000 €/m². Saint-Nicolas rive sud en montée.
-- **Volumes** : ~1 200-1 500 transactions/an commune, segment > 800 k€ estimé 80-120/an. `[DONNÉE À CONFIRMER]`.
+- **Prix moyen** ~5 200-5 800 €/m² ([MeilleursAgents La Rochelle](https://www.meilleursagents.com/prix-immobilier/la-rochelle-17000/)). Secteurs premium **Le Mail / Les Minimes / Vieux-Port** 6 000-9 000 €/m². Saint-Nicolas rive sud en montée.
+- **Volumes** : ~1 200-1 500 transactions/an commune, > 800 k€ estimé 80-120/an `[À CONFIRMER]`.
 
 #### Île d'Oléron
 
-- **Prix médian** ~4 500-6 500 €/m² maisons. Premium **Saint-Trojan-les-Bains** (plage, pinède), **Le Château-d'Oléron** (citadelle, ostréiculture chic). Source : [MeilleursAgents Saint-Pierre-d'Oléron](https://www.meilleursagents.com/prix-immobilier/saint-pierre-d-oleron-17310/). **40-50 % moins cher que Ré** — marché émergent (effet report depuis 2020), peu cartographié par agences luxe nationales.
+- **Prix médian** ~4 500-6 500 €/m². Premium **Saint-Trojan-les-Bains** (plage, pinède), **Le Château-d'Oléron** (citadelle, ostréiculture chic). Source : [MeilleursAgents Saint-Pierre](https://www.meilleursagents.com/prix-immobilier/saint-pierre-d-oleron-17310/). **40-50 % moins cher que Ré** — marché émergent (effet report 2020), peu cartographié par agences luxe.
 
 ### 1.4 Communes & quartiers premium (top à cibler)
 
@@ -67,9 +67,9 @@
 | **Le Bois-Plage-en-Ré**        | Plage la plus longue de l'île.                                                | 7 500-10 500 €/m²                             |
 | **Sainte-Marie / Rivedoux**    | Entrée île (pont), plus accessible.                                           | 6 000-9 000 €/m²                              |
 
-**La Rochelle — secteurs premium** : Vieux-Port + Le Mail (échoppes d'armateurs XVIIIe-XIXe, hôtels particuliers), Les Minimes (ancien chantier naval, marina + neuf premium), Saint-Nicolas (rive sud patrimoniale en réhabilitation), Aytré + Lagord (maisons individuelles cadres, terrains 500-1500 m²).
+**La Rochelle — premium** : Vieux-Port + Le Mail (échoppes d'armateurs XVIIIe-XIXe), Les Minimes (chantier naval reconverti, marina + neuf premium), Saint-Nicolas (rive sud patrimoniale), Aytré + Lagord (maisons cadres, 500-1500 m²).
 
-**Île d'Oléron — secteurs émergents** : Saint-Trojan-les-Bains (station thermale, pinède), Le Château-d'Oléron (citadelle Vauban, cabanes ostréicoles converties chic), Boyardville (port-station, vue Fort Boyard).
+**Île d'Oléron — émergents** : Saint-Trojan-les-Bains (thermale, pinède), Le Château-d'Oléron (citadelle, ostréiculture chic), Boyardville (port-station Fort Boyard).
 
 ### 1.5 Matrice typologie × foncier (zone littorale)
 
@@ -102,24 +102,23 @@ Application §3 bis méthodologie :
 | **Novotel Thalassa Île de Ré** | Sainte-Marie-de-Ré     | 4\*, thalasso, jardin pinède, piscine                                    | [accor.com](https://all.accor.com/) `[URL À CONFIRMER]`                               |
 | **Novotel Thalassa Oléron**    | Saint-Trojan-les-Bains | 4\*, thalasso, plage, pinède (Oléron)                                    | [accor.com](https://all.accor.com/) `[URL À CONFIRMER]`                               |
 
-À compléter terrain : Hôtel Le Bois Fleuri (Ars), Hôtel de la Marée (Rivedoux), Hôtel Saint-Nicolas + Le Yachtman (La Rochelle), Atalante Wellness (Sainte-Marie), Île de Lumière (Saint-Pierre-d'Oléron). Tous `[DONNÉE À CONFIRMER]`.
+À compléter terrain `[À CONFIRMER]` : Hôtel Le Bois Fleuri (Ars), Hôtel de la Marée (Rivedoux), Hôtel Saint-Nicolas + Le Yachtman (La Rochelle), Atalante Wellness (Sainte-Marie), Île de Lumière (Saint-Pierre-d'Oléron).
 
-**Synthèse** : **10-15 établissements 4-5\* opérationnels Île de Ré + La Rochelle**, dont **1 Relais & Châteaux (Toiras) + Villa Clarisse 5\*** — pôle B2B le plus dense du sud-ouest atlantique (devant Cognac, Brive, Périgord ; comparable à Côte Basque hors Biarritz). Oléron significativement plus faible (3-5 établissements). Sources : [Atout France](https://www.classement.atout-france.fr/) + [Relais & Châteaux](https://www.relaischateaux.com/fr).
+**Synthèse** : **10-15 établissements 4-5\* opérationnels** Île de Ré + La Rochelle, dont **1 Relais & Châteaux (Toiras) + Villa Clarisse 5\*** — pôle B2B le plus dense du sud-ouest atlantique (devant Cognac/Brive/Périgord, comparable Côte Basque hors Biarritz). Oléron plus faible (3-5). Sources : [Atout France](https://www.classement.atout-france.fr/) + [Relais & Châteaux](https://www.relaischateaux.com/fr).
 
 ### 2.2 Restaurants gastronomiques étoilés Michelin
 
-- **Christopher Coutanceau** (La Rochelle, Les Minimes) — **2\*** Michelin, table emblématique poisson/Atlantique. Source : [Guide Michelin](https://guide.michelin.com/fr/fr/restaurant/christopher-coutanceau).
-- **Les Embruns** (Saint-Trojan-les-Bains) — 1\* Michelin Oléron. `[À CONFIRMER]`.
-- **L'Avant Port** + **L'Écailler** + bib gourmand Île de Ré. Source : [Michelin Île de Ré](https://guide.michelin.com/fr/fr/poitou-charentes/iledere_la/restaurants).
+- **Christopher Coutanceau** (La Rochelle, Les Minimes) — **2\*** Michelin, table emblématique poisson/Atlantique ([Michelin](https://guide.michelin.com/fr/fr/restaurant/christopher-coutanceau)).
+- **Les Embruns** (Saint-Trojan-les-Bains) — 1\* Michelin Oléron `[À CONFIRMER]`. **L'Avant Port** + **L'Écailler** + bib gourmand Île de Ré ([Michelin Île de Ré](https://guide.michelin.com/fr/fr/poitou-charentes/iledere_la/restaurants)).
 - Densité honorable mais inférieure aux régions emblématiques. Force réelle : restauration de plage/bistrot avec jardins-terrasses (sourcing B2B).
 
 ### 2.3 Locations atypiques premium & Airbnb
 
-- **Île de Ré — marché Airbnb premium massif** : tarifs maisons rétaises 4-6 chambres haute saison **800-2 500 €/nuit**, pic 3 000-4 500 €/nuit pour villas Les Portes/Loix vue mer. Sources presse : Le Monde Argent, Le Figaro Immo, Capital, Les Échos (dossiers 2022-2025 récurrents). **AirDNA** : `[DONNÉE À CONFIRMER]` ; signaux convergents indiquent **revenu médian top 10 % > 80 k€/an** sur 5 mois actifs.
-- **Plateformes premium** : Welcome Beyond, **Le Collectionist**, The Plum Guide référencent Île de Ré (30-80 villas chacun). Source : [Le Collectionist Île de Ré](https://www.lecollectionist.com/fr/destination/ile-de-re).
-- **Gîtes de France 17 charme 4-5 épis** : niche cible — propriétaires souhaitant repenser jardin/patio pour augmenter le tarif/nuit. Source : [gites-de-france-17.com](https://www.gites-de-france-17.com/) `[URL À CONFIRMER]`.
+- **Île de Ré — Airbnb premium massif** : maisons rétaises 4-6 ch. **800-2 500 €/nuit** haute saison, pic 3 000-4 500 €/nuit villas Les Portes/Loix vue mer. Sources presse Le Monde Argent, Le Figaro Immo, Capital, Les Échos (2022-2025). **AirDNA** `[À CONFIRMER]` ; signaux : **revenu médian top 10 % > 80 k€/an** sur 5 mois actifs.
+- **Plateformes premium** : Welcome Beyond, **Le Collectionist**, The Plum Guide référencent Île de Ré (30-80 villas chacun). Source : [Le Collectionist](https://www.lecollectionist.com/fr/destination/ile-de-re).
+- **Gîtes de France 17 charme 4-5 épis** : propriétaires repensant jardin/patio pour augmenter tarif/nuit. Source : [gites-de-france-17.com](https://www.gites-de-france-17.com/) `[URL À CONFIRMER]`.
 
-**Verdict B2B** : **30-60 prospects activables** (4-5\* + Relais & Châteaux + gîtes 5 épis + propriétaires Airbnb premium > 1 500 €/nuit avec jardin). Tickets Studio Oliveira : **3 000-8 000 €** études + maîtrise d'œuvre 6-12 % de chantiers **40 à 250 k€** — budgets Île de Ré structurellement supérieurs à Corrèze / Cognac.
+**Verdict B2B** : **30-60 prospects activables**. Tickets Studio : **3 000-8 000 €** études + maîtrise d'œuvre 6-12 % de chantiers **40-250 k€** — budgets Île de Ré supérieurs à Corrèze/Cognac.
 
 ---
 
@@ -137,7 +136,7 @@ Application §3 bis méthodologie :
 | **Cabinet Île d'Oléron (Saint-Pierre)**        | Saint-Pierre-d'Oléron | `[DONNÉE À CONFIRMER]` — annuaire CNOA dépt 17                                                                             | [Houzz Charente-Maritime](https://www.houzz.fr/professionals/architectes/charente-maritime-naq-fr) `[URL À CONFIRMER]` |
 | **Architectes parisiens à portfolio rétais**   | Paris                 | **Très important** — nombreuses agences parisiennes spécialisées maison Île de Ré (ex. Olivier Lempereur, Vincent Bastie…) | Cf. fiche `08-paris-sourcing.md`                                                                                       |
 
-**Volume total estimé** : ~120-180 architectes inscrits CNOA dépt 17 `[DONNÉE À CONFIRMER]`. Sous-ensemble actif maison individuelle haut-de-gamme : 30-50 cabinets. **Particularité Île de Ré** : forte proportion de projets pilotés par architectes parisiens — l'axe Paris est co-pertinent.
+**Volume total estimé** : ~120-180 architectes inscrits CNOA dépt 17 `[À CONFIRMER]`, dont 30-50 cabinets actifs maison individuelle haut-de-gamme. **Particularité Île de Ré** : forte proportion de projets pilotés par architectes parisiens — axe Paris co-pertinent.
 
 ### 3.2 Agences immobilières luxe Île de Ré + La Rochelle
 
@@ -206,23 +205,23 @@ Application §3 bis méthodologie :
 
 #### Cible 1 — **Hôtel de Toiras + Villa Clarisse (Relais & Châteaux, Saint-Martin-de-Ré)**
 
-- **Pourquoi** : seul Relais & Châteaux de la zone, groupe en croissance avec Villa Clarisse 5\* (jardin clos ultra-photogénique). Référence absolue B2B Île de Ré — un projet signé ici = carte de visite régionale + presse Côté Ouest. Propriétaire-exploitant `[À CONFIRMER]` (succession Spade).
-- **Canal** : courrier nominatif + appel direct GM. Visite physique novembre 2026 (hors saison, propriétaire disponible). Audit visuel gratuit du jardin Villa Clarisse + cour Toiras avec moodboard Twinmotion en cadeau.
-- **Message d'angle** : « Vos clients passent autant de temps dans votre jardin clos que dans la chambre. Étude 6 semaines, livraison Twinmotion immersive, intervention janvier-mars hors-saison. Chiffrage études 6 500-8 000 €. »
+- **Pourquoi** : seul Relais & Châteaux de la zone, groupe en croissance avec Villa Clarisse 5\* (jardin clos ultra-photogénique). Référence absolue B2B Île de Ré — un projet signé = carte de visite régionale + presse Côté Ouest. Propriétaire-exploitant `[À CONFIRMER]` (succession Spade).
+- **Canal** : courrier nominatif + appel direct GM. Visite novembre 2026 (hors saison). Audit visuel gratuit Villa Clarisse + cour Toiras avec moodboard Twinmotion.
+- **Message** : « Vos clients passent autant de temps dans votre jardin que dans la chambre. Étude 6 semaines, livraison Twinmotion immersive, intervention janvier-mars. Études 6 500-8 000 €. »
 - **KPI** : 1 mission signée sur 18 mois — accélérateur prescripteur très fort.
 
-#### Cible 2 — **Île de Ré Sotheby's International Realty (Saint-Martin-de-Ré) + Barnes + Daniel Féau**
+#### Cible 2 — **Île de Ré Sotheby's International Realty + Barnes + Daniel Féau**
 
-- **Pourquoi** : agence luxe nationale avec antenne dédiée ~15 ans, référente biens > 1,5 M€ acquis par HNW parisiens. Ces clients vont **systématiquement** repenser jardin/patio dans les 12 mois post-acquisition — fenêtre de prescription claire et timée.
-- **Canal** : courrier + visite physique agence Saint-Martin (combinée avec Cible 1 sur même déplacement). Suivi LinkedIn directeur + 2-3 négociateurs seniors. **Approche concomitante Barnes + Daniel Féau** (3 visites en 2 jours, économie de déplacement).
-- **Message d'angle** : « Étude paysagère + Twinmotion photoréaliste livrés à votre acquéreur dans les 6 semaines post-acte. Vous différenciez vos mandats avec une vision paysagère contractuelle ; nous facturons en direct le client final, ticket 4 500-12 000 € (cœur urbain rétais 50-300 m²). »
+- **Pourquoi** : agence luxe nationale antenne dédiée ~15 ans, référente biens > 1,5 M€ HNW parisiens. Ces clients repensent **systématiquement** jardin/patio dans les 12 mois post-acquisition — fenêtre de prescription claire et timée.
+- **Canal** : courrier + visite agence Saint-Martin (combinée Cible 1). LinkedIn directeur + 2-3 négociateurs. **Approche concomitante Barnes + Daniel Féau** (3 visites en 2 jours).
+- **Message** : « Étude paysagère + Twinmotion livrés à votre acquéreur 6 semaines post-acte. Vous différenciez vos mandats avec une vision paysagère contractuelle ; je facture en direct le client final, ticket 4 500-12 000 € (cœur urbain rétais 50-300 m²). »
 - **KPI** : 3 mandats référencés sur 18 mois (cumul des 3 agences).
 
-#### Cible 3 — **Architectes rétais ABF (Atelier Robin & Carbonneau, Patrick Vettier…) + 2-3 architectes parisiens à portfolio rétais**
+#### Cible 3 — **Architectes rétais ABF (Robin & Carbonneau, Patrick Vettier…) + 2-3 architectes parisiens à portfolio rétais**
 
-- **Pourquoi** : la **maison rétaise patrimoniale en restauration** (centre Saint-Martin, Ars, La Flotte) est l'archétype typologie **cœur urbain 50-300 m²** Studio. L'architecte ABF est obligatoire en zone sauvegardée — il prescrit le paysage en fin de projet. Aujourd'hui les orientations vont vers les paysagistes locaux historiques — place vacante pour le **concepteur biophilique avec rendu Twinmotion** que les clients parisiens apprécient.
-- **Canal** : visite cabinet (combinée Cibles 1+2). Présentation 45 min avec book Twinmotion d'un patio rétais cœur urbain (cas d'usage fictif sur base bien public Sotheby's). Doublons sur 2-3 architectes parisiens via fiche `08-paris-sourcing.md`.
-- **Message d'angle** : « Intégration phase APD/PRO, livraison vues 3D patio + cour fermée complémentaires de vos rendus intérieur. Vous gardez la main client, je facture l'étude en direct. ABF maîtrisé, palette littorale patrimoine. »
+- **Pourquoi** : **maison rétaise patrimoniale en restauration** = archétype typologie **cœur urbain 50-300 m²** Studio. ABF obligatoire en zone sauvegardée — il prescrit le paysage en fin de projet. Place vacante pour **concepteur biophilique + Twinmotion** que les clients parisiens apprécient.
+- **Canal** : visite cabinet (combinée Cibles 1+2). Présentation 45 min avec book Twinmotion patio rétais (cas d'usage fictif sur bien public Sotheby's). Doublons 2-3 architectes parisiens via `08-paris-sourcing.md`.
+- **Message** : « Intégration phase APD/PRO, vues 3D patio + cour fermée. Vous gardez la main client, je facture l'étude en direct. ABF maîtrisé, palette littorale patrimoine. »
 - **KPI** : 2 collaborations actées d'ici 18 mois, dont 1 référençable.
 
 ### 6.2 Actions complémentaires (low effort)
