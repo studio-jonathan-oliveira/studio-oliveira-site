@@ -16,7 +16,9 @@ jobs:
   validate:
     name: Build + Lint + Type-check
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 10 min était trop tendu sur cache pnpm froid (build production seul =
+    # ~5 min : sharp optimise ~520 images). On porte à 15 min de marge.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
