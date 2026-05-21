@@ -14,7 +14,7 @@
  *   2. Galerie magazine 4 photos :
  *      - 02-large-top (full-width 21:9)
  *      - 03 + 04 diptyque portraits asymétrique (38% + 54%)
- *      - 05-large-bottom (full-width 21:9)
+ *      - 05-roof (coda portrait centrée — remplacement 2026-05-21)
  *   3. Manifeste — bloc texte décalé colonne DROITE sur desktop,
  *      taille agrandie (~1.2-1.65rem), précision italique petit dessous
  *   4. FAQ discrète 3 questions (densification SEO légère sur fond noir)
@@ -45,7 +45,7 @@ import heroPhoto from '@/assets/typologies/micro-urbain/01-hero.jpg';
 import largeTop from '@/assets/typologies/micro-urbain/02-large-top.jpg';
 import diptyqueLeft from '@/assets/typologies/micro-urbain/03-diptyque-left.jpg';
 import diptyqueRight from '@/assets/typologies/micro-urbain/04-diptyque-right.jpg';
-import largeBottom from '@/assets/typologies/micro-urbain/05-large-bottom.jpg';
+import coda from '@/assets/typologies/micro-urbain/05-roof.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'micro-urbain')!;
 
@@ -137,7 +137,7 @@ const schema = jsonLdGraph([
      Disposition trame Jonathan (capture Morgan 2026-05-15) :
        (1) photo large pleine largeur (02-large-top)
        (2) diptyque deux portraits : 03 plus petit gauche + 04 plus grand droite
-       (3) photo large pleine largeur (05-large-bottom)
+       (3) coda portrait centrée (05-roof) — signature verticale de fin
      Gouttières noires généreuses, aucun bord-à-bord. */
   }
   <section
@@ -185,12 +185,12 @@ const schema = jsonLdGraph([
       </figure>
     </div>
 
-    <figure class="mu-gallery__large" data-reveal="image-rise">
+    <figure class="mu-gallery__coda" data-reveal="image-rise">
       <Image
-        src={largeBottom}
-        alt="Projet micro urbain — rooftop avec vue panoramique urbaine"
-        widths={[960, 1440, 1800]}
-        sizes="(min-width: 1024px) 92vw, 96vw"
+        src={coda}
+        alt="Projet micro urbain — patio sol mosaïque sous arches béton, bordé de fougères"
+        widths={[640, 960, 1300]}
+        sizes="(min-width: 1024px) 62vw, 96vw"
         quality={92}
         format="webp"
         loading="lazy"
@@ -342,6 +342,21 @@ const schema = jsonLdGraph([
       .mu-gallery__diptyque-right {
         aspect-ratio: 4 / 5;
         align-self: end;
+      }
+    }
+    /* Coda — photo 05 portrait, centrée, signature verticale de fin de
+       galerie (remplacement landscape 2026-05-21, cf. coeur-urbain). */
+    .mu-gallery__coda {
+      margin: 0 auto;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .mu-gallery__coda {
+        max-width: 62%;
+        aspect-ratio: 4 / 5;
       }
     }
     .mu-gallery__img {
