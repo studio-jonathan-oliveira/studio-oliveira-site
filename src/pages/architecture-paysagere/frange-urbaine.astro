@@ -9,18 +9,22 @@
  *   4. FAQ discrète
  *   5. CTA full-width « DECOUVRIR LES PROJETS FRANGE URBAINE » + pill rouge
  *
- * Hero photo : on réutilise l'image du carousel home (cf. brief Morgan
- * 2026-05-19 : « l'image du HÉRO correspond à l'image qu'on a mis sur la
- * HomePage pour la typologie en question dans le scroll horizontal »).
- * Source : public/typologies/03-frange-urbaine@2x.jpg → copiée dans
- * src/assets/typologies/frange-urbaine/01-hero-home.jpg (Astro a besoin
- * que l'image soit dans src/assets pour la pipeline Image optimisée).
+ * Hero photo : `01-hero.jpg` (rendu Twinmotion fourni par Morgan
+ * 2026-05-21 — maison + palmier + banquette outdoor + muret pierre).
+ * Le hero placeholder précédent (carousel home `01-hero-home.jpg`) a
+ * été retiré.
  *
- * Contenus en placeholder explicite (rule CLAUDE.md §5 — ne JAMAIS inventer
- * de contenu pour Jonathan). Tout est listé dans _brief/contenus-manquants.md
- * sous les identifiants TYPOLOGIE-FRANGE-URBAINE-*.
+ * Galerie : 6 photos, disposition magazine respectant l'ordre numérique :
+ *   1. Singleton portrait centré        : 02-palmiers (opener)
+ *   2. Large landscape full-width       : 03-maison
+ *   3. Diptyque quinconce portraits     : 04-chemin small + 05-maison large
+ *   4. Diptyque landscapes 50/50        : 06-piscine + 07-photo
+ *
+ * Manifeste + specs en placeholder explicite (rule CLAUDE.md §5 — ne JAMAIS
+ * inventer de contenu pour Jonathan). À fournir par Morgan/Jonathan.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import TypologieHero from '@/components/astro/TypologieHero.astro';
 import FaqAccordion from '@/components/islands/FaqAccordion';
 import { SITE } from '@/lib/site-config';
@@ -33,7 +37,14 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
-import heroPhoto from '@/assets/typologies/frange-urbaine/01-hero-home.jpg';
+import heroPhoto from '@/assets/typologies/frange-urbaine/01-hero.jpg';
+// Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-21).
+import gal02 from '@/assets/typologies/frange-urbaine/02-palmiers.jpg';
+import gal03 from '@/assets/typologies/frange-urbaine/03-maison.jpg';
+import gal04 from '@/assets/typologies/frange-urbaine/04-chemin.jpg';
+import gal05 from '@/assets/typologies/frange-urbaine/05-maison.jpg';
+import gal06 from '@/assets/typologies/frange-urbaine/06-piscine.jpg';
+import gal07 from '@/assets/typologies/frange-urbaine/07-photo.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'frange-urbaine')!;
 
@@ -107,19 +118,106 @@ const schema = jsonLdGraph([
   {/* ═════════ 1 · HERO — composant partagé `<TypologieHero>` ═══════════ */}
   <TypologieHero
     photo={heroPhoto}
-    alt="Frange urbaine — projet Studio J Oliveira (visuel home carousel)"
+    alt="Frange urbaine — jardin résidentiel en pente avec banquette outdoor sous palmier"
     h1Lines={['FRANGE', 'URBAINE']}
     valeurs={valeurs}
     sectionLabel="Frange urbaine"
   />
 
   {
-    /* ═════════ 2 · GALERIE — à compléter quand Morgan aura sélectionné
-       les images 02, 03, etc. dans ses dossiers. Pattern à choisir une
-       fois les images vues : (a) large + diptyque + large comme
-       micro-urbain, ou (b) diptyque + large + diptyque comme coeur-urbain.
-       Section omise pour l'instant. */
+    /* ═════════ 2 · GALERIE — 6 photos rythme magazine ════════════════════
+     Ordre piloté par le préfixe numérique (Morgan 2026-05-21).
+       (1) Singleton portrait centré       : 02-palmiers (opener)
+       (2) Large landscape full-width      : 03-maison
+       (3) Diptyque quinconce portraits    : 04-chemin small + 05-maison large
+       (4) Diptyque landscapes 50/50       : 06-piscine + 07-photo
+     Gouttières noires généreuses, aucun bord-à-bord. */
   }
+  <section
+    data-theme="dark"
+    class="fu-gallery bg-[var(--color-black-deep)]"
+    aria-label="Sélection de projets frange urbaine"
+  >
+    <figure class="fu-gallery__single" data-reveal="image-rise">
+      <Image
+        src={gal02}
+        alt="Projet frange urbaine — villa méditerranéenne sur fairway, palmiers en silhouette"
+        widths={[480, 720, 1100]}
+        sizes="(min-width: 1024px) 50vw, 92vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        class="fu-gallery__img"
+      />
+    </figure>
+
+    <figure class="fu-gallery__large" data-reveal="image-rise">
+      <Image
+        src={gal03}
+        alt="Projet frange urbaine — façade méditerranéenne à arches avec cactus sculptural et agaves"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        class="fu-gallery__img"
+      />
+    </figure>
+
+    <div class="fu-gallery__diptyque fu-gallery__diptyque--portraits">
+      <figure class="fu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={gal04}
+          alt="Projet frange urbaine — jardin japonais zen, pas japonais minéraux et érables verts"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 38vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="fu-gallery__img"
+        />
+      </figure>
+      <figure class="fu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={gal05}
+          alt="Projet frange urbaine — maison hispanique blanche avec escalier extérieur, bougainvilliers et monstera"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 54vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="fu-gallery__img"
+        />
+      </figure>
+    </div>
+
+    <div class="fu-gallery__diptyque fu-gallery__diptyque--landscapes">
+      <figure class="fu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={gal06}
+          alt="Projet frange urbaine — patio moderne avec banquette outdoor, parasol et dalles minérales"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 50vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="fu-gallery__img"
+        />
+      </figure>
+      <figure class="fu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={gal07}
+          alt="Projet frange urbaine — architecture contemporaine avec bassin sombre et frangipanier"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 50vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="fu-gallery__img"
+        />
+      </figure>
+    </div>
+  </section>
 
   {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
   <section
@@ -196,10 +294,100 @@ const schema = jsonLdGraph([
   </section>
 
   <style is:global>
-    /* /architecture-paysagere/frange-urbaine — manifeste / FAQ / CTA
-       en copie directe de micro/coeur-urbain (préfixe `fu-`). Le hero
-       est dans `<TypologieHero>` partagé. La galerie sera ajoutée
-       quand Morgan aura sélectionné les images. */
+    /* /architecture-paysagere/frange-urbaine — galerie / manifeste / FAQ / CTA
+       en copie directe de micro/coeur-urbain (préfixe `fu-`). Le hero est
+       dans `<TypologieHero>` partagé. */
+
+    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
+    .fu-gallery {
+      width: 100%;
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    /* Singleton portrait — opener atmosphere. Centré, max-width modéré
+       sur desktop pour rester intime (pas pleine largeur, qui serait
+       écrasant avec une photo très portrait avec beaucoup de ciel). */
+    .fu-gallery__single {
+      margin: 0 auto;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .fu-gallery__single {
+        max-width: 50%;
+        aspect-ratio: 4 / 5;
+      }
+    }
+    /* Large landscape — pleine largeur, ratio cinéma allégé. */
+    .fu-gallery__large {
+      margin: 0;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .fu-gallery__large {
+        aspect-ratio: 16 / 10;
+      }
+    }
+    /* Diptyques — 2 variantes :
+       - portraits : quinconce 38%/54% avec décalage vertical magazine.
+       - landscapes : 50/50 stretch, deux paysages côte à côte. */
+    .fu-gallery__diptyque {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+    }
+    @media (min-width: 768px) {
+      .fu-gallery__diptyque--portraits {
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+      .fu-gallery__diptyque--landscapes {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .fu-gallery__diptyque-left,
+    .fu-gallery__diptyque-right {
+      margin: 0;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    /* Portraits — quinconce magazine */
+    .fu-gallery__diptyque--portraits .fu-gallery__diptyque-left,
+    .fu-gallery__diptyque--portraits .fu-gallery__diptyque-right {
+      aspect-ratio: 4 / 5;
+    }
+    @media (min-width: 768px) {
+      .fu-gallery__diptyque--portraits .fu-gallery__diptyque-left {
+        aspect-ratio: 3 / 4;
+        align-self: start;
+        max-height: 78%;
+      }
+      .fu-gallery__diptyque--portraits .fu-gallery__diptyque-right {
+        aspect-ratio: 4 / 5;
+        align-self: end;
+      }
+    }
+    /* Landscapes — 50/50, aspect 3/2 par photo (les deux ensemble forment
+       un panorama 3/1 visuel). */
+    .fu-gallery__diptyque--landscapes .fu-gallery__diptyque-left,
+    .fu-gallery__diptyque--landscapes .fu-gallery__diptyque-right {
+      aspect-ratio: 3 / 2;
+    }
+    .fu-gallery__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
 
     /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
     .fu-manifeste {
@@ -383,6 +571,7 @@ const schema = jsonLdGraph([
       object-fit: contain;
       flex-shrink: 0;
     }
+    .fu-gallery,
     .fu-manifeste,
     .fu-faq,
     .fu-cta {
