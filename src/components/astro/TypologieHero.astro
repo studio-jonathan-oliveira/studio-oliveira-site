@@ -2,20 +2,18 @@
 /*
  * <TypologieHero> — hero partagé des 4 pages /architecture-paysagere/[typologie].
  *
- * Pattern validé Morgan 2026-05-19 v3 (synthèse trame originale +
- * retours successifs) :
- *   - Photo plein-bleed 100svh + voile gradient DOUBLE (haut pour H1,
- *     bas pour specs) avec milieu transparent
- *   - H1 split 2 lignes posé HAUT-GAUCHE (ExtraLight 200 UPPERCASE)
- *   - 4 specs occupant ~1/3 BAS du hero, chaque ligne avec son PROPRE
- *     trait blanc horizontal en dessous (4 traits, pas un seul global).
- *     Cf. capture Morgan « hero coeur urbain.png » + trame originale.
- *   - Chaque ligne specs en flex `space-between` (label gauche, valeur
- *     collée au bord droit, photo visible entre) — PAS un grid 2-colonnes
- *     resserré (trame Jonathan : les valeurs sont aussi loin que possible
- *     à droite, pas centrées)
- *   - Typo specs ~1.1rem (assez grande pour être lisible sur photo)
- *   - Mobile <768px : passage colonne (label/valeur empilés)
+ * Pattern v4 (refonte Morgan 2026-05-21, capture wireframe) :
+ *   - Photo plein-bleed 100svh occupant la totalité du viewport à l'arrivée
+ *   - H1 split 2 lignes posé BAS-GAUCHE en ROUGE (style identique au
+ *     wordmark "STUDIO / J. OLIVEIRA" du HeroSwipe home : ExtraLight 200
+ *     UPPERCASE, text-shadow doux). Même position : left clamp(1.5rem, 4vw,
+ *     4rem) / bottom clamp(4rem, 9vh, 7rem).
+ *   - Specs déplacées DANS UNE SECTION SÉPARÉE sous le hero, sur fond noir
+ *     (anciennement en overlay bas de hero). L'utilisateur scrolle légèrement
+ *     pour les découvrir — choix Morgan : la photo doit dominer à l'arrivée.
+ *   - 4 specs flex `space-between` (label gauche, valeur collée bord droit),
+ *     chacune soulignée d'un trait blanc (4 traits, comme avant).
+ *   - Mobile <768px : passage colonne (label/valeur empilés).
  *
  * Les 4 LABELS sont FIGÉS (taxonomie commune aux 4 typologies). Seules les
  * valeurs droite changent par typologie.
@@ -79,27 +77,27 @@ const LABELS = [
     <div class="typo-hero__veil" aria-hidden="true"></div>
   </div>
 
-  <div class="typo-hero__overlay">
-    <div class="typo-hero__top">
-      <h1 id="hero-title" class="typo-hero__title">
-        <span class="typo-hero__title-line">{h1Lines[0]}</span>
-        <span class="typo-hero__title-line">{h1Lines[1]}</span>
-      </h1>
-    </div>
+  <h1 id="hero-title" class="typo-hero__title">
+    <span class="typo-hero__title-line">{h1Lines[0]}</span>
+    <span class="typo-hero__title-line">{h1Lines[1]}</span>
+  </h1>
+</section>
 
-    <div class="typo-hero__bottom">
-      <dl class="typo-hero__specs" aria-label="Caractéristiques typologie">
-        {
-          LABELS.map((label, i) => (
-            <div class="typo-hero__spec-row">
-              <dt class="typo-hero__spec-label">{label}</dt>
-              <dd class="typo-hero__spec-value">{valeurs[i]}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </div>
+<section
+  data-theme="dark"
+  class="typo-hero-specs bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+  aria-label="Caractéristiques typologie"
+>
+  <dl class="typo-hero-specs__list">
+    {
+      LABELS.map((label, i) => (
+        <div class="typo-hero-specs__row">
+          <dt class="typo-hero-specs__label">{label}</dt>
+          <dd class="typo-hero-specs__value">{valeurs[i]}</dd>
+        </div>
+      ))
+    }
+  </dl>
 </section>
 
 <style>
@@ -121,71 +119,64 @@ const LABELS = [
     object-position: center;
     display: block;
   }
-  /* Voile gradient DOUBLE — assombrit HAUT (zone H1) + BAS (zone specs),
-     transparent au milieu. Garantit la lisibilité du H1 en haut ET des
-     specs en bas du hero sans rogner la zone visuelle centrale. */
+  /* Voile gradient — léger en haut (lisibilité topbar/Header), plus
+     prononcé en bas pour faire respirer le H1 ROUGE en bas-gauche
+     sans qu'il se fonde dans la végétation claire. */
   .typo-hero__veil {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, var(--color-black-deep) 72%, transparent) 0%,
-      color-mix(in oklab, var(--color-black-deep) 30%, transparent) 22%,
-      transparent 45%,
-      transparent 58%,
-      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 80%,
-      color-mix(in oklab, var(--color-black-deep) 78%, transparent) 100%
+      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 0%,
+      color-mix(in oklab, var(--color-black-deep) 12%, transparent) 12%,
+      transparent 30%,
+      transparent 55%,
+      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 82%,
+      color-mix(in oklab, var(--color-black-deep) 70%, transparent) 100%
     );
     pointer-events: none;
   }
-  /* Overlay = bloc HAUT (H1) + bloc BAS (specs) avec espace au milieu
-     pour laisser respirer la photo. `justify-content: space-between`
-     pousse les 2 blocs aux extrémités du hero (100svh). */
-  /* Overlay : H1 en haut + specs en bas. Padding-bottom plus généreux
-     pour faire « remonter » le bloc specs et qu'il occupe ~1/3 bas du
-     hero (et pas le bord absolu de l'écran). Cf. retour Morgan 2026-05-19
-     v4 : « les informations soient étalées sur le 1/3 du bas de l'image ». */
-  .typo-hero__overlay {
-    position: relative;
+  /* H1 = wordmark typologie, bas-gauche, ROUGE — clone strict du
+     `.hero-slide__wordmark` de HeroSwipe (home « STUDIO / J. OLIVEIRA »).
+     Même position, même typo, même text-shadow pour la consistance. */
+  .typo-hero__title {
+    position: absolute;
+    left: clamp(1.5rem, 4vw, 4rem);
+    bottom: clamp(4rem, 9vh, 7rem);
+    margin: 0;
+    pointer-events: none;
     z-index: 1;
-    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(5.5rem, 12vh, 8rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vh, 6rem);
-  }
-  .typo-hero__top,
-  .typo-hero__bottom {
-    width: 100%;
-  }
-  .typo-hero__title {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 200;
-    font-size: clamp(2.6rem, 9vw, 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.005em;
-    text-transform: uppercase;
-    color: var(--color-cream);
-    margin: 0;
+    color: var(--color-red);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
     max-width: none;
   }
   .typo-hero__title-line {
     display: block;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(2.4rem, 6.8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
   }
-  /* Specs : 4 lignes empilées avec UN TRAIT BLANC FIN sous CHAQUE ligne
-     (4 traits au total, pas de trait au-dessus du 1er row). Cf. capture
-     zoom Morgan `hero coeur urbain.png` : le bloc « flotte » entre photo
-     et 1er trait, le 1er row ouvre le bloc sans cadre supérieur.
-     Padding interne suffisant pour que les 4 rangées + 4 traits occupent
-     ~1/3 bas du hero. Tracking léger sur les libellés pour une finesse
-     éditoriale (rendu data-driven journal). */
-  .typo-hero__specs {
+
+  /* Section specs — sous le hero, sur fond noir. L'utilisateur scrolle
+     légèrement depuis le hero 100svh pour les découvrir (choix Morgan
+     2026-05-21 : la photo doit dominer à l'arrivée). 4 lignes empilées
+     avec un TRAIT BLANC FIN sous CHAQUE ligne. */
+  .typo-hero-specs {
+    width: 100%;
+    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.5rem, 5vw, 4rem);
+  }
+  .typo-hero-specs__list {
     margin: 0;
     display: flex;
     flex-direction: column;
     gap: 0;
   }
-  .typo-hero__spec-row {
+  .typo-hero-specs__row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -194,8 +185,8 @@ const LABELS = [
     padding: clamp(0.9rem, 1.6vw, 1.35rem) 0;
     border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 32%, transparent);
   }
-  .typo-hero__spec-label,
-  .typo-hero__spec-value {
+  .typo-hero-specs__label,
+  .typo-hero-specs__value {
     font-family: var(--font-body), sans-serif;
     font-weight: 400;
     font-size: clamp(0.95rem, 1.15vw, 1.15rem);
@@ -205,22 +196,20 @@ const LABELS = [
     margin: 0;
     flex: 0 1 auto;
   }
-  .typo-hero__spec-label {
+  .typo-hero-specs__label {
     text-align: left;
-    /* Label légèrement atténué (90% cream) pour hiérarchiser visuellement
-       label vs valeur sans changer le poids — finesse éditoriale. */
     color: color-mix(in oklab, var(--color-cream) 90%, transparent);
   }
-  .typo-hero__spec-value {
+  .typo-hero-specs__value {
     text-align: right;
   }
   @media (max-width: 767px) {
-    .typo-hero__spec-row {
+    .typo-hero-specs__row {
       flex-direction: column;
       align-items: flex-start;
       gap: 0.15rem;
     }
-    .typo-hero__spec-value {
+    .typo-hero-specs__value {
       text-align: left;
     }
   }
