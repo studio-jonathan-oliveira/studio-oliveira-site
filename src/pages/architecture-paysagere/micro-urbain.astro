@@ -189,8 +189,8 @@ const schema = jsonLdGraph([
       <Image
         src={coda}
         alt="Projet micro urbain — patio sol mosaïque sous arches béton, bordé de fougères"
-        widths={[640, 960, 1300]}
-        sizes="(min-width: 1024px) 62vw, 96vw"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
         quality={92}
         format="webp"
         loading="lazy"
@@ -344,19 +344,20 @@ const schema = jsonLdGraph([
         align-self: end;
       }
     }
-    /* Coda — photo 05 portrait, centrée, signature verticale de fin de
-       galerie (remplacement landscape 2026-05-21, cf. coeur-urbain). */
+    /* Coda — photo 05, pleine largeur (Morgan 2026-05-21 : « prennait la
+       largeur totale de la zone d'affichage »). Aspect aligné sur les
+       __large pour cohérence : 3/2 mobile, 16/10 desktop. La photo
+       portrait sera croppée top+bottom — compromis assumé. */
     .mu-gallery__coda {
-      margin: 0 auto;
+      margin: 0;
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       background-color: var(--color-black-deep);
     }
     @media (min-width: 1024px) {
       .mu-gallery__coda {
-        max-width: 62%;
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 16 / 10;
       }
     }
     .mu-gallery__img {

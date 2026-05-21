@@ -236,8 +236,8 @@ const schema = jsonLdGraph([
       <Image
         src={gal09}
         alt="Projet cœur urbain — vue plongeante sur un érable jaune et orange au-dessus d'une table ronde"
-        widths={[640, 960, 1300]}
-        sizes="(min-width: 1024px) 62vw, 96vw"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
         quality={92}
         format="webp"
         loading="lazy"
@@ -429,19 +429,20 @@ const schema = jsonLdGraph([
         max-height: 78%;
       }
     }
-    /* Coda — photo 09 portrait, centrée, signature chromatique de fin de
-       galerie (l'érable jaune/orange tranche sur tout ce qui précède). */
+    /* Coda — photo 09, pleine largeur (Morgan 2026-05-21 : « prennait la
+       largeur totale de la zone d'affichage »). Aspect aligné sur les
+       __large pour cohérence : 3/2 mobile, 16/10 desktop. La photo
+       portrait sera croppée top+bottom — compromis assumé. */
     .cu-gallery__coda {
-      margin: 0 auto;
+      margin: 0;
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       background-color: var(--color-black-deep);
     }
     @media (min-width: 1024px) {
       .cu-gallery__coda {
-        max-width: 62%;
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 16 / 10;
       }
     }
     .cu-gallery__img {
