@@ -130,7 +130,9 @@ const schema = jsonLdGraph([
   {
     /* ═════════ 2 · GALERIE — 6 photos rythme magazine ════════════════════
      Ordre piloté par le préfixe numérique (Morgan 2026-05-21).
-       (1) Singleton portrait centré       : 02-palmiers (opener)
+       (1) Large landscape full-width      : 02-palmiers (opener, retour
+                                              Morgan 2026-05-21 : prend la
+                                              largeur de la page comme codas)
        (2) Large landscape full-width      : 03-maison
        (3) Diptyque quinconce portraits    : 04-chemin small + 05-maison large
        (4) Diptyque landscapes 50/50       : 06-piscine + 07-photo
@@ -141,12 +143,12 @@ const schema = jsonLdGraph([
     class="fu-gallery bg-[var(--color-black-deep)]"
     aria-label="Sélection de projets frange urbaine"
   >
-    <figure class="fu-gallery__single" data-reveal="image-rise">
+    <figure class="fu-gallery__large" data-reveal="image-rise">
       <Image
         src={gal02}
         alt="Projet frange urbaine — villa méditerranéenne sur fairway, palmiers en silhouette"
-        widths={[480, 720, 1100]}
-        sizes="(min-width: 1024px) 50vw, 92vw"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
         quality={92}
         format="webp"
         loading="lazy"
@@ -295,23 +297,9 @@ const schema = jsonLdGraph([
       flex-direction: column;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
-    /* Singleton portrait — opener atmosphere. Centré, max-width modéré
-       sur desktop pour rester intime (pas pleine largeur, qui serait
-       écrasant avec une photo très portrait avec beaucoup de ciel). */
-    .fu-gallery__single {
-      margin: 0 auto;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      overflow: hidden;
-      background-color: var(--color-black-deep);
-    }
-    @media (min-width: 1024px) {
-      .fu-gallery__single {
-        max-width: 50%;
-        aspect-ratio: 4 / 5;
-      }
-    }
-    /* Large landscape — pleine largeur, ratio cinéma allégé. */
+    /* Large landscape — pleine largeur, ratio cinéma allégé. Utilisé pour
+       02-palmiers (Morgan 2026-05-21 : « prend la largeur de la page »
+       comme pour les codas) + 03-maison. Photos portrait cover-croppées. */
     .fu-gallery__large {
       margin: 0;
       width: 100%;
