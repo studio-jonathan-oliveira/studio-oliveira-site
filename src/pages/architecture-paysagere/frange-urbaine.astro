@@ -48,14 +48,13 @@ import gal07 from '@/assets/typologies/frange-urbaine/07-photo.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'frange-urbaine')!;
 
-// 4 valeurs droite — PLACEHOLDER : Morgan/Jonathan fournira les textes
-// exacts (cf. _brief/contenus-manquants.md TYPOLOGIE-FRANGE-URBAINE-SPECS).
-// Les 4 labels sont figés et viennent du composant `<TypologieHero>`.
+// 4 valeurs droite — verbatim dictée Morgan 2026-05-21. Les 4 labels sont
+// figés et viennent du composant `<TypologieHero>`.
 const valeurs = [
-  '[À FOURNIR : secteur géographique frange urbaine]',
-  '[À FOURNIR : moyenne surface jardin]',
-  '[À FOURNIR : contexte environnemental]',
-  '[À FOURNIR : complexité spatiale et environnementale]',
+  'Zone péri urbaine et province',
+  'De 300 à 1500 m² (hors cas spécifique)',
+  'Jardins en pente / propriétés principales, secondaires ou résidentielles',
+  'Accès / topographie / surface / environnement',
 ] as const;
 
 // Manifeste — texte VERBATIM Jonathan/Morgan 2026-05-21.
