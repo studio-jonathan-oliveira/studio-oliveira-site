@@ -31,11 +31,15 @@ import {
 } from '@/lib/schema-org';
 
 import heroPhoto from '@/assets/typologies/coeur-urbain/01-hero.jpg';
-import diptyqueTopLeft from '@/assets/typologies/coeur-urbain/02-diptyque-left.jpg';
-import diptyqueTopRight from '@/assets/typologies/coeur-urbain/03-diptyque-right.jpg';
-import largeMiddle from '@/assets/typologies/coeur-urbain/04-large-middle.jpg';
-import diptyqueBottomLeft from '@/assets/typologies/coeur-urbain/05-diptyque-bottom-left.jpg';
-import diptyqueBottomRight from '@/assets/typologies/coeur-urbain/06-diptyque-bottom-right.jpg';
+// Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-21).
+import gal02 from '@/assets/typologies/coeur-urbain/02-jardinet.jpg';
+import gal03 from '@/assets/typologies/coeur-urbain/03-chemin.jpg';
+import gal04 from '@/assets/typologies/coeur-urbain/04-terrasse.jpg';
+import gal05 from '@/assets/typologies/coeur-urbain/05-terrasse.jpg';
+import gal06 from '@/assets/typologies/coeur-urbain/06-restaurant.jpg';
+import gal07 from '@/assets/typologies/coeur-urbain/07-piscine.jpg';
+import gal08 from '@/assets/typologies/coeur-urbain/08-porche.jpg';
+import gal09 from '@/assets/typologies/coeur-urbain/09-cheminement.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
 
@@ -120,12 +124,13 @@ const schema = jsonLdGraph([
   />
 
   {
-    /* ═════════ 2 · GALERIE — 5 photos rythme magazine ════════════════════
-     Disposition trame Jonathan (colonne droite) :
-       (1) diptyque deux portraits (02 gauche plus petit / 03 droite plus
-           grand) — variante miroir du diptyque micro-urbain
-       (2) photo large pleine largeur (04-large-middle)
-       (3) diptyque deux portraits (05 + 06) — plus équilibré, sans quinconce
+    /* ═════════ 2 · GALERIE — 8 photos rythme magazine ════════════════════
+     Ordre piloté par le préfixe numérique (Morgan 2026-05-21).
+       (1) diptyque quinconce HAUT       : 02 small + 03 large
+       (2) photo large landscape         : 04 (pivot)
+       (3) diptyque 50/50 milieu         : 05 + 06
+       (4) diptyque quinconce inverse    : 07 large + 08 small (miroir du haut)
+       (5) coda portrait centrée         : 09 (signature chromatique)
      Gouttières noires généreuses, aucun bord-à-bord. */
   }
   <section
@@ -136,8 +141,8 @@ const schema = jsonLdGraph([
     <div class="cu-gallery__diptyque cu-gallery__diptyque--top">
       <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
         <Image
-          src={diptyqueTopLeft}
-          alt="Projet cœur urbain — ruelle de jardin contre maison de ville en pierre"
+          src={gal02}
+          alt="Projet cœur urbain — ruelle de jardin contre maison de ville en briques"
           widths={[480, 720, 1100]}
           sizes="(min-width: 1024px) 38vw, 92vw"
           quality={92}
@@ -148,8 +153,8 @@ const schema = jsonLdGraph([
       </figure>
       <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
         <Image
-          src={diptyqueTopRight}
-          alt="Projet cœur urbain — chemin minéral menant à un patio contemporain"
+          src={gal03}
+          alt="Projet cœur urbain — porte verte ouvrant sur une allée minérale jusqu'à un patio"
           widths={[640, 960, 1300]}
           sizes="(min-width: 1024px) 54vw, 96vw"
           quality={92}
@@ -162,7 +167,7 @@ const schema = jsonLdGraph([
 
     <figure class="cu-gallery__large" data-reveal="image-rise">
       <Image
-        src={largeMiddle}
+        src={gal04}
         alt="Projet cœur urbain — terrasse couverte jungle intérieur-extérieur"
         widths={[960, 1440, 1800]}
         sizes="(min-width: 1024px) 92vw, 96vw"
@@ -173,11 +178,11 @@ const schema = jsonLdGraph([
       />
     </figure>
 
-    <div class="cu-gallery__diptyque cu-gallery__diptyque--bottom">
+    <div class="cu-gallery__diptyque cu-gallery__diptyque--mid">
       <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
         <Image
-          src={diptyqueBottomLeft}
-          alt="Projet cœur urbain — piscine miroir bordée de végétation"
+          src={gal05}
+          alt="Projet cœur urbain — mur de lierre, escalier suspendu et mange-debout"
           widths={[640, 960, 1300]}
           sizes="(min-width: 1024px) 50vw, 96vw"
           quality={92}
@@ -188,8 +193,8 @@ const schema = jsonLdGraph([
       </figure>
       <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
         <Image
-          src={diptyqueBottomRight}
-          alt="Projet cœur urbain — porche en pierre ouvrant sur une cour végétalisée"
+          src={gal06}
+          alt="Projet cœur urbain — terrasse de restaurant en fer forgé sous palmiers"
           widths={[640, 960, 1300]}
           sizes="(min-width: 1024px) 50vw, 96vw"
           quality={92}
@@ -199,6 +204,46 @@ const schema = jsonLdGraph([
         />
       </figure>
     </div>
+
+    <div class="cu-gallery__diptyque cu-gallery__diptyque--bot">
+      <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={gal07}
+          alt="Projet cœur urbain — piscine bordée d'héliconia et d'un porche blanc"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 54vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+      <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={gal08}
+          alt="Projet cœur urbain — porche bois ouvrant sur un patio de briques végétalisé"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 38vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+    </div>
+
+    <figure class="cu-gallery__coda" data-reveal="image-rise">
+      <Image
+        src={gal09}
+        alt="Projet cœur urbain — vue plongeante sur un érable jaune et orange au-dessus d'une table ronde"
+        widths={[640, 960, 1300]}
+        sizes="(min-width: 1024px) 62vw, 96vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        class="cu-gallery__img"
+      />
+    </figure>
   </section>
 
   {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
@@ -308,11 +353,14 @@ const schema = jsonLdGraph([
         aspect-ratio: 16 / 10;
       }
     }
-    /* Diptyques — pattern trame Jonathan :
-       - top : portrait gauche plus petit (38%) + portrait droite plus grand
-         (54%) avec décalage vertical (quinconce magazine), comme micro-urbain.
-       - bottom : 50/50 plus équilibré, sans quinconce (les deux photos sont
-         de format similaire et se répondent en miroir). */
+    /* Diptyques — rythme magazine :
+       - top : quinconce. Portrait gauche petit (38%) align-start, portrait
+         droite grand (54%) align-end. Décalage vertical éditorial.
+       - mid : 50/50 équilibré, sans quinconce (les deux photos se répondent
+         en miroir).
+       - bot : quinconce INVERSE (miroir vertical+horizontal du top).
+         Portrait gauche grand (54%) align-start + portrait droite petit
+         (38%) align-end. Crée une symétrie globale top↔bot. */
     .cu-gallery__diptyque {
       display: grid;
       grid-template-columns: 1fr;
@@ -323,8 +371,12 @@ const schema = jsonLdGraph([
         grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
         align-items: stretch;
       }
-      .cu-gallery__diptyque--bottom {
+      .cu-gallery__diptyque--mid {
         grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+      .cu-gallery__diptyque--bot {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
         align-items: stretch;
       }
     }
@@ -334,9 +386,8 @@ const schema = jsonLdGraph([
       overflow: hidden;
       background-color: var(--color-black-deep);
     }
-    .cu-gallery__diptyque--top .cu-gallery__diptyque-left {
-      aspect-ratio: 4 / 5;
-    }
+    /* --top : petit-gauche / grand-droite */
+    .cu-gallery__diptyque--top .cu-gallery__diptyque-left,
     .cu-gallery__diptyque--top .cu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
     }
@@ -351,14 +402,46 @@ const schema = jsonLdGraph([
         align-self: end;
       }
     }
-    .cu-gallery__diptyque--bottom .cu-gallery__diptyque-left,
-    .cu-gallery__diptyque--bottom .cu-gallery__diptyque-right {
+    /* --mid : 50/50 */
+    .cu-gallery__diptyque--mid .cu-gallery__diptyque-left,
+    .cu-gallery__diptyque--mid .cu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
     }
     @media (min-width: 768px) {
-      .cu-gallery__diptyque--bottom .cu-gallery__diptyque-left,
-      .cu-gallery__diptyque--bottom .cu-gallery__diptyque-right {
+      .cu-gallery__diptyque--mid .cu-gallery__diptyque-left,
+      .cu-gallery__diptyque--mid .cu-gallery__diptyque-right {
         aspect-ratio: 5 / 6;
+      }
+    }
+    /* --bot : quinconce inverse (miroir du top) */
+    .cu-gallery__diptyque--bot .cu-gallery__diptyque-left,
+    .cu-gallery__diptyque--bot .cu-gallery__diptyque-right {
+      aspect-ratio: 4 / 5;
+    }
+    @media (min-width: 768px) {
+      .cu-gallery__diptyque--bot .cu-gallery__diptyque-left {
+        aspect-ratio: 4 / 5;
+        align-self: start;
+      }
+      .cu-gallery__diptyque--bot .cu-gallery__diptyque-right {
+        aspect-ratio: 3 / 4;
+        align-self: end;
+        max-height: 78%;
+      }
+    }
+    /* Coda — photo 09 portrait, centrée, signature chromatique de fin de
+       galerie (l'érable jaune/orange tranche sur tout ce qui précède). */
+    .cu-gallery__coda {
+      margin: 0 auto;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background-color: var(--color-black-deep);
+    }
+    @media (min-width: 1024px) {
+      .cu-gallery__coda {
+        max-width: 62%;
+        aspect-ratio: 4 / 5;
       }
     }
     .cu-gallery__img {
