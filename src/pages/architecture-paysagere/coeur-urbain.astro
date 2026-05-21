@@ -19,7 +19,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import TypologieHero from '@/components/astro/TypologieHero.astro';
-import FaqAccordion from '@/components/islands/FaqAccordion';
+import TypologieFaq from '@/components/astro/TypologieFaq.astro';
 import { SITE } from '@/lib/site-config';
 import {
   jsonLdGraph,
@@ -64,23 +64,24 @@ const manifeste = {
     "La complexité de cette typologie repose principalement sur les sols, saturés par les réseaux souterrains, ainsi que l'ensoleillement, souvent coupé par les bâtiments environnants, rendant ces espaces complexes dans leurs aménagements structurels et naturels.",
 };
 
-// FAQ — copie du pilote micro-urbain (pattern réutilisable, prix typologie
-// pris depuis SITE.typologies). À valider par Jonathan pour adapter le ton.
+// FAQ — verbatim Morgan/Jonathan 2026-05-21 (3 Q/R communes aux 4 pages
+// typologies). Typos conservées tel quel : `strucurer`, `aloué`,
+// `compte rendus`, `tranquilité`, `établit`, `forfait`, `puission`.
 const faq = [
   {
     question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
     answer:
-      "Parce que c'est le cœur du métier. L'étude comprend le plan masse, les plans de plantations, le DCE, la mise en concurrence des entreprises et le suivi de chantier. Le chiffrage travaux vient ensuite, précisément.",
+      "L'étude d'un projet est un processus obligatoire qui permet de comprendre un projet, de le strucurer efficacement et d'anticiper les travaux et le budget qui lui sera aloué. Le studio n'a pas de standard matériaux, styles, tendances et autres. Il construit, de la conception jusqu'à la livraison, l'entièreté sur-mesure selon les caractéristiques du projet, de son environnement et de ses usagers.\n\nMon travail repose sur la réflexion, l'anticipation et le pilotage. Je ne réalise pas sur le chantier le projet, je suis le chef d'orchestre qui pense, accompagne et dirige le projet pour le rendre à la hauteur de vos attentes.",
   },
   {
-    question: `Est-ce que le prix d'étude (${typologie.prixEtude}) est ferme ?`,
+    question: 'Comment se compose une étude ?',
     answer:
-      "Oui — le prix est défini dès la signature du devis, en fonction de la typologie. Aucun ajout en cours d'étude sauf demande explicite du client (extension de périmètre, options, géomètre complémentaire).",
+      "Il y a 3 phases : l'étude préliminaire, l'étude projet et le suivi de chantier.\n\nL'étude préliminaire : elle recadre le contexte du projet et structure les orientations de projet. C'est une synthèse de la commande et de la structuration des axes directeurs du projet avec une budgétisation des grands lots travaux.\n\nL'étude projet : elle rentre dans le détail de conception suite à la validation de l'étude préliminaire. Dans cette phase, le studio développe, organise, et consulte les entreprises et artisans pour le chiffrage précis des travaux.\n\nLe suivi de chantier : c'est la partie pilotage chantier. Elle est importante car elle permet de garantir un résultat final entre les intentions de projet et la réalisation. Le studio gère les compte rendus, le suivi financier ainsi que le pilotage des travaux avec les différentes entreprises sur le chantier. Vous payez une tranquilité d'esprit et de la disponibilité.",
   },
   {
-    question: 'Vous réalisez les travaux vous-mêmes ?',
+    question: "Quel est le prix de l'étude pour cette typologie ?",
     answer:
-      'Non. Je conçois et je coordonne — je sélectionne et je pilote des entreprises mises en concurrence sur chaque lot (terrassement, maçonnerie paysagère, arrosage, éclairage, plantations).',
+      "En fonction de la typologie de votre propriété, le studio a établit des forfait de base.\n\nViennent s'ajouter à ce forfait de base des frais correspondant aux déplacements du studio (frais d'essence, péages, ...) en fonction de votre emplacement et du nombre de déplacements prévus par le besoin du projet.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter afin que nous puission échanger ensemble de votre projet pour définir ensemble tous les paramètres de l'étude.",
   },
 ];
 
@@ -269,22 +270,8 @@ const schema = jsonLdGraph([
     </div>
   </section>
 
-  {/* ═════════ 4 · FAQ discrète ══════════════════════════════════════════ */}
-  <section
-    id="faq"
-    data-section-label="FAQ"
-    data-theme="dark"
-    class="cu-faq bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="faq-title"
-  >
-    <div class="cu-faq__inner">
-      <div class="cu-faq__head">
-        <p class="cu-faq__eyebrow">Questions fréquentes</p>
-        <h2 id="faq-title" class="cu-faq__title">Avant d'appeler.</h2>
-      </div>
-      <FaqAccordion items={faq} client:visible />
-    </div>
-  </section>
+  {/* ═════════ 4 · FAQ — composant partagé `<TypologieFaq>` ═════════════ */}
+  <TypologieFaq items={faq} />
 
   {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ══ */}
   <section
@@ -504,51 +491,8 @@ const schema = jsonLdGraph([
       margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
     }
 
-    /* ─── 4 · FAQ discrète ──────────────────────────────────────────────── */
-    .cu-faq {
-      width: 100%;
-      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 14%, transparent);
-    }
-    .cu-faq__inner {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-    }
-    @media (min-width: 1024px) {
-      .cu-faq__inner {
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
-        column-gap: clamp(3rem, 6vw, 5rem);
-        align-items: start;
-      }
-    }
-    .cu-faq__head {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(0.4rem, 0.8vw, 0.7rem);
-    }
-    .cu-faq__eyebrow {
-      font-family: var(--font-mono), monospace;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
-      margin: 0;
-    }
-    .cu-faq__title {
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.8rem, 3.5vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      color: var(--color-cream);
-      margin: 0;
-    }
-    @media (min-width: 1024px) {
-      .cu-faq__inner .faq-acc__list {
-        grid-column: 2;
-      }
-    }
+    /* ─── 4 · FAQ ── désormais géré par `<TypologieFaq>` (composant
+       partagé, refactor 2026-05-21). Plus de CSS FAQ ici. */
 
     /* ─── 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ─────── */
     .cu-cta {
@@ -639,7 +583,6 @@ const schema = jsonLdGraph([
     .cu-hero,
     .cu-gallery,
     .cu-manifeste,
-    .cu-faq,
     .cu-cta {
       box-sizing: border-box;
     }

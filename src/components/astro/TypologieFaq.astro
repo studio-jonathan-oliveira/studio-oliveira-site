@@ -1,0 +1,110 @@
+---
+/*
+ * <TypologieFaq> — section FAQ partagée des 4 pages typologies.
+ *
+ * Refonte 2026-05-21 (Morgan capture wireframe rouge) :
+ *   - Section sur fond ROUGE plein (`var(--color-red)`), texte cream.
+ *   - Titre principal « FAQ » en très gros (style heading hero),
+ *     sous-titre « QUESTIONS FRÉQUENTES » plus petit dessous.
+ *   - Curseur custom bascule en NOIR via `data-theme="red"` (logique
+ *     déjà gérée dans `CustomCursor.astro` : sur red → dot ink + label
+ *     cream). Pas de surcharge nécessaire.
+ *   - `<FaqAccordion>` island réutilisé pour l'accordéon (Q/R cliquables,
+ *     wave reveal mot par mot). Voir composant pour la mécanique.
+ *
+ * Auparavant : chaque page typologie inlinait sa propre section FAQ
+ * (cu-faq, mu-faq, fu-faq) avec CSS dupliqué. La 3e itération a justifié
+ * l'extraction (parité immédiate sur les 4 pages).
+ *
+ * API :
+ *   - items (FaqItem[]) : tableau de Q/R, transmis tel quel à FaqAccordion
+ *   - sectionLabel (string, opt) : étiquette `data-section-label` pour
+ *     la nav scroll latérale (défaut "FAQ")
+ */
+import FaqAccordion, { type FaqItem } from '@/components/islands/FaqAccordion';
+
+interface Props {
+  items: ReadonlyArray<FaqItem>;
+  sectionLabel?: string;
+}
+
+const { items, sectionLabel = 'FAQ' } = Astro.props;
+---
+
+<section
+  id="faq"
+  data-section-label={sectionLabel}
+  data-theme="red"
+  class="typo-faq"
+  aria-labelledby="faq-title"
+>
+  <div class="typo-faq__inner">
+    <div class="typo-faq__head">
+      <h2 id="faq-title" class="typo-faq__title">FAQ</h2>
+      <p class="typo-faq__subtitle">Questions fréquentes</p>
+    </div>
+    <FaqAccordion items={items} client:visible />
+  </div>
+</section>
+
+<style is:global>
+  /* ════════════════════════════════════════════════════════════════════
+   * <TypologieFaq> — section FAQ rouge des pages typologies.
+   * `is:global` car l'`<astro-island>` injecté par FaqAccordion (client:visible)
+   * vit hors du scope local du composant Astro → on cible `.faq-acc__list`
+   * et descendants pour appliquer le layout grid sans `!important`.
+   * ═══════════════════════════════════════════════════════════════════ */
+  .typo-faq {
+    width: 100%;
+    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+    background-color: var(--color-red);
+    color: var(--color-cream);
+  }
+  .typo-faq__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+  @media (min-width: 1024px) {
+    .typo-faq__inner {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+      column-gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+  }
+  .typo-faq__head {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.2rem, 0.5vw, 0.5rem);
+  }
+  /* Titre « FAQ » massif — typo heading ExtraLight, échelle hero. */
+  .typo-faq__title {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(4rem, 11vw, 11rem);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+  }
+  /* Sous-titre « QUESTIONS FRÉQUENTES » sous le titre — typo body Bold
+     UPPERCASE, plus petit, pour densifier la signature éditoriale sans
+     prendre la place du titre FAQ. */
+  .typo-faq__subtitle {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(0.95rem, 1.4vw, 1.45rem);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+  }
+  /* Place la liste accordéon dans la 2e colonne sur desktop. */
+  @media (min-width: 1024px) {
+    .typo-faq .faq-acc__list {
+      grid-column: 2;
+    }
+  }
+</style>

@@ -633,46 +633,52 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
 }
+/* Refonte 2026-05-21 — fond ROUGE typo-faq. Lignes en cream alpha 30% pour
+   contraste suffisant. La ligne SOUS LA QUESTION (entre Q et A) est portée
+   par `.faq-acc__summary`, et chaque item conserve sa ligne de bas (qui
+   sépare item N de item N+1). */
 .faq-acc__item {
-  border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 28%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
 }
 .faq-acc__summary {
   appearance: none;
   background: transparent;
   border: 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
   width: 100%;
   cursor: pointer;
   color: inherit;
   font: inherit;
   text-align: left;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
+  padding: clamp(1.1rem, 2vw, 1.5rem) 0;
   transition: background-color 0.3s ease;
 }
 .faq-acc__summary:focus-visible {
-  outline: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
+  outline: 1px solid color-mix(in oklab, var(--color-cream) 50%, transparent);
   outline-offset: -1px;
 }
 .faq-acc__question {
-  font-family: var(--font-heading), sans-serif;
-  font-weight: 200;
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  line-height: 1.35;
+  letter-spacing: 0;
   color: var(--color-cream);
 }
+/* Icône flèche Jonathan (refonte 2026-05-21) — image webp brand,
+   plus le `+`. Taille modeste pour rester signature et pas écraser
+   le texte de question. */
 .faq-acc__icon {
   flex-shrink: 0;
-  font-family: var(--font-heading), sans-serif;
-  font-weight: 200;
-  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
-  line-height: 1;
-  color: var(--color-cream);
+  width: clamp(16px, 1.4vw, 20px);
+  height: clamp(16px, 1.4vw, 20px);
+  display: block;
+  object-fit: contain;
   transition: transform 0.35s var(--ease-out-editorial);
   transform-origin: center;
 }
@@ -689,14 +695,17 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .faq-acc__panel {
-  padding: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(1rem, 1.8vw, 1.5rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 1.5vw, 1.25rem);
 }
 .faq-acc__answer {
   font-family: var(--font-body), sans-serif;
-  font-weight: 200;
+  font-weight: 400;
   font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-  line-height: 1.65;
-  color: color-mix(in oklab, var(--color-cream) 80%, transparent);
+  line-height: 1.55;
+  color: var(--color-cream);
   margin: 0;
   max-width: 60ch;
 }

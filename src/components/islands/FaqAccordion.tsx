@@ -11,10 +11,12 @@
  *     100 % du mouvement visible
  *   - single-open : ouvrir une question ferme la précédente
  *   - close 0.26s cubic-bezier ease-in-out, open 0.32s spring-out tendu
- *   - icône + qui rotate 45° → ×
- *   - wave reveal mot par mot : chaque mot a `--i` (index) sur lequel le
- *     CSS calcule le `transition-delay` pour staggerer l'apparition
- *     (« le texte apparaît petit à petit » comme dans /studio)
+ *   - icône flèche Jonathan `/brand/fleche-white.webp` (signature DA, refonte
+ *     2026-05-21 — remplace l'ancien `+` qui rotate)
+ *   - réponses MULTI-PARAGRAPHES via split sur `\n\n` (refonte 2026-05-21
+ *     pour soutenir les Q3 longues de Morgan) ; chaque paragraphe garde son
+ *     propre wave reveal mot par mot (index `--i` global cumulatif pour que
+ *     la cascade soit continue d'un paragraphe à l'autre).
  *   - accessibilité aria-expanded + aria-controls + role="region"
  *
  * Hydratation `client:visible` — FAQ toujours en bas de page, hors LCP.
@@ -53,6 +55,12 @@ function FaqRow({ item, index, isOpen, onToggle }: RowProps) {
   const panelId = `faq-panel-${index}`;
   const buttonId = `faq-button-${index}`;
 
+  // Split en paragraphes sur les `\n\n` (compatible textes Morgan multi-blocs).
+  // L'index `--i` reste cumulatif d'un paragraphe à l'autre pour que le wave
+  // reveal soit fluide (pas de reset entre paragraphes).
+  const paragraphs = item.answer.split(/\n{2,}/).filter((p) => p.trim().length > 0);
+  let wordCounter = 0;
+
   return (
     <li className="faq-acc__item">
       <button
@@ -64,12 +72,14 @@ function FaqRow({ item, index, isOpen, onToggle }: RowProps) {
         onClick={onToggle}
       >
         <span className="faq-acc__question">{item.question}</span>
-        <span
-          className={'faq-acc__icon' + (isOpen ? ' faq-acc__icon--open' : '')}
+        <img
+          src="/brand/fleche-white.webp"
+          alt=""
           aria-hidden="true"
-        >
-          +
-        </span>
+          className={'faq-acc__icon' + (isOpen ? ' faq-acc__icon--open' : '')}
+          width="32"
+          height="32"
+        />
       </button>
       <div
         id={panelId}
@@ -79,23 +89,23 @@ function FaqRow({ item, index, isOpen, onToggle }: RowProps) {
         style={{ height: `${height}px` }}
       >
         <div ref={panelRef} className="faq-acc__panel">
-          {/* Wave reveal : chaque mot a une custom property --i pour
-              staggerer le delay d'apparition via CSS pur (pattern
-              /studio ArchitecturesAccordion). */}
-          <p className="faq-acc__answer">
-            {item.answer.split(/(\s+)/).map((token, wi) => {
-              if (/^\s+$/.test(token)) return token;
-              return (
-                <span
-                  key={wi}
-                  className="faq-acc__word"
-                  style={{ ['--i' as never]: wi } as React.CSSProperties}
-                >
-                  {token}
-                </span>
-              );
-            })}
-          </p>
+          {paragraphs.map((para, pi) => (
+            <p key={pi} className="faq-acc__answer">
+              {para.split(/(\s+)/).map((token, ti) => {
+                if (/^\s+$/.test(token)) return token;
+                const wi = wordCounter++;
+                return (
+                  <span
+                    key={ti}
+                    className="faq-acc__word"
+                    style={{ ['--i' as never]: wi } as React.CSSProperties}
+                  >
+                    {token}
+                  </span>
+                );
+              })}
+            </p>
+          ))}
         </div>
       </div>
     </li>
