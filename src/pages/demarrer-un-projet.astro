@@ -16,7 +16,7 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import DemarrerHero from '@/components/astro/DemarrerHero.astro';
-import DemarrerStep from '@/components/astro/DemarrerStep.astro';
+import DemarrerSteps from '@/components/astro/DemarrerSteps.astro';
 import DemarrerRedBlock from '@/components/astro/DemarrerRedBlock.astro';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
@@ -88,21 +88,23 @@ const schema = jsonLdGraph([
 
   <DemarrerHero intro={intro} />
 
-  <DemarrerStep
-    id="qualification"
-    eyebrow="L'appel de"
-    title="Qualification"
-    sectionLabel="Qualification"
-    accordions={qualification}
-  />
-
-  <DemarrerStep
-    id="validation"
-    eyebrow="L'appel de"
-    title="Validation"
-    sectionLabel="Validation"
-    accordions={validation}
-    hideAsideMobile
+  <DemarrerSteps
+    steps={[
+      {
+        id: 'qualification',
+        eyebrow: "L'appel de",
+        title: 'Qualification',
+        sectionLabel: 'Qualification',
+        accordions: qualification,
+      },
+      {
+        id: 'validation',
+        eyebrow: "L'appel de",
+        title: 'Validation',
+        sectionLabel: 'Validation',
+        accordions: validation,
+      },
+    ]}
   />
 
   <DemarrerRedBlock invite={invite} />

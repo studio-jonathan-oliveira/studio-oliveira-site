@@ -1,0 +1,182 @@
+---
+/*
+ * <DemarrerSteps> — bloc unique englobant les 2 étapes "L'APPEL DE …"
+ * (qualification + validation).
+ *
+ * Pattern (trame Jonathan 2026-05-22, fix Morgan 2026-05-22 soir) :
+ *   - UNE seule photo aside, à gauche, en long sur toute la hauteur
+ *     verticale des 2 étapes combinées (sticky desktop, ratio mobile)
+ *   - 2 étapes empilées à droite (eyebrow + titre oversized + accordéons)
+ *   - Fond ink, texte cream, accordéons single-open via FaqAccordion
+ *
+ * Refactor de l'ancienne `<DemarrerStep>` qui dupliquait la photo entre
+ * qualif et valid → effet 2 photos visibles, contraire à la trame qui
+ * montre UNE photo unique full-height.
+ */
+import { Image } from 'astro:assets';
+import FaqAccordion, { type FaqItem } from '@/components/islands/FaqAccordion';
+import asideImg from '@/assets/demarrer-un-projet/02-aside.jpg';
+
+export interface Step {
+  id: string;
+  eyebrow: string;
+  title: string;
+  sectionLabel: string;
+  accordions: ReadonlyArray<FaqItem>;
+}
+
+interface Props {
+  steps: readonly [Step, Step];
+}
+
+const { steps } = Astro.props;
+---
+
+<section data-theme="dark" class="dem-steps" aria-label="Parcours en 2 temps">
+  <div class="dem-steps__inner">
+    <aside class="dem-steps__aside" aria-hidden="true">
+      {/* Photo décorative pure (l'aside parent est aria-hidden). */}
+      <Image
+        src={asideImg}
+        alt=""
+        widths={[640, 960, 1400, 1800]}
+        sizes="(min-width: 1024px) 38vw, 100vw"
+        quality={88}
+        format="webp"
+        loading="lazy"
+        class="dem-steps__aside-img"
+      />
+    </aside>
+
+    <div class="dem-steps__column">
+      {
+        steps.map((step) => (
+          <article
+            id={step.id}
+            data-section-label={step.sectionLabel}
+            class="dem-steps__step"
+            aria-labelledby={`${step.id}-title`}
+          >
+            <header class="dem-steps__head">
+              <p class="dem-steps__eyebrow">{step.eyebrow}</p>
+              <h2 id={`${step.id}-title`} class="dem-steps__title">
+                {step.title}
+              </h2>
+            </header>
+            <div class="dem-steps__faq">
+              <FaqAccordion items={step.accordions} client:visible />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* ════════════════════════════════════════════════════════════════════
+   * <DemarrerSteps> — UNE photo aside + 2 étapes empilées droite.
+   * is:global pour pouvoir cibler `.faq-acc__*` injecté par l'island
+   * FaqAccordion (hors scope local Astro).
+   * ═══════════════════════════════════════════════════════════════════ */
+  .dem-steps {
+    background-color: var(--color-black-deep);
+    color: var(--color-cream);
+    width: 100%;
+    overflow: hidden;
+  }
+  .dem-steps__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 1024px) {
+    .dem-steps__inner {
+      grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+      column-gap: clamp(2rem, 4vw, 4rem);
+      align-items: stretch;
+    }
+  }
+
+  /* Photo aside — collée bord gauche, full-bleed gauche, UNE seule fois,
+     s'étend sur toute la hauteur verticale des 2 étapes droite. */
+  .dem-steps__aside {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+  @media (max-width: 1023px) {
+    .dem-steps__aside {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  @media (min-width: 1024px) {
+    .dem-steps__aside {
+      /* full-height de la grille (stretch aligne les 2 colonnes en hauteur) */
+      height: 100%;
+    }
+  }
+  .dem-steps__aside-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* Colonne droite — empile les 2 étapes verticalement. */
+  .dem-steps__column {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+    gap: clamp(4rem, 8vw, 7rem);
+  }
+  @media (min-width: 1024px) {
+    .dem-steps__column {
+      padding-left: 0;
+      padding-right: clamp(2rem, 5vw, 5rem);
+    }
+  }
+
+  .dem-steps__step {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .dem-steps__head {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 0.8vw, 0.8rem);
+  }
+  .dem-steps__eyebrow {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 1.4vw, 1.45rem);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+  }
+  /* Titre oversized : calibré pour rentrer dans la grille 0.58fr SANS
+     coupure. Avant : clamp 9rem trop large pour "QUALIFICATION" (13c).
+     Maintenant : letter-spacing serré + clamp réduit, autorise scale
+     proportionnel viewport sans déborder. */
+  .dem-steps__title {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(2.25rem, 6.2vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+    /* Sécurité : si jamais on rallonge un titre, on serre plutôt qu'on coupe */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .dem-steps__faq {
+    width: 100%;
+  }
+</style>
