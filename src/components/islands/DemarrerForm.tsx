@@ -72,7 +72,7 @@ const INITIAL: FormValues = {
 const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
 const labelClass =
-  'block font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.16em] uppercase text-[var(--color-cream)]';
+  'block font-[family-name:var(--font-heading)] text-[14px] md:text-[15px] font-bold tracking-[0.14em] uppercase text-[var(--color-cream)]';
 
 // Inputs : underline cream uniquement, fond transparent (le bloc rouge porte
 // le fond). Forçage Bold strict (grammaire 200/700) ET pour éviter la
@@ -548,22 +548,17 @@ export default function DemarrerForm(): React.JSX.Element {
           {fileError && <p className={errorClass}>{fileError}</p>}
         </div>
 
-        {/* Turnstile */}
-        {SITE_KEY ? (
-          <div>
-            <Turnstile
-              ref={turnstileRef}
-              siteKey={SITE_KEY}
-              options={{ theme: 'dark', size: 'flexible' }}
-              onSuccess={(t) => setToken(t)}
-              onExpire={() => setToken('')}
-              onError={() => setToken('')}
-            />
-          </div>
-        ) : (
-          <p className={errorClass}>
-            Vérification anti-spam non configurée — merci de joindre le studio par téléphone.
-          </p>
+        {/* Turnstile — mode interaction-only : widget invisible par défaut,
+            n'apparaît que si Cloudflare détecte un comportement suspect. */}
+        {SITE_KEY && (
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={SITE_KEY}
+            options={{ theme: 'dark', size: 'flexible', appearance: 'interaction-only' }}
+            onSuccess={(t) => setToken(t)}
+            onExpire={() => setToken('')}
+            onError={() => setToken('')}
+          />
         )}
 
         {/* Erreur globale — pastille ink/cream pour contraste WCAG AAA sur rouge. */}
@@ -576,20 +571,20 @@ export default function DemarrerForm(): React.JSX.Element {
           </div>
         )}
 
-        {/* ENVOYER ↗ — lien underline aligné droite */}
-        <div className="flex justify-end pt-4">
+        {/* ENVOYER ↗ — lien underline centré, cream pur (pas grisé). */}
+        <div className="flex justify-center pt-6">
           <button
             type="submit"
-            disabled={submitting || !SITE_KEY}
-            className="group inline-flex items-center gap-3 border-b border-[var(--color-cream)] pb-1 font-[family-name:var(--font-heading)] text-[14px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={submitting}
+            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer'}</span>
             <img
               src="/brand/fleche-white.webp"
               alt=""
               aria-hidden="true"
-              width={14}
-              height={14}
+              width={16}
+              height={16}
               className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
             />
           </button>

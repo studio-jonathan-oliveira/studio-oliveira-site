@@ -49,8 +49,8 @@ const { invite } = Astro.props;
     padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem) clamp(5rem, 9vw, 8rem);
   }
   .dem-red__invite {
-    max-width: 1200px;
-    margin: 0 auto clamp(3rem, 6vw, 5rem);
+    width: 100%;
+    margin: 0 0 clamp(3rem, 6vw, 5rem);
   }
   .dem-red__invite-text {
     font-family: var(--font-heading), sans-serif;
@@ -60,11 +60,10 @@ const { invite } = Astro.props;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-cream);
-    text-align: center;
+    text-align: left;
     margin: 0;
   }
   .dem-red__form {
-    max-width: 1100px;
-    margin: 0 auto;
+    width: 100%;
   }
 </style>

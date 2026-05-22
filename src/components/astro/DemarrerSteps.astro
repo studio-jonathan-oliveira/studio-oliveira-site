@@ -136,17 +136,21 @@ const { steps } = Astro.props;
     }
   }
 
-  /* Colonne droite — empile les 2 étapes verticalement. */
+  /* Colonne droite — empile les 2 étapes verticalement.
+     Padding-bottom généreux : laisse de la place pour ouvrir les accordéons
+     en bas tout en gardant la photo aside visible jusqu'en bas du bloc
+     (la grille stretch fait que l'aside descend avec cet espace). */
   .dem-steps__column {
     display: flex;
     flex-direction: column;
-    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(8rem, 22vh, 18rem);
     gap: clamp(4rem, 8vw, 7rem);
   }
   @media (min-width: 1024px) {
     .dem-steps__column {
       padding-left: 0;
       padding-right: clamp(2rem, 5vw, 5rem);
+      padding-bottom: clamp(12rem, 30vh, 24rem);
     }
   }
 
