@@ -13,25 +13,19 @@
  *
  * Reste : drag pointer/touch (vrai swipe à la doigt), clavier ←/→, dots.
  */
-// Refonte v10 2026-05-15 : 01-villa retirée temporairement (retour Morgan).
-// Reste 3 slides actifs. Les fichiers restent dans public/hero/ — on les
-// ré-activera quand Jonathan validera ou fournira une autre 1re.
+// Refonte 2026-05-22 — Morgan a fourni 6 nouvelles photos pour le carousel
+// hero (`_assets/hero-source/01-image.jpg` à `06-image.jpg`). Tous les
+// anciens slides (01-villa, 02-cypres, 03-terrasse-salon, 04-pergola-palmiers,
+// 05-ruelle) sont remplacés. Le tableau `slides` ci-dessous pilote l'ordre
+// d'affichage. Si Morgan change le nombre de slides, ajuster aussi le CSS
+// `.hero-slide__track { width }` + `.hero-slide__panel { flex }`.
 const slides = [
-  {
-    name: '02-cypres',
-    label: 'Cyprès et statues méditerranéennes',
-    position: '50% 85%',
-  },
-  {
-    name: '03-terrasse-salon',
-    label: 'Terrasse et salon outdoor végétalisé',
-    position: '50% 85%',
-  },
-  {
-    name: '05-ruelle',
-    label: 'Ruelle végétalisée',
-    position: '50% 85%',
-  },
+  { name: '01-image', label: 'Projet Studio J Oliveira — visuel 1', position: '50% 50%' },
+  { name: '02-image', label: 'Projet Studio J Oliveira — visuel 2', position: '50% 50%' },
+  { name: '03-image', label: 'Projet Studio J Oliveira — visuel 3', position: '50% 50%' },
+  { name: '04-image', label: 'Projet Studio J Oliveira — visuel 4', position: '50% 50%' },
+  { name: '05-image', label: 'Projet Studio J Oliveira — visuel 5', position: '50% 50%' },
+  { name: '06-image', label: 'Projet Studio J Oliveira — visuel 6', position: '50% 50%' },
 ];
 ---
 
@@ -121,12 +115,13 @@ const slides = [
     z-index: 0;
     touch-action: pan-y;
   }
-  /* Track horizontal — 3 panels juxtaposés, translateX piloté par JS.
-     v10 2026-05-15 : width 400→300%, panel 25→33.333% (suite retrait de
-     01-villa). */
+  /* Track horizontal — N panels juxtaposés, translateX piloté par JS.
+     Refonte 2026-05-22 : 6 slides (était 3). width = N × 100%,
+     flex panel = 100% / N. Si le nombre de slides change, mettre à jour
+     ces deux valeurs ici ET le tableau `slides` dans le frontmatter. */
   .hero-slide__track {
     display: flex;
-    width: 300%;
+    width: 600%;
     height: 100%;
     will-change: transform;
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
@@ -135,7 +130,7 @@ const slides = [
     transition: none;
   }
   .hero-slide__panel {
-    flex: 0 0 33.3333%;
+    flex: 0 0 16.6667%;
     position: relative;
     height: 100%;
     overflow: hidden;

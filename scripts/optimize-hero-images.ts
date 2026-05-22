@@ -1,10 +1,15 @@
 /**
- * Pipeline d'optimisation des 5 images hero (refonte DA Jonathan 2026-05-15).
+ * Pipeline d'optimisation des images hero.
  *
  * Lit les sources brutes haute résolution depuis `_assets/hero-source/` (gitignored)
  * et produit des assets servables depuis `public/hero/` :
- *   - `01-villa.webp` à `05-ruelle.webp` (1920×1080, q82) = principal
- *   - `01-villa.jpg`  à `05-ruelle.jpg`  (1920×1080, mozjpeg q80) = fallback / poster
+ *   - `<slug>.webp` (1920×1080, q86) = principal
+ *   - `<slug>.jpg`  (1920×1080, mozjpeg q84) = fallback / poster
+ *   - `<slug>@2x.{webp,jpg}` (3840×2160, q80) = retina
+ *
+ * Nommage source attendu : `01-<slug>.jpg` ... `99-<slug>.jpg`. Refonte
+ * 2026-05-22 : la regex acceptait `01-05` (limite refonte 2026-05-15),
+ * relâchée pour supporter 6+ slides (Morgan a fourni 6 photos hero).
  *
  * Idempotent : à relancer quand une source est remplacée.
  *
@@ -37,11 +42,11 @@ const POSITION_BY_FILE: Record<string, SharpPosition> = {
 await mkdir(OUT_DIR, { recursive: true });
 
 const files = (await readdir(SRC_DIR))
-  .filter((f) => /^0[1-5]-.*\.(jpg|jpeg|JPEG|JPG|png|PNG)$/.test(f))
+  .filter((f) => /^\d{2}-.*\.(jpg|jpeg|JPEG|JPG|png|PNG)$/.test(f))
   .sort();
 
 if (files.length === 0) {
-  console.error(`Aucune image source dans ${SRC_DIR}/ (attendu : 01-*.jpg à 05-*.jpg).`);
+  console.error(`Aucune image source dans ${SRC_DIR}/ (attendu : 01-*.jpg, 02-*.jpg, ...).`);
   process.exit(1);
 }
 
