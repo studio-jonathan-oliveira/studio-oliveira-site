@@ -145,23 +145,25 @@ const { steps } = Astro.props;
   }
 
   /* Colonne droite — empile les 2 étapes verticalement.
-     Padding-bottom généreux : laisse de la place pour ouvrir les accordéons
-     en bas tout en gardant la photo aside visible jusqu'en bas du bloc
-     (la grille stretch fait que l'aside descend avec cet espace). */
+     `min-height` plutôt que `padding-bottom` : la hauteur minimale absorbe
+     l'expansion des accordéons sans pousser le parent vers le bas. Tant
+     que les accordéons restent dans cette réserve d'espace → la colonne
+     (et donc l'aside stretch + image) ne bougent PAS quand on déplie un
+     accordéon. Si ça dépasse, la colonne grandit juste de ce qu'il faut. */
   .dem-steps__column {
     display: flex;
     flex-direction: column;
-    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(8rem, 22vh, 18rem);
+    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
     gap: clamp(4rem, 8vw, 7rem);
+    min-height: 120vh;
   }
   @media (min-width: 1024px) {
     .dem-steps__column {
       padding-left: 0;
       padding-right: clamp(2rem, 5vw, 5rem);
-      /* Padding-bottom très généreux : la grille stretch étire l'aside
-         avec → la photo descend bien plus bas que les accordéons,
-         laisse beaucoup de place pour déployer sans perdre l'image. */
-      padding-bottom: clamp(24rem, 55vh, 44rem);
+      /* Réserve d'espace généreuse desktop : assez pour absorber 2 accordéons
+         déployés (~80vh contenu max) + marge sans déclencher de zoom. */
+      min-height: 170vh;
     }
   }
 
