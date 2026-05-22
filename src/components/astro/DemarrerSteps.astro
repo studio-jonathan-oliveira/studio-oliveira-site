@@ -132,14 +132,17 @@ const { steps } = Astro.props;
     display: block;
   }
   @media (min-width: 1024px) {
-    /* Desktop : photo affichée EN ENTIER (retour Jonathan 2026-05-22) —
-       object-fit: contain au lieu de cover, plus aucun crop. L'image
-       garde son ratio natif, centrée dans le container. L'aside fait
-       toute la hauteur du parent stretch, l'image se cadre dedans. */
+    /* Desktop : photo couvre toute la hauteur de la zone noire (retour
+       Morgan 2026-05-22 itération : `contain` créait des bandes vides en
+       haut/bas, l'image n'allait plus au bout). Retour à `cover` qui
+       remplit toute la hauteur — un peu de crop horizontal accepté
+       comme compromis nécessaire pour ne pas perdre l'effet « long
+       vertical jusqu'en bas ». */
     .dem-steps__aside-img {
       height: 100%;
-      object-fit: contain;
-      object-position: center top;
+      min-height: 100svh;
+      object-fit: cover;
+      object-position: center;
     }
   }
 

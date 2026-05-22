@@ -24,7 +24,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
-import { animate } from 'motion';
+import { bindMagnetic } from '@/scripts/motion-enhance';
 import {
   demarrerSchema,
   BUDGET_OPTIONS,
@@ -143,35 +143,15 @@ export default function DemarrerForm(): React.JSX.Element {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
 
-  // Magnétique sur le bouton ENVOYER — reproduit EXACTEMENT setupMagnetic
-  // de motion-enhance.ts (utilisé par CtaLink « Démarrer un projet » sitewide).
-  // Implémenté en React car l'island client:visible s'hydrate après le scan
-  // initial de motion-enhance → data-magnetic ne serait pas pris en charge.
-  // Strength 0.25 + animate() Motion + EASE_EDITORIAL [0.16, 1, 0.3, 1].
+  // Magnétique sur le bouton ENVOYER — réutilise EXACTEMENT `bindMagnetic`
+  // de motion-enhance.ts (même helper que celui appelé pour tous les
+  // `data-magnetic` du site, dont le bouton CONTACTER). Garantit le rendu
+  // strictement identique sans duplication de code.
   useEffect(() => {
     const el = sendBtnRef.current;
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const STRENGTH = 0.25;
-    const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-    const onMove = (e: PointerEvent) => {
-      const rect = el.getBoundingClientRect();
-      const dx = (e.clientX - (rect.left + rect.width / 2)) * STRENGTH;
-      const dy = (e.clientY - (rect.top + rect.height / 2)) * STRENGTH;
-      animate(el, { x: dx, y: dy }, { duration: 0.25, ease: EASE_EDITORIAL });
-    };
-    const onLeave = () => {
-      animate(el, { x: 0, y: 0 }, { duration: 0.45, ease: EASE_EDITORIAL });
-    };
-
-    el.addEventListener('pointermove', onMove);
-    el.addEventListener('pointerleave', onLeave);
-    return () => {
-      el.removeEventListener('pointermove', onMove);
-      el.removeEventListener('pointerleave', onLeave);
-    };
+    return bindMagnetic(el, 0.25);
   }, []);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
