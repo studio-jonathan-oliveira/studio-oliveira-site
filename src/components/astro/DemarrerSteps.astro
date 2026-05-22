@@ -133,10 +133,14 @@ const { steps } = Astro.props;
     display: block;
   }
   @media (min-width: 1024px) {
+    /* Desktop : l'image s'étend sur toute la hauteur du parent stretch
+       (= 2 étapes accordéons + padding-bottom généreux), donc descend
+       jusqu'à la fin de la zone noire. Le zoom à l'ouverture d'accordéon
+       est subtil car le delta de hauteur (~200px) est faible vs la
+       hauteur totale (~150vh+) — object-fit:cover recadre très peu. */
     .dem-steps__aside-img {
-      position: sticky;
-      top: 0;
-      height: 100svh;
+      height: 100%;
+      min-height: 100svh;
     }
   }
 

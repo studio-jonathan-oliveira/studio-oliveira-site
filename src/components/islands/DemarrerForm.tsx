@@ -93,6 +93,14 @@ const selectClass = inputClass + ' appearance-none cursor-pointer';
 const errorClass =
   'mt-2 inline-block bg-[var(--color-ink)] px-2.5 py-1 font-[family-name:var(--font-heading)] text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--color-cream)]';
 
+// Style des <option> du dropdown : le navigateur les rend selon ses propres
+// styles, pas l'inline `bg-transparent text-cream` du `<select>`. Sans forcer
+// fond/couleur, les options apparaissent illisibles (cream sur cream).
+const optionStyle: React.CSSProperties = {
+  backgroundColor: 'var(--color-cream)',
+  color: 'var(--color-ink)',
+};
+
 function bytesHuman(n: number): string {
   if (n < 1024) return `${n} o`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} ko`;
@@ -446,11 +454,11 @@ export default function DemarrerForm(): React.JSX.Element {
               className={selectClass}
               disabled={submitting}
             >
-              <option value="" disabled>
+              <option value="" disabled style={optionStyle}>
                 Sélectionner une fourchette…
               </option>
               {BUDGET_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                <option key={opt.value} value={opt.value} style={optionStyle}>
                   {opt.label}
                 </option>
               ))}
@@ -477,11 +485,11 @@ export default function DemarrerForm(): React.JSX.Element {
               className={selectClass}
               disabled={submitting}
             >
-              <option value="" disabled>
+              <option value="" disabled style={optionStyle}>
                 Sélectionner une échéance…
               </option>
               {PERIODE_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                <option key={opt.value} value={opt.value} style={optionStyle}>
                   {opt.label}
                 </option>
               ))}
@@ -494,12 +502,14 @@ export default function DemarrerForm(): React.JSX.Element {
           </div>
         </div>
 
-        {/* JOINDRE DES DOCUMENTS — input file natif déguisé */}
+        {/* JOINDRE DES DOCUMENTS — input file natif déclenché par un <label>
+            cliquable (plus fiable que `.click()` programmatique, jamais bloqué
+            par le navigateur, accessible nativement clavier + AT). */}
         <div>
-          <label htmlFor="df-files" className={labelClass}>
+          <p className={labelClass}>
             Joindre des documents{' '}
             <span className="opacity-75">(PDF, JPG, PNG — max 3 Mo au total)</span>
-          </label>
+          </p>
           <input
             ref={fileInputRef}
             id="df-files"
@@ -509,19 +519,18 @@ export default function DemarrerForm(): React.JSX.Element {
             accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
             onChange={(e) => void handleFiles(e.target.files)}
             className="sr-only"
-            disabled={submitting}
+            disabled={submitting || files.length >= MAX_FILES}
           />
           <div className="mt-2 flex flex-col gap-3 border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] pt-1 pb-2">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={submitting || files.length >= MAX_FILES}
-              className="self-start font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-normal text-[color-mix(in_oklab,var(--color-cream)_88%,transparent)] underline underline-offset-4 hover:text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
+            <label
+              htmlFor="df-files"
+              aria-disabled={submitting || files.length >= MAX_FILES || undefined}
+              className="cursor-pointer self-start font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-cream)] underline underline-offset-4 hover:opacity-85 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
             >
               {files.length === 0
                 ? 'Sélectionner des fichiers'
                 : `Ajouter (${files.length}/${MAX_FILES})`}
-            </button>
+            </label>
             {files.length > 0 && (
               <ul className="flex flex-col gap-2">
                 {files.map((f, i) => (
