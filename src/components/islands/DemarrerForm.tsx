@@ -24,7 +24,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
-import { bindMagnetic } from '@/scripts/motion-enhance';
+import { bindMagnetic } from '@/scripts/magnetic';
 import {
   demarrerSchema,
   BUDGET_OPTIONS,
