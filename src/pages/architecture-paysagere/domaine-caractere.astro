@@ -61,12 +61,18 @@ const valeurs = [
   '[À FOURNIR : complexité spatiale et environnementale]',
 ] as const;
 
-// Manifeste — PLACEHOLDER (cf. _brief/contenus-manquants.md
-// TYPOLOGIE-DOMAINE-CARACTERE-MANIFESTE).
+// Manifeste — texte VERBATIM Jonathan/Morgan 2026-05-22. Cette typologie
+// a 3 blocs (vs 2 sur les autres) — la structure est étendue ici uniquement.
+// Typo « font partis » conservée (devrait être « font partie »).
 const manifeste = {
-  bloc1: '[À FOURNIR PAR JONATHAN : 1er paragraphe manifeste domaine caractère ~30-40 mots]',
-  bloc2: '[À FOURNIR PAR JONATHAN : 2e paragraphe manifeste domaine caractère ~30-40 mots]',
-  precision: '[À FOURNIR PAR JONATHAN : précision technique domaine caractère ~60-80 mots]',
+  bloc1:
+    'La typologie domaine et caractère est une typologie spéciale car elle considère une dimension architecturale très affirmée.',
+  bloc2:
+    'Châteaux, manoirs, propriétés familiales aux multiples dépendances font partis des propriétés destinées à cette typologie.',
+  bloc3:
+    "L'aménagement des espaces s'imprègne très fortement de l'environnement, de l'architecture et des usagers résidents ou de passage.",
+  precision:
+    "L'accent de cette typologie est porté sur un dialogue très précis entre architecture - environnement - usager avec une identité forte qui doit être gage d'un résultat logique et harmonieux d'un ensemble uni.",
 };
 
 // FAQ — verbatim Morgan/Jonathan 2026-05-21 (3 Q/R communes aux 4 pages
@@ -257,6 +263,7 @@ const schema = jsonLdGraph([
       >
         <p class="dc-manifeste__para">{manifeste.bloc1}</p>
         <p class="dc-manifeste__para">{manifeste.bloc2}</p>
+        <p class="dc-manifeste__para">{manifeste.bloc3}</p>
       </div>
       <p class="dc-manifeste__precision">{manifeste.precision}</p>
     </div>
