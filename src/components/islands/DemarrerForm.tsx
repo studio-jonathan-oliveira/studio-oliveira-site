@@ -24,6 +24,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
+import { animate } from 'motion';
 import {
   demarrerSchema,
   BUDGET_OPTIONS,
@@ -137,23 +138,27 @@ export default function DemarrerForm(): React.JSX.Element {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
 
-  // Magnétique sur le bouton ENVOYER — signature designbyad du site
-  // (équivalent du `data-magnetic` de motion-enhance.ts, reproduit ici en
-  // React car l'island s'hydrate après le scan initial de motion-enhance).
+  // Magnétique sur le bouton ENVOYER — reproduit EXACTEMENT setupMagnetic
+  // de motion-enhance.ts (utilisé par CtaLink « Démarrer un projet » sitewide).
+  // Implémenté en React car l'island client:visible s'hydrate après le scan
+  // initial de motion-enhance → data-magnetic ne serait pas pris en charge.
+  // Strength 0.25 + animate() Motion + EASE_EDITORIAL [0.16, 1, 0.3, 1].
   useEffect(() => {
     const el = sendBtnRef.current;
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const STRENGTH = 0.3;
+    const STRENGTH = 0.25;
+    const EASE_EDITORIAL: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
     const onMove = (e: PointerEvent) => {
       const rect = el.getBoundingClientRect();
       const dx = (e.clientX - (rect.left + rect.width / 2)) * STRENGTH;
       const dy = (e.clientY - (rect.top + rect.height / 2)) * STRENGTH;
-      el.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+      animate(el, { x: dx, y: dy }, { duration: 0.25, ease: EASE_EDITORIAL });
     };
     const onLeave = () => {
-      el.style.transform = 'translate3d(0, 0, 0)';
+      animate(el, { x: 0, y: 0 }, { duration: 0.45, ease: EASE_EDITORIAL });
     };
 
     el.addEventListener('pointermove', onMove);
@@ -614,10 +619,8 @@ export default function DemarrerForm(): React.JSX.Element {
             ref={sendBtnRef}
             type="submit"
             disabled={submitting}
-            style={{
-              transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
-            }}
-            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase hover:opacity-85 disabled:cursor-not-allowed"
+            style={{ willChange: 'transform' }}
+            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer'}</span>
             <img
