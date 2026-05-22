@@ -93,32 +93,32 @@ const { steps } = Astro.props;
     .dem-steps__inner {
       grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
       column-gap: clamp(2rem, 4vw, 4rem);
-      /* `start` (pas `stretch`) : la colonne aside ne s'étire PAS sur la
-         hauteur de la colonne droite. Sinon, quand un accordéon s'ouvre,
-         l'aside grandit avec → object-fit:cover recadre → effet zoom. */
-      align-items: start;
+      /* Stretch : l'aside s'étend sur la hauteur des 2 étapes combinées
+         (effet « photo en long » de la trame). Le zoom à l'ouverture
+         d'accordéon est neutralisé en sticky-isant l'IMAGE elle-même
+         (pas l'aside) avec une hauteur fixe 100svh. Voir below. */
+      align-items: stretch;
     }
   }
 
-  /* Photo aside — collée bord gauche, full-bleed gauche, UNE seule fois.
-     Desktop : sticky en haut du viewport sur la hauteur des accordéons,
-     hauteur FIXE (l'image ne change jamais de taille quand un accordéon
-     s'ouvre/ferme, fini l'effet zoom). */
+  /* Photo aside — l'aside container fait toute la hauteur des 2 étapes
+     (stretch), mais l'image dedans est sticky 100svh fixe : elle reste
+     visible et NE ZOOMS PAS quand un accordéon s'ouvre/ferme, et suit
+     visuellement tout le scroll des accordéons. */
   .dem-steps__aside {
     width: 100%;
-    overflow: hidden;
     line-height: 0;
   }
   @media (max-width: 1023px) {
     .dem-steps__aside {
       aspect-ratio: 4 / 3;
+      overflow: hidden;
     }
   }
   @media (min-width: 1024px) {
     .dem-steps__aside {
-      position: sticky;
-      top: 0;
-      height: 100svh;
+      align-self: stretch;
+      position: relative;
     }
   }
   .dem-steps__aside-img {
@@ -127,6 +127,13 @@ const { steps } = Astro.props;
     object-fit: cover;
     object-position: center;
     display: block;
+  }
+  @media (min-width: 1024px) {
+    .dem-steps__aside-img {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+    }
   }
 
   /* Colonne droite — empile les 2 étapes verticalement. */
