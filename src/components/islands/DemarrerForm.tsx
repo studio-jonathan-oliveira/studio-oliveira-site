@@ -131,10 +131,38 @@ export default function DemarrerForm(): React.JSX.Element {
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
+  const sendBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
+
+  // Magnétique sur le bouton ENVOYER — signature designbyad du site
+  // (équivalent du `data-magnetic` de motion-enhance.ts, reproduit ici en
+  // React car l'island s'hydrate après le scan initial de motion-enhance).
+  useEffect(() => {
+    const el = sendBtnRef.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const STRENGTH = 0.3;
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      const dx = (e.clientX - (rect.left + rect.width / 2)) * STRENGTH;
+      const dy = (e.clientY - (rect.top + rect.height / 2)) * STRENGTH;
+      el.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+    };
+    const onLeave = () => {
+      el.style.transform = 'translate3d(0, 0, 0)';
+    };
+
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerleave', onLeave);
+    return () => {
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerleave', onLeave);
+    };
+  }, []);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
     setValues((v) => ({ ...v, [key]: value }));
@@ -580,12 +608,16 @@ export default function DemarrerForm(): React.JSX.Element {
           </div>
         )}
 
-        {/* ENVOYER ↗ — lien underline centré, cream pur (pas grisé). */}
+        {/* ENVOYER ↗ — lien underline centré, cream pur, magnétique. */}
         <div className="flex justify-center pt-6">
           <button
+            ref={sendBtnRef}
             type="submit"
             disabled={submitting}
-            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
+            style={{
+              transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+            }}
+            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase hover:opacity-85 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer'}</span>
             <img
