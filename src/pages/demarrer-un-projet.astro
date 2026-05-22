@@ -1,41 +1,65 @@
 ---
 /*
- * Démarrer un projet — page de qualification (refonte 2026-04-28).
- * Migration de la section méthode 3 étapes depuis la home (#methode) vers
- * une route dédiée. Le CTA fin de home et la pill Header pointent ici.
+ * /demarrer-un-projet — refonte trame Jonathan 2026-05-22.
  *
- * Contenu : strictement identique à l'ancienne section, plus une intro hero
- * courte et un CTA final vers /contact (formulaire).
+ * Page de conversion principale du site (cible du CTA « Démarrer un projet »
+ * sitewide). Architecture orchestrée :
+ *
+ *   1. <DemarrerHero>      — photo full-bleed + bloc ink intro 2 paragraphes
+ *   2. <DemarrerStep>      — "L'APPEL DE QUALIFICATION" + 3 accordéons
+ *   3. <DemarrerStep>      — "L'APPEL DE VALIDATION" + 2 accordéons
+ *   4. <DemarrerRedBlock>  — bandeau rouge invite + formulaire (bloc continu)
+ *
+ * Verbatim Jonathan préservé, coquilles évidentes corrigées (« adptée »,
+ * « permette », « part de son d'expérience », « vous permettra au studio »,
+ * « vos question », espace avant virgule « studio , pour »).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
-import ContactForm from '@/components/islands/ContactForm.tsx';
+import DemarrerHero from '@/components/astro/DemarrerHero.astro';
+import DemarrerStep from '@/components/astro/DemarrerStep.astro';
+import DemarrerRedBlock from '@/components/astro/DemarrerRedBlock.astro';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
 
-const methode = [
+const intro = {
+  accroche:
+    'Maintenant que vous avez découvert et exploré votre typologie de jardin et de propriété, continuez le chemin vers la rencontre avec le studio !',
+  invite: "Prenons le temps d'échanger ensemble autour de votre projet, en 2 temps.",
+};
+
+const qualification = [
   {
-    num: '01',
-    titre: 'Appel de découverte',
-    duree: '15 à 25 minutes',
-    description:
-      'Premier échange téléphonique. On qualifie votre projet, le site, vos attentes. Vous repartez avec une lecture claire de la suite.',
+    question: 'Comprendre le projet',
+    answer:
+      "Le studio réserve ce premier échange pour comprendre le projet dans son contexte environnemental et géographique.\n\nCela lui permet de définir précisément la typologie de votre propriété.\n\nMunissez-vous d'un plan de votre propriété (si vous en avez), sinon calculez les surfaces correspondant aux emprises de votre projet.",
   },
   {
-    num: '02',
-    titre: "Rendez-vous d'étude",
-    duree: '1 h 45 à 2 h',
-    description:
-      'Sur place ou en visioconférence. Diagnostic approfondi du lieu et du programme. Orientations conceptuelles posées ensemble.',
+    question: 'Structurer la commande',
+    answer:
+      "Une fois le contexte compris et défini, le studio écoute vos besoins, vos envies, vos souhaits.\n\nCe moment sert à structurer l'approche sensible et réaliste de votre projet, lister ses potentiels et contraintes, projeter grossièrement les lignes directrices de l'aménagement. Cet échange permettra au studio de vous faire part de son expérience.\n\nMunissez-vous de votre côté d'un dossier d'ambiances, souhaits, tendances et inspirations qui vous font rêver. Le jardin doit être à votre image et le studio doit le cerner pour s'en rapprocher.",
   },
   {
-    num: '03',
-    titre: 'Validation à distance',
-    duree: '15 minutes',
-    description:
-      "Cadrage final : périmètre d'étude, livrables, calendrier. Signature et lancement.",
+    question: "Qualifier l'étude adaptée",
+    answer:
+      "L'ensemble des informations récoltées permettra au studio de définir la typologie exacte de votre projet et de proposer l'étude adaptée.\n\nLe studio communique au client la marche à suivre suivant la typologie de l'étude, le programme et le temps à y consacrer. Tout est explicité en amont, en toute transparence.\n\nVous repartez avec des informations claires et précises pour lancer votre projet.",
   },
-];
+] as const;
+
+const validation = [
+  {
+    question: 'Le point',
+    answer:
+      "Après un temps de réflexion, ce second échange permet de lever des points flous ou encore des doutes concernant l'étude.\n\nLe studio prend le temps de répondre à vos questions et d'ajuster les derniers points pour composer la meilleure solution à votre projet.",
+  },
+  {
+    question: 'La validation',
+    answer:
+      "Cet échange permet enfin de valider les termes du contrat d'étude et enclencher les étapes suivantes de l'étude.\n\nLa validation de l'étude déclenche le premier déplacement du studio, pour l'approche sensible et technique sur site et démarrer la phase étude préliminaire.",
+  },
+] as const;
+
+const invite =
+  'Anticipez le premier échange avec le studio : parlez-nous de votre projet en amont et le studio prendra le temps de revenir vers vous.';
 
 const schema = jsonLdGraph([
   organization(),
@@ -46,224 +70,39 @@ const schema = jsonLdGraph([
     { name: 'Démarrer un projet', item: '/demarrer-un-projet' },
   ]),
   {
-    '@type': 'WebPage',
+    '@type': 'ContactPage',
     name: 'Démarrer un projet — Studio J Oliveira',
     url: `${SITE.url}/demarrer-un-projet`,
     description:
-      'Trois temps de qualification pour engager une étude de design biophilique avec le Studio J Oliveira.',
+      'Engager une étude avec le Studio J Oliveira en deux temps — appel de qualification puis appel de validation.',
   },
 ]);
 ---
 
 <BaseLayout
   title="Démarrer un projet"
-  description="Trois temps de qualification pour engager une étude avec le Studio J Oliveira — appel de découverte, rendez-vous d'étude, validation."
+  description="Engager une étude avec le Studio J Oliveira : appel de qualification, appel de validation, puis lancement de l'étude préliminaire."
+  darkHero
 >
   <script type="application/ld+json" set:html={schema} is:inline />
 
-  <section
-    id="methode"
-    data-section-label="Méthode"
-    class="bg-[var(--color-cream)] text-[var(--color-ink)]"
-    aria-labelledby="methode-title"
-  >
-    <div class="mx-auto max-w-7xl px-6 pt-40 pb-32 md:px-10 md:pt-48 md:pb-44">
-      {/* Header pleine largeur — h1 tient sur 1 ligne en desktop, wrap mobile. */}
-      <header class="mb-16 md:mb-24" data-reveal="up">
-        <h1
-          id="methode-title"
-          class="page-title font-[family-name:var(--font-heading)] leading-[1]"
-        >
-          Trois temps de qualification.
-        </h1>
-        <p
-          class="mt-8 max-w-2xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/70"
-        >
-          Avant toute étude, le studio vous engage dans un parcours en trois étapes — découvrir le
-          projet, lire le lieu, cadrer les attentes.
-        </p>
-      </header>
+  <DemarrerHero intro={intro} />
 
-      <!-- Bandeau résumé visuel — durées + total signature -->
-      <div class="methode-summary" data-reveal="up" data-reveal-delay="0.2" aria-hidden="true">
-        <span class="methode-summary-step">
-          <span class="methode-summary-num">01</span>
-          <span class="methode-summary-time">15–25 min</span>
-        </span>
-        <span class="methode-summary-arrow">→</span>
-        <span class="methode-summary-step">
-          <span class="methode-summary-num">02</span>
-          <span class="methode-summary-time">1 h 45–2 h</span>
-        </span>
-        <span class="methode-summary-arrow">→</span>
-        <span class="methode-summary-step">
-          <span class="methode-summary-num">03</span>
-          <span class="methode-summary-time">15 min</span>
-        </span>
-        <span class="methode-summary-total"><em>≈ 2 h 30</em> au total</span>
-      </div>
+  <DemarrerStep
+    id="qualification"
+    eyebrow="L'appel de"
+    title="Qualification"
+    sectionLabel="Qualification"
+    accordions={qualification}
+  />
 
-      <ol
-        data-reveal-stagger="0.14"
-        data-reveal="up"
-        class="grid grid-cols-1 gap-px bg-[var(--color-ink)]/10 md:grid-cols-3"
-      >
-        {
-          methode.map((step) => (
-            <li class="methode-card flex flex-col bg-[var(--color-cream)] p-10 md:p-14">
-              <p class="methode-num text-[var(--color-ink)]/15">{step.num}</p>
-              <p class="mt-10 font-mono text-[10px] tracking-[0.26em] text-[var(--color-ink)]/65 uppercase">
-                {step.duree}
-              </p>
-              <h3 class="mt-3 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-ink)]">
-                {step.titre}
-              </h3>
-              <p class="mt-5 text-sm leading-relaxed text-[var(--color-ink)]/70">
-                {step.description}
-              </p>
-              <span class="methode-card-line" aria-hidden="true" />
-            </li>
-          ))
-        }
-      </ol>
+  <DemarrerStep
+    id="validation"
+    eyebrow="L'appel de"
+    title="Validation"
+    sectionLabel="Validation"
+    accordions={validation}
+  />
 
-      <!-- Bloc final : formulaire qualifié + raccourcis contact -->
-      <div class="mt-20 grid gap-16 md:mt-28 md:grid-cols-[3fr_2fr] md:gap-20">
-        <div id="formulaire">
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase">
-            Engager la conversation
-          </p>
-          <h2
-            class="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-3xl)] leading-tight text-[var(--color-ink)] md:text-[length:var(--text-4xl)]"
-          >
-            Décrire votre projet.
-          </h2>
-          <p
-            class="mt-6 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/75"
-          >
-            Le parcours commence par un appel court. Renseignez le formulaire ci-dessous — nous
-            revenons vers vous pour caler le premier échange.
-          </p>
-          <div class="mt-10">
-            <ContactForm client:visible />
-          </div>
-        </div>
-
-        <aside class="md:sticky md:top-32 md:self-start">
-          <div class="border border-[var(--color-ink)]/15 p-8">
-            <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase">
-              Préférer la voix
-            </p>
-            <a
-              href={`tel:${SITE.contact.phone}`}
-              class="mt-4 block font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-tight text-[var(--color-ink)] hover:text-[var(--color-laterite)]"
-            >
-              {SITE.contact.phoneDisplay}
-            </a>
-            <p class="mt-4 text-sm leading-relaxed text-[var(--color-ink)]/70">
-              {SITE.hours.days} · {SITE.hours.open} — {SITE.hours.close}
-            </p>
-
-            <div class="mt-8 border-t border-[var(--color-ink)]/10 pt-6">
-              <CtaLink href="/contact" label="Voir toutes les coordonnées" tone="light" size="sm" />
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </section>
+  <DemarrerRedBlock invite={invite} />
 </BaseLayout>
-
-<style>
-  /* Refonte 2026-04-28 #B9 : page repassée en fond crème, donc tous les
-     accents cream → ink. Les accents signature (flèches méthode, traits)
-     utilisent le rouge latérite (refonte couleur 2026-04-30). */
-
-  .page-title {
-    font-size: clamp(1.6rem, 5.2vw, 4.5rem);
-    letter-spacing: -0.025em;
-    color: var(--color-ink);
-  }
-
-  .methode-summary {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: center;
-    gap: clamp(1rem, 2.5vw, 2.5rem);
-    margin: 4rem auto 5rem;
-    padding: 2.5rem clamp(1rem, 3vw, 3rem);
-    border-top: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent);
-    max-width: 1100px;
-    color: var(--color-ink);
-  }
-  .methode-summary-step {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.75rem;
-  }
-  .methode-summary-num {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    color: color-mix(in oklab, var(--color-ink) 55%, transparent);
-  }
-  .methode-summary-time {
-    font-family: var(--font-heading), sans-serif;
-    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-  }
-  .methode-summary-arrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    color: var(--color-laterite);
-    font-size: 1.25rem;
-  }
-  .methode-summary-total {
-    margin-left: auto;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.26em;
-    color: color-mix(in oklab, var(--color-ink) 65%, transparent);
-  }
-  .methode-summary-total em {
-    font-family: var(--font-heading), sans-serif;
-    font-style: normal;
-    font-size: 1.4rem;
-    color: var(--color-ink);
-    letter-spacing: 0;
-    margin-right: 0.5rem;
-  }
-  @media (max-width: 767px) {
-    .methode-summary {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .methode-summary-arrow {
-      display: none;
-    }
-    .methode-summary-total {
-      margin: 1rem 0 0;
-    }
-  }
-
-  .methode-card {
-    min-height: clamp(360px, 42vh, 520px);
-    position: relative;
-  }
-  .methode-num {
-    font-family: var(--font-heading), sans-serif;
-    font-size: clamp(4rem, 9vw, 9rem);
-    line-height: 0.85;
-    font-weight: 300;
-  }
-  .methode-card-line {
-    margin-top: auto;
-    display: block;
-    width: 40px;
-    height: 1px;
-    background-color: color-mix(in oklab, var(--color-laterite) 80%, transparent);
-    padding-top: 1.5rem;
-  }
-</style>

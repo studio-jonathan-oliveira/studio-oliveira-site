@@ -1,0 +1,72 @@
+---
+/*
+ * <DemarrerRedBlock> — bandeau rouge transition + formulaire intégré
+ * (trame Jonathan 2026-05-22).
+ *
+ * Pattern :
+ *   - Fond rouge plein continu sur 2 sous-blocs :
+ *       1. Bandeau intro : phrase verbatim Jonathan UPPERCASE centrée
+ *       2. Formulaire : champs Jonathan + bouton ENVOYER ↗
+ *   - PAS de séparation visuelle entre les 2 sous-blocs (même `var(--color-red)`)
+ *   - Annotation Jonathan sur la trame "Animation en apparition suivant le
+ *     scroll" → bandeau intro reçoit `data-words-fade` (fade séquentiel mot
+ *     par mot, pattern motion-enhance existant).
+ *   - Curseur bascule automatiquement sur tone "red" via data-theme="red"
+ *     (logique CustomCursor déjà branchée).
+ */
+import DemarrerForm from '@/components/islands/DemarrerForm.tsx';
+
+interface Props {
+  /** Phrase d'invite verbatim Jonathan (UPPERCASE) */
+  invite: string;
+}
+
+const { invite } = Astro.props;
+---
+
+<section
+  id="formulaire"
+  data-section-label="Formulaire"
+  data-theme="red"
+  class="dem-red"
+  aria-labelledby="dem-red-title"
+>
+  <div class="dem-red__invite">
+    <h2 id="dem-red-title" class="sr-only">Formulaire de prise de contact</h2>
+    <p class="dem-red__invite-text" data-words-fade data-words-fade-stagger="0.04">
+      {invite}
+    </p>
+  </div>
+
+  <div class="dem-red__form">
+    <DemarrerForm client:visible />
+  </div>
+</section>
+
+<style>
+  .dem-red {
+    background-color: var(--color-red);
+    color: var(--color-cream);
+    width: 100%;
+    padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem) clamp(5rem, 9vw, 8rem);
+  }
+  .dem-red__invite {
+    max-width: 1200px;
+    margin: 0 auto clamp(3rem, 6vw, 5rem);
+  }
+  .dem-red__invite-text {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 1.55vw, 1.6rem);
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    text-align: center;
+    margin: 0;
+  }
+  .dem-red__form {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+</style>

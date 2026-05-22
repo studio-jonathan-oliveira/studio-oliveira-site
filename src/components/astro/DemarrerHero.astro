@@ -1,0 +1,115 @@
+---
+/*
+ * <DemarrerHero> — hero de /demarrer-un-projet.
+ *
+ * Pattern (trame Jonathan 2026-05-22) :
+ *   - Photo full-bleed 100svh (allée végétale)
+ *   - PAS de H1 oversized en overlay sur la photo (rupture vs typologies)
+ *   - Bloc INK juste sous la photo avec 2 paragraphes intro :
+ *       · Ligne 1 (Bold UPPERCASE) — accroche projet
+ *       · Ligne 2 (ExtraLight UPPERCASE) — invite à échanger
+ *   - H1 sémantique invisible (visually-hidden) pour SEO sans casser le rythme
+ *     éditorial : la trame n'a pas de H1 visuel.
+ */
+import { Image } from 'astro:assets';
+import heroImg from '@/assets/demarrer-un-projet/01-hero.jpg';
+
+interface Props {
+  intro: {
+    /** Première phrase d'intro — Bold UPPERCASE */
+    accroche: string;
+    /** Seconde phrase d'intro — ExtraLight UPPERCASE */
+    invite: string;
+  };
+}
+
+const { intro } = Astro.props;
+---
+
+<section
+  id="hero"
+  data-section-label="Démarrer"
+  data-theme="dark"
+  class="dem-hero"
+  aria-labelledby="dem-hero-title"
+>
+  <h1 id="dem-hero-title" class="sr-only">Démarrer un projet avec le Studio J. Oliveira</h1>
+
+  <div class="dem-hero__media">
+    <Image
+      src={heroImg}
+      alt="Allée végétale composée par le studio — passage entre massifs denses et bâti architectural"
+      widths={[960, 1440, 1920, 2560]}
+      sizes="100vw"
+      quality={92}
+      format="webp"
+      loading="eager"
+      class="dem-hero__img"
+    />
+  </div>
+</section>
+
+<section data-theme="dark" class="dem-hero-intro" aria-label="Introduction parcours">
+  <div class="dem-hero-intro__inner">
+    <p class="dem-hero-intro__accroche">{intro.accroche}</p>
+    <p class="dem-hero-intro__invite">{intro.invite}</p>
+  </div>
+</section>
+
+<style>
+  .dem-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    background-color: var(--color-black-deep);
+    overflow: hidden;
+  }
+  .dem-hero__media {
+    position: absolute;
+    inset: 0;
+  }
+  .dem-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* Bloc intro ink sous la photo — pleine largeur, cadré via padding.
+     Les 2 paragraphes sont centrés verticalement avec respiration généreuse.
+     Bold UPPERCASE puis ExtraLight UPPERCASE = hiérarchie verbatim Jonathan. */
+  .dem-hero-intro {
+    background-color: var(--color-black-deep);
+    color: var(--color-cream);
+    padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  }
+  .dem-hero-intro__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2vw, 2rem);
+    text-align: center;
+  }
+  .dem-hero-intro__accroche {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 1.55vw, 1.55rem);
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-cream);
+    margin: 0;
+  }
+  .dem-hero-intro__invite {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 200;
+    font-size: clamp(0.9rem, 1.3vw, 1.3rem);
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-cream) 88%, transparent);
+    margin: 0;
+  }
+</style>
