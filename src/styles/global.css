@@ -707,7 +707,8 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   line-height: 1.55;
   color: var(--color-cream);
   margin: 0;
-  max-width: 60ch;
+  /* Pas de max-width : le texte occupe toute la largeur du panel jusqu'au
+     bord droit (retour Morgan 2026-05-22 — sitewide FAQ + typologies). */
 }
 /* Wave reveal mot par mot — pattern repris à `/studio` ArchitecturesAccordion.
    Chaque mot est positionné via `--i` (index) qui pilote `transition-delay`.
