@@ -17,6 +17,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import DemarrerHero from '@/components/astro/DemarrerHero.astro';
 import DemarrerSteps from '@/components/astro/DemarrerSteps.astro';
+import DemarrerContactCta from '@/components/astro/DemarrerContactCta.astro';
 import DemarrerRedBlock from '@/components/astro/DemarrerRedBlock.astro';
 import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
@@ -106,6 +107,8 @@ const schema = jsonLdGraph([
       },
     ]}
   />
+
+  <DemarrerContactCta />
 
   <DemarrerRedBlock invite={invite} />
 </BaseLayout>

@@ -97,9 +97,14 @@ const errorClass =
 // Style des <option> du dropdown : le navigateur les rend selon ses propres
 // styles, pas l'inline `bg-transparent text-cream` du `<select>`. Sans forcer
 // fond/couleur, les options apparaissent illisibles (cream sur cream).
+// Inter Bold (retour Jonathan 2026-05-22 : "écritures en inter gras, fond
+// blanc ou noir à voir" — choix cream pour rester lisible sur le rouge).
 const optionStyle: React.CSSProperties = {
   backgroundColor: 'var(--color-cream)',
   color: 'var(--color-ink)',
+  fontFamily: 'var(--font-heading), sans-serif',
+  fontWeight: 700,
+  padding: '0.5rem 0.75rem',
 };
 
 function bytesHuman(n: number): string {

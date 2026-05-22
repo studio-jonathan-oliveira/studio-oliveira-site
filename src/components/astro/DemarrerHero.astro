@@ -50,9 +50,9 @@ const { intro } = Astro.props;
 </section>
 
 <section data-theme="dark" class="dem-hero-intro" aria-label="Introduction parcours">
-  <div class="dem-hero-intro__inner">
-    <p class="dem-hero-intro__accroche">{intro.accroche}</p>
-    <p class="dem-hero-intro__invite">{intro.invite}</p>
+  <div class="dem-hero-intro__inner" data-reveal-stagger="0.18">
+    <p class="dem-hero-intro__accroche" data-reveal="up">{intro.accroche}</p>
+    <p class="dem-hero-intro__invite" data-reveal="up">{intro.invite}</p>
   </div>
 </section>
 

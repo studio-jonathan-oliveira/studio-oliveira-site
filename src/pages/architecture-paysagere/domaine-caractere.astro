@@ -150,7 +150,12 @@ const schema = jsonLdGraph([
     class="dc-gallery bg-[var(--color-black-deep)]"
     aria-label="Sélection de projets domaines et caractère"
   >
-    <figure class="dc-gallery__large" data-reveal="image-rise">
+    <figure class="dc-gallery__large dc-gallery__large--natural" data-reveal="image-rise">
+      {
+        /* Variante --natural : la 1re photo est conservée dans son ratio
+           d'origine (pas de aspect-ratio fixe ni object-fit: cover) pour
+           ne pas la rogner — retour Jonathan 2026-05-22. */
+      }
       <Image
         src={gal02}
         alt="Projet domaines et caractère — villa italienne ocre avec pergola fleurie sur balustrade en pierre"
@@ -398,6 +403,15 @@ const schema = jsonLdGraph([
       object-fit: cover;
       object-position: center;
       display: block;
+    }
+    /* Variante --natural : retire l'aspect-ratio fixe et le cover, la
+       photo s'affiche dans son ratio d'origine, full-width, sans crop. */
+    .dc-gallery__large--natural {
+      aspect-ratio: auto;
+    }
+    .dc-gallery__large--natural .dc-gallery__img {
+      height: auto;
+      object-fit: initial;
     }
 
     /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */

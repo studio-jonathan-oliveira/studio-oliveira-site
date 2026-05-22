@@ -72,14 +72,12 @@ function FaqRow({ item, index, isOpen, onToggle }: RowProps) {
         onClick={onToggle}
       >
         <span className="faq-acc__question">{item.question}</span>
-        <img
-          src="/brand/fleche-white.webp"
-          alt=""
-          aria-hidden="true"
+        <span
           className={'faq-acc__icon' + (isOpen ? ' faq-acc__icon--open' : '')}
-          width="32"
-          height="32"
-        />
+          aria-hidden="true"
+        >
+          +
+        </span>
       </button>
       <div
         id={panelId}

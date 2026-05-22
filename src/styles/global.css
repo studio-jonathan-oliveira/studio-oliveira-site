@@ -641,6 +641,9 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
 .faq-acc__item {
   border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 35%, transparent);
 }
+/* Pattern aligné sur `.studio-architectures__*` de /studio (retour Jonathan
+   2026-05-22 : "même typo, même taille, même animation des titres" sitewide).
+   Padding plus généreux, titre ExtraLight 200 oversized, icône `+` rotate. */
 .faq-acc__summary {
   appearance: none;
   background: transparent;
@@ -652,33 +655,36 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   font: inherit;
   text-align: left;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.1rem, 2vw, 1.5rem) 0;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
   transition: background-color 0.3s ease;
 }
 .faq-acc__summary:focus-visible {
-  outline: 1px solid color-mix(in oklab, var(--color-cream) 50%, transparent);
+  outline: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
   outline-offset: -1px;
 }
+/* Titre — Inter ExtraLight 200 oversized (clone strict du
+   `.studio-architectures__title`). Title Case Jonathan respecté. */
 .faq-acc__question {
-  font-family: var(--font-body), sans-serif;
-  font-weight: 700;
-  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
-  line-height: 1.35;
-  letter-spacing: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
   color: var(--color-cream);
 }
-/* Icône flèche Jonathan (refonte 2026-05-21) — image webp brand,
-   plus le `+`. Taille modeste pour rester signature et pas écraser
-   le texte de question. */
+/* Icône `+` qui rotate 45° (clone strict `.studio-architectures__icon`).
+   Remplace l'ancienne flèche Jonathan image webp pour aligner sitewide
+   sur le pattern /studio (retour Jonathan 2026-05-22). */
 .faq-acc__icon {
   flex-shrink: 0;
-  width: clamp(16px, 1.4vw, 20px);
-  height: clamp(16px, 1.4vw, 20px);
-  display: block;
-  object-fit: contain;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1;
+  color: var(--color-cream);
   transition: transform 0.35s var(--ease-out-editorial);
   transform-origin: center;
 }
@@ -694,18 +700,21 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
 .faq-acc__collapse--open {
   transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Panel + texte explicatif — clone strict `.studio-architectures__panel/text`.
+   Padding horizontal aligné sur `.faq-acc__summary`, conteneur paragraphe
+   ExtraLight 200, ligne lisible. */
 .faq-acc__panel {
-  padding: clamp(1rem, 1.8vw, 1.5rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
   display: flex;
   flex-direction: column;
   gap: clamp(0.9rem, 1.5vw, 1.25rem);
 }
 .faq-acc__answer {
   font-family: var(--font-body), sans-serif;
-  font-weight: 400;
-  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-  line-height: 1.55;
-  color: var(--color-cream);
+  font-weight: 200;
+  font-size: clamp(1rem, 1.15vw, 1.2rem);
+  line-height: 1.65;
+  color: color-mix(in oklab, var(--color-cream) 95%, transparent);
   margin: 0;
   /* Pas de max-width : le texte occupe toute la largeur du panel jusqu'au
      bord droit (retour Morgan 2026-05-22 — sitewide FAQ + typologies). */
