@@ -31,16 +31,23 @@ interface Props {
   sectionLabel: string;
   /** Items accordéon : question (titre fermé) + answer (contenu ouvert) */
   accordions: ReadonlyArray<FaqItem>;
+  /**
+   * Masquer la photo aside en mobile (<1024px) pour éviter le doublon
+   * visuel quand 2 sections enchaînées partagent la même photo.
+   * Sur desktop la photo reste toujours visible (layout latéral).
+   * Défaut : false (photo visible mobile + desktop).
+   */
+  hideAsideMobile?: boolean;
 }
 
-const { id, eyebrow, title, sectionLabel, accordions } = Astro.props;
+const { id, eyebrow, title, sectionLabel, accordions, hideAsideMobile = false } = Astro.props;
 ---
 
 <section
   id={id}
   data-section-label={sectionLabel}
   data-theme="dark"
-  class="dem-step"
+  class:list={['dem-step', hideAsideMobile && 'dem-step--hide-aside-mobile']}
   aria-labelledby={`${id}-title`}
 >
   <div class="dem-step__inner">
@@ -111,6 +118,15 @@ const { id, eyebrow, title, sectionLabel, accordions } = Astro.props;
     .dem-step__aside {
       aspect-ratio: 4 / 3;
       margin-bottom: clamp(2rem, 5vw, 3rem);
+    }
+    /* Sur mobile : la 2e section (VALIDATION) hide sa photo aside pour
+       éviter le doublon visuel — sur desktop l'aside latérale reste OK
+       car elle est dans une colonne distincte du flow vertical. */
+    .dem-step--hide-aside-mobile .dem-step__aside {
+      display: none;
+    }
+    .dem-step--hide-aside-mobile {
+      padding-top: clamp(3rem, 7vw, 5rem);
     }
   }
   @media (min-width: 1024px) {
