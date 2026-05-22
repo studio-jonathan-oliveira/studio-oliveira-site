@@ -161,9 +161,9 @@ const { steps } = Astro.props;
     .dem-steps__column {
       padding-left: 0;
       padding-right: clamp(2rem, 5vw, 5rem);
-      /* Réserve d'espace généreuse desktop : assez pour absorber 2 accordéons
-         déployés (~80vh contenu max) + marge sans déclencher de zoom. */
-      min-height: 170vh;
+      /* Réserve d'espace desktop : assez pour absorber l'ouverture d'un
+         accordéon (~25-30vh) sans pousser le parent. */
+      min-height: 135vh;
     }
   }
 
