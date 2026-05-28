@@ -136,7 +136,7 @@ const schema = jsonLdGraph([
         }
         {
           !cleanLocation && SHOW_DRAFTS && (
-            <p class="mt-8 font-mono text-xs text-[#d97706]">
+            <p class="mt-8 font-mono text-xs text-[color:var(--color-draft)]">
               [DRAFT — Lieu à valider par Jonathan, masqué en prod]
             </p>
           )
@@ -211,7 +211,7 @@ const schema = jsonLdGraph([
           {
             isDraft(project.summary) ? (
               SHOW_DRAFTS ? (
-                <p class="font-mono text-xs text-[#d97706]">{project.summary}</p>
+                <p class="font-mono text-xs text-[color:var(--color-draft)]">{project.summary}</p>
               ) : (
                 <p class="text-[var(--color-forest)]/60 italic">
                   Description en cours de rédaction. Pour découvrir ce projet en détail,{' '}

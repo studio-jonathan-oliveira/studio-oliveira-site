@@ -382,7 +382,7 @@
         mobileFill.style.width = `${pct}%`;
       }
 
-      // Bascule cream/latérite de la sidebar — STYLE INLINE !important direct
+      // Bascule cream/accent de la sidebar — STYLE INLINE !important direct
       // sur chaque élément (Morgan 2026-04-29 retours en boucle malgré
       // CSS variables/scoped/cascade : la couleur restait gris sombre).
       // L'inline !important bat absolument toute cascade CSS.
@@ -396,7 +396,15 @@
           isDark = s.dataset.theme === 'dark';
         }
       }
-      const fg = isDark ? '#f5f1ea' /* cream */ : '#a94930'; /* laterite */
+      // Lecture dynamique des tokens depuis :root pour suivre tout swap de
+      // palette. Pas de hex en dur ici (un ancien #a94930 « latérite » avait
+      // survécu à la suppression de la couleur le 2026-05-02).
+      const rootStyle = getComputedStyle(document.documentElement);
+      const fg = (
+        isDark
+          ? rootStyle.getPropertyValue('--text-on-dark')
+          : rootStyle.getPropertyValue('--accent-action')
+      ).trim();
       const titles = nav.querySelectorAll<HTMLElement>('.scroll-nav-title');
       titles.forEach((t) => t.style.setProperty('color', fg, 'important'));
       if (thumb) thumb.style.setProperty('background-color', fg, 'important');

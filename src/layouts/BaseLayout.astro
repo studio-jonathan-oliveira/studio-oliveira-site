@@ -13,6 +13,7 @@ import SmoothScroll from '@/components/astro/SmoothScroll.astro';
 import CustomCursor from '@/components/astro/CustomCursor.astro';
 import ScrollNav from '@/components/astro/ScrollNav.astro';
 import { getOgImagePath } from '@/lib/og-pages';
+import { THEME_COLOR_META } from '@/lib/brand-colors';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 
@@ -155,7 +156,11 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
     {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <meta name="theme-color" content="#F5F1EA" />
+    {
+      /* theme-color : la meta ne peut pas lire les CSS vars → on tire la
+        valeur de src/lib/brand-colors.ts (source synchrone avec global.css). */
+    }
+    <meta name="theme-color" content={THEME_COLOR_META} />
 
     {/* <ClientRouter /> désactivé 2026-04-24 — bug écran noir au clic lien */}
 

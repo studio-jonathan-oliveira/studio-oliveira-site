@@ -571,7 +571,7 @@ const typologies = [
       display: inline-flex;
       align-items: center;
       line-height: 0;
-      filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.45));
+      filter: drop-shadow(0 1px 6px color-mix(in oklab, var(--color-ink) 45%, transparent));
     }
     .hero-logo img {
       display: block;
@@ -592,7 +592,7 @@ const typologies = [
     .hero-immersive .hero-title-asym,
     .hero-immersive .hero-manifesto-asym,
     .hero-immersive .scroll-cue {
-      -webkit-text-stroke: 0.3px rgba(245, 241, 234, 0.15);
+      -webkit-text-stroke: 0.3px var(--overlay-cream-veil);
     }
     /* Transition douce du background-image quand le swap LQIP → WebP a lieu.
        Sans transition, le swap est instantané : pas de saute visuel grâce

@@ -25,9 +25,9 @@ import { SHOW_DRAFTS } from '@/lib/drafts';
 <style>
   .draft-only {
     position: relative;
-    outline: 2px dashed color-mix(in oklab, #d97706 60%, transparent);
+    outline: 2px dashed color-mix(in oklab, var(--color-draft) 60%, transparent);
     outline-offset: 6px;
-    background-color: color-mix(in oklab, #d97706 6%, transparent);
+    background-color: color-mix(in oklab, var(--color-draft) 6%, transparent);
     padding: 0.25rem;
   }
   .draft-only::before {
@@ -39,7 +39,7 @@ import { SHOW_DRAFTS } from '@/lib/drafts';
     font-size: 9px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #d97706;
+    color: var(--color-draft);
     background-color: var(--color-cream);
     padding: 0 0.4rem;
   }

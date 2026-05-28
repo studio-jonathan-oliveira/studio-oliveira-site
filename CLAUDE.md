@@ -77,6 +77,31 @@ Le SEO conditionne **toutes** les décisions d'architecture (URLs, structure Hn,
 
 ---
 
+## 4 bis. Couleurs — procédure de swap
+
+**Architecture en 3 couches**. Détail complet : [`_brief/charte-couleurs.md`](_brief/charte-couleurs.md).
+
+- **Couche 1 — palette brute** : 6 hex dans `src/styles/global.css` (`@theme {}`) + miroir dans `src/lib/brand-colors.ts`. **Seuls fichiers** où un hex est autorisé.
+- **Couche 2 — rôles sémantiques** : `--bg-page`, `--text-primary`, `--accent-action`, `--overlay-ink-*`, `--overlay-cream-*`. À consommer en priorité dans le code neuf.
+- **Couche 3 — alias rétro-compat** : `--color-forest`, `--color-laterite`, `--color-gold`. Ne pas en créer, ne pas en supprimer.
+
+**Quand Morgan dit _« le cream devient X, le ink devient Y »_ — procédure stricte** :
+
+1. Modifier `src/styles/global.css` couche 1 (les hex)
+2. Synchroniser `src/lib/brand-colors.ts` (`BRAND_COLORS` + ajuster `EMAIL_COLORS.background` si dérivé)
+3. Mettre à jour la table §1 de `_brief/charte-couleurs.md` + ajouter une ligne dans §6 (historique)
+4. `pnpm check && pnpm build && pnpm preview` — vérifier visuellement home, architecture-paysagere, studio, conceptions/[slug], journal/[slug]
+5. **OBLIGATOIRE** : lancer **2 agents en parallèle** pour valider
+   - Un agent `code-reviewer` sur le diff (hex oubliés, contrastes WCAG cassés, incohérences sémantiques)
+   - Un agent `Explore` _very thorough_ (anciens hex en cache, mentions dans `_brief/`, OG images générées, schemas Sanity)
+   - Ne pas merger sans le retour des deux agents.
+
+**Garde-fou Lefthook** (`lefthook.yml` → commande `no-hardcoded-hex`) refuse tout `#RRGGBB` ou `#RGB` hardcodé hors des 2 fichiers autorisés. Ne pas désactiver.
+
+**Marqueur `--color-draft` (orange `#D97706`)** : outil dev, **ne PAS modifier** lors d'un swap de palette de marque. Son rôle est de jurer visuellement avec le site pour signaler du contenu manquant.
+
+---
+
 ## 5. Règle éditoriale — CRITIQUE
 
 **INTERDICTION absolue d'inventer du contenu pour Jonathan** (textes, chiffres, claims, tonalité).
