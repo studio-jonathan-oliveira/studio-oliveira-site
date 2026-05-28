@@ -157,7 +157,8 @@
       "Bash(cp \"04-terrasse.jpg\" \"../../src/assets/typologies/coeur-urbain/04-large-middle.jpg\")",
       "Bash(cp \"public/typologies/03-frange-urbaine@2x.jpg\" \"src/assets/typologies/frange-urbaine/01-hero-home.jpg\")",
       "Bash(cp \"public/typologies/04-domaine-caractere@2x.jpg\" \"src/assets/typologies/domaine-caractere/01-hero-home.jpg\")",
-      "Bash(cp \"public/typologies/05-architecture-publique@2x.jpg\" \"src/assets/typologies/architecture-publique-01-hero-home.jpg\")"
+      "Bash(cp \"public/typologies/05-architecture-publique@2x.jpg\" \"src/assets/typologies/architecture-publique-01-hero-home.jpg\")",
+      "mcp__28eb42bb-2bae-45e2-bdfa-1134ff0c05c5__create_draft"
     ],
     "additionalDirectories": [
       "\\tmp"
