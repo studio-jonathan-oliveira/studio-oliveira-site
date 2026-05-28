@@ -50,59 +50,81 @@
 /*
  * Design tokens — Studio J Oliveira
  *
- * Palette refondue 2026-04-24 (brief Jonathan) :
- *   #70725B — vert grisé (accent sobre, fond section foncée possible)
- *   #A94930 — rouge latérite (accent signature, hover mots-clés)
- *   #1D1F1B — gris profond (texte principal sur fond crème)
- *   #F5F1EA — crème papier (fond unique home)
- *
- * Règle texte Jonathan : une couleur de texte par fond (figée).
- *   Fond clair → #1D1F1B (gris profond) ou #70725B (vert grisé, secondaire)
- *   Fond foncé → #F5F1EA (crème) ou blanc
- *   Plus jamais de latérite au milieu d'un titre (réservé aux hover mots-clés).
- *
- * Alias rétro-compat : --color-forest ancien vert sombre (#1A2B1F) conservé
- * comme token de fond pour variants dark historiques, mais la home devient uni-crème.
+ * ┌──────────────────────────────────────────────────────────────────────┐
+ * │ ARCHITECTURE EN 3 COUCHES — pour permettre un swap de palette sûr.   │
+ * │ Voir _brief/charte-couleurs.md pour la procédure de changement.      │
+ * │                                                                      │
+ * │  1. Palette brute     → 6 hex, source unique de vérité               │
+ * │  2. Rôles sémantiques → "à quoi sert" chaque couleur                 │
+ * │  3. Alias rétro-compat → conserve les anciens noms (forest, gold…)   │
+ * │                                                                      │
+ * │ RÈGLE : dans le reste du code, on consomme UNIQUEMENT les variables  │
+ * │ couche 2 (sémantiques) ou couche 3 (alias). On ne référence JAMAIS   │
+ * │ un hex brut en dehors de ce fichier.                                 │
+ * │                                                                      │
+ * │ POUR CHANGER UNE COULEUR DE LA MARQUE : modifier la couche 1 seule.  │
+ * │ POUR CHANGER UN USAGE (ex. fond page) : modifier la couche 2 seule.  │
+ * └──────────────────────────────────────────────────────────────────────┘
  */
 
 @theme {
-  /* Couleurs marque — refonte DA Jonathan 2026-05-15 (trame home).
-     Le "noir profond" #0a0a0a remplace l'ancien gris-sombre #1d1f1b
-     partout sur le site (Morgan : « le noir que tu as utilisé pour
-     toute la homepage C'est notre nouveau gris sombre, Il le remplace »).
-     --color-ink reste un alias historique → pointe désormais sur le noir. */
-  --color-cream: #f5f1ea;
-  --color-moss: #70725b;
-  --color-ink: #0a0a0a;
+  /* ─────────────────────────────────────────────────────────────────────
+   * COUCHE 1 — PALETTE BRUTE
+   * Les seuls hex du site. Aucun autre fichier ne doit contenir de hex.
+   * Pour swap de palette : remplacer la valeur ici, tout le reste suit.
+   * ───────────────────────────────────────────────────────────────────── */
+  --color-cream: #f5f1ea; /* fond clair signature */
+  --color-moss: #70725b; /* vert grisé, texte secondaire fond clair */
+  --color-ink: #0a0a0a; /* noir profond, texte sur fond clair + fond sombre */
+  --color-red: #ff0d00; /* rouge vermillon, accent signature (CTA, hover) */
+  --color-forest-deep: #2a2d28; /* gris-vert sombre, variant dark historique */
+  --color-draft: #d97706; /* orange — UNIQUEMENT pour les marqueurs draft dev (hors thème) */
 
-  /* Rétro-compat : les usages historiques de --color-forest restent fonctionnels.
-     Ancien forest (#1A2B1F) très proche du nouveau ink #1D1F1B. On aligne. */
-  --color-forest: var(--color-ink);
-  --color-forest-deep: #2a2d28;
+  /* ─────────────────────────────────────────────────────────────────────
+   * COUCHE 2 — RÔLES SÉMANTIQUES
+   * Décrivent "à quoi sert" la couleur, pas "laquelle". Le code consomme
+   * ces tokens en priorité (ex. var(--bg-page) plutôt que var(--color-cream)).
+   * Inverser clair/sombre = swap deux lignes ici, sans toucher la palette.
+   * ───────────────────────────────────────────────────────────────────── */
 
-  /* Latérite supprimé 2026-05-02 (Morgan) — alias re-routés en monochrome
-     pour purger sitewide sans toucher chaque consommateur. Toutes les zones
-     précédemment latérite (sections #identite / #studio-presentation, footer,
-     menu fullscreen, hover keywords, halos, dots) basculent automatiquement
-     en gris sombre + crème.
-     - laterite / accent → ink (texte/fond signature)
-     - gold → cream (disques pleins ScrollCursorCta sur fond ink → restent visibles) */
-  --color-laterite: var(--color-ink);
-  --color-accent: var(--color-ink);
-  --color-gold: var(--color-cream);
+  /* Surfaces de fond */
+  --bg-page: var(--color-cream); /* fond crème par défaut (pages éditoriales) */
+  --bg-section-dark: var(--color-ink); /* sections sombres immersives */
+  --bg-section-deep: var(--color-forest-deep); /* variant dark historique */
 
-  /* Refonte DA Jonathan 2026-05-15 (trame home) — palette noir + rouge vermillon.
-     Le rouge est le NOUVEL accent signature, à utiliser sur :
-       - pill CTA topbar "Démarrer un projet"
-       - section Manifeste (fond plein-bleed)
-       - overlays texte typologies au hover
-       - liens "découvrir le studio", curseur custom sur sections sombres
-     Le black-deep est utilisé sur les sections sombres de la home
-     (Identité, Studio, Typologies, Footer). Cream reste actif pour les
-     autres pages (architecture-paysagere/*, studio, pros, etc.) le temps
-     de la propagation. */
-  --color-red: #ff0d00;
-  --color-black-deep: #0a0a0a;
+  /* Texte */
+  --text-primary: var(--color-ink); /* texte principal sur fond clair */
+  --text-secondary: var(--color-moss); /* texte secondaire / méta sur fond clair */
+  --text-on-dark: var(--color-cream); /* texte sur fond sombre */
+
+  /* Accent / action */
+  --accent-action: var(--color-red); /* CTA, hover keywords, pill rouge */
+
+  /* Overlays / voiles — dilutions de ink ou cream via color-mix oklab.
+     Utilisés pour : voiles vignette hero, drop-shadow, borders légères,
+     textes en opacité réduite (.55, .35, etc.). Centralisés ici pour
+     qu'un changement de fond ne casse pas les overlays. */
+  --overlay-ink-strong: color-mix(in oklab, var(--color-ink) 65%, transparent);
+  --overlay-ink-medium: color-mix(in oklab, var(--color-ink) 45%, transparent);
+  --overlay-ink-soft: color-mix(in oklab, var(--color-ink) 30%, transparent);
+  --overlay-ink-veil: color-mix(in oklab, var(--color-ink) 15%, transparent);
+  --overlay-cream-strong: color-mix(in oklab, var(--color-cream) 75%, transparent);
+  --overlay-cream-medium: color-mix(in oklab, var(--color-cream) 55%, transparent);
+  --overlay-cream-soft: color-mix(in oklab, var(--color-cream) 35%, transparent);
+  --overlay-cream-veil: color-mix(in oklab, var(--color-cream) 15%, transparent);
+
+  /* ─────────────────────────────────────────────────────────────────────
+   * COUCHE 3 — ALIAS RÉTRO-COMPAT
+   * Noms historiques utilisés massivement dans le code existant. On les
+   * conserve comme alias pour éviter une mass-migration de ~200 occurrences.
+   * Ne PAS créer de nouvel usage de ces alias dans du code neuf — préférer
+   * la couche 2 (sémantique). À purger progressivement.
+   * ───────────────────────────────────────────────────────────────────── */
+  --color-forest: var(--color-ink); /* historique : ancien #1A2B1F, désormais ink */
+  --color-black-deep: var(--color-ink); /* utilisé par la refonte DA 2026-05-15 */
+  --color-laterite: var(--color-ink); /* supprimé 2026-05-02, re-routé en monochrome */
+  --color-accent: var(--color-ink); /* idem */
+  --color-gold: var(--color-cream); /* disques ScrollCursorCta */
 
   /* Typographies — bascule Inter 2026-05-15 (demande Jonathan, proxy
      OSS de Segoe UI hébergeable cross-OS).

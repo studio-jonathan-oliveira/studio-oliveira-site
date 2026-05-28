@@ -10,6 +10,21 @@ pre-commit:
     typecheck:
       glob: '*.{ts,tsx,astro}'
       run: pnpm exec astro check
+    # Garde-fou couleurs : refuse tout hex hardcodé hors des 2 fichiers
+    # autorisés (palette brute + helper JS). Voir _brief/charte-couleurs.md.
+    no-hardcoded-hex:
+      glob: '*.{astro,ts,tsx,css}'
+      run: |
+        FILES=$(echo "{staged_files}" | tr ' ' '\n' | grep -vE 'src/styles/global\.css|src/lib/brand-colors\.ts' || true)
+        if [ -z "$FILES" ]; then exit 0; fi
+        HITS=$(echo "$FILES" | xargs grep -EHn '#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b' 2>/dev/null | grep -vE '^[^:]+:[0-9]+: *(\*|//)' || true)
+        if [ -n "$HITS" ]; then
+          echo "❌ Hex hardcodé détecté hors src/styles/global.css et src/lib/brand-colors.ts."
+          echo "   Voir _brief/charte-couleurs.md (§2 architecture 3 couches)."
+          echo ""
+          echo "$HITS"
+          exit 1
+        fi
 
 commit-msg:
   commands:

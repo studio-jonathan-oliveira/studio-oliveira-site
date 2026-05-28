@@ -14,6 +14,10 @@
 import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'astro:schema';
 import { Resend } from 'resend';
+// Palette des templates email — centralisée pour permettre un swap de couleurs
+// global. Les clients mail ne lisent pas les CSS vars, donc on fournit les hex
+// depuis un fichier unique. Voir _brief/charte-couleurs.md.
+import { EMAIL_COLORS as EC } from '@/lib/brand-colors';
 
 const TYPOLOGIES = [
   'micro-urbain',
@@ -104,7 +108,7 @@ function buildEmailHtml(input: ContactInput): string {
   const tableRows = rows
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#666;width:140px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:15px;color:#111;">${value}</td></tr>`,
+        `<tr><td style="padding:8px 12px;border-bottom:1px solid ${EC.divider};font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:${EC.textMeta};width:140px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid ${EC.divider};font-family:Georgia,serif;font-size:15px;color:${EC.textPrimary};">${value}</td></tr>`,
     )
     .join('');
 
@@ -112,12 +116,12 @@ function buildEmailHtml(input: ContactInput): string {
 
   return `<!doctype html>
 <html lang="fr">
-  <body style="margin:0;padding:24px;background:#f4f1ea;font-family:Georgia,serif;color:#111;">
-    <table role="presentation" style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e5e2da;">
+  <body style="margin:0;padding:24px;background:${EC.background};font-family:Georgia,serif;color:${EC.textPrimary};">
+    <table role="presentation" style="max-width:640px;margin:0 auto;background:${EC.surface};border:1px solid ${EC.border};">
       <tr>
-        <td style="padding:24px 28px 8px;border-bottom:1px solid #eee;">
-          <p style="margin:0;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#888;">Studio J Oliveira — Nouveau contact</p>
-          <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-size:22px;font-weight:500;color:#111;">Demande qualifiée</h1>
+        <td style="padding:24px 28px 8px;border-bottom:1px solid ${EC.divider};">
+          <p style="margin:0;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:${EC.textMuted};">Studio J Oliveira — Nouveau contact</p>
+          <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-size:22px;font-weight:500;color:${EC.textPrimary};">Demande qualifiée</h1>
         </td>
       </tr>
       <tr>
@@ -127,8 +131,8 @@ function buildEmailHtml(input: ContactInput): string {
       </tr>
       <tr>
         <td style="padding:20px 28px 28px;">
-          <p style="margin:0 0 8px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#888;">Message</p>
-          <div style="white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;line-height:1.55;color:#111;">${messageEscaped}</div>
+          <p style="margin:0 0 8px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:${EC.textMuted};">Message</p>
+          <div style="white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;line-height:1.55;color:${EC.textPrimary};">${messageEscaped}</div>
         </td>
       </tr>
     </table>
@@ -252,18 +256,18 @@ function buildDemarrerEmailHtml(input: DemarrerInput): string {
   const tableRows = rows
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#666;width:140px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #eee;font-family:Georgia,serif;font-size:15px;color:#111;">${value}</td></tr>`,
+        `<tr><td style="padding:8px 12px;border-bottom:1px solid ${EC.divider};font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:${EC.textMeta};width:140px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid ${EC.divider};font-family:Georgia,serif;font-size:15px;color:${EC.textPrimary};">${value}</td></tr>`,
     )
     .join('');
 
   return `<!doctype html>
 <html lang="fr">
-  <body style="margin:0;padding:24px;background:#f4f1ea;font-family:Georgia,serif;color:#111;">
-    <table role="presentation" style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e5e2da;">
+  <body style="margin:0;padding:24px;background:${EC.background};font-family:Georgia,serif;color:${EC.textPrimary};">
+    <table role="presentation" style="max-width:640px;margin:0 auto;background:${EC.surface};border:1px solid ${EC.border};">
       <tr>
-        <td style="padding:24px 28px 8px;border-bottom:1px solid #eee;">
-          <p style="margin:0;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#888;">Studio J Oliveira — Démarrer un projet</p>
-          <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-size:22px;font-weight:500;color:#111;">Nouvelle demande qualifiée</h1>
+        <td style="padding:24px 28px 8px;border-bottom:1px solid ${EC.divider};">
+          <p style="margin:0;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:${EC.textMuted};">Studio J Oliveira — Démarrer un projet</p>
+          <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-size:22px;font-weight:500;color:${EC.textPrimary};">Nouvelle demande qualifiée</h1>
         </td>
       </tr>
       <tr>

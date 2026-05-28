@@ -250,7 +250,7 @@ export default function ScrollFrames({
           height: '100vh',
           width: '100%',
           overflow: 'hidden',
-          background: 'var(--color-forest, #1a2b1f)',
+          background: 'var(--bg-section-dark)',
         }}
       >
         <canvas
@@ -267,7 +267,7 @@ export default function ScrollFrames({
               position: 'absolute',
               bottom: '2rem',
               left: '3rem',
-              color: 'var(--color-cream, #f5f1ea)',
+              color: 'var(--text-on-dark)',
               fontFamily: 'monospace',
               fontSize: '10px',
               letterSpacing: '0.28em',
