@@ -191,6 +191,18 @@ const isActive = (href: string) => currentPath === href || currentPath.startsWit
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
+  /* Liseret périphérique (trame « modif finales » : « la top barre apparaît
+     avec un léger liseret périphérique » à l'ouverture du menu). Cadre fin
+     crème inset des bords de l'écran. */
+  .primary-menu[open]::after {
+    content: '';
+    position: fixed;
+    inset: clamp(0.6rem, 1.2vw, 1.1rem);
+    border: 1px solid color-mix(in oklab, var(--color-cream) 45%, transparent);
+    border-radius: clamp(10px, 1.4vw, 18px);
+    pointer-events: none;
+    z-index: 101;
+  }
 
   /* Curseur dans le menu : on garde le custom cursor visible en le
      déplaçant dans le dialog à l'ouverture (voir script plus bas). */
