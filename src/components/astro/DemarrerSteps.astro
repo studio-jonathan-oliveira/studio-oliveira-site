@@ -32,7 +32,7 @@ interface Props {
 const { steps } = Astro.props;
 ---
 
-<section data-theme="dark" class="dem-steps" aria-label="Parcours en 2 temps">
+<section data-theme="light" class="dem-steps" aria-label="Parcours en 2 temps">
   <div class="dem-steps__inner">
     <aside class="dem-steps__aside" aria-hidden="true">
       {/* Photo décorative pure (l'aside parent est aria-hidden). */}
@@ -80,10 +80,30 @@ const { steps } = Astro.props;
    * FaqAccordion (hors scope local Astro).
    * ═══════════════════════════════════════════════════════════════════ */
   .dem-steps {
-    background-color: var(--color-black-deep);
-    color: var(--color-cream);
+    background-color: var(--color-violet);
+    color: var(--color-ink);
     width: 100%;
     overflow: hidden;
+  }
+  /* Accordéon sur fond violet : textes/icône en noir, séparateurs arrondis
+     à droite (les styles globaux .faq-acc__* sont en cream). */
+  .dem-steps .faq-acc__question,
+  .dem-steps .faq-acc__icon {
+    color: var(--color-ink);
+  }
+  .dem-steps .faq-acc__answer {
+    color: color-mix(in oklab, var(--color-ink) 90%, transparent);
+  }
+  .dem-steps .faq-acc__item {
+    border-bottom: 0;
+  }
+  .dem-steps .faq-acc__summary {
+    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 26%, transparent);
+    border-right: 1px solid color-mix(in oklab, var(--color-ink) 26%, transparent);
+    border-bottom-right-radius: clamp(16px, 2.2vw, 28px);
+  }
+  .dem-steps .faq-acc__summary:focus-visible {
+    outline-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
   }
   .dem-steps__inner {
     display: grid;
@@ -187,7 +207,7 @@ const { steps } = Astro.props;
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
-    color: var(--color-cream);
+    color: var(--color-ink);
     margin: 0;
   }
   /* Titre oversized : calibré pour rentrer dans la grille 0.58fr SANS
@@ -201,7 +221,7 @@ const { steps } = Astro.props;
     line-height: 0.92;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    color: var(--color-cream);
+    color: var(--color-ink);
     margin: 0;
     /* Sécurité : si jamais on rallonge un titre, on serre plutôt qu'on coupe */
     overflow-wrap: break-word;

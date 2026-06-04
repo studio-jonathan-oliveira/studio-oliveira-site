@@ -73,7 +73,7 @@ const INITIAL: FormValues = {
 const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
 const labelClass =
-  'block font-[family-name:var(--font-heading)] text-[14px] md:text-[15px] font-bold tracking-[0.14em] uppercase text-[var(--color-cream)]';
+  'block font-[family-name:var(--font-heading)] text-[14px] md:text-[15px] font-bold tracking-[0.14em] uppercase text-[var(--color-ink)]';
 
 // Inputs : underline cream uniquement, fond transparent (le bloc rouge porte
 // le fond). Forçage Bold strict (grammaire 200/700) ET pour éviter la
@@ -81,11 +81,11 @@ const labelClass =
 // Erreur signalée par bordure cream épaissie (border-b-2) — éviter ink/noir
 // sur rouge qui ne passe pas WCAG AA (~3.9:1).
 const inputClass =
-  'mt-2 block w-full border-0 border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] bg-transparent px-0 pt-1 pb-2 ' +
-  'font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-cream)] ' +
-  'placeholder:font-bold placeholder:text-[color-mix(in_oklab,var(--color-cream)_75%,transparent)] ' +
-  'focus:border-[var(--color-cream)] focus:outline-none focus:ring-0 ' +
-  'aria-[invalid=true]:border-b-2 aria-[invalid=true]:border-[var(--color-cream)]';
+  'mt-2 block w-full border-0 border-b border-[color-mix(in_oklab,var(--color-ink)_55%,transparent)] bg-transparent px-0 pt-1 pb-2 ' +
+  'font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-ink)] ' +
+  'placeholder:font-bold placeholder:text-[color-mix(in_oklab,var(--color-ink)_75%,transparent)] ' +
+  'focus:border-[var(--color-ink)] focus:outline-none focus:ring-0 ' +
+  'aria-[invalid=true]:border-b-2 aria-[invalid=true]:border-[var(--color-ink)]';
 
 const selectClass = inputClass + ' appearance-none cursor-pointer';
 
@@ -305,18 +305,18 @@ export default function DemarrerForm(): React.JSX.Element {
         tabIndex={-1}
         role="status"
         aria-live="polite"
-        className="border border-[color-mix(in_oklab,var(--color-cream)_45%,transparent)] p-10 outline-none"
+        className="border border-[color-mix(in_oklab,var(--color-ink)_45%,transparent)] p-10 outline-none"
       >
-        <p className="font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.18em] text-[var(--color-cream)] uppercase">
+        <p className="font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.18em] text-[var(--color-ink)] uppercase">
           Demande envoyée
         </p>
-        <p className="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-snug font-extralight text-[var(--color-cream)]">
+        <p className="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-snug font-extralight text-[var(--color-ink)]">
           Merci, le studio revient vers vous pour engager l'appel de qualification.
         </p>
         <button
           type="button"
           onClick={() => setState({ kind: 'idle' })}
-          className="mt-8 font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.18em] text-[var(--color-cream)] uppercase underline underline-offset-4 hover:opacity-80"
+          className="mt-8 font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.18em] text-[var(--color-ink)] uppercase underline underline-offset-4 hover:opacity-80"
         >
           Envoyer une nouvelle demande
         </button>
@@ -539,11 +539,11 @@ export default function DemarrerForm(): React.JSX.Element {
             className="sr-only"
             disabled={submitting || files.length >= MAX_FILES}
           />
-          <div className="mt-2 flex flex-col gap-3 border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] pt-1 pb-2">
+          <div className="mt-2 flex flex-col gap-3 border-b border-[color-mix(in_oklab,var(--color-ink)_55%,transparent)] pt-1 pb-2">
             <label
               htmlFor="df-files"
               aria-disabled={submitting || files.length >= MAX_FILES || undefined}
-              className="cursor-pointer self-start font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-cream)] underline underline-offset-4 hover:opacity-85 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+              className="cursor-pointer self-start font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-ink)] underline underline-offset-4 hover:opacity-85 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
             >
               {files.length === 0
                 ? 'Sélectionner des fichiers'
@@ -554,7 +554,7 @@ export default function DemarrerForm(): React.JSX.Element {
                 {files.map((f, i) => (
                   <li
                     key={`${f.filename}-${i}`}
-                    className="flex items-center justify-between gap-4 font-[family-name:var(--font-heading)] text-[13px] font-normal text-[var(--color-cream)]"
+                    className="flex items-center justify-between gap-4 font-[family-name:var(--font-heading)] text-[13px] font-normal text-[var(--color-ink)]"
                   >
                     <span className="truncate">
                       {f.filename} <span className="opacity-60">({bytesHuman(f.size)})</span>
@@ -562,7 +562,7 @@ export default function DemarrerForm(): React.JSX.Element {
                     <button
                       type="button"
                       onClick={() => removeFile(i)}
-                      className="shrink-0 text-[11px] font-bold tracking-[0.12em] text-[var(--color-cream)] uppercase underline underline-offset-4 hover:opacity-70"
+                      className="shrink-0 text-[11px] font-bold tracking-[0.12em] text-[var(--color-ink)] uppercase underline underline-offset-4 hover:opacity-70"
                       aria-label={`Retirer ${f.filename}`}
                     >
                       Retirer
@@ -605,7 +605,7 @@ export default function DemarrerForm(): React.JSX.Element {
             type="submit"
             disabled={submitting}
             style={{ willChange: 'transform' }}
-            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-cream)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-ink)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-ink)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer'}</span>
             <img

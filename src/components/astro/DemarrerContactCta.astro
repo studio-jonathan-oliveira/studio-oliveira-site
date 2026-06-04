@@ -14,7 +14,7 @@
 import { SITE } from '@/lib/site-config';
 ---
 
-<section data-theme="dark" class="dem-cta-contact" aria-label="Contact direct studio">
+<section data-theme="light" class="dem-cta-contact" aria-label="Contact direct studio">
   <div class="dem-cta-contact__inner">
     <button
       type="button"
@@ -25,7 +25,7 @@ import { SITE } from '@/lib/site-config';
     >
       <span class="dem-cta-contact__label">Contacter</span>
       <img
-        src="/brand/fleche-white.webp"
+        src="/brand/fleche-dark.webp"
         alt=""
         aria-hidden="true"
         width="18"
@@ -104,8 +104,8 @@ import { SITE } from '@/lib/site-config';
 <style>
   /* Section CTA — petit bloc ink entre validation et bandeau rouge. */
   .dem-cta-contact {
-    background-color: var(--color-black-deep);
-    color: var(--color-cream);
+    background-color: var(--color-violet);
+    color: var(--color-ink);
     padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 7vw, 6rem);
   }
   .dem-cta-contact__inner {
@@ -117,12 +117,12 @@ import { SITE } from '@/lib/site-config';
     background: transparent;
     border: 0;
     cursor: pointer;
-    color: var(--color-cream);
+    color: var(--color-ink);
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
     padding-bottom: 0.6rem;
-    border-bottom: 2px solid var(--color-cream);
+    border-bottom: 2px solid var(--color-ink);
     font-family: var(--font-heading), sans-serif;
     font-weight: 700;
     font-size: 17px;
@@ -136,7 +136,7 @@ import { SITE } from '@/lib/site-config';
     opacity: 0.85;
   }
   .dem-cta-contact__button:focus-visible {
-    outline: 2px solid var(--color-cream);
+    outline: 2px solid var(--color-ink);
     outline-offset: 6px;
   }
   .dem-cta-contact__arrow {
@@ -174,7 +174,7 @@ import { SITE } from '@/lib/site-config';
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-red);
+    color: var(--color-violet);
     margin: 0 0 0.5rem;
   }
   .dem-contact-dialog__title {

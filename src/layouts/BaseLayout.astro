@@ -64,6 +64,11 @@ const isTypologie =
 const isPaysagereIndex =
   Astro.url.pathname === '/architecture-paysagere' ||
   Astro.url.pathname === '/architecture-paysagere/';
+// /demarrer-un-projet — DA violet/noir (exception footer noir, cf. override
+// page-level body.is-demarrer .site-footer).
+const isDemarrer =
+  Astro.url.pathname === '/demarrer-un-projet' ||
+  Astro.url.pathname.startsWith('/demarrer-un-projet/');
 
 // ContactBar (mobile sticky) — masquée sur les pages formulaires elles-mêmes
 // pour ne pas duppliquer l'action et libérer la zone basse du formulaire.
@@ -175,6 +180,7 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
       isStudio && 'is-studio',
       isTypologie && 'is-typologie',
       isPaysagereIndex && 'is-paysagere-index',
+      isDemarrer && 'is-demarrer',
       hasContactBar && 'has-contact-bar',
     ]}
   >

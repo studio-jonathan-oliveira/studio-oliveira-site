@@ -111,4 +111,36 @@ const schema = jsonLdGraph([
   <DemarrerContactCta />
 
   <DemarrerRedBlock invite={invite} />
+
+  {
+    /* Exception DA : sur /demarrer le footer est NOIR (décision Morgan —
+     beige partout sauf cette page). Override page-level du footer global. */
+  }
+  <style is:global>
+    body.is-demarrer .site-footer {
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+    }
+    body.is-demarrer .site-footer__heading,
+    body.is-demarrer .site-footer__navlink,
+    body.is-demarrer .site-footer__typo-title,
+    body.is-demarrer .site-footer__typo-link--active {
+      color: var(--color-cream);
+    }
+    body.is-demarrer .site-footer__address,
+    body.is-demarrer .site-footer__national,
+    body.is-demarrer .site-footer__typo-link {
+      color: color-mix(in oklab, var(--color-cream) 82%, transparent);
+    }
+    body.is-demarrer .site-footer__legal {
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    }
+    /* Logo : tuile violette + wordmark noir (accent DA /demarrer). */
+    body.is-demarrer .site-footer__logo {
+      background-color: var(--color-violet);
+    }
+    body.is-demarrer .site-footer__logo-mark {
+      background-color: var(--color-ink);
+    }
+  </style>
 </BaseLayout>
