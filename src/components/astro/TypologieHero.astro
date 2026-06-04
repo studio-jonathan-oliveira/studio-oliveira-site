@@ -2,55 +2,43 @@
 /*
  * <TypologieHero> — hero partagé des 4 pages /architecture-paysagere/[typologie].
  *
- * Pattern v4 (refonte Morgan 2026-05-21, capture wireframe) :
- *   - Photo plein-bleed 100svh occupant la totalité du viewport à l'arrivée
- *   - H1 split 2 lignes posé BAS-GAUCHE en ROUGE (style identique au
- *     wordmark "STUDIO / J. OLIVEIRA" du HeroSwipe home : ExtraLight 200
- *     UPPERCASE, text-shadow doux). Même position : left clamp(1.5rem, 4vw,
- *     4rem) / bottom clamp(4rem, 9vh, 7rem).
- *   - Specs déplacées DANS UNE SECTION SÉPARÉE sous le hero, sur fond noir
- *     (anciennement en overlay bas de hero). L'utilisateur scrolle légèrement
- *     pour les découvrir — choix Morgan : la photo doit dominer à l'arrivée.
- *   - 4 specs flex `space-between` (label gauche, valeur collée bord droit),
- *     chacune soulignée d'un trait blanc (4 traits, comme avant).
- *   - Mobile <768px : passage colonne (label/valeur empilés).
+ * Refonte DA finale 2026-06-04 (trames « modif finales » Jonathan) :
+ *   - PLUS DE PHOTO. Fond BEIGE uni (--color-cream = #EDE6D6), texte NOIR.
+ *   - H1 typographique ÉNORME en bas-gauche, sur 2 lignes, graisse Black,
+ *     casse mixte (« Coeur » / « urbain » : capitale initiale ligne 1
+ *     seulement). Annotation trame : « LE TITRE RESTE FIXE, PAS D'ANIMATION ».
+ *   - Specs (4 lignes label/valeur) sous le H1, fond beige, texte noir,
+ *     séparateur fin sous chaque rangée.
  *
- * Les 4 LABELS sont FIGÉS (taxonomie commune aux 4 typologies). Seules les
- * valeurs droite changent par typologie.
+ * Les 4 LABELS sont FIGÉS (taxonomie commune). Seules les valeurs changent.
+ * Correctif trame : label 3 = « Type de jardin / propriété » (était
+ * « Contexte environnemental »).
  *
- * API minimale :
- *   - photo (ImageMetadata) : image hero
- *   - alt (string) : alt descriptif SEO
- *   - h1Lines ([string, string]) : 2 lignes du H1 split (ex: ['MICRO', 'URBAIN'])
- *   - valeurs ([string, string, string, string]) : 4 valeurs droite, dans l'ordre
- *     des labels figés (secteur / surface / contexte / complexité)
- *   - sectionLabel (string, optionnel) : étiquette `data-section-label`
+ * API :
+ *   - h1Lines ([string, string]) : 2 lignes du H1 (ex: ['Coeur', 'urbain'])
+ *   - valeurs ([string, string, string, string]) : 4 valeurs droite
+ *   - sectionLabel (string, opt) : étiquette `data-section-label`
+ *
+ * NB : la prop `photo`/`alt` historique est supprimée (plus de photo hero).
  */
-import { Image } from 'astro:assets';
-
 interface Props {
-  photo: ImageMetadata;
-  alt: string;
   h1Lines: readonly [string, string];
   valeurs: readonly [string, string, string, string];
   sectionLabel?: string;
-  /**
-   * Cadrage vertical de la photo hero (object-position CSS).
-   * Par défaut `center` (50% 50%). Une valeur comme `center 70%` recale
-   * l'image vers le bas (utile quand le centre de la photo manque
-   * d'information visuelle en bas). Cf. retour Morgan 2026-05-19 sur
-   * domaine-caractère.
-   */
+  /* Props historiques tolérées pour rétro-compat le temps de porter les 3
+     autres typologies à la DA finale (hero sans photo). Ignorées. */
+  photo?: ImageMetadata;
+  alt?: string;
   photoPosition?: string;
 }
 
-const { photo, alt, h1Lines, valeurs, sectionLabel, photoPosition = 'center' } = Astro.props;
+const { h1Lines, valeurs, sectionLabel } = Astro.props;
 
-// Les 4 labels sont la taxonomie figée du studio — ne pas paramétrer.
+// Taxonomie figée du studio — ne pas paramétrer. Label 3 corrigé (trame).
 const LABELS = [
   'Secteur géographique',
   'Moyenne surface jardin',
-  'Contexte environnemental',
+  'Type de jardin / propriété',
   'Complexité spatiale et environnementale',
 ] as const;
 ---
@@ -58,36 +46,17 @@ const LABELS = [
 <section
   id="hero"
   data-section-label={sectionLabel ?? h1Lines.join(' ')}
-  data-theme="dark"
-  class="typo-hero relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+  data-theme="light"
+  class="typo-hero"
   aria-labelledby="hero-title"
 >
-  <div class="typo-hero__media">
-    <Image
-      src={photo}
-      alt={alt}
-      widths={[960, 1440, 1920, 2560]}
-      sizes="100vw"
-      quality={92}
-      format="webp"
-      loading="eager"
-      class="typo-hero__img"
-      style={`object-position: ${photoPosition};`}
-    />
-    <div class="typo-hero__veil" aria-hidden="true"></div>
-  </div>
-
   <h1 id="hero-title" class="typo-hero__title">
     <span class="typo-hero__title-line">{h1Lines[0]}</span>
     <span class="typo-hero__title-line">{h1Lines[1]}</span>
   </h1>
 </section>
 
-<section
-  data-theme="dark"
-  class="typo-hero-specs bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-  aria-label="Caractéristiques typologie"
->
+<section data-theme="light" class="typo-hero-specs" aria-label="Caractéristiques typologie">
   <dl class="typo-hero-specs__list">
     {
       LABELS.map((label, i) => (
@@ -101,74 +70,42 @@ const LABELS = [
 </section>
 
 <style>
+  /* Hero typographique beige — le H1 occupe ~1 écran (cf. traits rouges
+     gabarit 1920×1080 sur la trame), posé bas-gauche, fixe (pas d'anim). */
   .typo-hero {
     position: relative;
     width: 100%;
     min-height: 100svh;
-    isolation: isolate;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    display: flex;
+    align-items: flex-end;
+    box-sizing: border-box;
+    padding: clamp(2rem, 6vh, 5rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 8vh, 6rem);
   }
-  .typo-hero__media {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
-  .typo-hero__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  /* Voile gradient — léger en haut (lisibilité topbar/Header), plus
-     prononcé en bas pour faire respirer le H1 ROUGE en bas-gauche
-     sans qu'il se fonde dans la végétation claire. */
-  .typo-hero__veil {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 0%,
-      color-mix(in oklab, var(--color-black-deep) 12%, transparent) 12%,
-      transparent 30%,
-      transparent 55%,
-      color-mix(in oklab, var(--color-black-deep) 35%, transparent) 82%,
-      color-mix(in oklab, var(--color-black-deep) 70%, transparent) 100%
-    );
-    pointer-events: none;
-  }
-  /* H1 = wordmark typologie, bas-gauche, ROUGE — clone strict du
-     `.hero-slide__wordmark` de HeroSwipe (home « STUDIO / J. OLIVEIRA »).
-     Même position, même typo, même text-shadow pour la consistance. */
   .typo-hero__title {
-    position: absolute;
-    left: clamp(1.5rem, 4vw, 4rem);
-    bottom: clamp(4rem, 9vh, 7rem);
     margin: 0;
-    pointer-events: none;
-    z-index: 1;
     display: flex;
     flex-direction: column;
-    color: var(--color-red);
-    text-shadow: 0 2px 14px color-mix(in oklab, var(--color-ink) 40%, transparent);
-    max-width: none;
+    color: var(--color-ink);
   }
   .typo-hero__title-line {
     display: block;
     font-family: var(--font-heading), sans-serif;
-    font-weight: 200;
-    font-size: clamp(2.4rem, 6.8vw, 7.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.005em;
-    text-transform: uppercase;
+    font-weight: 900;
+    font-size: clamp(3rem, 13vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
   }
 
-  /* Section specs — sous le hero, sur fond noir. L'utilisateur scrolle
-     légèrement depuis le hero 100svh pour les découvrir (choix Morgan
-     2026-05-21 : la photo doit dominer à l'arrivée). 4 lignes empilées
-     avec un TRAIT BLANC FIN sous CHAQUE ligne. */
+  /* Specs — sous le hero, fond beige, 4 lignes label↔valeur, séparateur
+     fin sous chaque rangée. */
   .typo-hero-specs {
     width: 100%;
-    padding: clamp(2.5rem, 6vh, 5rem) clamp(1.5rem, 5vw, 4rem);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 7vh, 5rem);
+    box-sizing: border-box;
   }
   .typo-hero-specs__list {
     margin: 0;
@@ -183,7 +120,7 @@ const LABELS = [
     gap: clamp(2rem, 6vw, 6rem);
     width: 100%;
     padding: clamp(0.9rem, 1.6vw, 1.35rem) 0;
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 32%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
   }
   .typo-hero-specs__label,
   .typo-hero-specs__value {
@@ -192,13 +129,13 @@ const LABELS = [
     font-size: clamp(0.95rem, 1.15vw, 1.15rem);
     line-height: 1.3;
     letter-spacing: 0.005em;
-    color: var(--color-cream);
+    color: var(--color-ink);
     margin: 0;
     flex: 0 1 auto;
   }
   .typo-hero-specs__label {
     text-align: left;
-    color: color-mix(in oklab, var(--color-cream) 90%, transparent);
+    color: color-mix(in oklab, var(--color-ink) 85%, transparent);
   }
   .typo-hero-specs__value {
     text-align: right;

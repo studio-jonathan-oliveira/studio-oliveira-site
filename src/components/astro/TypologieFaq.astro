@@ -2,24 +2,19 @@
 /*
  * <TypologieFaq> — section FAQ partagée des 4 pages typologies.
  *
- * Refonte 2026-05-21 (Morgan capture wireframe rouge) :
- *   - Section sur fond ROUGE plein (`var(--color-red)`), texte cream.
- *   - Titre principal « FAQ » en très gros (style heading hero),
- *     sous-titre « QUESTIONS FRÉQUENTES » plus petit dessous.
- *   - Curseur custom bascule en NOIR via `data-theme="red"` (logique
- *     déjà gérée dans `CustomCursor.astro` : sur red → dot ink + label
- *     cream). Pas de surcharge nécessaire.
- *   - `<FaqAccordion>` island réutilisé pour l'accordéon (Q/R cliquables,
- *     wave reveal mot par mot). Voir composant pour la mécanique.
- *
- * Auparavant : chaque page typologie inlinait sa propre section FAQ
- * (cu-faq, mu-faq, fu-faq) avec CSS dupliqué. La 3e itération a justifié
- * l'extraction (parité immédiate sur les 4 pages).
+ * Refonte DA finale 2026-06-04 (trames « modif finales ») :
+ *   - Fond BEIGE (--color-cream #EDE6D6), texte/icône NOIR (était fond ROUGE).
+ *   - Marquee « découvrir les projets ◦ … » en lettres OUTLINE défilant en
+ *     boucle au-dessus du titre (annotation : « DEFILEMENT A L'HORIZONTAL EN
+ *     BOUCLE SANS FIN », « ARRET DE L'ANIMATION AU SURVOL », clic → /projets).
+ *   - Titre « FAQ » noir massif. Plus de sous-titre « Questions fréquentes »
+ *     (absent de la trame).
+ *   - Accordéon `<FaqAccordion>` réutilisé ; séparateurs arrondis à droite
+ *     (parti-pris angles arrondis sitewide), icône `+`→`×` (rotate 45°).
  *
  * API :
- *   - items (FaqItem[]) : tableau de Q/R, transmis tel quel à FaqAccordion
- *   - sectionLabel (string, opt) : étiquette `data-section-label` pour
- *     la nav scroll latérale (défaut "FAQ")
+ *   - items (FaqItem[]) : Q/R transmis à FaqAccordion
+ *   - sectionLabel (string, opt) : étiquette nav scroll (défaut "FAQ")
  */
 import FaqAccordion, { type FaqItem } from '@/components/islands/FaqAccordion';
 
@@ -29,19 +24,29 @@ interface Props {
 }
 
 const { items, sectionLabel = 'FAQ' } = Astro.props;
+
+// Motif marquee répété — défilement infini, séparateur ◦ (cercle évidé).
+const MARQUEE = 'découvrir les projets ◦ ';
+const marqueeUnit = MARQUEE.repeat(6);
 ---
 
 <section
   id="faq"
   data-section-label={sectionLabel}
-  data-theme="red"
+  data-theme="light"
   class="typo-faq"
   aria-labelledby="faq-title"
 >
+  <a href="/projets" class="typo-faq__marquee" aria-label="Découvrir les projets">
+    <div class="typo-faq__marquee-track" aria-hidden="true">
+      <span class="typo-faq__marquee-text">{marqueeUnit}</span>
+      <span class="typo-faq__marquee-text">{marqueeUnit}</span>
+    </div>
+  </a>
+
   <div class="typo-faq__inner">
     <div class="typo-faq__head">
       <h2 id="faq-title" class="typo-faq__title">FAQ</h2>
-      <p class="typo-faq__subtitle">Questions fréquentes</p>
     </div>
     <FaqAccordion items={items} client:visible />
   </div>
@@ -49,21 +54,66 @@ const { items, sectionLabel = 'FAQ' } = Astro.props;
 
 <style is:global>
   /* ════════════════════════════════════════════════════════════════════
-   * <TypologieFaq> — section FAQ rouge des pages typologies.
-   * `is:global` car l'`<astro-island>` injecté par FaqAccordion (client:visible)
-   * vit hors du scope local du composant Astro → on cible `.faq-acc__list`
-   * et descendants pour appliquer le layout grid sans `!important`.
+   * <TypologieFaq> — FAQ beige des pages typologies (refonte 2026-06-04).
+   * `is:global` car l'astro-island FaqAccordion vit hors scope local.
    * ═══════════════════════════════════════════════════════════════════ */
   .typo-faq {
     width: 100%;
-    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-    background-color: var(--color-red);
-    color: var(--color-cream);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3rem, 7vw, 6rem);
   }
+
+  /* ── Marquee outline défilant ────────────────────────────────────────── */
+  .typo-faq__marquee {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-decoration: none;
+    padding: clamp(1rem, 2vw, 2rem) 0 clamp(2.5rem, 5vw, 4rem);
+  }
+  .typo-faq__marquee-track {
+    display: flex;
+    width: max-content;
+    animation: typo-faq-marquee 38s linear infinite;
+    will-change: transform;
+  }
+  .typo-faq__marquee:hover .typo-faq__marquee-track {
+    animation-play-state: paused;
+  }
+  .typo-faq__marquee-text {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 8vw, 8rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    padding-right: 0.2em;
+    /* Lettres évidées (outline) : remplissage transparent + contour ink. */
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-ink);
+    text-stroke: 1.5px var(--color-ink);
+  }
+  @keyframes typo-faq-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .typo-faq__marquee-track {
+      animation: none;
+    }
+  }
+
+  /* ── En-tête + layout ────────────────────────────────────────────────── */
   .typo-faq__inner {
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(2rem, 4vw, 3.5rem);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
   }
   @media (min-width: 1024px) {
     .typo-faq__inner {
@@ -71,40 +121,45 @@ const { items, sectionLabel = 'FAQ' } = Astro.props;
       column-gap: clamp(3rem, 6vw, 5rem);
       align-items: start;
     }
+    .typo-faq .faq-acc__list {
+      grid-column: 2;
+    }
   }
   .typo-faq__head {
     display: flex;
     flex-direction: column;
-    gap: clamp(0.2rem, 0.5vw, 0.5rem);
   }
-  /* Titre « FAQ » massif — typo heading ExtraLight, échelle hero. */
   .typo-faq__title {
     font-family: var(--font-heading), sans-serif;
-    font-weight: 200;
+    font-weight: 900;
     font-size: clamp(4rem, 11vw, 11rem);
     line-height: 0.92;
     letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: var(--color-cream);
+    color: var(--color-ink);
     margin: 0;
   }
-  /* Sous-titre « QUESTIONS FRÉQUENTES » sous le titre — typo body Bold
-     UPPERCASE, plus petit, pour densifier la signature éditoriale sans
-     prendre la place du titre FAQ. */
-  .typo-faq__subtitle {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 200;
-    font-size: clamp(0.95rem, 1.4vw, 1.45rem);
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--color-cream);
-    margin: 0;
+
+  /* ── Surcharges accordéon pour fond BEIGE (les styles globaux .faq-acc__*
+     sont en cream pour la FAQ rouge historique) → on passe tout en NOIR
+     dans le scope .typo-faq, et on arrondit le séparateur à DROITE. ──────── */
+  .typo-faq .faq-acc__question,
+  .typo-faq .faq-acc__icon {
+    color: var(--color-ink);
   }
-  /* Place la liste accordéon dans la 2e colonne sur desktop. */
-  @media (min-width: 1024px) {
-    .typo-faq .faq-acc__list {
-      grid-column: 2;
-    }
+  .typo-faq .faq-acc__answer {
+    color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+  }
+  .typo-faq .faq-acc__item {
+    border-bottom: 0;
+  }
+  /* Séparateur = bord bas + bord droit arrondi au coin bas-droite
+     (parti-pris « arrondi à droite » des trames). Gauche/haut ouverts. */
+  .typo-faq .faq-acc__summary {
+    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-right: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-bottom-right-radius: clamp(18px, 2.5vw, 32px);
+  }
+  .typo-faq .faq-acc__summary:focus-visible {
+    outline: 1px solid color-mix(in oklab, var(--color-ink) 45%, transparent);
   }
 </style>

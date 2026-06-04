@@ -1,20 +1,18 @@
 ---
 /*
- * /architecture-paysagere/coeur-urbain — page typologie 2026-05-19.
- * Copie structurelle de `micro-urbain.astro` (pilote validé v9). Route
- * statique : Astro priorise ce fichier sur `[slug].astro`. Mêmes patterns
- * (hero overlay + specs, galerie magazine, manifeste décalé droite, FAQ,
- * CTA full-width + pill rouge). Seul différe :
- *   - Photos (6 vs 5) → la galerie devient diptyque + large + diptyque
- *     (cf. trame `C:\tmp\trame pages typologies.png`, colonne droite).
- *   - Specs verbatim trame Jonathan (Cœur urbain).
- *   - Manifeste : Jonathan a recopié dans la trame le placeholder
- *     micro-urbain → texte à valider, listé dans `_brief/contenus-manquants.md`
- *     sous TYPOLOGIE-COEUR-URBAIN-MANIFESTE. On conserve verbatim trame
- *     pour ne pas inventer.
+ * /architecture-paysagere/coeur-urbain — PILOTE refonte DA finale 2026-06-04
+ * (trames « modif finales » Jonathan). Bascule beige/noir :
+ *   - Hero typographique beige (H1 noir Black « Coeur / urbain », sans photo)
+ *     + specs beige — via `<TypologieHero>` partagé.
+ *   - Galerie sur fond BEIGE (était noir), avec 2 blocs titrés « Définir » et
+ *     « Comprendre » intercalés (manifeste scindé, titres noirs visibles).
+ *   - FAQ beige + marquee « découvrir les projets » via `<TypologieFaq>`.
+ *   - Suppression de l'ancien CTA rouge full-width (remplacé par le marquee
+ *     de la FAQ, cf. trame).
  *
- * H1 sans accent (« COEUR » conservé tel quel — esthétique designbyad,
- * cf. commentaire pilote micro-urbain). Fautes typo conservées si présentes.
+ * Verbatim trame (casse/fautes conservées). Réponses FAQ trouvées dans la
+ * colonne droite de la trame micro-urbain (cf. _brief/trames-finales-specs/
+ * _FAQ-reponses-trame-micro-urbain.md).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
@@ -30,7 +28,6 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
-import heroPhoto from '@/assets/typologies/coeur-urbain/01-hero.jpg';
 // Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-21).
 import gal02 from '@/assets/typologies/coeur-urbain/02-jardinet.jpg';
 import gal03 from '@/assets/typologies/coeur-urbain/03-chemin.jpg';
@@ -43,45 +40,42 @@ import gal09 from '@/assets/typologies/coeur-urbain/09-cheminement.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
 
-// 4 valeurs droite — verbatim dictée Morgan 2026-05-19 (les 4 labels sont
-// figés et viennent du composant `<TypologieHero>` partagé).
+// 4 valeurs droite — VERBATIM trame finale (casse conservée).
 const valeurs = [
-  'Zone urbaine / cœur de ville et alentours',
-  'De 100 à 500 m² (hors cas spécifique)',
-  'Cours urbaines / jardins confinés / jardins de ville',
-  'Accès / exposition / réseaux souterrain / urbanisme',
+  'Zone urbaine / Coeur de ville et alentours',
+  'de 100 à 500 m² (hors cas spécifique)',
+  'Cours urbaines / Jardins confinés / Jardins de ville',
+  'Accès / exposition / réseaux souterrains / urbanisme',
 ] as const;
 
-// Manifeste — texte Jonathan VERBATIM (correctif Morgan 2026-05-21).
-// Le placeholder copié-collé depuis micro-urbain a été remplacé par le
-// vrai texte cœur urbain.
+// Manifeste — VERBATIM trame (scindé en « Définir » et « Comprendre »).
 const manifeste = {
   bloc1:
-    "La typologie coeur urbaine se caractérise par des espaces de vie extérieurs, enclavés et confinés. Elle représente des cours arrières à l'habitat souvent minéralisées, en prolongement de l'habitat intérieur, des entrées de propriétés traversants sous les bâtiments ou de simples zones d'accueil des convives avec des potentiels stationnements.",
+    "La typologie coeur urbaine se caractérise par des espaces de vie extérieurs, enclavés et confinés. Elle représente des cours arrières à l'habitat souvent minéralisées, en prolongement de l'habitat intérieur, des entrées de propriétés traversants sous les bâtiments ou de simples zones d'accueil des convives avec de potentiels stationnements.",
   bloc2:
     'Ce sont des espaces généralement cosy de part leur enclavement mais perturbés par le manque de place disponible au sol et en hauteur.',
   precision:
-    "La complexité de cette typologie repose principalement sur les sols, saturés par les réseaux souterrains, ainsi que l'ensoleillement, souvent coupé par les bâtiments environnants, rendant ces espaces complexes dans leurs aménagements structurels et naturels.",
+    "La complexité de cette typologie repose principalement sur la disponibilité des sols, saturés par les réseaux souterrains, ainsi que l'ensoleillement, souvent coupé par les bâtiments environnants, rendant ces espaces complexes dans leurs aménagements structurels et naturels.",
 };
 
-// FAQ — verbatim Morgan/Jonathan 2026-05-21 (3 Q/R communes aux 4 pages
-// typologies). Typos conservées tel quel : `strucurer`, `aloué`,
-// `compte rendus`, `tranquilité`, `établit`, `forfait`, `puission`.
+// FAQ — 3 Q/R VERBATIM trame (colonne droite micro-urbain, accordéons ouverts).
+// Fautes conservées : « règlementaire », « étude végétales », « des entreprise »,
+// « a établit », « nécessité », « compte rendus », « tranquilité ».
 const faq = [
-  {
-    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
-    answer:
-      "L'étude d'un projet est un processus obligatoire qui permet de comprendre un projet, de le strucurer efficacement et d'anticiper les travaux et le budget qui lui sera aloué. Le studio n'a pas de standard matériaux, styles, tendances et autres. Il construit, de la conception jusqu'à la livraison, l'entièreté sur-mesure selon les caractéristiques du projet, de son environnement et de ses usagers.\n\nMon travail repose sur la réflexion, l'anticipation et le pilotage. Je ne réalise pas sur le chantier le projet, je suis le chef d'orchestre qui pense, accompagne et dirige le projet pour le rendre à la hauteur de vos attentes.",
-  },
   {
     question: 'Comment se compose une étude ?',
     answer:
       "Il y a 3 phases : l'étude préliminaire, l'étude projet et le suivi de chantier.\n\nL'étude préliminaire : elle recadre le contexte du projet et structure les orientations de projet. C'est une synthèse de la commande et de la structuration des axes directeurs du projet avec une budgétisation des grands lots travaux.\n\nL'étude projet : elle rentre dans le détail de conception suite à la validation de l'étude préliminaire. Dans cette phase, le studio développe, organise, et consulte les entreprises et artisans pour le chiffrage précis des travaux.\n\nLe suivi de chantier : c'est la partie pilotage chantier. Elle est importante car elle permet de garantir un résultat final entre les intentions de projet et la réalisation. Le studio gère les compte rendus, le suivi financier ainsi que le pilotage des travaux avec les différentes entreprises sur le chantier. Vous payez une tranquilité d'esprit et de la disponibilité.",
   },
   {
+    question: "Quels sont les livrables d'une étude ?",
+    answer:
+      "Étude préliminaire : étude du contexte projet, étude règlementaire et urbanisme, étude fonctionnelle et besoins, synthèse graphique, étude estimative budgétaire.\n\nÉtude projet : conception paysagère, étude végétales, dossier de consultation des entreprise, détails techniques, consultation des entreprises, dossier de réalisation.\n\nSuivi de chantier : comptes rendus de chantier, suivi d'avancement, validation des ouvrages, suivi financier, réception des travaux.",
+  },
+  {
     question: "Quel est le prix de l'étude pour cette typologie ?",
     answer:
-      "En fonction de la typologie de votre propriété, le studio a établit des forfait de base.\n\nViennent s'ajouter à ce forfait de base des frais correspondant aux déplacements du studio (frais d'essence, péages, ...) en fonction de votre emplacement et du nombre de déplacements prévus par le besoin du projet.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter afin que nous puission échanger ensemble de votre projet pour définir ensemble tous les paramètres de l'étude.",
+      "En fonction de la typologie des jardins, le studio a établit des forfaits de base.\n\nViennent s'ajouter à ces forfaits de base :\n- des frais correspondant aux déplacements du studio (frais d'essence, péages, ...)\n- la mission géomètre\nen fonction de votre emplacement et des nécessité du projet et de l'étude.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter (ou remplir le formulaire via l'onglet \"démarrer un projet\" en haut de la page) afin que nous puissions échanger ensemble et définir tous les paramètres liés à votre projet.",
   },
 ];
 
@@ -109,36 +103,16 @@ const schema = jsonLdGraph([
 <BaseLayout
   title={`${typologie.h1Seo} — Cœur urbain`}
   description={`${typologie.h1Seo} avec le Studio J Oliveira — maison de ville, cour patrimoniale, jardin enclavé. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
-  darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO — via composant partagé `<TypologieHero>` ════════ */}
-  <TypologieHero
-    photo={heroPhoto}
-    alt="Cour urbaine patrimoniale cœur urbain — projet Studio J Oliveira"
-    h1Lines={['COEUR', 'URBAIN']}
-    valeurs={valeurs}
-    sectionLabel="Cœur urbain"
-  />
+  {/* ═════════ 1 · HERO beige typographique + specs (composant partagé) ════ */}
+  <TypologieHero h1Lines={['Coeur', 'urbain']} valeurs={valeurs} sectionLabel="Cœur urbain" />
 
-  {
-    /* ═════════ 2 · GALERIE — 8 photos rythme magazine ════════════════════
-     Ordre piloté par le préfixe numérique (Morgan 2026-05-21).
-       (1) diptyque quinconce HAUT       : 02 small + 03 large
-       (2) photo large landscape         : 04 (pivot)
-       (3) diptyque 50/50 milieu         : 05 + 06
-       (4) diptyque quinconce inverse    : 07 large + 08 small (miroir du haut)
-       (5) coda portrait centrée         : 09 (signature chromatique)
-     Gouttières noires généreuses, aucun bord-à-bord. */
-  }
-  <section
-    data-theme="dark"
-    class="cu-gallery bg-[var(--color-black-deep)]"
-    aria-label="Sélection de projets cœur urbain"
-  >
+  {/* ═════════ 2 · GALERIE beige + manifeste « Définir » / « Comprendre » ══ */}
+  <section data-theme="light" class="cu-gallery" aria-label="Sélection de projets cœur urbain">
     <div class="cu-gallery__diptyque cu-gallery__diptyque--top">
       <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
         <Image
@@ -164,6 +138,20 @@ const schema = jsonLdGraph([
           class="cu-gallery__img"
         />
       </figure>
+    </div>
+
+    {/* Manifeste « Définir » */}
+    <div class="cu-manifeste cu-manifeste--definir">
+      <h2 class="cu-manifeste__title">Définir</h2>
+      <div
+        class="cu-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="cu-manifeste__para">{manifeste.bloc1}</p>
+        <p class="cu-manifeste__para">{manifeste.bloc2}</p>
+      </div>
     </div>
 
     <figure class="cu-gallery__large" data-reveal="image-rise">
@@ -245,84 +233,28 @@ const schema = jsonLdGraph([
         class="cu-gallery__img"
       />
     </figure>
-  </section>
 
-  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
-  <section
-    id="manifeste"
-    data-section-label="Manifeste"
-    data-theme="dark"
-    class="cu-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="manifeste-title"
-  >
-    <div class="cu-manifeste__inner">
-      <h2 id="manifeste-title" class="sr-only">La typologie cœur urbain</h2>
-      <div
-        class="cu-manifeste__body"
-        data-words-fade
-        data-words-fade-stagger="0.006"
-        data-words-fade-window="0.05,0.5"
-      >
-        <p class="cu-manifeste__para">{manifeste.bloc1}</p>
-        <p class="cu-manifeste__para">{manifeste.bloc2}</p>
-      </div>
-      <p class="cu-manifeste__precision">{manifeste.precision}</p>
+    {/* Manifeste « Comprendre » */}
+    <div class="cu-manifeste cu-manifeste--comprendre">
+      <h2 class="cu-manifeste__title">Comprendre</h2>
+      <p class="cu-manifeste__para">{manifeste.precision}</p>
     </div>
   </section>
 
-  {/* ═════════ 4 · FAQ — composant partagé `<TypologieFaq>` ═════════════ */}
+  {/* ═════════ 3 · FAQ beige + marquee (composant partagé) ═══════════════ */}
   <TypologieFaq items={faq} />
-
-  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ══ */}
-  <section
-    data-theme="dark"
-    class="cu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="cta-title"
-  >
-    <a href="/realisations" class="cu-cta__link" data-cursor-label="VOIR">
-      <h2
-        id="cta-title"
-        class="cu-cta__title"
-        data-justify-multi
-        data-justify-amp="50"
-        data-justify-line-step="0.15"
-        data-justify-line-window="0.55"
-      >
-        <span class="cu-cta__title-line" data-justify-line data-justify-direction="from-right">
-          DECOUVRIR LES PROJETS COEUR URBAIN
-        </span>
-      </h2>
-    </a>
-    <a href="/demarrer-un-projet" class="cu-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
-      <span class="cu-cta__pill-dot" aria-hidden="true"></span>
-      <span class="cu-cta__pill-label">Démarrer un projet</span>
-      <img
-        src="/brand/fleche-white.webp"
-        alt=""
-        aria-hidden="true"
-        class="cu-cta__pill-arrow"
-        width="32"
-        height="32"
-      />
-    </a>
-  </section>
 
   <style is:global>
     /* ═══════════════════════════════════════════════════════════════════════
-     * /architecture-paysagere/coeur-urbain — copie structurelle micro-urbain.
-     * Le hero est désormais factorisé dans `<TypologieHero>` (refactor
-     * 2026-05-19). Galerie / manifeste / FAQ / CTA restent locaux (préfixe
-     * `cu-`) car la galerie diverge par typologie (5 vs 6 photos, layouts
-     * différents) ; le reste est candidat à un futur `<TypologieLayout>`
-     * une fois que les 4 pages auront convergé.
+     * /architecture-paysagere/coeur-urbain — pilote DA finale beige/noir.
+     * Galerie + manifeste locaux (préfixe `cu-`). Hero/FAQ factorisés.
      * ═══════════════════════════════════════════════════════════════════ */
 
-    /* ─── 1 · Hero ── désormais géré par `<TypologieHero>` (composant
-       partagé, refactor 2026-05-19). Plus de CSS hero ici. */
-
-    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
+    /* ─── Galerie magazine sur fond BEIGE ───────────────────────────────── */
     .cu-gallery {
       width: 100%;
+      background-color: var(--color-cream);
+      color: var(--color-ink);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
@@ -333,21 +265,14 @@ const schema = jsonLdGraph([
       width: 100%;
       aspect-ratio: 3 / 2;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
     @media (min-width: 1024px) {
       .cu-gallery__large {
         aspect-ratio: 16 / 10;
       }
     }
-    /* Diptyques — rythme magazine :
-       - top : quinconce. Portrait gauche petit (38%) align-start, portrait
-         droite grand (54%) align-end. Décalage vertical éditorial.
-       - mid : 50/50 équilibré, sans quinconce (les deux photos se répondent
-         en miroir).
-       - bot : quinconce INVERSE (miroir vertical+horizontal du top).
-         Portrait gauche grand (54%) align-start + portrait droite petit
-         (38%) align-end. Crée une symétrie globale top↔bot. */
     .cu-gallery__diptyque {
       display: grid;
       grid-template-columns: 1fr;
@@ -371,9 +296,9 @@ const schema = jsonLdGraph([
     .cu-gallery__diptyque-right {
       margin: 0;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
-    /* --top : petit-gauche / grand-droite */
     .cu-gallery__diptyque--top .cu-gallery__diptyque-left,
     .cu-gallery__diptyque--top .cu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
@@ -389,7 +314,6 @@ const schema = jsonLdGraph([
         align-self: end;
       }
     }
-    /* --mid : 50/50 */
     .cu-gallery__diptyque--mid .cu-gallery__diptyque-left,
     .cu-gallery__diptyque--mid .cu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
@@ -400,7 +324,6 @@ const schema = jsonLdGraph([
         aspect-ratio: 5 / 6;
       }
     }
-    /* --bot : quinconce inverse (miroir du top) */
     .cu-gallery__diptyque--bot .cu-gallery__diptyque-left,
     .cu-gallery__diptyque--bot .cu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
@@ -416,16 +339,13 @@ const schema = jsonLdGraph([
         max-height: 78%;
       }
     }
-    /* Coda — photo 09, pleine largeur (Morgan 2026-05-21 : « prennait la
-       largeur totale de la zone d'affichage »). Aspect aligné sur les
-       __large pour cohérence : 3/2 mobile, 16/10 desktop. La photo
-       portrait sera croppée top+bottom — compromis assumé. */
     .cu-gallery__coda {
       margin: 0;
       width: 100%;
       aspect-ratio: 3 / 2;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
     @media (min-width: 1024px) {
       .cu-gallery__coda {
@@ -440,26 +360,29 @@ const schema = jsonLdGraph([
       display: block;
     }
 
-    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
+    /* ─── Manifeste « Définir » / « Comprendre » (beige/noir) ───────────── */
     .cu-manifeste {
       width: 100%;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-    .cu-manifeste__inner {
+      padding: clamp(2.5rem, 6vw, 5rem) 0;
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(2rem, 4vw, 3.5rem);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
     }
     @media (min-width: 1024px) {
-      .cu-manifeste__inner {
-        grid-template-columns: 1fr 1.35fr;
+      .cu-manifeste {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      .cu-manifeste__body,
-      .cu-manifeste__precision {
-        grid-column: 2;
-      }
+    }
+    .cu-manifeste__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4.5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      margin: 0;
     }
     .cu-manifeste__body {
       display: flex;
@@ -469,10 +392,10 @@ const schema = jsonLdGraph([
     .cu-manifeste__para {
       font-family: var(--font-body), sans-serif;
       font-weight: 400;
-      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
-      line-height: 1.45;
+      font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+      line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
     }
     .cu-manifeste__body .word {
@@ -481,109 +404,9 @@ const schema = jsonLdGraph([
       transform: translateY(10px);
       will-change: opacity, transform;
     }
-    .cu-manifeste__precision {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-      line-height: 1.6;
-      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
-      text-align: left;
-      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
-    }
 
-    /* ─── 4 · FAQ ── désormais géré par `<TypologieFaq>` (composant
-       partagé, refactor 2026-05-21). Plus de CSS FAQ ici. */
-
-    /* ─── 5 · CTA full-width « DECOUVRIR LES PROJETS COEUR URBAIN » ─────── */
-    .cu-cta {
-      width: 100%;
-      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(2rem, 4vw, 3rem);
-    }
-    .cu-cta__link {
-      display: block;
-      width: 100%;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      text-decoration: none;
-      color: inherit;
-    }
-    .cu-cta__title {
-      width: 100%;
-      margin: 0;
-    }
-    .cu-cta__title-line {
-      display: block;
-      width: 100%;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.4rem, 5.5vw, 5rem);
-      line-height: 1.1;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      text-align: justify;
-      text-align-last: justify;
-      color: var(--color-cream);
-      margin: 0;
-      hyphens: none;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    @media (max-width: 767px) {
-      .cu-cta__title-line {
-        white-space: normal;
-        text-align: left;
-        text-align-last: left;
-      }
-    }
-    .cu-cta__pill-red {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.85rem 1.6rem;
-      background-color: var(--color-red);
-      color: var(--color-cream);
-      border-radius: 9999px;
-      font-family: var(--font-body), sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.9rem, 1.05vw, 1rem);
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      transition: transform 0.35s var(--ease-out-editorial);
-      will-change: transform;
-    }
-    @media (hover: hover) {
-      .cu-cta__pill-red:hover,
-      .cu-cta__pill-red:focus-visible {
-        transform: scale(1.04);
-      }
-    }
-    .cu-cta__pill-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--color-cream);
-      flex-shrink: 0;
-    }
-    .cu-cta__pill-label {
-      white-space: nowrap;
-    }
-    .cu-cta__pill-arrow {
-      width: 14px;
-      height: 14px;
-      display: inline-block;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    .cu-hero,
     .cu-gallery,
-    .cu-manifeste,
-    .cu-cta {
+    .cu-manifeste {
       box-sizing: border-box;
     }
   </style>
