@@ -1,20 +1,21 @@
 ---
 /*
- * /projets — Hub unifié "Projets" (PDF l. 727).
- * Refonte 2026-04-23 : hero immersif + cards avec images de fond pour sortir
- * du fade texte-only (feedback Morgan).
- * Images = placeholders projets existants en attendant inventaire Jonathan.
+ * /projets — refonte DA finale 2026-06-04 (trame « projet » + 3 trames
+ * accordéons). Hub = hero noir « Projets » + 3 accordéons exclusifs :
+ *   1. Etudes et Conceptions   (trame accordeon-etude-et-conception)
+ *   2. Réalisations            (trame accordeon-realisations)
+ *   3. Galerie Studio          (trame accordeon-galerie-studio)
+ *
+ * Accordéon natif <details name> (exclusif, sans JS). Icône + → × via CSS.
+ * Chaque accordéon déploie une grille de cartes projet (zoom-card → lightbox
+ * global, flou au survol + « Agrandir »).
+ *
+ * CONTENU = verbatim extrait des trames (fautes conservées). IMAGES =
+ * placeholders en attendant les visuels Jonathan (sous-dossiers 01-/02-…).
+ * Voir _brief/trames-finales-specs/accordeon-*.md.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/astro/Section.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
-import { Image } from 'astro:assets';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
-
-// Placeholders visuels — WebP optimisés des vrais projets Jonathan
-import heroProjets from '@/assets/projets/cafe-de-paris/01-cover.webp';
-import imgRealisations from '@/assets/projets/airbnb/01-cover.webp';
-import imgConceptions from '@/assets/projets/coeur-urbain-parenthese/01-cover.webp';
 
 const schema = jsonLdGraph([
   organization(),
@@ -24,306 +25,322 @@ const schema = jsonLdGraph([
     { name: 'Projets', item: '/projets' },
   ]),
 ]);
+
+// ── Cartes ÉTUDES & CONCEPTIONS (vignette Twinmotion + overlay 4 lignes) ──
+const conceptions = [
+  { l1: 'Coeur urbain', l2: 'Jardin de ville', l3: 'Conception, 2024', l4: 'Corrèze' },
+  { l1: 'Frange urbaine', l2: 'Jardin familial', l3: 'Conception, 2026', l4: 'Corrèze' },
+  { l1: 'Domaine & Caractère', l2: 'Domaine familial', l3: 'Conception, 2023', l4: 'Corrèze' },
+  {
+    l1: 'Jardin Forêt',
+    l2: 'Projet Public',
+    l3: 'Conception, 2023',
+    l4: 'Polyclinique Chénieux – Limoges',
+  },
+  { l1: 'Micro urbain', l2: 'Patio extérieur', l3: 'Conception, 2022', l4: 'Corrèze' },
+  {
+    l1: 'Airbnb atypique',
+    l2: "Collab. archi. d'intérieur",
+    l3: 'Co-conception, 2025',
+    l4: 'Agde',
+  },
+  { l1: 'Airbnb atypique', l2: '', l3: 'Conception, 2026', l4: 'Valenciennes' },
+  { l1: 'Micro urbain', l2: "Terrasse d'appartement", l3: 'Conception, 2021', l4: 'Haute-Vienne' },
+  { l1: 'Domaine & Caractère', l2: 'Château classé XIIIs.', l3: 'Conception, 2024', l4: 'Corrèze' },
+];
+
+// ── Cartes RÉALISATIONS (overlay Titre / Établissement / Type / année / ville) ──
+const realisations = [
+  {
+    titre: 'Airbnb atypique',
+    etab: 'Jungle Room — Chammartz Suite',
+    annee: '2024',
+    ville: 'Uzerche',
+  },
+  { titre: 'Façade végétalisée', etab: 'Café de Paris — Brasserie', annee: '2025', ville: 'Brive' },
+  {
+    titre: 'Verrière végétalisée',
+    etab: 'Café de Paris — Brasserie',
+    annee: '2025',
+    ville: 'Brive',
+  },
+  {
+    titre: 'Glycine artificielle 5m',
+    etab: 'Atelier Elite Coiffure',
+    annee: '2022',
+    ville: 'Brive',
+  },
+  { titre: 'Plafond arboré', etab: 'Atelier Elite Coiffure', annee: '2026', ville: 'Brive' },
+  {
+    titre: 'Mur en bouteille floral',
+    etab: 'Café de Paris — Brasserie',
+    annee: '2025',
+    ville: 'Brive',
+  },
+  { titre: 'Jungle Work Box', etab: 'Schmidt Cuisine', annee: '2025', ville: 'Brive' },
+  { titre: 'Airbnb atypique', etab: 'Jungle Room — Eden Suite', annee: '2025', ville: 'Roanne' },
+  { titre: 'Mur végétalisé', etab: 'YG coiffure', annee: '2023', ville: 'Objat' },
+  { titre: 'Jardinet tropical', etab: '', annee: '2021', ville: 'Limoges' },
+];
+
+// ── Galerie Studio : grille de vignettes (placeholders en attendant photos) ──
+const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
 ---
 
 <BaseLayout
-  title="Projets — portefeuille réalisations & conceptions"
-  description="Portefeuille du Studio J Oliveira. Réalisations photographiées et conceptions immersives en Twinmotion. Jardins, intérieurs et lieux atypiques."
+  title="Projets — études, conceptions, réalisations & galerie studio"
+  description="Portefeuille du Studio J Oliveira. Études et conceptions en rendu Twinmotion, réalisations photographiées et galerie du studio."
   darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} is:inline />
   </Fragment>
 
-  {/* ───── HERO immersif ───── */}
+  {/* ───── HERO noir « Projets » ───── */}
   <section
     id="hero"
     data-section-label="Projets"
     data-theme="dark"
-    class="projets-hero relative isolate overflow-hidden bg-[var(--color-forest)] text-[var(--color-cream)]"
+    class="proj-hero"
+    aria-labelledby="proj-title"
   >
-    <div class="absolute inset-0 -z-10">
-      <Image
-        src={heroProjets}
-        alt=""
-        widths={[960, 1440, 1920, 2560]}
-        sizes="100vw"
-        quality={78}
-        format="webp"
-        class="projets-hero-img h-full w-full object-cover object-center"
-        loading="eager"
-        data-hero-zoom
-      />
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-[var(--color-forest)]/95 via-[var(--color-forest)]/50 to-transparent"
-        aria-hidden="true"
-      >
-      </div>
-    </div>
-
-    <div class="relative flex min-h-[100svh] flex-col justify-end">
-      <div class="mx-auto w-full max-w-[1400px] px-6 pt-40 pb-20 md:px-10 md:pt-48 md:pb-28">
-        <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/55 uppercase">
-          <span class="text-[var(--color-cream)]/50">Portefeuille</span>
-          &nbsp;·&nbsp; Projets
-        </p>
-        <h1
-          data-mask-reveal
-          data-mask-stagger="0.14"
-          class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-hero)] leading-[1.02] tracking-tight"
-        >
-          <span data-mask-line class="block pb-[0.05em]">Réalisations</span>
-          <span data-mask-line class="block pb-[0.12em] text-[var(--color-cream)]/55 italic">
-            & conceptions.
-          </span>
-        </h1>
-        <p
-          data-reveal="up"
-          data-reveal-delay="0.4"
-          class="mt-10 max-w-xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
-        >
-          Deux portefeuilles parallèles. D'un côté les projets livrés, photographiés dans leur
-          contexte réel. De l'autre les études en cours, parcourues en rendu photoréaliste.
-        </p>
-      </div>
-    </div>
+    <h1 id="proj-title" class="proj-hero__title">Projets</h1>
   </section>
 
-  {/* ───── 2 CARDS avec images de fond full-bleed ───── */}
-  <section
-    id="portefeuille"
-    data-section-label="Portefeuille"
-    class="projets-split relative bg-[var(--color-cream)]"
-    aria-labelledby="portefeuille-title"
-  >
-    <h2 id="portefeuille-title" class="sr-only">Portefeuille</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2">
-      <a href="/realisations" class="projets-card group" data-reveal="up">
-        <div class="projets-card-visual">
-          <Image
-            src={imgRealisations}
-            alt="Réalisations — projets livrés du Studio J Oliveira"
-            widths={[720, 1080, 1440]}
-            sizes="(min-width: 768px) 50vw, 100vw"
-            quality={80}
-            format="webp"
-            class="projets-card-img"
-            loading="lazy"
-          />
-          <div class="projets-card-veil" aria-hidden="true"></div>
-          <span class="projets-card-num" aria-hidden="true">01</span>
+  {/* ───── 3 accordéons exclusifs ───── */}
+  <section data-theme="dark" class="proj-acc" aria-label="Portefeuille du studio">
+    {/* 1 · Études et Conceptions */}
+    <details class="proj-acc__item" name="projets-acc">
+      <summary class="proj-acc__summary">
+        <span class="proj-acc__title">Etudes et Conceptions</span>
+        <span class="proj-acc__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="proj-acc__panel">
+        <div class="proj-grid">
+          {
+            conceptions.map((c) => (
+              <button
+                class="zoom-card proj-card"
+                data-zoom-src=""
+                data-zoom-alt={`${c.l1} — ${c.l4}`}
+              >
+                <span class="proj-card__ph" aria-hidden="true" />
+                <span class="zoom-card__pill">Agrandir</span>
+                <span class="proj-card__overlay">
+                  <span class="proj-card__l1">{c.l1}</span>
+                  {c.l2 && <span class="proj-card__l">{c.l2}</span>}
+                  <span class="proj-card__l">{c.l3}</span>
+                  <span class="proj-card__l">{c.l4}</span>
+                </span>
+              </button>
+            ))
+          }
         </div>
-        <div class="projets-card-body">
-          <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/65 uppercase">
-            01 &nbsp;·&nbsp; Portefeuille
-          </p>
-          <h3
-            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
-          >
-            <em class="italic">Réalisations</em>.
-          </h3>
-          <p
-            class="mt-6 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
-          >
-            Projets menés à terme, photographiés dans leur contexte réel. Jardins, intérieurs
-            végétalisés, LCD atypiques.
-          </p>
-          <span class="projets-card-cta">
-            <span>Parcourir les réalisations</span>
-            <span aria-hidden="true">→</span>
-          </span>
-        </div>
-      </a>
-
-      <a href="/conceptions" class="projets-card group" data-reveal="up" data-reveal-delay="0.15">
-        <div class="projets-card-visual">
-          <Image
-            src={imgConceptions}
-            alt="Conceptions — études en rendu photoréaliste du Studio J Oliveira"
-            widths={[720, 1080, 1440]}
-            sizes="(min-width: 768px) 50vw, 100vw"
-            quality={80}
-            format="webp"
-            class="projets-card-img"
-            loading="lazy"
-          />
-          <div class="projets-card-veil" aria-hidden="true"></div>
-          <span class="projets-card-num" aria-hidden="true">02</span>
-        </div>
-        <div class="projets-card-body">
-          <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-cream)]/65 uppercase">
-            02 &nbsp;·&nbsp; Portefeuille
-          </p>
-          <h3
-            class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-4xl)] leading-[1.02] text-[var(--color-cream)] md:text-[length:var(--text-5xl)]"
-          >
-            <em class="italic">Conceptions</em>.
-          </h3>
-          <p
-            class="mt-6 max-w-md text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85"
-          >
-            Études en cours, parcourues au scroll en rendu Twinmotion photoréaliste. Expériences
-            immersives, signature cinématographique.
-          </p>
-          <span class="projets-card-cta">
-            <span>Parcourir les conceptions</span>
-            <span aria-hidden="true">→</span>
-          </span>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  {/* ───── Passerelle vers les 2 branches de services ───── */}
-  <Section variant="cream" topDivider id="branches" sectionLabel="Branches">
-    <div class="mx-auto max-w-3xl text-center" data-reveal="up">
-      <p class="font-mono text-[11px] tracking-[0.26em] text-[var(--color-forest)]/55 uppercase">
-        Les deux branches du studio
-      </p>
-      <p
-        class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-[1.25] text-[var(--color-forest)]/85 md:text-[length:var(--text-3xl)]"
-      >
-        Tous ces projets sont issus des deux branches du studio —<br />
-        <a
-          href="/architecture-paysagere"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)] hover:text-[var(--color-forest)]"
-          >architecture paysagère</a
-        > et <a
-          href="/amenagement-vegetal-interieur"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)] hover:text-[var(--color-forest)]"
-          >aménagement végétalisé d'intérieur</a
-        >.
-      </p>
-    </div>
-  </Section>
-
-  {/* ───── CTA final ───── */}
-  <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
-    <div class="mx-auto max-w-4xl text-center" data-reveal="slow">
-      <p class="font-mono text-xs tracking-[0.26em] text-[var(--color-ink)]/55 uppercase">
-        <span class="text-[var(--color-ink)]/40">04</span> &nbsp;·&nbsp; Engager la conversation
-      </p>
-      <h2
-        class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02]"
-      >
-        Un projet à <em class="text-[var(--color-ink)]/55 italic">étudier</em> ?
-      </h2>
-      <div class="mt-12 flex justify-center">
-        <CtaLink href="/contact" label="Démarrer un projet" tone="dark" size="lg" magnetic={0} />
       </div>
-    </div>
-  </Section>
+    </details>
+
+    {/* 2 · Réalisations */}
+    <details class="proj-acc__item" name="projets-acc">
+      <summary class="proj-acc__summary">
+        <span class="proj-acc__title">Réalisations</span>
+        <span class="proj-acc__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="proj-acc__panel">
+        <div class="proj-grid proj-grid--3">
+          {
+            realisations.map((r) => (
+              <button
+                class="zoom-card proj-card"
+                data-zoom-src=""
+                data-zoom-alt={`${r.titre} — ${r.ville}`}
+              >
+                <span class="proj-card__ph" aria-hidden="true" />
+                <span class="zoom-card__pill">Agrandir</span>
+                <span class="proj-card__overlay">
+                  <span class="proj-card__l1">{r.titre}</span>
+                  {r.etab && <span class="proj-card__l">{r.etab}</span>}
+                  <span class="proj-card__l">Réalisation, {r.annee}</span>
+                  <span class="proj-card__l">{r.ville}</span>
+                </span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </details>
+
+    {/* 3 · Galerie Studio */}
+    <details class="proj-acc__item" name="projets-acc">
+      <summary class="proj-acc__summary">
+        <span class="proj-acc__title">Galerie Studio</span>
+        <span class="proj-acc__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="proj-acc__panel">
+        <div class="proj-grid proj-grid--3">
+          {
+            galerie.map((n) => (
+              <button
+                class="zoom-card proj-card proj-card--gal"
+                data-zoom-src=""
+                data-zoom-alt={`Galerie studio ${n}`}
+              >
+                <span class="proj-card__ph" aria-hidden="true" />
+                <span class="zoom-card__pill">Agrandir</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </details>
+  </section>
 
   <style>
-    .projets-hero-img {
-      transform: scale(1.06);
-      transform-origin: center;
-      will-change: transform, filter;
+    /* Hero noir plein, H1 « Projets » bas-gauche, Bold. */
+    .proj-hero {
+      width: 100%;
+      min-height: 100svh;
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+      display: flex;
+      align-items: flex-end;
+      box-sizing: border-box;
+      padding: clamp(2rem, 6vh, 5rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 8vh, 6rem);
+    }
+    .proj-hero__title {
+      margin: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 14vw, 15rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      color: var(--color-cream);
     }
 
-    /* Cards avec images de fond full-bleed */
-    .projets-card {
+    /* Accordéons sur fond noir, texte cream. */
+    .proj-acc {
+      width: 100%;
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+      padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
+    }
+    .proj-acc__item {
+      border-top: 1px solid color-mix(in oklab, var(--color-cream) 20%, transparent);
+    }
+    .proj-acc__item:last-of-type {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 20%, transparent);
+    }
+    .proj-acc__summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .proj-acc__summary::-webkit-details-marker {
+      display: none;
+    }
+    .proj-acc__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 4vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--color-cream);
+    }
+    /* Icône + (fermé) → × (ouvert) via rotation 45°. */
+    .proj-acc__icon {
       position: relative;
+      flex-shrink: 0;
+      width: clamp(22px, 2.4vw, 34px);
+      height: clamp(22px, 2.4vw, 34px);
+      transition: transform 0.4s var(--ease-out-editorial);
+    }
+    .proj-acc__icon::before,
+    .proj-acc__icon::after {
+      content: '';
+      position: absolute;
+      background-color: var(--color-cream);
+    }
+    .proj-acc__icon::before {
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      transform: translateY(-50%);
+    }
+    .proj-acc__icon::after {
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      transform: translateX(-50%);
+    }
+    .proj-acc__item[open] .proj-acc__icon {
+      transform: rotate(45deg);
+    }
+    .proj-acc__panel {
+      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
+    }
+
+    /* Grille de cartes projet. */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(1rem, 2.5vw, 2rem);
+    }
+    @media (min-width: 768px) {
+      .proj-grid--3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .proj-card {
+      aspect-ratio: 4 / 5;
+    }
+    .proj-card--gal {
+      aspect-ratio: 3 / 4;
+    }
+    /* Placeholder visuel (en attendant les vraies photos Jonathan). */
+    .proj-card__ph {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--color-cream) 10%, var(--color-ink)),
+        color-mix(in oklab, var(--color-cream) 10%, var(--color-ink)) 14px,
+        color-mix(in oklab, var(--color-cream) 6%, var(--color-ink)) 14px,
+        color-mix(in oklab, var(--color-cream) 6%, var(--color-ink)) 28px
+      );
+    }
+    /* Overlay infos (bloc beige posé sur la carte). */
+    .proj-card__overlay {
+      position: absolute;
+      top: clamp(0.6rem, 1.2vw, 1rem);
+      left: clamp(0.6rem, 1.2vw, 1rem);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      text-decoration: none;
+      gap: 0.1rem;
+      padding: 0.6rem 0.85rem;
+      background-color: color-mix(in oklab, var(--color-cream) 92%, transparent);
       color: var(--color-ink);
-      background: var(--color-forest);
-      min-height: 560px;
-      isolation: isolate;
+      border-radius: 10px;
+      text-align: left;
+      max-width: 80%;
     }
-    @media (min-width: 768px) {
-      .projets-card {
-        min-height: 680px;
-      }
+    .proj-card__l1 {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+      line-height: 1.1;
     }
-    .projets-card-visual {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-    }
-    .projets-card-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      transform: scale(1.05);
-      transition: transform 1.2s var(--ease-out-editorial);
-    }
-    .projets-card:hover .projets-card-img,
-    .projets-card:focus-visible .projets-card-img {
-      transform: scale(1.12);
-    }
-    .projets-card-veil {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        color-mix(in oklab, var(--color-forest) 92%, transparent) 0%,
-        color-mix(in oklab, var(--color-forest) 60%, transparent) 45%,
-        color-mix(in oklab, var(--color-forest) 30%, transparent) 100%
-      );
-      transition: opacity 0.5s var(--ease-out-editorial);
-    }
-    .projets-card:hover .projets-card-veil,
-    .projets-card:focus-visible .projets-card-veil {
-      opacity: 0.85;
-    }
-    .projets-card-num {
-      position: absolute;
-      top: 1.75rem;
-      right: 2rem;
-      font-family: var(--font-heading), serif;
-      font-style: italic;
-      font-size: clamp(6rem, 10vw, 10rem);
-      line-height: 0.85;
-      color: var(--color-cream);
-      opacity: 0.22;
-      pointer-events: none;
-      user-select: none;
-      font-variation-settings:
-        'opsz' 144,
-        'SOFT' 80;
-    }
-
-    .projets-card-body {
-      margin-top: auto;
-      padding: 3rem 2rem 3rem;
-      position: relative;
-      z-index: 1;
-    }
-    @media (min-width: 768px) {
-      .projets-card-body {
-        padding: 4rem 4rem 4rem;
-      }
-    }
-    .projets-card-cta {
-      margin-top: 2.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding-bottom: 0.25rem;
-      font-family: var(--font-mono), ui-monospace, monospace;
-      font-size: 11px;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--color-cream);
-      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 45%, transparent);
-      width: fit-content;
-      transition:
-        color 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.4s var(--ease-out-editorial);
-    }
-    .projets-card:hover .projets-card-cta,
-    .projets-card:focus-visible .projets-card-cta {
-      color: var(--color-cream);
-      border-color: var(--color-cream);
-      transform: translateX(4px);
+    .proj-card__l {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+      line-height: 1.25;
+      color: color-mix(in oklab, var(--color-ink) 80%, transparent);
     }
   </style>
 </BaseLayout>
