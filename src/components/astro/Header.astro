@@ -1,17 +1,15 @@
 ---
 /*
- * Header éditorial — barre du haut avec 3 zones : logo · CTA centré · Menu.
+ * Header — refonte DA finale 2026-06-04 (trames « modif finales »).
  *
- * Refonte 2026-04-30 (demande Jonathan) :
- *  - Topbar méta supprimée (tel/email/calendrier) → header simplifié.
- *  - CTA "Démarrer un projet" recentré au milieu (grid 3 cols).
- *  - Auto-hide au scroll : header caché par défaut sur darkHero (home),
- *    réapparaît dès qu'on scroll vers le haut. Sur autres pages, hide
- *    au scroll-down / show au scroll-up classique.
+ * Structure trame (cf. coeur urbain) sur 2 rangées :
+ *   1. Grand CTA pleine largeur « Démarrer un projet » = carte BEIGE à coins
+ *      arrondis, libellé noir centré. Survol → fond VIOLET. Clic → /demarrer.
+ *      (Annotation trame « SURVOL + CLIC TOP BARRE ».)
+ *   2. Juste dessous : logo `oliveira` à gauche + « MENU » + burger à droite.
  *
- *   - Logo : ink (gris sombre) sur le fond cream du Header.
- *   - Menu trigger : ink.
- *   - CTA pill : latérite bg + cream texte, toujours.
+ * Fond beige, texte/logo noir. Auto-hide au scroll conservé (script bas).
+ * Le bouton `data-menu-trigger` est préservé tel quel pour le menu overlay.
  */
 
 interface Props {
@@ -30,59 +28,37 @@ const { darkHero = false } = Astro.props;
   data-theme="light"
   data-dark-hero={darkHero ? 'true' : 'false'}
 >
-  <!-- Main row : logo flush-left · CTA centré · Menu flush-right.
-       v8 2026-05-15 retour Morgan : largeur totale viewport, pas de
-       max-width sur le wrapper. Logo et MENU touchent les bords. -->
-  <div
-    class="site-header__main grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-5 md:px-10 md:py-6"
+  {/* Rangée 1 — gros CTA « Démarrer un projet » pleine largeur */}
+  <a
+    href="/demarrer-un-projet"
+    class="site-header__cta"
+    data-cursor-skip
+    aria-label="Démarrer un projet"
   >
+    <span class="site-header__cta-label">Démarrer un projet</span>
+  </a>
+
+  {/* Rangée 2 — logo flush-left · MENU flush-right */}
+  <div class="site-header__bar">
     <a
       href="/"
-      class="logo-swap relative flex shrink-0 items-center justify-self-start"
+      class="logo-swap relative flex shrink-0 items-center"
       aria-label="Studio J Oliveira — accueil"
       data-header-logo
     >
-      <span
-        class="site-logo block h-9 w-[150px] md:h-10 md:w-[167px] lg:h-11 lg:w-[183px]"
-        aria-hidden="true"></span>
+      <span class="site-logo block" aria-hidden="true"></span>
       <span class="sr-only">Studio J Oliveira</span>
-    </a>
-
-    {
-      /* CTA principal toujours visible (refonte 2026-05-11 — audit UI P0-2 :
-        l'ancien `hidden md:inline-flex` cachait le CTA n°1 d'acquisition
-        sur mobile). Sur sm-, on raccourcit le libellé en « Projet » pour
-        tenir entre logo et burger sur 375px. */
-    }
-    <a
-      href="/demarrer-un-projet"
-      class="cta-pill group inline-flex items-center gap-2 justify-self-center rounded-full px-3 py-2 text-[12px] tracking-[0.04em] transition-all sm:gap-3 sm:px-5 sm:py-3 sm:text-[13px]"
-      data-magnetic="0.25"
-      data-cursor-skip
-    >
-      <span class="cta-dot inline-block h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
-      <span class="hidden sm:inline">Démarrer un projet</span>
-      <span class="sm:hidden">Projet</span>
-      {/* Flèche image Jonathan (white, refonte v3 2026-05-15). */}
-      <img
-        src="/brand/fleche-white.webp"
-        alt=""
-        aria-hidden="true"
-        class="cta-pill__arrow"
-        width="32"
-        height="32"
-      />
     </a>
 
     <button
       type="button"
-      class="menu-trigger relative flex items-center gap-3 justify-self-end text-[12px] tracking-[0.24em] uppercase"
+      class="menu-trigger relative flex items-center gap-3 text-[12px] tracking-[0.24em] uppercase"
       aria-label="Ouvrir le menu principal"
       aria-expanded="false"
       aria-controls="primary-menu"
       data-menu-trigger
     >
-      <span class="hidden sm:inline">Menu</span>
+      <span>Menu</span>
       <span class="menu-bars flex flex-col gap-1.5" aria-hidden="true">
         <span class="block h-px w-6 bg-current transition-transform"></span>
         <span class="block h-px w-6 bg-current transition-transform"></span>
@@ -92,112 +68,75 @@ const { darkHero = false } = Astro.props;
 </header>
 
 <style>
-  /* Header — refonte DA Jonathan 2026-05-15 : fond noir profond + cream.
-     Le --color-ink étant désormais aliasé sur --color-black-deep, on
-     est cohérent avec le reste de la home. */
+  /* Header beige sitewide (DA finale). */
   .site-header {
-    background-color: var(--color-black-deep);
-    color: var(--color-cream);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 8%, transparent);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
     transform: translateY(0);
     transition: transform 0.55s var(--ease-out-editorial);
     will-change: transform;
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(1rem, 3vw, 2.5rem) clamp(0.4rem, 1vw, 0.9rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vw, 0.9rem);
   }
   .site-header.is-hidden {
     transform: translateY(-100%);
   }
 
-  /* Logo — cream sur fond ink (mask inversé via background-color). */
-  .site-logo {
-    background-color: var(--color-cream);
-    -webkit-mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
-    mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
+  /* Rangée 1 — CTA carte beige bordée, coins arrondis, libellé centré.
+     Survol → fond violet (accent DA finale). */
+  .site-header__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: clamp(0.85rem, 1.8vw, 1.5rem);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 28%, transparent);
+    border-radius: clamp(14px, 1.8vw, 26px);
+    text-decoration: none;
+    color: var(--color-ink);
+    background-color: transparent;
+    transition:
+      background-color 0.4s var(--ease-out-editorial),
+      border-color 0.4s var(--ease-out-editorial);
   }
-
-  /* CTA pill — refonte v2 2026-05-15 (retour Morgan) : magnetic + dot
-     clignotant + halo respirant pour inciter au clic. Fond rouge plein +
-     texte cream Inter bold UPPERCASE. */
-  .cta-pill {
-    position: relative;
-    background-color: var(--color-red);
-    color: var(--color-cream);
-    border: 1px solid var(--color-red);
+  .site-header__cta-label {
     font-family: var(--font-heading), sans-serif;
     font-weight: 700;
-    text-transform: uppercase;
-    transition:
-      background-color 0.3s var(--ease-out-editorial),
-      border-color 0.3s var(--ease-out-editorial),
-      color 0.3s var(--ease-out-editorial),
-      box-shadow 0.4s var(--ease-out-editorial);
-    will-change: transform, box-shadow;
-    /* Halo rouge respirant — pulse douce sur l'extérieur du pill pour
-       attirer l'œil sans agresser. Synchronisé avec le dot. */
-    animation: cta-pill-halo 2.6s ease-in-out infinite;
+    font-size: clamp(0.95rem, 1.3vw, 1.25rem);
+    letter-spacing: 0;
+    color: var(--color-ink);
   }
-  .cta-pill:hover {
-    background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
-    border-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
-    /* Le hover renforce le halo (état activé) et fige le pulse interne. */
-    box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-red) 32%, transparent);
-    animation-play-state: paused;
-  }
-  @keyframes cta-pill-halo {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-red) 40%, transparent);
-    }
-    50% {
-      box-shadow: 0 0 0 8px color-mix(in oklab, var(--color-red) 0%, transparent);
-    }
-  }
-  /* Dot interne — clignotement signature (pulse opacity + scale). */
-  .cta-pill .cta-dot {
-    background-color: var(--color-cream);
-    transition: transform 0.4s var(--ease-out-editorial);
-    animation: cta-pill-dot 1.4s ease-in-out infinite;
-  }
-  @keyframes cta-pill-dot {
-    0%,
-    100% {
-      opacity: 0.6;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.45);
-    }
-  }
-  .cta-pill:hover .cta-dot {
-    transform: scale(1.55);
-    opacity: 1;
-    animation-play-state: paused;
-  }
-  /* Flèche image (refonte v3 2026-05-15) — remplace le glyphe → par
-     la flèche blanche Jonathan. translateX au hover comme avant. */
-  .cta-pill__arrow {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-    pointer-events: none;
-    transition: transform 0.4s var(--ease-out-editorial);
-  }
-  .cta-pill:hover .cta-pill__arrow {
-    transform: translateX(4px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cta-pill,
-    .cta-pill .cta-dot {
-      animation: none;
+  @media (hover: hover) {
+    .site-header__cta:hover,
+    .site-header__cta:focus-visible {
+      background-color: var(--color-violet);
+      border-color: var(--color-violet);
     }
   }
 
-  /* Burger ↔ X — animation préservée (refonte 2026-04-24 designbyad). */
+  /* Rangée 2 — logo gauche · MENU droite */
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 clamp(0.25rem, 1vw, 0.75rem);
+  }
+  .site-logo {
+    height: clamp(28px, 3vw, 40px);
+    width: clamp(130px, 13vw, 175px);
+    background-color: var(--color-ink);
+    -webkit-mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
+    mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
+  }
+
+  /* Burger ↔ X — animation préservée (designbyad). */
   .menu-trigger {
     cursor: pointer;
     padding: 0.4rem 0;
+    color: var(--color-ink);
   }
   .menu-bars {
     position: relative;
@@ -243,18 +182,11 @@ const { darkHero = false } = Astro.props;
     bottom: 4px;
     transform: rotate(-45deg);
   }
-  .menu-trigger[aria-expanded='true']:hover .menu-bars > span:first-child {
-    transform: rotate(45deg) scale(1.1);
-  }
-  .menu-trigger[aria-expanded='true']:hover .menu-bars > span:last-child {
-    transform: rotate(-45deg) scale(1.1);
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .site-header,
     .site-logo,
-    .menu-trigger .menu-bars > span,
-    .cta-pill {
+    .menu-trigger .menu-bars > span {
       transition: none;
       animation: none;
     }
@@ -263,12 +195,10 @@ const { darkHero = false } = Astro.props;
 
 <script>
   /*
-   * Header auto-hide (refonte 2026-04-30 demande Jonathan) :
-   *  - Sur la home (data-dark-hero=true), header caché par défaut tant
-   *    qu'on est dans le hero. Réapparaît dès le premier scroll vers le haut.
-   *  - Sur autres pages : visible par défaut, hide au scroll-down (au-delà
-   *    de 100px), show au scroll-up. Toujours visible si scrollY < 80.
-   *  - Anti-bounce : seuil minimal de 6px de delta pour éviter les flickers.
+   * Header auto-hide (conservé) :
+   *  - Home (data-dark-hero=true) : caché tant qu'on est dans le hero,
+   *    réapparaît au scroll vers le haut.
+   *  - Autres pages : visible, hide au scroll-down, show au scroll-up.
    */
   let headerWired = false;
   let resizeObserver: ResizeObserver | null = null;
@@ -306,13 +236,10 @@ const { darkHero = false } = Astro.props;
       if (Math.abs(delta) < HIDE_DELTA_PX) return;
 
       if (y < TOP_THRESHOLD_PX) {
-        // Tout en haut : caché si darkHero (zone hero), visible sinon.
         header.classList.toggle('is-hidden', isDarkHero);
       } else if (delta > 0 && y > HIDE_THRESHOLD_PX) {
-        // Scroll vers le bas : on cache.
         header.classList.add('is-hidden');
       } else if (delta < 0) {
-        // Scroll vers le haut : on montre.
         header.classList.remove('is-hidden');
       }
 
