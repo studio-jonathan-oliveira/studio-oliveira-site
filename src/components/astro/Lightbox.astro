@@ -166,7 +166,10 @@
       const card = target?.closest?.('[data-zoom-src]') as HTMLElement | null;
       if (card) {
         e.preventDefault();
-        open(card.dataset.zoomSrc || '', card.dataset.zoomAlt || '');
+        // Placeholder sans image (ex: /projets en attente des visuels) →
+        // on n'ouvre pas un overlay vide.
+        const src = card.dataset.zoomSrc;
+        if (src) open(src, card.dataset.zoomAlt || '');
         return;
       }
       if (target?.closest?.('[data-lightbox-close]') || target === overlay) {

@@ -75,54 +75,64 @@ const { darkHero = false } = Astro.props;
     transform: translateY(0);
     transition: transform 0.55s var(--ease-out-editorial);
     will-change: transform;
-    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(1rem, 3vw, 2.5rem) clamp(0.4rem, 1vw, 0.9rem);
+    /* Pas de padding horizontal → la barre CTA est BORD À BORD (pleine
+       largeur écran). */
+    padding: 0 0 clamp(0.5rem, 1vw, 1rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(0.4rem, 1vw, 0.9rem);
+    gap: clamp(0.5rem, 1vw, 1rem);
   }
   .site-header.is-hidden {
     transform: translateY(-100%);
   }
 
-  /* Rangée 1 — CTA carte beige bordée, coins arrondis, libellé centré.
-     Survol → fond violet (accent DA finale). */
+  /* Rangée 1 — gros CTA pleine largeur (bord à bord), libellé centré.
+     Repos : beige. Survol → NOIR (libellé cream). Clic/actif → VIOLET.
+     Plus haute / plus grosse (retour Morgan 2026-06-04). */
   .site-header__cta {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: clamp(0.85rem, 1.8vw, 1.5rem);
-    border: 1px solid color-mix(in oklab, var(--color-ink) 28%, transparent);
-    border-radius: clamp(14px, 1.8vw, 26px);
+    padding: clamp(1.3rem, 2.6vw, 2.4rem);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 18%, transparent);
     text-decoration: none;
     color: var(--color-ink);
-    background-color: transparent;
+    background-color: var(--color-cream);
     transition:
-      background-color 0.4s var(--ease-out-editorial),
-      border-color 0.4s var(--ease-out-editorial);
+      background-color 0.35s var(--ease-out-editorial),
+      color 0.35s var(--ease-out-editorial);
   }
   .site-header__cta-label {
     font-family: var(--font-heading), sans-serif;
     font-weight: 700;
-    font-size: clamp(0.95rem, 1.3vw, 1.25rem);
+    font-size: clamp(1.1rem, 1.7vw, 1.6rem);
     letter-spacing: 0;
-    color: var(--color-ink);
+    color: inherit;
   }
   @media (hover: hover) {
-    .site-header__cta:hover,
-    .site-header__cta:focus-visible {
-      background-color: var(--color-violet);
-      border-color: var(--color-violet);
+    .site-header__cta:hover {
+      background-color: var(--color-ink);
+      color: var(--color-cream);
     }
   }
+  .site-header__cta:focus-visible {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+  }
+  /* Clic : flash violet avant la navigation vers /demarrer. */
+  .site-header__cta:active {
+    background-color: var(--color-violet);
+    color: var(--color-ink);
+  }
 
-  /* Rangée 2 — logo gauche · MENU droite */
+  /* Rangée 2 — logo gauche · MENU droite (avec marge latérale propre) */
   .site-header__bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 clamp(0.25rem, 1vw, 0.75rem);
+    padding: 0 clamp(1rem, 3vw, 2.5rem);
   }
   .site-logo {
     height: clamp(28px, 3vw, 40px);
