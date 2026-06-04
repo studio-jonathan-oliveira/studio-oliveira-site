@@ -18,7 +18,6 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import { SITE } from '@/lib/site-config';
 import { jsonLdGraph, breadcrumbs, localBusiness, organization, person } from '@/lib/schema-org';
 import ArchitecturesAccordion from '@/components/islands/ArchitecturesAccordion';
 
@@ -40,11 +39,11 @@ const schema = jsonLdGraph([
 // Bienvenue — 5 paragraphes Jonathan VERBATIM trame (OCR consolidé).
 // v5 2026-05-15 : « Studio » majuscule + point après le « J » sur P1.
 const bienvenue = [
-  "Le Studio J. Oliveira a été créé en fin 2021 à la suite de 4 ans d'expérience en tant que chef de projet et dessinateur projeteur dans une entreprise d'aménagements paysagers à Limoges.",
-  "Fort d'une expérience de plus de 9 ans dans l'architecture paysagère et diplômé d'une Licence Pro conception paysagère, j'ai construit mon design autour de mon admiration pour les paysages naturels et immersifs ainsi que de la pluralité des architectures qui animent nos espaces de vie.",
+  "Le studio J. Oliveira a été crée en fin 2021 à la suite de 4 ans d'expérience en tant que chef de projet et dessinateur projeteur dans une entreprise d'aménagements paysagers à Limoges.",
+  "Fort d'une expérience de plus de 10 ans dans l'architecture paysagère et diplômé d'une Licence Pro conception paysagère, j'ai construit mon design autour de mon admiration pour les paysages naturels et immersifs ainsi que de la pluralité des architectures qui animent nos espaces de vie.",
   "Le design est un art qui lie fonctionnalité, ergonomie et esthétique. C'est dans cette dimension que le studio conçoit ses projets.",
-  "Le végétal, quant à lui, représente le liant de l'unité de l'ensemble des composantes spatiales pour créer cet environnement agréable et durable.",
-  "Ce qu'il faut bien comprendre, c'est que je ne vends pas qu'une étude. Je vends par une méthode précise, une réflexion et une structuration globale qui sécurise un résultat final pour garantir une expérience d'usage durable.",
+  "Le végétal, quant à lui, représente le liant de l'ensemble des composantes spatiales pour créer cet environnement agréable et durable.",
+  "Je construit, par une méthode précise, une réflexion et une structuration globale qui sécurise un résultat final pour garantir une expérience d'usage durable.",
 ];
 
 // 4 architectures Jonathan — libellés Title Case (respect strict trame) +
@@ -53,22 +52,22 @@ const architectures = [
   {
     titre: 'Architecture Bati',
     description:
-      "L'architecture bati regroupe la dénomination de l'habitat, le lieu où les gens vivent, mangent et dorment naturellement. Cette structure essentielle orchestre la propriété comme un axe central de toutes les circulations et définie le tempo esthétique de toutes les architectures qui gravitent autour.",
+      "L'architecture bâtie regroupe la dénomination de l'habitat, le lieu où les gens vivent, mangent et dorment naturellement. Cette structure essentielle orchestre la propriété comme un axe central de toutes les circulations et définie le tempo esthétique de toutes les architectures qui gravitent autour.",
   },
   {
-    titre: "Architecture d'intérieur",
+    titre: "Architecture d'Intérieur",
     description:
       "Cette architecture qui anime nos quotidiens intérieurs tant dans le monde du pro que du perso est surement celle qui impacte le plus notre perception et interpretation de l'espace. Elle est le guide de votre personnalité et influence toutes les autres architectures connectées.",
   },
   {
     titre: 'Architecture Paysagère',
     description:
-      "A tort déconsidérée comme une architecture à part entière, elle se positionne bel et bien comme une structure de la vie à l'extérieur de l'environnement bati et connecté à l'entité de l'habitat. L'architecture paysagère accueille, reçoit, guide et prolonge toutes les expériences de vie de l'extérieur vers l'intérieur et de l'intérieur vers l'extérieur.",
+      "A tort déconsidérée comme une architecture à part entière, elle se positionne bel et bien comme une structure de la vie à l'extérieur de l'environnement bati et connectée à l'entité de l'habitat. L'architecture paysagère accueille, reçoit, guide et prolonge toutes les expériences de vie de l'extérieur vers l'intérieur et de l'intérieur vers l'extérieur.",
   },
   {
     titre: 'Architecture Biophilique',
     description:
-      "C'est l'architecture la plus vivante de toutes car elle connecte toutes les architectures en une seule architecture avec comme seul objectif : reproduire le contexte environnemental naturel pour apporter les bénéfices aux usagers des espaces non naturels. Elle prend, dans sa conception, les aspects naturels et les combine aux environnements humains pour rendre une synthèse expérientielle de l'habitat. C'est cette architecture que le Studio J Oliveira vous propose à travers son design.",
+      "C'est l'architecture la plus vivante de toutes car elle connecte toutes les architectures en une seule avec comme seul objectif : reproduire le contexte environnemental naturel pour apporter les bénéfices aux usagers des espaces non naturels. Elle prend, dans sa conception, les aspects naturels et les combine aux environnements humains pour rendre une synthèse expérientielle de l'habitat. C'est cette architecture que le Studio J. Oliveira vous propose à travers son design.",
   },
 ];
 
@@ -77,20 +76,19 @@ const architectures = [
 // studio) au plus ancien (BAC).
 const parcours = [
   {
-    annee: `Création du Studio J Oliveira — ${SITE.foundedYear}`,
-    detail: 'Studio de design biophilique indépendant, Brive-la-Gaillarde',
+    annee: 'Création du studio — 2021',
+    detail: 'Studio de conception paysagère en indépendant',
   },
   {
-    annee: 'Chef de projet / Dessinateur-projeteur',
-    detail: "4,5 ans — entreprise d'aménagements paysagers, Limoges",
+    annee: 'Chef de projet / Dessinateur projeteur',
+    detail: "4.5 ans / Entreprise d'aménagements paysagers, Limoges",
   },
   {
-    annee: 'Licence Pro Conception et aménagement paysagers',
-    detail: '1 an, Diplômé avec mention',
+    annee: 'Licence Pro / Conception paysagère',
+    detail: '1 an / Diplômé avec mention',
   },
-  { annee: 'BTSA Aménagement paysagers', detail: '2 ans, Diplômé avec mention' },
-  { annee: 'Bac Pro Travaux paysagers', detail: '1 an, Diplômé avec mention' },
-  { annee: 'BAC ES', detail: 'Diplômé avec mention' },
+  { annee: 'BTSA / Aménagements paysagers', detail: '2 ans / Diplômé avec mention' },
+  { annee: 'BAC PRO / Travaux paysagers', detail: '1 an / Diplômé avec mention' },
 ];
 ---
 
@@ -102,35 +100,40 @@ const parcours = [
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO BIENVENUE (noir profond) ═════════════════════════ */}
+  {/* ═════════ 1 · HERO « Bienvenue » (beige) ════════════════════════════ */}
   <section
     id="bienvenue"
     data-section-label="Studio"
-    data-theme="dark"
-    class="studio-bienvenue full-bleed-bg relative overflow-hidden bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="studio-hero full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="bienvenue-title"
   >
-    <div class="studio-bienvenue__inner">
-      <div class="studio-bienvenue__text" data-reveal="up">
-        {
-          /* H1 VERBATIM trame Jonathan — retour Morgan v6 : pas d'anim,
-           simple bloc Bold UPPERCASE aligné à gauche. */
-        }
-        <h1 id="bienvenue-title" class="studio-bienvenue__title">
-          BIENVENUE DANS LE STUDIO J OLIVEIRA, STUDIO D'ORIGINE IBERIQUE AXE SUR LE DESIGN,
-          L'ARCHITECTURE ET LA SCENOGRAPHIE VEGETALE EN FRANCE.
-        </h1>
+    <h1 id="bienvenue-title" class="sr-only">
+      Bienvenue dans le Studio J Oliveira, studio d'origine ibérique axé sur le design,
+      l'architecture et la scénographie végétale en France — Brive, Bordeaux, Limoges.
+    </h1>
+    <p class="studio-hero__word" aria-hidden="true">Bienvenue</p>
+  </section>
 
+  {/* ═════════ 2 · INTRO texte + photo (beige) ═══════════════════════════ */}
+  <section
+    id="intro"
+    data-section-label="Le studio"
+    data-theme="light"
+    class="studio-intro full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    aria-label="Présentation du studio"
+  >
+    <div class="studio-bienvenue__inner">
+      <div class="studio-bienvenue__text">
         {
-          /* Body : UN SEUL words-fade pour TOUT le bloc 5 paragraphes
-           ensemble (retour Morgan v6). Stagger très court + window tight
-           pour que tout devienne lisible vite, sans devoir scroller loin. */
+          /* Apparition wavy/vague mot par mot au scroll (trame « ANIMATION DU
+            TEXTE STUDIO… »), même mécanique que les accordéons. */
         }
         <div
           class="studio-bienvenue__body"
           data-words-fade
           data-words-fade-stagger="0.004"
-          data-words-fade-window="0.05,0.45"
+          data-words-fade-window="0.05,0.5"
         >
           {bienvenue.map((para) => <p>{para}</p>)}
         </div>
@@ -155,24 +158,19 @@ const parcours = [
   <section
     id="manifeste"
     data-section-label="Manifeste"
-    data-theme="red"
-    class="studio-manifeste full-bleed-bg relative overflow-hidden bg-[var(--color-red)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="studio-manifeste full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Manifeste du Studio J Oliveira"
   >
     <div class="studio-manifeste__inner">
-      {
-        /* Phrase manifeste VERBATIM trame. Bold UPPERCASE. Animation
-         words-fade : chaque mot fade-in au scroll (pattern home). */
-      }
+      {/* Phrase manifeste VERBATIM trame, Bold casse normale. */}
       <blockquote
         class="studio-manifeste__quote"
         data-words-fade
         data-words-fade-stagger="0.02"
         data-words-fade-window="0,0.45"
       >
-        CHAQUE ESPACE SE COMPOSE D'UN EXISTANT ET D'UN DEVENIR. COMPRENDRE L'EXISTANT POUR
-        CONSTRUIRE LE DEVENIR NECESSITE UNE REFLEXION STRUCTUREE ET SENSIBLE EN CONSIDERANT TOUTES
-        LES ARCHITECTURES CONNECTEES.
+        Composer avec toutes les architectures pour créer un ensemble uni.
       </blockquote>
     </div>
   </section>
@@ -185,8 +183,8 @@ const parcours = [
   <section
     id="architectures"
     data-section-label="Architectures"
-    data-theme="red"
-    class="studio-architectures full-bleed-bg relative bg-[var(--color-red)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="studio-architectures full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="architectures-title"
   >
     <h2 id="architectures-title" class="sr-only">Les quatre architectures connectées</h2>
@@ -197,8 +195,8 @@ const parcours = [
   <section
     id="parcours"
     data-section-label="Parcours"
-    data-theme="dark"
-    class="studio-parcours full-bleed-bg relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="studio-parcours full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="parcours-title"
   >
     {
@@ -206,19 +204,8 @@ const parcours = [
        2026-05-15). Sorti du conteneur inner pour s'étendre bord-à-bord
        sans contrainte de padding lateral. */
     }
-    <h2
-      id="parcours-title"
-      class="studio-parcours__title"
-      data-justify-multi
-      data-justify-amp="60"
-      data-justify-line-step="0.15"
-      data-justify-line-window="0.55"
-    >
-      <span
-        class="studio-parcours__title-line"
-        data-justify-line
-        data-justify-direction="from-right">PARCOURS ET EXPERIENCE</span
-      >
+    <h2 id="parcours-title" class="studio-parcours__title">
+      <span class="studio-parcours__title-line">Parcours et Expérience</span>
     </h2>
 
     <div class="studio-parcours__inner">
@@ -649,6 +636,102 @@ const parcours = [
     .studio-architectures,
     .studio-parcours {
       width: 100%;
+    }
+
+    /* ═══ DA FINALE beige/noir 2026-06-04 — hero « Bienvenue », intro, et
+       recolor de toutes les sections (override des couleurs cream/rouge). ═══ */
+    .studio-hero {
+      width: 100%;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      box-sizing: border-box;
+      padding: clamp(2rem, 6vh, 5rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 8vh, 6rem);
+    }
+    .studio-hero__word {
+      margin: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 13vw, 14rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      color: var(--color-ink);
+    }
+    .studio-intro {
+      width: 100%;
+      padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
+    }
+    .studio-bienvenue__body p {
+      color: var(--color-ink);
+    }
+    .studio-bienvenue__visual {
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      border-radius: clamp(12px, 1.5vw, 22px);
+    }
+    /* Manifeste beige : phrase Bold casse normale, aligné gauche. */
+    .studio-manifeste__quote {
+      color: var(--color-ink);
+      text-transform: none;
+      text-align: left;
+      max-width: 24ch;
+    }
+    /* Accordéon architectures beige : filets + textes en ink, titres Bold. */
+    .studio-architectures__list,
+    .studio-architectures__item,
+    .studio-architectures__summary {
+      border-color: color-mix(in oklab, var(--color-ink) 22%, transparent);
+    }
+    .studio-architectures__title {
+      color: var(--color-ink);
+      font-weight: 700;
+    }
+    .studio-architectures__icon {
+      color: var(--color-ink);
+    }
+    .studio-architectures__text,
+    .studio-architectures__panel p {
+      color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+    }
+    .studio-architectures__summary:focus-visible {
+      outline-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+    }
+    /* Séparateurs accordéon arrondis à droite (parti-pris trames). */
+    .studio-architectures__summary {
+      border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-right: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-bottom-right-radius: clamp(18px, 2.5vw, 32px);
+    }
+    .studio-architectures__list {
+      border-top: 0;
+    }
+    .studio-architectures__item {
+      border-bottom: 0;
+    }
+    /* Parcours beige : titre Bold casse normale aligné gauche. */
+    .studio-parcours__title-line {
+      text-transform: none;
+      text-align: left;
+      text-align-last: left;
+      white-space: normal;
+      color: var(--color-ink);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-weight: 800;
+    }
+    .studio-parcours__timeline,
+    .studio-parcours__row {
+      border-color: color-mix(in oklab, var(--color-ink) 22%, transparent);
+    }
+    .studio-parcours__row-annee {
+      color: var(--color-ink);
+      text-transform: none;
+    }
+    .studio-parcours__row-detail {
+      color: color-mix(in oklab, var(--color-ink) 70%, transparent);
+    }
+    .studio-parcours__photo {
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      border-radius: clamp(12px, 1.5vw, 22px);
     }
   </style>
 
