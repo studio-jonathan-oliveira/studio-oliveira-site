@@ -374,16 +374,10 @@ header.intro-revealing {
     line-height: 0.98;
     text-wrap: balance;
   }
-  /* Refonte 2026-04-28 (Jonathan) : tous les titres en MAJUSCULES.
-     Appliqué via CSS plutôt qu'en HTML pour préserver le contenu rédigé.
-     h5/h6 exclus (souvent utilisés comme petits labels intra-cards où l'uppercase
-     redoublerait avec .eyebrow/.meta déjà uppercase). */
-  h1,
-  h2,
-  h3,
-  h4 {
-    text-transform: uppercase;
-  }
+  /* DA finale 2026-06-04 (trames Jonathan) : règle « passer tout en minuscule
+     avec première lettre en majuscule » → on RETIRE l'uppercase global des
+     titres (h1-h4). Les rares titres qui doivent rester capitales le sont
+     désormais au cas par cas (texte écrit en capitales ou text-transform local). */
   h1 {
     line-height: 0.95;
   }
