@@ -201,21 +201,14 @@ const stats: StatCard[] = [
        natif, JS pose le pas directionnel au scroll (motion-enhance.ts). */
     }
     <div
-      class="px-6 py-32 md:px-10 md:py-44"
-      data-justify-multi
-      data-justify-amp="80"
-      data-justify-line-step="0.15"
-      data-justify-line-window="0.6"
+      class="identite-words px-6 py-32 md:px-10 md:py-44"
+      data-words-fade
+      data-words-fade-stagger="0.012"
+      data-words-fade-window="0,0.55"
     >
-      <p class="identite-line" data-justify-line data-justify-direction="from-right">
-        Architecture Design Contexte
-      </p>
-      <p class="identite-line" data-justify-line data-justify-direction="from-left">
-        Expérientiel Signature
-      </p>
-      <p class="identite-line" data-justify-line data-justify-direction="from-right">
-        Art de vivre Vivant Immersif
-      </p>
+      <p class="identite-line">Architecture Design Contexte</p>
+      <p class="identite-line">Expérientiel Signature</p>
+      <p class="identite-line">Art de vivre Vivant Immersif</p>
     </div>
   </section>
 
@@ -242,26 +235,16 @@ const stats: StatCard[] = [
       }
       <div
         class="studio-presentation-text"
-        data-justify-multi
-        data-justify-amp="60"
-        data-justify-line-step="0.12"
-        data-justify-line-window="0.55"
+        data-words-fade
+        data-words-fade-stagger="0.01"
+        data-words-fade-window="0,0.55"
       >
-        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
-          Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif
-        </p>
-        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
-          et expérientiel. De la conception au suivi de chantier, il conçoit et structure
-        </p>
-        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
-          des espaces de vie en prenant en compte le dialogue bâti - environnement - humain.
-        </p>
-        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
-          Chaque projet tente ainsi de concevoir des espaces logiques, cohérents et ergonomiques
-        </p>
-        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
-          où le végétal se tisse en harmonie avec son environnement, pour créer l'expérience de ses
-          usagers.
+        <p class="studio-presentation-line">
+          Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif et expérientiel. De
+          la conception au suivi de chantier, il conçoit et structure des espaces de vie en prenant
+          en compte le dialogue bâti - environnement - humain. Chaque projet tente ainsi de
+          concevoir des espaces logiques, cohérents et ergonomiques où le végétal se tisse en
+          harmonie avec son environnement, pour créer l'expérience de ses usagers.
         </p>
       </div>
       <div class="studio-presentation__cta">
@@ -712,13 +695,9 @@ const stats: StatCard[] = [
       line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: none;
-      text-align: justify;
-      text-align-last: justify;
       color: var(--color-ink);
       margin: 0;
       hyphens: none;
-      white-space: nowrap;
-      overflow: hidden;
     }
     .identite-line + .identite-line {
       margin-top: clamp(0.4rem, 1vw, 1rem);
@@ -752,24 +731,24 @@ const stats: StatCard[] = [
       letter-spacing: 0;
       text-transform: none;
       text-align: justify;
-      text-align-last: justify;
       color: var(--color-ink);
       margin: 0;
       hyphens: none;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    /* La dernière ligne, plus courte, n'est pas justifiée — sinon les
-       mots seraient ridiculement écartés. */
-    .studio-presentation-line:last-child {
-      text-align-last: left;
     }
     @media (max-width: 767px) {
       .studio-presentation-line {
-        white-space: normal;
         text-align: left;
-        text-align-last: left;
       }
+    }
+    /* Apparition mot par mot en cascade au scroll (data-words-fade) — même
+       mécanique que le dépliage des accordéons (trame « apparition wavy/vague
+       du texte »). setupWordsFade (motion-enhance.ts) révèle chaque .word. */
+    .identite-words .word,
+    .studio-presentation-text .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(12px);
+      will-change: opacity, transform;
     }
 
     /* Placeholder marqueur (Morgan 2026-05-11) — signale l'emplacement à
