@@ -11,6 +11,7 @@ import ContactBar from '@/components/astro/ContactBar.astro';
 import Grain from '@/components/astro/Grain.astro';
 import SmoothScroll from '@/components/astro/SmoothScroll.astro';
 import CustomCursor from '@/components/astro/CustomCursor.astro';
+import Lightbox from '@/components/astro/Lightbox.astro';
 import ScrollNav from '@/components/astro/ScrollNav.astro';
 import { getOgImagePath } from '@/lib/og-pages';
 import { THEME_COLOR_META } from '@/lib/brand-colors';
@@ -209,6 +210,7 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
     <Grain />
 
     <CustomCursor />
+    <Lightbox />
     <ScrollNav />
 
     <SmoothScroll />

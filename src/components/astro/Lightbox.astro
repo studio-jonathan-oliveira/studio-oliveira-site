@@ -1,0 +1,183 @@
+---
+/*
+ * Lightbox — animation sitewide « flou au survol + clic agrandissement »
+ * (trames « modif finales » : annotations « FLOU AU SURVOL + CLIC
+ * AGRANDISSEMENT » / « AGRANDISSEMENT DE L'IMAGE »).
+ *
+ * Usage dans une page : entourer chaque visuel zoomable d'un bouton
+ *   <button class="zoom-card" data-zoom-src={img.src} data-zoom-alt="…">
+ *     <Image … class="zoom-card__img" />
+ *     <span class="zoom-card__pill">Agrandir</span>
+ *   </button>
+ * → survol : image floutée + pastille « Agrandir » ; clic : overlay plein
+ *   écran avec l'image agrandie (coins arrondis) + bouton ×.
+ *
+ * Ce composant rend l'overlay (une fois) + le CSS global + le script de
+ * délégation. À inclure une seule fois (BaseLayout).
+ */
+---
+
+<div class="lightbox" id="lightbox" aria-hidden="true" data-lightbox>
+  <button
+    class="lightbox__close"
+    type="button"
+    aria-label="Fermer l'agrandissement"
+    data-lightbox-close
+  >
+    <span aria-hidden="true">×</span>
+  </button>
+  <img class="lightbox__img" id="lightbox-img" alt="" data-lightbox-img />
+</div>
+
+<style is:global>
+  /* ── Carte zoomable : flou au survol + pastille « Agrandir » ──────────── */
+  .zoom-card {
+    appearance: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: clamp(12px, 1.5vw, 22px);
+    cursor: pointer;
+  }
+  .zoom-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: filter 0.4s var(--ease-out-editorial, ease);
+  }
+  .zoom-card__pill {
+    position: absolute;
+    top: clamp(0.6rem, 1.2vw, 1rem);
+    right: clamp(0.6rem, 1.2vw, 1rem);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    border-radius: 9999px;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.35s var(--ease-out-editorial, ease),
+      transform 0.35s var(--ease-out-editorial, ease);
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .zoom-card:hover .zoom-card__img,
+    .zoom-card:focus-visible .zoom-card__img {
+      filter: blur(7px) brightness(0.92);
+    }
+    .zoom-card:hover .zoom-card__pill,
+    .zoom-card:focus-visible .zoom-card__pill {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Overlay lightbox ─────────────────────────────────────────────────── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 5vw, 5rem);
+    background-color: color-mix(in oklab, var(--color-ink) 88%, transparent);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s var(--ease-out-editorial, ease),
+      visibility 0.4s;
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .lightbox__img {
+    max-width: min(92vw, 1400px);
+    max-height: 86vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: clamp(14px, 1.6vw, 24px);
+    transform: scale(0.96);
+    transition: transform 0.45s var(--ease-out-editorial, ease);
+  }
+  .lightbox.is-open .lightbox__img {
+    transform: scale(1);
+  }
+  .lightbox__close {
+    position: absolute;
+    top: clamp(1rem, 3vw, 2.5rem);
+    right: clamp(1rem, 3vw, 2.5rem);
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--color-cream);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .zoom-card__img,
+    .zoom-card__pill,
+    .lightbox,
+    .lightbox__img {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initLightbox() {
+    const overlay = document.querySelector<HTMLElement>('[data-lightbox]');
+    const img = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
+    if (!overlay || !img) return;
+
+    const open = (src: string, alt: string) => {
+      img.src = src;
+      img.alt = alt;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+    };
+    const close = () => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+    };
+
+    // Délégation : clic sur toute carte [data-zoom-src].
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      const card = target?.closest?.('[data-zoom-src]') as HTMLElement | null;
+      if (card) {
+        e.preventDefault();
+        open(card.dataset.zoomSrc || '', card.dataset.zoomAlt || '');
+        return;
+      }
+      if (target?.closest?.('[data-lightbox-close]') || target === overlay) {
+        close();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    });
+  }
+
+  initLightbox();
+  document.addEventListener('astro:page-load', initLightbox);
+</script>
