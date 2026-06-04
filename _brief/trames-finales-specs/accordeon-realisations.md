@@ -1,3 +1,88 @@
+## ⚠️ RE-AUDIT HD 2026-06-04
+
+> Re-lecture haute résolution des bandes `real__b00→b07.png` (1500×997 chacune), crops + upscale
+> lanczos ×4–6 sur chaque bloc d'infos. **Cette trame = contenu DÉROULÉ du 2e accordéon
+> « Réalisations »** (la page /projets en compte 3). Tous les `[À CONFIRMER]` du 1er passage sont
+> tranchés ci-dessous (lecture pixel-near).
+
+### Cartes réalisations — VERBATIM corrigé (ordre trame haut→bas)
+
+Format observé (bloc beige #EDE6D6, superposé sur la photo, casse mixte, lignes serrées) :
+`Titre du geste` / `Établissement` / `Type` (optionnel) / `Réalisation, ANNÉE` / `Ville`.
+
+| #   | Titre (geste)           | Établissement          | Type            | Réalisation       | Ville   | Bande |
+| --- | ----------------------- | ---------------------- | --------------- | ----------------- | ------- | ----- |
+| 1   | Airbnb atypique         | Jungle Room            | Chammartz Suite | Réalisation, 2024 | Uzerche | b01   |
+| 2   | Façade végétalisée      | Café de Paris          | Brasserie       | Réalisation, 2025 | Brive   | b02   |
+| 3   | Verrière végétalisée    | Café de Paris          | Brasserie       | Réalisation, 2025 | Brive   | b02   |
+| 4   | Verrière végétalisée    | Café de Paris          | Brasserie       | Réalisation, 2025 | Brive   | b02   |
+| 5   | Glycine artificielle 5m | Atelier Elite Coiffure | —               | Réalisation, 2022 | Brive   | b02   |
+| 6   | Plafond arboré          | Atelier Elite Coiffure | —               | Réalisation, 2026 | Brive   | b02   |
+| 7   | Mur en bouteille floral | Café de Paris          | Brasserie       | Réalisation, 2025 | Brive   | b03   |
+| 8   | Mur en bouteille floral | Café de Paris          | Brasserie       | Réalisation, 2025 | Brive   | b03   |
+| 9   | Jungle Work Box         | Schmidt Cuisine        | —               | Réalisation, 2025 | Brive   | b03   |
+| 10  | Airbnb atypique         | Jungle Room            | Eden Suite      | Réalisation, 2025 | Roanne  | b03   |
+| 11  | Mur végétalisé          | YG coiffure            | —               | Réalisation, 2023 | Objat   | b04   |
+| 12  | Jardinet tropical       | —                      | —               | Réalisation, 2021 | Limoges | b04   |
+
+> **12 cartes** visibles dans la trame (certaines dupliquées dans la maquette = même projet montré
+> deux fois, p.ex. « Verrière végétalisée » ×2 et « Mur en bouteille floral » ×2 — à dédupliquer
+> côté données si non voulu). Note : la 1re ligne est le **geste/concept**, pas le nom de
+> l'établissement (Jonathan distingue clairement « geste réalisé » et « lieu »).
+
+### Verbatim exact par carte (lecture pixel-near, fautes incluses)
+
+1. **Airbnb atypique** / **Jungle Room** / **Chammartz Suite** / **Réalisation, 2024** / **Uzerche** — b01, et reprise floutée en b05.
+2. **Façade végétalisée** / **Café de Paris** / **Brasserie** / **Réalisation, 2025** / **Brive** — b02.
+3. **Verrière végétalisée** / **Café de Paris** / **Brasserie** / **Réalisation, 2025** / **Brive** — b02.
+4. **Verrière végétalisée** / **Café de Paris** / **Brasserie** / **Réalisation, 2025** / **Brive** — b02 (2e occurrence).
+5. **Glycine artificielle 5m** / **Atelier Elite Coiffure** / **Réalisation, 2022** / **Brive** — b02.
+6. **Plafond arboré** / **Atelier Elite Coiffure** / **Réalisation, 2026** / **Brive** — b02.
+7. **Mur en bouteille floral** / **Café de Paris** / **Brasserie** / **Réalisation, 2025** / **Brive** — b03.
+8. **Mur en bouteille floral** / **Café de Paris** / **Brasserie** / **Réalisation, 2025** / **Brive** — b03 (2e occurrence).
+9. **Jungle Work Box** / **Schmidt Cuisine** / **Réalisation, 2025** / **Brive** — b03.
+10. **Airbnb atypique** / **Jungle Room** / **Eden Suite** / **Réalisation, 2025** / **Roanne** — b03.
+11. **Mur végétalisé** / **YG coiffure** / **Réalisation, 2023** / **Objat** — b04.
+12. **Jardinet tropical** / **Réalisation, 2021** / **Limoges** — b04.
+
+### `[À CONFIRMER]` du 1er passage — TRANCHÉS en HD
+
+| 1er passage (incertain)                       | Lecture HD 2026-06-04 (tranchée)                                              |
+| --------------------------------------------- | ----------------------------------------------------------------------------- |
+| « Plafond aporé / paré / ajouré »             | **Plafond arboré** (a-r-b-o-r-é). Confirmé crop ×3, b02. ✅                   |
+| « Chammartz » oscillant                       | **Chammartz Suite** (C-h-a-m-m-a-r-t-z, double m). Confirmé crop ×5, b01. ✅  |
+| « Schmidt vs Schmit »                         | **Schmidt Cuisine** (avec **d** : Schmi**d**t). Confirmé crop ×5, b03. ✅     |
+| « Pool Suite » / `[ILLISIBLE]` (carte Roanne) | **Eden Suite** (E-d-e-n). Confirmé crop ×4, b03. ✅                           |
+| « Façade végétal »                            | **Façade végétalisée** (terminaison -isée, pas « végétal »). Confirmé b02. ✅ |
+| Carte Roanne « Pool Suite 2025 »              | **Eden Suite, Réalisation 2025, Roanne** — verbatim complet récupéré. ✅      |
+
+### Manques comblés vs 1er passage
+
+- **Nombre de cartes** : 12 (1er passage en listait 9 ; les doublons « Verrière végétalisée » et
+  la 2e « Mur en bouteille floral » avaient été fusionnés/omis).
+- **Badge agrandissement** : libellé exact **« Agrandir »**, texte **noir gras** sur pastille
+  **beige #EDE6D6** à coins très arrondis (squircle), posée sur la photo. Confirmé crop ×5, b05.
+- **En-tête accordéon (état ouvert)** : titre **« Réalisations »** (display beige, gras, casse
+  capitale initiale) à gauche + **✕** beige à droite (b01).
+- **En-tête accordéon (état fermé / survol)** : **« Réalisations »** + **`+`** beige à droite,
+  une carte floutée dessous (b05). Annotation marge **« FLOU AU SURVOL + CLIC AGRANDISSEMENT »**.
+- **Lightbox (b06/b07)** : annotation **« AGRANDISSEMENT DE L'IMAGE »**, grande image plein-bleed
+  (ambiance Jungle Room violette) coins arrondis sur fond noir, **✕** beige haut-droite, **aucun
+  texte** sur l'overlay.
+- **En-tête de page (b00)** : barre noire flottante arrondie **« Démarrer un projet »** (beige
+  gras, centré), logo manuscrit **« oliveira® »** beige haut-gauche, **« MENU »** + hamburger
+  haut-droite. (Repère rouge = gabarit 1920×1080.)
+
+### Disposition (confirmée HD)
+
+- **Grille 3 colonnes** sur fond noir (desktop 1920). Cartes photos verticales (portrait ~4/5).
+- Le bloc d'infos beige est superposé **en haut-droite** de chaque carte (parfois débordant sur le
+  fond noir au-dessus de la photo) ; badge **« Agrandir »** posé plus bas (coin centre-bas / bas-
+  gauche de la photo).
+- Plusieurs rangées de 3 (b01→b04), puis états annotés (b05 fermé/flou, b06/b07 lightbox).
+
+---
+
 # Spec — Trame « accordeon realisations » (page /realisations)
 
 > Source : maquette Jonathan, originale 2181 × 10081 px, 1 colonne × 6 lignes (tuiles r0→r5, recouvrement 160 px).

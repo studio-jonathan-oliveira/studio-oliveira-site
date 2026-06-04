@@ -1,5 +1,63 @@
 # Spec — Accordéon « Galerie Studio » (page /studio)
 
+## ⚠️ RE-AUDIT HD 2026-06-04
+
+Re-lecture en HD des 8 bandes (`galerie__b00` → `galerie__b07`, 1500 px de large).
+Cette page = **contenu déployé du 3e accordéon « Galerie Studio »** de la page `/projets`
+(confirmé Morgan). Corrections et manques comblés vs le 1er passage :
+
+**Confirmations verbatim (intacts) :**
+
+- Annotation globale (b00, hors cadre) : `CLIC ACCORDEON GALERIE STUDIO`.
+- Topbar (b00) : logo wordmark `oliveira` (+ `®`) à gauche ; `Démarrer un projet` (Bold,
+  beige) centré dans la carte arrondie du haut ; `MENU` + trait burger à droite. Fond NOIR.
+- En-tête accordéon OUVERT (b01) : `Galerie Studio` (Inter Bold, **Title Case**, beige) +
+  icône **`×`** à droite + filet de séparation sous l'en-tête.
+- Annotation hover (b05) : `FLOU AU SURVOL + CLIC AGRANDISSEMENT`.
+- En-tête accordéon FERMÉ (b05) : `Réalisations` (Inter Bold, Title Case, beige, gros) +
+  icône **`+`** à droite + filet.
+- Annotation lightbox (b06/b07) : `AGRANDISSEMENT DE L'IMAGE`.
+- Pastille hover : verbatim **`Agrandir`** (texte NOIR, gras, sur pastille beige `#EDE6D6`).
+
+**⚠️ CORRECTION MAJEURE — disposition de la grille (le point sous-lu au 1er passage) :**
+
+- La grille est bien en **3 colonnes**, MAIS ce n'est **PAS un masonry/quinconce régulier**.
+  C'est un **collage libre / scatter** : chaque vignette a sa **propre taille**, sa **propre
+  orientation** (mix portrait ET paysage) et une **légère rotation** pour certaines (ex. la
+  photo du sac « VEGETAL » est inclinée, les photos d'écrans de conception sont inclinées).
+- Les premières rangées (b01-b02) paraissent ~alignées (vignettes paysage régulières), puis
+  plus bas (b03-b04) la disposition devient nettement **éclatée** : tailles inégales, tuiles
+  tantôt collées en haut tantôt en bas de leur cellule, rotations douces. Effet « mur de
+  photos studio » organique, pas une grille CSS stricte.
+- **Aucune légende / aucun texte sur les vignettes** : ce sont des photos pleines. Les seuls
+  textes présents dans les images sont _dans_ les médias eux-mêmes (logo `oliveira` gravé sur
+  une plaque murale b02 ; étiquette `VEGETAL` sur un sac b04 ; UI d'un écran de conception
+  b04). À traiter comme contenu des photos, pas comme légendes de la galerie.
+
+**⚠️ CORRECTION — position de la pastille `Agrandir` :**
+
+- Au 1er passage : « centrée sur la vignette ». **FAUX.** En HD (b06 + zoom), la pastille est
+  un **rounded-square (carré à coins très arrondis), vertical-ish**, positionnée **en haut à
+  droite À L'INTÉRIEUR de la vignette** (pas centrée), avec une petite marge depuis les bords.
+- La vignette survolée passe en **flou** (blur net visible b06) et conserve ses **coins arrondis**.
+
+**Nombre de vignettes (Galerie Studio, état ouvert) :** ~13 visibles sur b01→b05 :
+b02 = 2 rangées de 3 ; b03 = 2 rangées de 3 ; b04 = rangée de 3 + rangée de 2 + 1 isolée ;
+b05 = la dernière (portrait) qui clôt le panneau. Total ≈ **13** placeholders. Ordre/contenu
+= photos à fournir par Jonathan (ambiances végétales/biophiliques, chantier/atelier, portraits
+au travail, écrans de conception, plaque-logo, suspensions tressées).
+
+**Lightbox (b07) — précisions :**
+
+- Image agrandie **portrait, coins arrondis, alignée à GAUCHE** (marge depuis le bord gauche).
+- Image **nette** (le flou du hover disparaît).
+- `×` de fermeture beige, positionné en **haut, à ~⅔ de la largeur** (centre-droite), au-dessus
+  du niveau supérieur de l'image. Reste de l'overlay (droite) = **vide/sombre**, pas de légende.
+
+**Couleur violet `#e0afff` :** toujours **absente** de cette trame. Galerie strictement noir/beige.
+
+---
+
 > Source de vérité : trame Jonathan `accordeon-galerie-studio` (1978×10083 px, 1 col × 6 lignes).
 > Tuiles lues r0→r5 (recouvrement 160 px). Aucun texte inventé ; verbatim ou `[ILLISIBLE]`.
 > Les traits ROUGES = délimitation écran 1920×1080 (proportions/fold viewport), PAS du design.
