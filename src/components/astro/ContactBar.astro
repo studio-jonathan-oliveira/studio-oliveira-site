@@ -152,16 +152,16 @@ const isFormPage =
     display: block;
   }
 
-  /* Bouton "Contact" en rouge signature (cohérent CTA pill du Header). */
+  /* Bouton "Contact" en VIOLET signature (DA finale 2026-06-04). */
   .contact-bar__btn--accent {
-    background-color: var(--color-red);
-    color: var(--color-cream);
+    background-color: var(--color-violet);
+    color: var(--color-ink);
   }
   .contact-bar__btn--accent:active {
-    background-color: color-mix(in oklab, var(--color-red) 86%, var(--color-black-deep));
+    background-color: color-mix(in oklab, var(--color-violet) 86%, var(--color-ink));
   }
   .contact-bar__btn--accent + .contact-bar__btn,
   .contact-bar__btn + .contact-bar__btn--accent {
-    border-left-color: color-mix(in oklab, var(--color-red) 60%, var(--color-black-deep));
+    border-left-color: color-mix(in oklab, var(--color-violet) 60%, var(--color-ink));
   }
 </style>

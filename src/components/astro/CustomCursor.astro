@@ -18,7 +18,7 @@
          v5 2026-05-15 : flèche rouge Jonathan au-dessus du premier mot. -->
     <div class="cursor-tooltip" id="cursor-tooltip">
       <img
-        src="/brand/fleche-red.webp"
+        src="/brand/fleche-dark.webp"
         alt=""
         aria-hidden="true"
         class="cursor-tooltip__arrow"
@@ -65,16 +65,10 @@
        sections sombres, on remplace cream par rouge pour le dot/ring. Effet :
        curseur rouge sur fond noir, noir sur fond rouge, cohérent avec la DA
        Jonathan. Étendu à .is-typologie 2026-05-15 (pilote micro-urbain). */
-    /* Refonte 2026-06-04 (DA finale beige/noir) : les typologies passent en
-       beige/noir (plus de rouge). Sur leur footer noir, le curseur redevient
-       simplement cream (is-on-dark par défaut). On retire `is-typologie` et
-       `is-paysagere-index` de l'override rouge — conservé seulement pour les
-       pages encore en DA noir/rouge (home/studio, à migrer ensuite). */
-    body.is-home .custom-cursor.is-on-dark,
-    body.is-studio .custom-cursor.is-on-dark {
-      --cursor-fill: var(--color-red);
-      --cursor-text: var(--color-cream);
-    }
+    /* DA finale 2026-06-04 : plus de rouge nulle part. Sur fond sombre
+       (hero photo home, footer noir, etc.), le curseur est simplement cream
+       (is-on-dark par défaut ci-dessus). L'ancien override rouge home/studio
+       est supprimé. */
 
     /* Masque le curseur natif uniquement en fine pointer. */
     :global(html),
@@ -254,7 +248,7 @@
       display: block;
     }
     .cursor-tooltip__text {
-      color: var(--color-red);
+      color: var(--color-ink);
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
       font-size: clamp(18px, 1.6vw, 26px);
