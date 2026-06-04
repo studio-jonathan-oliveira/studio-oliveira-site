@@ -1,27 +1,9 @@
 ---
 /*
- * /architecture-paysagere/frange-urbaine — page typologie 2026-05-19.
- *
- * Structure identique aux pilotes micro-urbain + coeur-urbain :
- *   1. TypologieHero (composant partagé) avec H1 split + 4 specs sous H1
- *   2. Galerie magazine (TODO — Morgan doit sélectionner les images 02 → 0n)
- *   3. Manifeste typologie (placeholder Jonathan)
- *   4. FAQ discrète
- *   5. CTA full-width « DECOUVRIR LES PROJETS FRANGE URBAINE » + pill rouge
- *
- * Hero photo : `01-hero.jpg` (rendu Twinmotion fourni par Morgan
- * 2026-05-21 — maison + palmier + banquette outdoor + muret pierre).
- * Le hero placeholder précédent (carousel home `01-hero-home.jpg`) a
- * été retiré.
- *
- * Galerie : 6 photos, disposition magazine respectant l'ordre numérique :
- *   1. Singleton portrait centré        : 02-palmiers (opener)
- *   2. Large landscape full-width       : 03-maison
- *   3. Diptyque quinconce portraits     : 04-chemin small + 05-maison large
- *   4. Diptyque landscapes 50/50        : 06-piscine + 07-photo
- *
- * Manifeste + specs en placeholder explicite (rule CLAUDE.md §5 — ne JAMAIS
- * inventer de contenu pour Jonathan). À fournir par Morgan/Jonathan.
+ * /architecture-paysagere/frange-urbaine — DA finale beige/noir 2026-06-04
+ * (trames « modif finales »). Même patron que coeur-urbain (pilote validé).
+ * Hero beige typographique, galerie beige + Définir/Comprendre, FAQ beige
+ * + marquee. Contenu Jonathan VERBATIM.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
@@ -37,7 +19,6 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
-import heroPhoto from '@/assets/typologies/frange-urbaine/01-hero.jpg';
 // Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-21).
 import gal02 from '@/assets/typologies/frange-urbaine/02-palmiers.jpg';
 import gal03 from '@/assets/typologies/frange-urbaine/03-maison.jpg';
@@ -48,8 +29,7 @@ import gal07 from '@/assets/typologies/frange-urbaine/07-photo.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'frange-urbaine')!;
 
-// 4 valeurs droite — verbatim dictée Morgan 2026-05-21. Les 4 labels sont
-// figés et viennent du composant `<TypologieHero>`.
+// 4 valeurs droite — verbatim dictée Morgan 2026-05-21.
 const valeurs = [
   'Zone péri urbaine et province',
   'De 300 à 1500 m² (hors cas spécifique)',
@@ -57,7 +37,7 @@ const valeurs = [
   'Accès / topographie / surface / environnement',
 ] as const;
 
-// Manifeste — texte VERBATIM Jonathan/Morgan 2026-05-21.
+// Manifeste VERBATIM Jonathan (scindé Définir / Comprendre).
 const manifeste = {
   bloc1:
     'La typologie Frange urbaine se caractérise par de grands espaces de vie extérieurs dont les propriétés animent les couronnes extérieures du tissu urbain vers la province.',
@@ -67,24 +47,22 @@ const manifeste = {
     "La complexité de cette typologie repose principalement sur la topographie du jardin, souvent en pente qu'il faut remodeler pour améliorer l'usage et la fonctionnalité de l'espace. La typologie est rythmée par des structures qui viennent impacter à la fois l'usage du site et le paysage dans son ensemble.",
 };
 
-// FAQ — verbatim Morgan/Jonathan 2026-05-21 (3 Q/R communes aux 4 pages
-// typologies). Typos conservées tel quel : `strucurer`, `aloué`,
-// `compte rendus`, `tranquilité`, `établit`, `forfait`, `puission`.
+// FAQ — 3 Q/R VERBATIM trame (communes aux 4 typologies).
 const faq = [
-  {
-    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
-    answer:
-      "L'étude d'un projet est un processus obligatoire qui permet de comprendre un projet, de le strucurer efficacement et d'anticiper les travaux et le budget qui lui sera aloué. Le studio n'a pas de standard matériaux, styles, tendances et autres. Il construit, de la conception jusqu'à la livraison, l'entièreté sur-mesure selon les caractéristiques du projet, de son environnement et de ses usagers.\n\nMon travail repose sur la réflexion, l'anticipation et le pilotage. Je ne réalise pas sur le chantier le projet, je suis le chef d'orchestre qui pense, accompagne et dirige le projet pour le rendre à la hauteur de vos attentes.",
-  },
   {
     question: 'Comment se compose une étude ?',
     answer:
       "Il y a 3 phases : l'étude préliminaire, l'étude projet et le suivi de chantier.\n\nL'étude préliminaire : elle recadre le contexte du projet et structure les orientations de projet. C'est une synthèse de la commande et de la structuration des axes directeurs du projet avec une budgétisation des grands lots travaux.\n\nL'étude projet : elle rentre dans le détail de conception suite à la validation de l'étude préliminaire. Dans cette phase, le studio développe, organise, et consulte les entreprises et artisans pour le chiffrage précis des travaux.\n\nLe suivi de chantier : c'est la partie pilotage chantier. Elle est importante car elle permet de garantir un résultat final entre les intentions de projet et la réalisation. Le studio gère les compte rendus, le suivi financier ainsi que le pilotage des travaux avec les différentes entreprises sur le chantier. Vous payez une tranquilité d'esprit et de la disponibilité.",
   },
   {
+    question: "Quels sont les livrables d'une étude ?",
+    answer:
+      "Étude préliminaire : étude du contexte projet, étude règlementaire et urbanisme, étude fonctionnelle et besoins, synthèse graphique, étude estimative budgétaire.\n\nÉtude projet : conception paysagère, étude végétales, dossier de consultation des entreprise, détails techniques, consultation des entreprises, dossier de réalisation.\n\nSuivi de chantier : comptes rendus de chantier, suivi d'avancement, validation des ouvrages, suivi financier, réception des travaux.",
+  },
+  {
     question: "Quel est le prix de l'étude pour cette typologie ?",
     answer:
-      "En fonction de la typologie de votre propriété, le studio a établit des forfait de base.\n\nViennent s'ajouter à ce forfait de base des frais correspondant aux déplacements du studio (frais d'essence, péages, ...) en fonction de votre emplacement et du nombre de déplacements prévus par le besoin du projet.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter afin que nous puission échanger ensemble de votre projet pour définir ensemble tous les paramètres de l'étude.",
+      "En fonction de la typologie des jardins, le studio a établit des forfaits de base.\n\nViennent s'ajouter à ces forfaits de base :\n- des frais correspondant aux déplacements du studio (frais d'essence, péages, ...)\n- la mission géomètre\nen fonction de votre emplacement et des nécessité du projet et de l'étude.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter (ou remplir le formulaire via l'onglet \"démarrer un projet\" en haut de la page) afin que nous puissions échanger ensemble et définir tous les paramètres liés à votre projet.",
   },
 ];
 
@@ -112,37 +90,16 @@ const schema = jsonLdGraph([
 <BaseLayout
   title={`${typologie.h1Seo} — Frange urbaine`}
   description={`${typologie.h1Seo} avec le Studio J Oliveira. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
-  darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO — composant partagé `<TypologieHero>` ═══════════ */}
-  <TypologieHero
-    photo={heroPhoto}
-    alt="Frange urbaine — jardin résidentiel en pente avec banquette outdoor sous palmier"
-    h1Lines={['FRANGE', 'URBAINE']}
-    valeurs={valeurs}
-    sectionLabel="Frange urbaine"
-  />
+  {/* ═════════ 1 · HERO beige typographique + specs ═══════════════════════ */}
+  <TypologieHero h1Lines={['Frange', 'urbaine']} valeurs={valeurs} sectionLabel="Frange urbaine" />
 
-  {
-    /* ═════════ 2 · GALERIE — 6 photos rythme magazine ════════════════════
-     Ordre piloté par le préfixe numérique (Morgan 2026-05-21).
-       (1) Large landscape full-width      : 02-palmiers (opener, retour
-                                              Morgan 2026-05-21 : prend la
-                                              largeur de la page comme codas)
-       (2) Large landscape full-width      : 03-maison
-       (3) Diptyque quinconce portraits    : 04-chemin small + 05-maison large
-       (4) Diptyque landscapes 50/50       : 06-piscine + 07-photo
-     Gouttières noires généreuses, aucun bord-à-bord. */
-  }
-  <section
-    data-theme="dark"
-    class="fu-gallery bg-[var(--color-black-deep)]"
-    aria-label="Sélection de projets frange urbaine"
-  >
+  {/* ═════════ 2 · GALERIE beige + manifeste Définir / Comprendre ═════════ */}
+  <section data-theme="light" class="fu-gallery" aria-label="Sélection de projets frange urbaine">
     <figure class="fu-gallery__large" data-reveal="image-rise">
       <Image
         src={gal02}
@@ -155,6 +112,20 @@ const schema = jsonLdGraph([
         class="fu-gallery__img"
       />
     </figure>
+
+    {/* Manifeste « Définir » */}
+    <div class="fu-manifeste fu-manifeste--definir">
+      <h2 class="fu-manifeste__title">Définir</h2>
+      <div
+        class="fu-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="fu-manifeste__para">{manifeste.bloc1}</p>
+        <p class="fu-manifeste__para">{manifeste.bloc2}</p>
+      </div>
+    </div>
 
     <figure class="fu-gallery__large" data-reveal="image-rise">
       <Image
@@ -222,99 +193,41 @@ const schema = jsonLdGraph([
         />
       </figure>
     </div>
-  </section>
 
-  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
-  <section
-    id="manifeste"
-    data-section-label="Manifeste"
-    data-theme="dark"
-    class="fu-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="manifeste-title"
-  >
-    <div class="fu-manifeste__inner">
-      <h2 id="manifeste-title" class="sr-only">La typologie frange urbaine</h2>
-      <div
-        class="fu-manifeste__body"
-        data-words-fade
-        data-words-fade-stagger="0.006"
-        data-words-fade-window="0.05,0.5"
-      >
-        <p class="fu-manifeste__para">{manifeste.bloc1}</p>
-        <p class="fu-manifeste__para">{manifeste.bloc2}</p>
-      </div>
-      <p class="fu-manifeste__precision">{manifeste.precision}</p>
+    {/* Manifeste « Comprendre » */}
+    <div class="fu-manifeste fu-manifeste--comprendre">
+      <h2 class="fu-manifeste__title">Comprendre</h2>
+      <p class="fu-manifeste__para">{manifeste.precision}</p>
     </div>
   </section>
 
-  {/* ═════════ 4 · FAQ — composant partagé `<TypologieFaq>` ═════════════ */}
+  {/* ═════════ 3 · FAQ beige + marquee ═══════════════════════════════════ */}
   <TypologieFaq items={faq} />
 
-  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS FRANGE URBAINE » */}
-  <section
-    data-theme="dark"
-    class="fu-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="cta-title"
-  >
-    <a href="/realisations" class="fu-cta__link" data-cursor-label="VOIR">
-      <h2
-        id="cta-title"
-        class="fu-cta__title"
-        data-justify-multi
-        data-justify-amp="50"
-        data-justify-line-step="0.15"
-        data-justify-line-window="0.55"
-      >
-        <span class="fu-cta__title-line" data-justify-line data-justify-direction="from-right">
-          DECOUVRIR LES PROJETS FRANGE URBAINE
-        </span>
-      </h2>
-    </a>
-    <a href="/demarrer-un-projet" class="fu-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
-      <span class="fu-cta__pill-dot" aria-hidden="true"></span>
-      <span class="fu-cta__pill-label">Démarrer un projet</span>
-      <img
-        src="/brand/fleche-white.webp"
-        alt=""
-        aria-hidden="true"
-        class="fu-cta__pill-arrow"
-        width="32"
-        height="32"
-      />
-    </a>
-  </section>
-
   <style is:global>
-    /* /architecture-paysagere/frange-urbaine — galerie / manifeste / FAQ / CTA
-       en copie directe de micro/coeur-urbain (préfixe `fu-`). Le hero est
-       dans `<TypologieHero>` partagé. */
-
-    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
+    /* /architecture-paysagere/frange-urbaine — DA finale beige/noir. */
     .fu-gallery {
       width: 100%;
+      background-color: var(--color-cream);
+      color: var(--color-ink);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
-    /* Large landscape — pleine largeur, ratio cinéma allégé. Utilisé pour
-       02-palmiers (Morgan 2026-05-21 : « prend la largeur de la page »
-       comme pour les codas) + 03-maison. Photos portrait cover-croppées. */
     .fu-gallery__large {
       margin: 0;
       width: 100%;
       aspect-ratio: 3 / 2;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
     @media (min-width: 1024px) {
       .fu-gallery__large {
         aspect-ratio: 16 / 10;
       }
     }
-    /* Diptyques — 2 variantes :
-       - portraits : quinconce 38%/54% avec décalage vertical magazine.
-       - landscapes : 50/50 stretch, deux paysages côte à côte. */
     .fu-gallery__diptyque {
       display: grid;
       grid-template-columns: 1fr;
@@ -334,9 +247,9 @@ const schema = jsonLdGraph([
     .fu-gallery__diptyque-right {
       margin: 0;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
-    /* Portraits — quinconce magazine */
     .fu-gallery__diptyque--portraits .fu-gallery__diptyque-left,
     .fu-gallery__diptyque--portraits .fu-gallery__diptyque-right {
       aspect-ratio: 4 / 5;
@@ -352,8 +265,6 @@ const schema = jsonLdGraph([
         align-self: end;
       }
     }
-    /* Landscapes — 50/50, aspect 3/2 par photo (les deux ensemble forment
-       un panorama 3/1 visuel). */
     .fu-gallery__diptyque--landscapes .fu-gallery__diptyque-left,
     .fu-gallery__diptyque--landscapes .fu-gallery__diptyque-right {
       aspect-ratio: 3 / 2;
@@ -366,26 +277,29 @@ const schema = jsonLdGraph([
       display: block;
     }
 
-    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
     .fu-manifeste {
       width: 100%;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-    .fu-manifeste__inner {
+      padding: clamp(2.5rem, 6vw, 5rem) 0;
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(2rem, 4vw, 3.5rem);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
     }
     @media (min-width: 1024px) {
-      .fu-manifeste__inner {
-        grid-template-columns: 1fr 1.35fr;
+      .fu-manifeste {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      .fu-manifeste__body,
-      .fu-manifeste__precision {
-        grid-column: 2;
-      }
+    }
+    .fu-manifeste__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4.5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      margin: 0;
+      text-transform: none;
     }
     .fu-manifeste__body {
       display: flex;
@@ -395,10 +309,10 @@ const schema = jsonLdGraph([
     .fu-manifeste__para {
       font-family: var(--font-body), sans-serif;
       font-weight: 400;
-      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
-      line-height: 1.45;
+      font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+      line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
     }
     .fu-manifeste__body .word {
@@ -407,107 +321,8 @@ const schema = jsonLdGraph([
       transform: translateY(10px);
       will-change: opacity, transform;
     }
-    .fu-manifeste__precision {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-      line-height: 1.6;
-      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
-      text-align: left;
-      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
-    }
-
-    /* ─── 4 · FAQ ── désormais géré par `<TypologieFaq>` (composant
-       partagé, refactor 2026-05-21). Plus de CSS FAQ ici. */
-
-    /* ─── 5 · CTA full-width ────────────────────────────────────────────── */
-    .fu-cta {
-      width: 100%;
-      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(2rem, 4vw, 3rem);
-    }
-    .fu-cta__link {
-      display: block;
-      width: 100%;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      text-decoration: none;
-      color: inherit;
-    }
-    .fu-cta__title {
-      width: 100%;
-      margin: 0;
-    }
-    .fu-cta__title-line {
-      display: block;
-      width: 100%;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.4rem, 5.5vw, 5rem);
-      line-height: 1.1;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      text-align: justify;
-      text-align-last: justify;
-      color: var(--color-cream);
-      margin: 0;
-      hyphens: none;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    @media (max-width: 767px) {
-      .fu-cta__title-line {
-        white-space: normal;
-        text-align: left;
-        text-align-last: left;
-      }
-    }
-    .fu-cta__pill-red {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.85rem 1.6rem;
-      background-color: var(--color-red);
-      color: var(--color-cream);
-      border-radius: 9999px;
-      font-family: var(--font-body), sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.9rem, 1.05vw, 1rem);
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      transition: transform 0.35s var(--ease-out-editorial);
-      will-change: transform;
-    }
-    @media (hover: hover) {
-      .fu-cta__pill-red:hover,
-      .fu-cta__pill-red:focus-visible {
-        transform: scale(1.04);
-      }
-    }
-    .fu-cta__pill-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--color-cream);
-      flex-shrink: 0;
-    }
-    .fu-cta__pill-label {
-      white-space: nowrap;
-    }
-    .fu-cta__pill-arrow {
-      width: 14px;
-      height: 14px;
-      display: inline-block;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
     .fu-gallery,
-    .fu-manifeste,
-    .fu-cta {
+    .fu-manifeste {
       box-sizing: border-box;
     }
   </style>

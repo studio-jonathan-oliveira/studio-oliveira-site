@@ -1,29 +1,9 @@
 ---
 /*
- * /architecture-paysagere/domaine-caractere — page typologie (refonte
- * 2026-05-22, alignée sur le pattern unifié `frange-urbaine.astro`).
- *
- * H1 split : ['DOMAINES &', 'CARACTERE'] — décision Morgan 2026-05-19,
- * le « & » de la marque est conservé sur la 1re ligne. L'accent sur le
- * E final de « CARACTERE » reste retiré (esthétique designbyad signée
- * Jonathan, comme « COEUR » sans diphtongue Œ).
- *
- * Photos fournies par Morgan 2026-05-22 (`_assets/domaine-caractere/`),
- * nommage numérique pilote l'ordre d'affichage. Le `05-maison.jpg`
- * source a été renommé `06-maison.jpg` côté destination pour combler
- * le trou de numérotation (Morgan a clarifié 2026-05-22 que `05-paysage`
- * est le vrai 05).
- *
- * Galerie — pattern frange-urbaine étendu (5 blocs vs 4, 7 photos vs 6) :
- *   1. Large landscape full-width   : 02-villa (portrait cover-crop)
- *   2. Large landscape full-width   : 03-maison (landscape natif)
- *   3. Diptyque quinconce portraits : 04-bleu small + 05-paysage large
- *   4. Large landscape full-width   : 06-maison (landscape natif)
- *   5. Diptyque quinconce inverse   : 07-maison large + 08-chemin small
- *
- * Specs + manifeste en placeholder explicite (rule CLAUDE.md §5).
- * Cf. _brief/contenus-manquants.md sous TYPOLOGIE-DOMAINE-CARACTERE-*.
- * Morgan fournira le contenu verbatim dans un prochain passage.
+ * /architecture-paysagere/domaine-caractere — DA finale beige/noir 2026-06-04
+ * (trames « modif finales »). Même patron que coeur-urbain (pilote validé).
+ * Hero beige typographique, galerie beige + Définir/Comprendre, FAQ beige
+ * + marquee. Contenu Jonathan VERBATIM (3 blocs manifeste).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
@@ -39,7 +19,6 @@ import {
   faqPage,
 } from '@/lib/schema-org';
 
-import heroPhoto from '@/assets/typologies/domaine-caractere/01-hero.jpg';
 // Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-22).
 import gal02 from '@/assets/typologies/domaine-caractere/02-villa.jpg';
 import gal03 from '@/assets/typologies/domaine-caractere/03-maison.jpg';
@@ -51,8 +30,7 @@ import gal08 from '@/assets/typologies/domaine-caractere/08-chemin.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'domaine-caractere')!;
 
-// 4 valeurs droite — verbatim Morgan 2026-05-22. Les 4 labels sont figés
-// et viennent du composant `<TypologieHero>`.
+// 4 valeurs droite — verbatim Morgan 2026-05-22.
 const valeurs = [
   'Urbain / péri urbain / province / campagne',
   'Plus de 1500 m²',
@@ -60,9 +38,7 @@ const valeurs = [
   'Surface / architecture et urbanisme',
 ] as const;
 
-// Manifeste — texte VERBATIM Jonathan/Morgan 2026-05-22. Cette typologie
-// a 3 blocs (vs 2 sur les autres) — la structure est étendue ici uniquement.
-// Typo « font partis » conservée (devrait être « font partie »).
+// Manifeste VERBATIM Jonathan (3 blocs + precision). « font partis » conservé.
 const manifeste = {
   bloc1:
     'La typologie domaine et caractère est une typologie spéciale car elle considère une dimension architecturale très affirmée.',
@@ -74,24 +50,22 @@ const manifeste = {
     "L'accent de cette typologie est porté sur un dialogue très précis entre architecture - environnement - usager avec une identité forte qui doit être gage d'un résultat logique et harmonieux d'un ensemble uni.",
 };
 
-// FAQ — verbatim Morgan/Jonathan 2026-05-21 (3 Q/R communes aux 4 pages
-// typologies). Typos conservées tel quel : `strucurer`, `aloué`,
-// `compte rendus`, `tranquilité`, `établit`, `forfait`, `puission`.
+// FAQ — 3 Q/R VERBATIM trame (communes aux 4 typologies).
 const faq = [
-  {
-    question: "Pourquoi facturer une étude alors que beaucoup de paysagistes l'offrent ?",
-    answer:
-      "L'étude d'un projet est un processus obligatoire qui permet de comprendre un projet, de le strucurer efficacement et d'anticiper les travaux et le budget qui lui sera aloué. Le studio n'a pas de standard matériaux, styles, tendances et autres. Il construit, de la conception jusqu'à la livraison, l'entièreté sur-mesure selon les caractéristiques du projet, de son environnement et de ses usagers.\n\nMon travail repose sur la réflexion, l'anticipation et le pilotage. Je ne réalise pas sur le chantier le projet, je suis le chef d'orchestre qui pense, accompagne et dirige le projet pour le rendre à la hauteur de vos attentes.",
-  },
   {
     question: 'Comment se compose une étude ?',
     answer:
       "Il y a 3 phases : l'étude préliminaire, l'étude projet et le suivi de chantier.\n\nL'étude préliminaire : elle recadre le contexte du projet et structure les orientations de projet. C'est une synthèse de la commande et de la structuration des axes directeurs du projet avec une budgétisation des grands lots travaux.\n\nL'étude projet : elle rentre dans le détail de conception suite à la validation de l'étude préliminaire. Dans cette phase, le studio développe, organise, et consulte les entreprises et artisans pour le chiffrage précis des travaux.\n\nLe suivi de chantier : c'est la partie pilotage chantier. Elle est importante car elle permet de garantir un résultat final entre les intentions de projet et la réalisation. Le studio gère les compte rendus, le suivi financier ainsi que le pilotage des travaux avec les différentes entreprises sur le chantier. Vous payez une tranquilité d'esprit et de la disponibilité.",
   },
   {
+    question: "Quels sont les livrables d'une étude ?",
+    answer:
+      "Étude préliminaire : étude du contexte projet, étude règlementaire et urbanisme, étude fonctionnelle et besoins, synthèse graphique, étude estimative budgétaire.\n\nÉtude projet : conception paysagère, étude végétales, dossier de consultation des entreprise, détails techniques, consultation des entreprises, dossier de réalisation.\n\nSuivi de chantier : comptes rendus de chantier, suivi d'avancement, validation des ouvrages, suivi financier, réception des travaux.",
+  },
+  {
     question: "Quel est le prix de l'étude pour cette typologie ?",
     answer:
-      "En fonction de la typologie de votre propriété, le studio a établit des forfait de base.\n\nViennent s'ajouter à ce forfait de base des frais correspondant aux déplacements du studio (frais d'essence, péages, ...) en fonction de votre emplacement et du nombre de déplacements prévus par le besoin du projet.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter afin que nous puission échanger ensemble de votre projet pour définir ensemble tous les paramètres de l'étude.",
+      "En fonction de la typologie des jardins, le studio a établit des forfaits de base.\n\nViennent s'ajouter à ces forfaits de base :\n- des frais correspondant aux déplacements du studio (frais d'essence, péages, ...)\n- la mission géomètre\nen fonction de votre emplacement et des nécessité du projet et de l'étude.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter (ou remplir le formulaire via l'onglet \"démarrer un projet\" en haut de la page) afin que nous puissions échanger ensemble et définir tous les paramètres liés à votre projet.",
   },
 ];
 
@@ -119,43 +93,25 @@ const schema = jsonLdGraph([
 <BaseLayout
   title={`${typologie.h1Seo} — Domaines & Caractère`}
   description={`${typologie.h1Seo} avec le Studio J Oliveira — château, manoir, domaine familial. Étude ${typologie.prixEtude}, budget travaux ${typologie.budgetTravaux}. Studio biophilique à Brive‑la‑Gaillarde.`}
-  darkHero
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={schema} />
   </Fragment>
 
-  {/* ═════════ 1 · HERO — composant partagé `<TypologieHero>` ═══════════ */}
+  {/* ═════════ 1 · HERO beige typographique + specs ═══════════════════════ */}
   <TypologieHero
-    photo={heroPhoto}
-    alt="Domaine & Caractère — jardin tropical premium avec allée minérale, palmiers et pavillon central"
-    h1Lines={['DOMAINES &', 'CARACTERE']}
+    h1Lines={['Domaine', '& Caractère']}
     valeurs={valeurs}
     sectionLabel="Domaines & Caractère"
   />
 
-  {
-    /* ═════════ 2 · GALERIE — 7 photos rythme magazine ════════════════════
-     Ordre piloté par le préfixe numérique (Morgan 2026-05-22).
-       (1) Large landscape full-width    : 02-villa (portrait cover-crop)
-       (2) Large landscape full-width    : 03-maison (landscape natif)
-       (3) Diptyque quinconce portraits  : 04-bleu small + 05-paysage large
-       (4) Large landscape full-width    : 06-maison (landscape natif)
-       (5) Diptyque quinconce inverse    : 07-maison large + 08-chemin small
-     Pattern frange-urbaine étendu : alternance L · L · D · L · D.
-     Gouttières noires généreuses, aucun bord-à-bord. */
-  }
+  {/* ═════════ 2 · GALERIE beige + manifeste Définir / Comprendre ═════════ */}
   <section
-    data-theme="dark"
-    class="dc-gallery bg-[var(--color-black-deep)]"
+    data-theme="light"
+    class="dc-gallery"
     aria-label="Sélection de projets domaines et caractère"
   >
     <figure class="dc-gallery__large dc-gallery__large--natural" data-reveal="image-rise">
-      {
-        /* Variante --natural : la 1re photo est conservée dans son ratio
-           d'origine (pas de aspect-ratio fixe ni object-fit: cover) pour
-           ne pas la rogner — retour Jonathan 2026-05-22. */
-      }
       <Image
         src={gal02}
         alt="Projet domaines et caractère — villa italienne ocre avec pergola fleurie sur balustrade en pierre"
@@ -167,6 +123,21 @@ const schema = jsonLdGraph([
         class="dc-gallery__img"
       />
     </figure>
+
+    {/* Manifeste « Définir » (3 blocs) */}
+    <div class="dc-manifeste dc-manifeste--definir">
+      <h2 class="dc-manifeste__title">Définir</h2>
+      <div
+        class="dc-manifeste__body"
+        data-words-fade
+        data-words-fade-stagger="0.006"
+        data-words-fade-window="0.05,0.5"
+      >
+        <p class="dc-manifeste__para">{manifeste.bloc1}</p>
+        <p class="dc-manifeste__para">{manifeste.bloc2}</p>
+        <p class="dc-manifeste__para">{manifeste.bloc3}</p>
+      </div>
+    </div>
 
     <figure class="dc-gallery__large" data-reveal="image-rise">
       <Image
@@ -247,103 +218,46 @@ const schema = jsonLdGraph([
         />
       </figure>
     </div>
-  </section>
 
-  {/* ═════════ 3 · MANIFESTE typologie ════════════════════════════════════ */}
-  <section
-    id="manifeste"
-    data-section-label="Manifeste"
-    data-theme="dark"
-    class="dc-manifeste bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="manifeste-title"
-  >
-    <div class="dc-manifeste__inner">
-      <h2 id="manifeste-title" class="sr-only">La typologie domaines &amp; caractère</h2>
-      <div
-        class="dc-manifeste__body"
-        data-words-fade
-        data-words-fade-stagger="0.006"
-        data-words-fade-window="0.05,0.5"
-      >
-        <p class="dc-manifeste__para">{manifeste.bloc1}</p>
-        <p class="dc-manifeste__para">{manifeste.bloc2}</p>
-        <p class="dc-manifeste__para">{manifeste.bloc3}</p>
-      </div>
-      <p class="dc-manifeste__precision">{manifeste.precision}</p>
+    {/* Manifeste « Comprendre » */}
+    <div class="dc-manifeste dc-manifeste--comprendre">
+      <h2 class="dc-manifeste__title">Comprendre</h2>
+      <p class="dc-manifeste__para">{manifeste.precision}</p>
     </div>
   </section>
 
-  {/* ═════════ 4 · FAQ — composant partagé `<TypologieFaq>` ═════════════ */}
+  {/* ═════════ 3 · FAQ beige + marquee ═══════════════════════════════════ */}
   <TypologieFaq items={faq} />
 
-  {/* ═════════ 5 · CTA full-width « DECOUVRIR LES PROJETS DOMAINES & CARACTERE » */}
-  <section
-    data-theme="dark"
-    class="dc-cta bg-[var(--color-black-deep)] text-[var(--color-cream)]"
-    aria-labelledby="cta-title"
-  >
-    <a href="/realisations" class="dc-cta__link" data-cursor-label="VOIR">
-      <h2
-        id="cta-title"
-        class="dc-cta__title"
-        data-justify-multi
-        data-justify-amp="50"
-        data-justify-line-step="0.15"
-        data-justify-line-window="0.55"
-      >
-        <span class="dc-cta__title-line" data-justify-line data-justify-direction="from-right">
-          DECOUVRIR LES PROJETS DOMAINES & CARACTERE
-        </span>
-      </h2>
-    </a>
-    <a href="/demarrer-un-projet" class="dc-cta__pill-red" data-magnetic="0.2" data-cursor-skip>
-      <span class="dc-cta__pill-dot" aria-hidden="true"></span>
-      <span class="dc-cta__pill-label">Démarrer un projet</span>
-      <img
-        src="/brand/fleche-white.webp"
-        alt=""
-        aria-hidden="true"
-        class="dc-cta__pill-arrow"
-        width="32"
-        height="32"
-      />
-    </a>
-  </section>
-
   <style is:global>
-    /* /architecture-paysagere/domaine-caractere — préfixe `dc-`. Galerie /
-       manifeste / CTA en copie directe de frange-urbaine (cf. ce fichier
-       pour la doc). Hero dans `<TypologieHero>` partagé, FAQ dans
-       `<TypologieFaq>` partagé. */
-
-    /* ─── 2 · Galerie magazine ──────────────────────────────────────────── */
+    /* /architecture-paysagere/domaine-caractere — DA finale beige/noir. */
     .dc-gallery {
       width: 100%;
+      background-color: var(--color-cream);
+      color: var(--color-ink);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
       gap: clamp(1.25rem, 3vw, 2.5rem);
     }
-    /* Large landscape — pleine largeur, ratio cinéma allégé. Utilisé pour
-       02-villa (P cover-crop), 03-maison, 06-maison. Photos portrait
-       cover-croppées top+bottom. */
     .dc-gallery__large {
       margin: 0;
       width: 100%;
       aspect-ratio: 3 / 2;
       overflow: hidden;
-      background-color: var(--color-black-deep);
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
     }
     @media (min-width: 1024px) {
       .dc-gallery__large {
         aspect-ratio: 16 / 10;
       }
     }
-    /* Diptyques quinconce — 2 variantes :
-       - top : small-gauche 38% + large-droite 54% avec décalage vertical
-         magazine (4-bleu + 5-paysage).
-       - bot : large-gauche 54% + small-droite 38%, miroir du top
-         (7-maison + 8-chemin). */
+    /* Variante --natural : 1re photo conservée dans son ratio d'origine
+       (retour Jonathan 2026-05-22) — pas de crop. */
+    .dc-gallery__large--natural {
+      aspect-ratio: auto;
+    }
     .dc-gallery__diptyque {
       display: grid;
       grid-template-columns: 1fr;
@@ -363,11 +277,8 @@ const schema = jsonLdGraph([
     .dc-gallery__diptyque-right {
       margin: 0;
       overflow: hidden;
-      background-color: var(--color-black-deep);
-    }
-    /* --top : petit-gauche / grand-droite */
-    .dc-gallery__diptyque--top .dc-gallery__diptyque-left,
-    .dc-gallery__diptyque--top .dc-gallery__diptyque-right {
+      border-radius: clamp(12px, 1.5vw, 22px);
+      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
       aspect-ratio: 4 / 5;
     }
     @media (min-width: 768px) {
@@ -380,13 +291,6 @@ const schema = jsonLdGraph([
         aspect-ratio: 4 / 5;
         align-self: end;
       }
-    }
-    /* --bot : quinconce inverse (miroir du top) */
-    .dc-gallery__diptyque--bot .dc-gallery__diptyque-left,
-    .dc-gallery__diptyque--bot .dc-gallery__diptyque-right {
-      aspect-ratio: 4 / 5;
-    }
-    @media (min-width: 768px) {
       .dc-gallery__diptyque--bot .dc-gallery__diptyque-left {
         aspect-ratio: 4 / 5;
         align-self: start;
@@ -404,36 +308,33 @@ const schema = jsonLdGraph([
       object-position: center;
       display: block;
     }
-    /* Variante --natural : retire l'aspect-ratio fixe et le cover, la
-       photo s'affiche dans son ratio d'origine, full-width, sans crop. */
-    .dc-gallery__large--natural {
-      aspect-ratio: auto;
-    }
     .dc-gallery__large--natural .dc-gallery__img {
       height: auto;
-      object-fit: initial;
     }
 
-    /* ─── 3 · Manifeste ─────────────────────────────────────────────────── */
     .dc-manifeste {
       width: 100%;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-    .dc-manifeste__inner {
+      padding: clamp(2.5rem, 6vw, 5rem) 0;
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(2rem, 4vw, 3.5rem);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
     }
     @media (min-width: 1024px) {
-      .dc-manifeste__inner {
-        grid-template-columns: 1fr 1.35fr;
+      .dc-manifeste {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
         column-gap: clamp(3rem, 6vw, 5rem);
         align-items: start;
       }
-      .dc-manifeste__body,
-      .dc-manifeste__precision {
-        grid-column: 2;
-      }
+    }
+    .dc-manifeste__title {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4.5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      margin: 0;
+      text-transform: none;
     }
     .dc-manifeste__body {
       display: flex;
@@ -443,10 +344,10 @@ const schema = jsonLdGraph([
     .dc-manifeste__para {
       font-family: var(--font-body), sans-serif;
       font-weight: 400;
-      font-size: clamp(1.2rem, 1.65vw, 1.65rem);
-      line-height: 1.45;
+      font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+      line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
     }
     .dc-manifeste__body .word {
@@ -455,107 +356,8 @@ const schema = jsonLdGraph([
       transform: translateY(10px);
       will-change: opacity, transform;
     }
-    .dc-manifeste__precision {
-      font-family: var(--font-body), sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.85rem, 0.95vw, 0.95rem);
-      line-height: 1.6;
-      color: color-mix(in oklab, var(--color-cream) 80%, transparent);
-      text-align: left;
-      margin: clamp(2.5rem, 4.5vw, 4rem) 0 0;
-    }
-
-    /* ─── 4 · FAQ ── désormais géré par `<TypologieFaq>` (composant
-       partagé, refactor 2026-05-21). Plus de CSS FAQ ici. */
-
-    /* ─── 5 · CTA full-width ────────────────────────────────────────────── */
-    .dc-cta {
-      width: 100%;
-      padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 18%, transparent);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(2rem, 4vw, 3rem);
-    }
-    .dc-cta__link {
-      display: block;
-      width: 100%;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      text-decoration: none;
-      color: inherit;
-    }
-    .dc-cta__title {
-      width: 100%;
-      margin: 0;
-    }
-    .dc-cta__title-line {
-      display: block;
-      width: 100%;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 200;
-      font-size: clamp(1.4rem, 5.5vw, 5rem);
-      line-height: 1.1;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      text-align: justify;
-      text-align-last: justify;
-      color: var(--color-cream);
-      margin: 0;
-      hyphens: none;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    @media (max-width: 767px) {
-      .dc-cta__title-line {
-        white-space: normal;
-        text-align: left;
-        text-align-last: left;
-      }
-    }
-    .dc-cta__pill-red {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.85rem 1.6rem;
-      background-color: var(--color-red);
-      color: var(--color-cream);
-      border-radius: 9999px;
-      font-family: var(--font-body), sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.9rem, 1.05vw, 1rem);
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      transition: transform 0.35s var(--ease-out-editorial);
-      will-change: transform;
-    }
-    @media (hover: hover) {
-      .dc-cta__pill-red:hover,
-      .dc-cta__pill-red:focus-visible {
-        transform: scale(1.04);
-      }
-    }
-    .dc-cta__pill-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: var(--color-cream);
-      flex-shrink: 0;
-    }
-    .dc-cta__pill-label {
-      white-space: nowrap;
-    }
-    .dc-cta__pill-arrow {
-      width: 14px;
-      height: 14px;
-      display: inline-block;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
     .dc-gallery,
-    .dc-manifeste,
-    .dc-cta {
+    .dc-manifeste {
       box-sizing: border-box;
     }
   </style>
