@@ -1,44 +1,40 @@
 ---
 /*
- * Footer — refonte v2 2026-05-15 (retours Morgan : « tu n'as pas
- * respecté les dispositions de la trame »). 2 colonnes uniformes sur
- * toutes les pages (retour Morgan 2026-05-15 v3 : « le footer doit
- * être le même que sur la home ») :
- *   - gauche  : SIEGE SOCIAL STUDIO + TERRITOIRES D'INTERVENTION (empilés)
- *   - droite  : SERVICES + STUDIO (empilés, alignés droite)
+ * Footer — refonte DA finale 2026-06-04 (trames « modif finales »).
+ *   - Carte BEIGE (#EDE6D6) à coins HAUTS arrondis, texte/logo NOIR.
+ *     (Décision Morgan : footer beige/noir partout SAUF /demarrer-un-projet.)
+ *   - Logo en tuile carrée NOIRE arrondie (wordmark cream à l'intérieur).
+ *   - Colonne gauche : Siège social Studio (NAP) + Territoires « National ».
+ *   - Colonne droite : nav Home / Studio / Projets / Démarrer un projet +
+ *     bloc « Etudes par typologies de jardin » (4 typologies, active en gras).
  *
- * Fond noir profond, écritures cream. Logo en haut-gauche + dot
- * décoratif. Filet cream fin séparateur, mentions légales en bas.
- *
- * NAP (Name / Address / Phone) reste cohérent SEO local — critique pour
- * Google Business Profile.
+ * NAP (Name / Address / Phone) conservé — critique SEO local / Google Business.
+ * Les liens /zones et services détaillés ne sont plus dans le footer (trame) ;
+ * ils restent accessibles via le menu principal.
  */
-
-const currentYear = new Date().getFullYear();
 const currentPath = Astro.url.pathname;
 
-const services = [
-  { href: '/architecture-paysagere', label: 'Architecture paysagère' },
-  { href: '/amenagement-vegetal-interieur', label: "Architecture végétal d'intérieur" },
-  { href: '/lcd-atypiques', label: 'LCD atypiques' },
-  { href: '/pros', label: 'PRO' },
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/studio', label: 'Studio' },
   { href: '/projets', label: 'Projets' },
+  { href: '/demarrer-un-projet', label: 'Démarrer un projet' },
 ];
 
-const studio = [
-  { href: '/studio', label: 'Le studio' },
-  { href: '/journal', label: 'Journal' },
-  { href: '/contact', label: 'Contact' },
+const typologies = [
+  { href: '/architecture-paysagere/micro-urbain', label: 'Micro urbain' },
+  { href: '/architecture-paysagere/coeur-urbain', label: 'Coeur urbain' },
+  { href: '/architecture-paysagere/frange-urbaine', label: 'Frange urbaine' },
+  { href: '/architecture-paysagere/domaine-caractere', label: 'Domaine & Caractère' },
 ];
 ---
 
-<footer class="site-footer" aria-label="Pied de page" data-theme="dark">
+<footer class="site-footer" aria-label="Pied de page" data-theme="light">
   <div class="site-footer__inner">
     <header class="site-footer__top">
       <a href="/" class="site-footer__logo" aria-label="Studio J Oliveira — accueil">
         <span class="site-footer__logo-mark" aria-hidden="true"></span>
       </a>
-      <span class="site-footer__dot" aria-hidden="true"></span>
     </header>
 
     <div class="site-footer__grid">
@@ -57,58 +53,44 @@ const studio = [
 
         <section aria-labelledby="footer-territoires" class="site-footer__block">
           <h2 id="footer-territoires" class="site-footer__heading">Territoires d'intervention</h2>
-          <ul class="site-footer__list">
-            <li>
-              <a href="/zones/brive-la-gaillarde" class="site-footer__link">
-                Bassin de Brive et alentours
-              </a>
-            </li>
-            <li>
-              <a href="/zones/limoges" class="site-footer__link">
-                Région Nord — Aquitaine, <strong>Limoges</strong>
-              </a>
-            </li>
-            <li>
-              <a href="/zones/bordeaux" class="site-footer__link">
-                Région Sud — Aquitaine, <strong>Bordeaux</strong>
-              </a>
-            </li>
-          </ul>
+          <p class="site-footer__national">National</p>
         </section>
+
+        <p class="site-footer__legal">Droits réservés, mentions légales, etc.</p>
       </div>
 
       <div class="site-footer__col site-footer__col--right">
-        <section aria-labelledby="footer-services">
-          <h2 id="footer-services" class="site-footer__heading">Services</h2>
-          <ul class="site-footer__list">
-            {
-              services.map((s) => (
-                <li>
-                  <a
-                    href={s.href}
-                    class="site-footer__link"
-                    aria-current={currentPath === s.href ? 'page' : undefined}
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+        <nav class="site-footer__nav" aria-label="Navigation pied de page">
+          {
+            nav.map((n) => (
+              <a
+                href={n.href}
+                class="site-footer__navlink"
+                aria-current={currentPath === n.href ? 'page' : undefined}
+              >
+                {n.label}
+              </a>
+            ))
+          }
+        </nav>
 
-        <section aria-labelledby="footer-studio" class="site-footer__block">
-          <h2 id="footer-studio" class="site-footer__heading">Studio</h2>
-          <ul class="site-footer__list">
+        <section aria-labelledby="footer-typologies" class="site-footer__typo">
+          <h2 id="footer-typologies" class="site-footer__typo-title">
+            Etudes par typologies de jardin
+          </h2>
+          <ul class="site-footer__typo-list">
             {
-              studio.map((s) => (
+              typologies.map((t) => (
                 <li>
                   <a
-                    href={s.href}
-                    class="site-footer__link"
-                    aria-current={currentPath === s.href ? 'page' : undefined}
+                    href={t.href}
+                    class={
+                      'site-footer__typo-link' +
+                      (currentPath === t.href ? ' site-footer__typo-link--active' : '')
+                    }
+                    aria-current={currentPath === t.href ? 'page' : undefined}
                   >
-                    {s.label}
+                    {t.label}
                   </a>
                 </li>
               ))
@@ -116,59 +98,49 @@ const studio = [
           </ul>
         </section>
       </div>
-    </div>
-
-    <div class="site-footer__legal">
-      <p>
-        © {currentYear} Studio J Oliveira — Tous droits réservés.
-        <a href="/mentions-legales" class="site-footer__link">Mentions légales</a>
-        <a href="/confidentialite" class="site-footer__link">Confidentialité</a>
-      </p>
     </div>
   </div>
 </footer>
 
 <style>
+  /* Carte beige à coins hauts arrondis, texte noir. */
   .site-footer {
-    background-color: var(--color-black-deep);
-    color: var(--color-cream);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    border-top-left-radius: clamp(24px, 4vw, 56px);
+    border-top-right-radius: clamp(24px, 4vw, 56px);
     margin-top: 0;
+    overflow: hidden;
   }
   .site-footer__inner {
     max-width: 1500px;
     margin: 0 auto;
-    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2rem);
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
   }
 
   .site-footer__top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: clamp(2rem, 5vw, 4rem);
   }
+  /* Logo = tuile carrée NOIRE arrondie, wordmark cream à l'intérieur. */
   .site-footer__logo {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(96px, 9vw, 128px);
+    height: clamp(96px, 9vw, 128px);
+    background-color: var(--color-ink);
+    border-radius: clamp(18px, 2vw, 28px);
     line-height: 0;
   }
   .site-footer__logo-mark {
     display: block;
-    width: clamp(180px, 18vw, 240px);
-    height: clamp(46px, 4.6vw, 60px);
+    width: 68%;
+    height: 38%;
     background-color: var(--color-cream);
-    -webkit-mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
-    mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
-  }
-  .site-footer__dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--color-cream);
-    opacity: 0.85;
+    -webkit-mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
+    mask: url('/brand/wordmark-black.png?v=3') center / contain no-repeat;
   }
 
-  /* Grille 2 colonnes (refonte v2 2026-05-15) — gauche SIEGE+TERRITOIRES,
-     droite SERVICES+STUDIO. Empile en colonne unique sur mobile. */
   .site-footer__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -183,10 +155,7 @@ const studio = [
   .site-footer__col {
     display: flex;
     flex-direction: column;
-    gap: clamp(2rem, 4vw, 3rem);
-  }
-  .site-footer__col--right {
-    text-align: left;
+    gap: clamp(1.75rem, 3.5vw, 2.75rem);
   }
   @media (min-width: 768px) {
     .site-footer__col--right {
@@ -194,38 +163,42 @@ const studio = [
       align-items: flex-end;
     }
   }
-  .site-footer__block {
-    margin-top: 0;
-  }
 
   .site-footer__heading {
     font-family: var(--font-heading), sans-serif;
-    font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+    font-size: clamp(1.05rem, 1.3vw, 1.3rem);
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0;
-    margin: 0 0 1.1rem 0;
-    color: var(--color-cream);
+    margin: 0 0 0.85rem 0;
+    color: var(--color-ink);
   }
-
-  .site-footer__address,
-  .site-footer__list {
+  .site-footer__address {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
     font-family: var(--font-body), sans-serif;
-    font-weight: 200;
-    font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+    font-weight: 400;
+    font-size: clamp(0.95rem, 1.1vw, 1.1rem);
     line-height: 1.5;
-    color: color-mix(in oklab, var(--color-cream) 92%, transparent);
+    color: color-mix(in oklab, var(--color-ink) 88%, transparent);
     font-style: normal;
   }
-  .site-footer__list strong {
-    font-weight: 700;
-    color: var(--color-cream);
+  .site-footer__national {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+    margin: 0;
+    color: color-mix(in oklab, var(--color-ink) 88%, transparent);
+  }
+  .site-footer__legal {
+    margin: 0;
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(0.7rem, 0.85vw, 0.8rem);
+    color: color-mix(in oklab, var(--color-ink) 55%, transparent);
   }
 
   .site-footer__link {
@@ -242,22 +215,65 @@ const studio = [
     opacity: 0.85;
   }
 
-  .site-footer__legal {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    padding-top: 1.25rem;
-    border-top: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: color-mix(in oklab, var(--color-cream) 70%, transparent);
+  /* Nav droite — grande, fine, casse normale. */
+  .site-footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
-  .site-footer__legal p {
+  .site-footer__navlink {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+  .site-footer__navlink:hover,
+  .site-footer__navlink:focus-visible {
+    opacity: 0.6;
+  }
+
+  .site-footer__typo-title {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0.85rem;
+    color: var(--color-ink);
+    text-transform: none;
+  }
+  .site-footer__typo-list {
+    list-style: none;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0 1.5rem;
+    gap: 0.4rem 1.4rem;
+    justify-content: flex-start;
   }
-  .site-footer__legal .site-footer__link {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 30%, transparent);
+  @media (min-width: 768px) {
+    .site-footer__typo-list {
+      justify-content: flex-end;
+    }
+  }
+  .site-footer__typo-link {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    color: color-mix(in oklab, var(--color-ink) 80%, transparent);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+  .site-footer__typo-link:hover,
+  .site-footer__typo-link:focus-visible {
+    opacity: 0.6;
+  }
+  .site-footer__typo-link--active {
+    font-weight: 700;
+    color: var(--color-ink);
   }
 </style>

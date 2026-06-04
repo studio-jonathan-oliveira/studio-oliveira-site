@@ -102,11 +102,13 @@ const LABELS = [
 
   /* Specs — sous le hero, fond beige, 4 lignes label↔valeur, séparateur
      fin sous chaque rangée. */
+  /* Section full-bleed : pas de padding horizontal → le trait de chaque
+     ligne touche le BORD GAUCHE de l'écran (bord à bord). */
   .typo-hero-specs {
     width: 100%;
     background-color: var(--color-cream);
     color: var(--color-ink);
-    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 7vh, 5rem);
+    padding: clamp(2rem, 5vh, 4rem) 0 clamp(3rem, 7vh, 5rem);
     box-sizing: border-box;
   }
   .typo-hero-specs__list {
@@ -115,14 +117,19 @@ const LABELS = [
     flex-direction: column;
     gap: 0;
   }
+  /* Chaque rangée = trait bas pleine largeur (bord gauche écran) qui FINIT
+     EN COURBE VERS LE HAUT à droite (border-right + radius bas-droite),
+     cf. trame Jonathan. Le texte est repoussé du bord par le padding inline. */
   .typo-hero-specs__row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: clamp(2rem, 6vw, 6rem);
     width: 100%;
-    padding: clamp(0.9rem, 1.6vw, 1.35rem) 0;
+    padding: clamp(0.9rem, 1.6vw, 1.35rem) clamp(1.5rem, 4vw, 4rem);
     border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-right: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-bottom-right-radius: clamp(20px, 3.5vw, 48px);
   }
   .typo-hero-specs__label,
   .typo-hero-specs__value {
