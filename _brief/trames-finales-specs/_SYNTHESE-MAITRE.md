@@ -98,6 +98,14 @@ Grammaire commune :
 
 ---
 
+## DÉCISIONS MORGAN (2026-06-04) — VERROUILLÉES
+
+1. **Territoires = « National »** : OUI. (⚠️ garder les pages /zones pour le SEO local malgré le footer « National ».)
+2. **Manifeste rouge home** : supprimé OUI — MAIS remplacé/complété par la **nouvelle section Stats « +10 Études » etc.**
+3. **Footer beige/noir partout** : OUI sitewide, SAUF `/demarrer-un-projet` qui est **noir + violet**.
+4. **Bascule DA typologies** noir/rouge → beige/noir : OUI validé.
+5. **Images** : Morgan fournit sous-dossiers 01-/02- → placeholders en attendant.
+
 ## QUESTIONS OUVERTES (pour Morgan / Jonathan)
 
 1. **Manifeste rouge home** : supprimé ? (absent de la trame)

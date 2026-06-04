@@ -1,3 +1,43 @@
+## ⚠️ RE-AUDIT 2026-06-04 (relecture par colonne col0→col2, bandes b0→b4)
+
+Relecture HD tuile par tuile pour combler les états dépliés / colonnes latérales. La trame studio n'est **PAS** une page montrée en plusieurs états côte à côte : c'est **une seule page** découpée en colonnes (col0 = moitié gauche, col1 = bord droit + accordéon ouvert, col2 = marge droite = annotations designer). L'accordéon est dessiné **dans son état OUVERT, les 4 lignes déroulées simultanément** (vue de présentation), chaque ligne portant son descriptif complet + une icône **« × »** à droite.
+
+Manques comblés (VERBATIM exact, casse/accents/fautes conservés) :
+
+1. **ANNOTATION OUBLIÉE — intro « STUDIO » (col1_b1 + col2_b1)** : une 3ᵉ annotation d'animation, distincte, attachée au **bloc intro (photo bureau + texte)**, NON capturée dans la 1ʳᵉ spec. VERBATIM :
+
+   > « ANIMATION DU TEXTE "STUDIO" EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »
+   > → Donc il y a **3 annotations wavy distinctes** (et non 2) : une sur le texte intro « STUDIO », une sur le **titre** de l'accordéon, une sur les **textes** (descriptifs). Voir Section 3bis ajoutée.
+
+2. **ICÔNE ACCORDÉON OUVERT = « × » NET (col2_b2 / col2_b3)** : confirmation visuelle directe — dans l'état déroulé dessiné, **chaque** ligne porte un **« × » (croix noire)** aligné **à droite** (et non un « + »). En état fermé (col0), aucune icône n'est dessinée à gauche du titre côté col0 ; les icônes « + » apparaissent côté bord droit (col1_b2/b3) pour les lignes encore fermées. → modèle d'icône confirmé : **fermé « + », ouvert « × », icône à DROITE de la ligne**.
+
+3. **ANNOTATION TITRE H2 ACCORDÉON — texte complet (col1_b2 + col2_b2)** VERBATIM intégral reconstitué bord-à-bord :
+
+   > « ANIMATION DU TITRE EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »
+
+4. **ANNOTATION COMPORTEMENT ACCORDÉON — texte complet (col1_b2 + col2_b2)** VERBATIM intégral :
+
+   > « DEROULE ACCORDEON, ANIMATION A L'IDENTIQUE DE CE QUI EXISTE CLIQUER SUR LE TITRE SUIVANT REFORME CELUI DU DESSUS AUTOMATIQUEMENT »
+
+5. **ANNOTATION DESCRIPTIFS — texte complet (col1_b4 + col2_b4)** VERBATIM intégral :
+
+   > « ANIMATION DES TEXTES EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »
+
+6. **VERBATIM descriptifs accordéon — confirmés sur la moitié droite (col2_b2/b3)** :
+   - Bati (fin) : « …gent et dorment naturellement. Cette structure essentielle … esthétique de toutes les architectures qui gravitent autour. » → confirme « définie le tempo esthétique de toutes les architectures qui gravitent autour. »
+   - Biophilique : « …ne seule avec comme seul objectif : reproduire le … » → **double espace confirmé** entre « seule » et « avec » (le mot « architecture » n'est PAS répété).
+   - Biophilique (fin) : « C'est cette architecture que le **Studio J. Oliveira** vous … » → **point après J confirmé** côté col2.
+
+7. **Topbar « Démarrer un projet » — position (col0_b0)** : le libellé n'est **pas centré dans la page** mais positionné **vers le centre-droit** de la topbar (aligné à droite du logo). Gras noir confirmé. (Nuance vs spec qui disait « centré horizontalement ».)
+
+8. **Footer nav droite — casse exacte (col1_b4)** : liens empilés alignés droite, **graisse fine (light)** : « Home », « Studio », « Projets », « …un projet » (= Démarrer un projet, tronqué par le découpage), puis bloc « …de jardin » (= Etudes par typologies de jardin) avec « Domaine & Caractère » visible. Confirme la nav Home/Studio/Projets/Démarrer + typologies.
+
+9. **Parcours — colonne détail droite tronquée (col0_b3/b4)** : la colonne de détail à droite de la frise est **coupée par le découpage** (« Studio de… », « 4.5 ans / Entrep… paysag… », « 1 an / Diplômé… », « 2 an… / Diplômé… », « 1 an / avec mention »). Les valeurs complètes proviennent de la 1ʳᵉ spec (tableau Section 6) ; rien de neuf ni de contradictoire trouvé, mais **noter que « avec mention » est le suffixe répété** (« Diplômé avec mention ») pour Licence Pro / BTSA / BAC PRO (visible 3× en col1_b3 « avec mention »).
+
+> Aucun autre texte caché, aucun violet #e0afff dessiné dans cette trame studio (les seules teintes : beige #EDE6D6, noir #000000, annotations en beige plus saturé/crème, rouge = guides). Pas de divergence de contenu vs la 1ʳᵉ spec hormis l'annotation « STUDIO » oubliée et la position topbar.
+
+---
+
 # Spec reconstruction — Page /studio (trame Jonathan)
 
 > Source de vérité : trame « page studio » (orig. 4525×6823 px, 3 col × 4 lignes de tuiles, recouvrement 160 px).
@@ -79,6 +119,14 @@ Layout 2 colonnes, commence juste sous la ligne de fin du 1ᵉʳ écran rouge.
 - **Position** : moitié droite, alignée en haut du bloc texte, dépasse légèrement à droite jusqu'au bord du cadre rouge.
 - **Ratio** : ~portrait/carré (≈ 4/5, hauteur > largeur).
 - **Contenu** : **photo en plongée d'un bureau de travail** — vue de dessus/arrière d'une personne (Jonathan) assise tenant une tablette, devant un setup multi-écrans (PC + écran affichant un paysage/projet), clavier, souris, lampe d'appoint à droite, plante verte en bas-gauche. Ambiance chaude (lumière tungstène orangée), tons sombres. Placeholder : `studio/02-parcours.jpg` (photo de travail).
+
+---
+
+### Section 3bis — ANNOTATION animation du bloc intro (ajout RE-AUDIT 2026-06-04)
+
+> **ANNOTATION (bloc intro « STUDIO »)** — VERBATIM (col1_b1 / col2_b1, en marge droite de la photo bureau) :
+> « ANIMATION DU TEXTE "STUDIO" EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »
+> → Le paragraphe d'intro (et/ou le mot « STUDIO ») doit apparaître en **wavy/vague piloté par le scroll**, réversible (apparition ET disparition). Même grammaire d'animation que le titre H2 et les descriptifs accordéon.
 
 ---
 

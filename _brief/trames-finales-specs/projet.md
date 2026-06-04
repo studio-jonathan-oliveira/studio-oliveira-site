@@ -1,5 +1,31 @@
 # Spec — Trame « projet »
 
+## ⚠️ RE-AUDIT 2026-06-04
+
+Re-lecture colonne par colonne des 6 bandes HD (col0 b0→b2 = moitié GAUCHE de la composition ; col1 b0→b2 = moitié DROITE). Objectif : détecter du contenu raté dans les colonnes latérales / états dépliés.
+
+**Conclusion structurelle (importante) :** cette trame ne montre la page que dans UN SEUL état — **les 3 accordéons sont FERMÉS**. Les « colonnes » col0/col1 ne sont PAS deux états côte à côte (fermé vs ouvert) : ce sont simplement la moitié gauche et la moitié droite de la **même** maquette unique. **Aucun état déplié, aucune liste de projets, aucune vignette/carte projet n'apparaît nulle part.** L'analyse initiale était donc correcte sur le fond ; le détail des listes dépliées reste bien à fournir par Jonathan.
+
+Manques / imprécisions de la 1re spec, comblés ou confirmés en relisant la moitié DROITE (col1) — verbatim :
+
+1. **Titre de planche (annotation hors-maquette, haut)** — RATÉ par la 1re spec. En haut de la planche, en capitales beiges discrètes : **« PAGE PROJET »** (col0_b0). À ajouter aux annotations designer.
+
+2. **Icône « + » à droite des 3 accordéons — CONFIRMÉE présente** (col1_b1 + col1_b2). La 1re spec hésitait (l.77 « probablement rotation/croix — à confirmer », l.19/93 doute sur la présence). C'est levé : un **« + » cream** est bien rendu à droite de CHACUNE des 3 lignes (Etudes et Conceptions / Réalisations / Galerie Studio), centré verticalement, calé sur la marge droite du bloc. État fermé = « + » pour les 3. (col0 ne montrait que la moitié gauche, d'où l'absence apparente.)
+
+3. **Header « MENU » + burger — CONFIRMÉ** (col1_b0). Le mot **MENU** (Bold, uppercase, cream) suivi de l'icône burger = **2 traits horizontaux** fins cream, en haut à droite du bloc hero. (Invisible sur col0 car hors de la moitié gauche.)
+
+4. **Les 3 annotations « CLIC ACCORDEON … » sont bien en face des lignes, dans la marge droite** (col1_b1 montre les 3 d'un coup, col1_b2 répète « CLIC ACCORDEON GALERIE STUDIO »). Verbatim re-vérifié, exactement en capitales beiges :
+   - « **CLIC ACCORDEON ETUDES ET CONCEPTIONS** »
+   - « **CLIC ACCORDEON REALISATIONS** »
+   - « **CLIC ACCORDEON GALERIE STUDIO** »
+     (Pas de « S » à REALISATION → c'est bien « REALISATIONS ». Aucun accent dans les annotations.)
+
+5. **Footer colonne droite — fin de la ligne typologies CONFIRMÉE** (col1_b2) : la 4e typologie se termine par **« …Caractère »** (rendu « Caractère » en petit, regular), confirmant **« Domaine & Caractère »**. Les libellés nav droite (Home / Studio / Projets / Démarrer un projet) re-confirmés (fragments « me / dio / jets / ojet » + titre « …rdin » = « jardin » de « Etudes par typologies de jardin »).
+
+**Aucun nouveau contenu éditorial découvert** (pas de liste de projets, pas de cartes, pas de texte d'intro caché, pas de divergence couleur/typo nouvelle). Les seuls vrais ajouts sont : l'annotation de planche « PAGE PROJET » et la **confirmation** que le marqueur des accordéons est « + » (pas « × »).
+
+---
+
 ## Identification
 
 **Page = INDEX « Projets » (hub portefeuille), PAS une page de détail.**
