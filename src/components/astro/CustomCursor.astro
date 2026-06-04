@@ -65,10 +65,13 @@
        sections sombres, on remplace cream par rouge pour le dot/ring. Effet :
        curseur rouge sur fond noir, noir sur fond rouge, cohérent avec la DA
        Jonathan. Étendu à .is-typologie 2026-05-15 (pilote micro-urbain). */
+    /* Refonte 2026-06-04 (DA finale beige/noir) : les typologies passent en
+       beige/noir (plus de rouge). Sur leur footer noir, le curseur redevient
+       simplement cream (is-on-dark par défaut). On retire `is-typologie` et
+       `is-paysagere-index` de l'override rouge — conservé seulement pour les
+       pages encore en DA noir/rouge (home/studio, à migrer ensuite). */
     body.is-home .custom-cursor.is-on-dark,
-    body.is-studio .custom-cursor.is-on-dark,
-    body.is-typologie .custom-cursor.is-on-dark,
-    body.is-paysagere-index .custom-cursor.is-on-dark {
+    body.is-studio .custom-cursor.is-on-dark {
       --cursor-fill: var(--color-red);
       --cursor-text: var(--color-cream);
     }
@@ -93,10 +96,13 @@
        Plus gros qu'avant (6 → 9px) pour servir de vrai crosshair. */
     .cursor-dot {
       position: absolute;
-      top: -4.5px;
-      left: -4.5px;
-      width: 9px;
-      height: 9px;
+      /* Refonte 2026-06-04 (trame Jonathan) : petit point décalé en bas-droite
+         du carré arrondi (au lieu d'un crosshair centré). Cf. screenshot
+         "curseur de la souris" — carré + dot en bas-droite. */
+      top: 6px;
+      left: 6px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background-color: var(--cursor-fill);
       transition:
@@ -116,7 +122,10 @@
       /* Refonte 2026-04-29 — disque latérite sur cream, cream sur latérite, via
          --cursor-fill piloté par body.is-dark-section. */
       background-color: var(--cursor-fill);
-      border-radius: 50%;
+      /* Refonte 2026-06-04 (trame Jonathan) : carré à angles arrondis au
+         lieu du disque rond. Le radius reste proportionnel quelle que soit
+         la taille (hover/labeled). */
+      border-radius: 7px;
       transition:
         width 0.35s var(--ease-out-editorial),
         height 0.35s var(--ease-out-editorial),

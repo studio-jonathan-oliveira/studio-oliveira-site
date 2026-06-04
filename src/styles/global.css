@@ -73,10 +73,14 @@
    * Les seuls hex du site. Aucun autre fichier ne doit contenir de hex.
    * Pour swap de palette : remplacer la valeur ici, tout le reste suit.
    * ───────────────────────────────────────────────────────────────────── */
-  --color-cream: #f5f1ea; /* fond clair signature */
+  /* Swap palette FINALE Jonathan 2026-06-04 (trames "modif finales") :
+     3 couleurs seulement → beige + noir + violet. Le rouge est conservé
+     comme token le temps de migrer les pages une à une, puis sera retiré. */
+  --color-cream: #ede6d6; /* BEIGE — fond clair dominant (était #f5f1ea) */
   --color-moss: #70725b; /* vert grisé, texte secondaire fond clair */
-  --color-ink: #0a0a0a; /* noir profond, texte sur fond clair + fond sombre */
-  --color-red: #ff0d00; /* rouge vermillon, accent signature (CTA, hover) */
+  --color-ink: #000000; /* NOIR pur — texte sur fond clair + fond sombre (était #0a0a0a) */
+  --color-violet: #e0afff; /* VIOLET/lilas — nouvel accent (CTA, hover, /demarrer) */
+  --color-red: #ff0d00; /* rouge vermillon — LEGACY, en cours de retrait (→ violet) */
   --color-forest-deep: #2a2d28; /* gris-vert sombre, variant dark historique */
   --color-draft: #d97706; /* orange — UNIQUEMENT pour les marqueurs draft dev (hors thème) */
 

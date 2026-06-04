@@ -14,10 +14,11 @@
  */
 
 export const BRAND_COLORS = {
-  cream: '#f5f1ea',
+  cream: '#ede6d6', // BEIGE — swap palette finale 2026-06-04 (était #f5f1ea)
   moss: '#70725b',
-  ink: '#0a0a0a',
-  red: '#ff0d00',
+  ink: '#000000', // NOIR pur (était #0a0a0a)
+  violet: '#e0afff', // VIOLET/lilas — nouvel accent
+  red: '#ff0d00', // LEGACY, en cours de retrait
   forestDeep: '#2a2d28',
   draft: '#d97706',
 } as const;
@@ -34,7 +35,7 @@ export const THEME_COLOR_META = BRAND_COLORS.cream;
  * Mapping sémantique calqué sur la couche 2 de `global.css`.
  */
 export const EMAIL_COLORS = {
-  background: '#f4f1ea', // légère variation pour le fond email (offset 1 pt vs cream)
+  background: '#ece5d4', // légère variation pour le fond email (offset 1 pt vs beige)
   surface: '#ffffff',
   border: '#e5e2da',
   divider: '#eeeeee',

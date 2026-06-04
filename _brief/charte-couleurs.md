@@ -6,14 +6,18 @@
 
 ---
 
-## 1. Palette actuelle — 6 couleurs
+## 1. Palette actuelle — swap FINAL Jonathan 2026-06-04 (trames « modif finales »)
+
+**DA finale = 3 couleurs** : beige + noir + violet. Le rouge est conservé comme
+token LEGACY le temps de migrer les pages une à une (puis retrait).
 
 | Token CSS             | Hex       | Rôle principal                                                                                                      |
 | --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------- |
-| `--color-cream`       | `#F5F1EA` | Fond clair signature (pages éditoriales)                                                                            |
+| `--color-cream`       | `#EDE6D6` | BEIGE — fond clair dominant sitewide (était `#F5F1EA`)                                                              |
+| `--color-ink`         | `#000000` | NOIR pur — texte sur fond clair + fonds sombres (footer) (était `#0A0A0A`)                                          |
+| `--color-violet`      | `#E0AFFF` | VIOLET/lilas — nouvel accent (CTA, hover, fond `/demarrer-un-projet`)                                               |
 | `--color-moss`        | `#70725B` | Vert grisé — texte secondaire sur fond clair                                                                        |
-| `--color-ink`         | `#0A0A0A` | Noir profond — texte sur fond clair + fond sombre immersif                                                          |
-| `--color-red`         | `#FF0D00` | Rouge vermillon — accent signature (CTA, hover, pill)                                                               |
+| `--color-red`         | `#FF0D00` | LEGACY rouge — en cours de retrait (→ violet), encore référencé par pages non migrées                               |
 | `--color-forest-deep` | `#2A2D28` | Gris-vert sombre — variant dark historique (overlays cards)                                                         |
 | `--color-draft`       | `#D97706` | Orange — UNIQUEMENT marqueurs `[À FOURNIR]` en dev (hors thème, ne pas changer en cas de swap de palette de marque) |
 
@@ -170,6 +174,7 @@ Les fréquences les plus utilisées sont disponibles comme tokens dédiés
 
 ## 6. Historique des swaps
 
-| Date       | Changement                                                     | Auteur |
-| ---------- | -------------------------------------------------------------- | ------ |
-| 2026-05-28 | Mise en place architecture 3 couches — palette d'origine fixée | Claude |
+| Date       | Changement                                                                                                 | Auteur |
+| ---------- | ---------------------------------------------------------------------------------------------------------- | ------ |
+| 2026-05-28 | Mise en place architecture 3 couches — palette d'origine fixée                                             | Claude |
+| 2026-06-04 | Swap FINAL trames Jonathan : cream→#EDE6D6, ink→#000000, + `--color-violet` #E0AFFF. Rouge devient LEGACY. | Claude |
