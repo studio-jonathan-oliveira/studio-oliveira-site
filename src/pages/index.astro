@@ -59,12 +59,32 @@ const typologies = [
 ];
 
 // Section STATS (trame home « modif finales » — verbatim trame).
-const stats = [
-  { valeur: '+10', label: 'Etudes', sous: 'réalisées par le studio depuis sa création' },
+// Cartes Études + ans = cliquables (hover → carte NOIRE, curseur allongé
+// « DÉCOUVRIR… » + bloc aimanté au curseur). +3 régions = carte statique.
+interface StatCard {
+  valeur: string;
+  label: string;
+  sous: string;
+  href?: string;
+  cta?: string;
+  cursor?: string;
+}
+const stats: StatCard[] = [
+  {
+    valeur: '+10',
+    label: 'Etudes',
+    sous: 'réalisées par le studio depuis sa création',
+    href: '/projets',
+    cta: 'Découvrir les projets',
+    cursor: 'PROJETS',
+  },
   {
     valeur: '+10',
     label: 'ans',
     sous: "D'expérience dans le domaine de l'architecture paysagère",
+    href: '/studio',
+    cta: 'Découvrir le parcours',
+    cursor: 'PARCOURS',
   },
   {
     valeur: '+3',
@@ -280,21 +300,32 @@ const stats = [
     <div class="stats-band__inner">
       <div class="stats-grid">
         {
-          stats.map((s) => (
-            <div class="stats-card">
-              <span class="stats-card__value">
-                {s.valeur}
-                <span class="stats-card__label">{s.label}</span>
-              </span>
-              <span class="stats-card__sous">{s.sous}</span>
-            </div>
-          ))
+          stats.map((s) =>
+            s.href ? (
+              <a
+                href={s.href}
+                class="stats-card stats-card--link"
+                data-cursor-label={s.cursor}
+                data-magnetic="0.15"
+              >
+                <span class="stats-card__value">
+                  {s.valeur}
+                  <span class="stats-card__label">{s.label}</span>
+                </span>
+                <span class="stats-card__sous">{s.sous}</span>
+                <span class="stats-card__pill">{s.cta}</span>
+              </a>
+            ) : (
+              <div class="stats-card">
+                <span class="stats-card__value">
+                  {s.valeur}
+                  <span class="stats-card__label">{s.label}</span>
+                </span>
+                <span class="stats-card__sous">{s.sous}</span>
+              </div>
+            ),
+          )
         }
-      </div>
-      <div class="stats-cta">
-        <a href="/projets" class="stats-pill" data-cursor-label="DÉCOUVRIR">Découvrir les projets</a
-        >
-        <a href="/studio" class="stats-pill" data-cursor-label="PARCOURS">Découvrir le parcours</a>
       </div>
     </div>
   </section>
@@ -805,33 +836,56 @@ const stats = [
       line-height: 1.4;
       color: color-mix(in oklab, var(--color-ink) 78%, transparent);
     }
-    .stats-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    /* Cartes cliquables (Études / ans) : lien + bloc magnétique (data-magnetic),
+       curseur custom allongé « DÉCOUVRIR… » (data-cursor-label), et BASCULE EN
+       NOIR au survol (trame : « AU SURVOL LE CURSEUR S'ALLONGE… / carte noire »). */
+    .stats-card--link {
+      text-decoration: none;
+      cursor: none;
+      will-change: transform;
+      transition:
+        background-color 0.4s var(--ease-out-editorial),
+        color 0.4s var(--ease-out-editorial),
+        border-color 0.4s var(--ease-out-editorial),
+        transform 0.35s var(--ease-out-editorial);
     }
-    .stats-pill {
+    @media (hover: hover) {
+      .stats-card--link:hover,
+      .stats-card--link:focus-visible {
+        background-color: var(--color-ink);
+        border-color: var(--color-ink);
+        color: var(--color-cream);
+      }
+      .stats-card--link:hover .stats-card__value,
+      .stats-card--link:focus-visible .stats-card__value {
+        color: var(--color-cream);
+      }
+      .stats-card--link:hover .stats-card__sous,
+      .stats-card--link:focus-visible .stats-card__sous {
+        color: color-mix(in oklab, var(--color-cream) 82%, transparent);
+      }
+      .stats-card--link:hover .stats-card__pill,
+      .stats-card--link:focus-visible .stats-card__pill {
+        background-color: var(--color-cream);
+        color: var(--color-ink);
+      }
+    }
+    /* Pill interne « Découvrir les projets / le parcours ». */
+    .stats-card__pill {
+      align-self: flex-start;
+      margin-top: auto;
       display: inline-flex;
       align-items: center;
-      padding: 0.85rem 1.6rem;
+      padding: 0.7rem 1.3rem;
       background-color: var(--color-ink);
       color: var(--color-cream);
       border-radius: 9999px;
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(0.9rem, 1.05vw, 1rem);
-      text-decoration: none;
+      font-size: clamp(0.85rem, 1vw, 0.95rem);
       transition:
-        background-color 0.35s var(--ease-out-editorial),
-        transform 0.35s var(--ease-out-editorial);
-    }
-    @media (hover: hover) {
-      .stats-pill:hover,
-      .stats-pill:focus-visible {
-        background-color: var(--color-violet);
-        color: var(--color-ink);
-        transform: scale(1.03);
-      }
+        background-color 0.4s var(--ease-out-editorial),
+        color 0.4s var(--ease-out-editorial);
     }
 
     /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +
