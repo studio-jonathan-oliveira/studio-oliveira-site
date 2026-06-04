@@ -18,7 +18,6 @@
  * Tous les textes sont soit sourcés du PDF process Jonathan, soit marqués [À FOURNIR].
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import CtaLink from '@/components/astro/CtaLink.astro';
 import HeroSwipe from '@/components/astro/HeroSwipe.astro';
 import { jsonLdGraph, organization, localBusiness, website, person } from '@/lib/schema-org';
 
@@ -248,14 +247,9 @@ const stats: StatCard[] = [
         </p>
       </div>
       <div class="studio-presentation__cta">
-        <CtaLink
-          href="/studio"
-          label="Découvrir le STUDIO"
-          tone="light"
-          size="lg"
-          magnetic={0.3}
-          showDot={false}
-        />
+        <a href="/studio" class="studio-pill" data-magnetic="0.3" data-cursor-skip>
+          Découvrir le STUDIO
+        </a>
       </div>
     </div>
   </section>
@@ -331,8 +325,7 @@ const stats: StatCard[] = [
     id="typologies"
     data-section-label="Typologies"
     data-theme="light"
-    data-hscroll-typologies
-    class="htypo-section full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    class="htypo-section htypo-section--row full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
@@ -355,10 +348,10 @@ const stats: StatCard[] = [
            Bulle CTA "Choisir/Explorer" + tooltip 3 lignes attachés à htypo-visual
            (donc visibles uniquement quand le curseur survole l'image, pas le
            nom au-dessus ni le CTA en dessous). -->
-      <div class="htypo-rail" data-hscroll-rail>
+      <div class="htypo-rail">
         {
           typologies.map((t, i) => (
-            <div class="htypo-panel" data-hscroll-panel>
+            <div class="htypo-panel">
               <div class="htypo-card">
                 {/* Refonte v4 2026-05-15 (retour Morgan) : le <a> n'englobe
                     plus toute la card mais UNIQUEMENT l'image. Le nom n'est
@@ -715,6 +708,33 @@ const stats: StatCard[] = [
     .studio-presentation__cta {
       display: flex;
       justify-content: center;
+    }
+    /* Pill « Découvrir le STUDIO » — contour au repos, NOIR plein au survol
+       (trame). Magnétique au curseur (data-magnetic). */
+    .studio-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: clamp(0.9rem, 1.4vw, 1.2rem) clamp(1.6rem, 2.4vw, 2.4rem);
+      border: 1px solid var(--color-ink);
+      border-radius: 9999px;
+      background-color: transparent;
+      color: var(--color-ink);
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+      text-decoration: none;
+      cursor: none;
+      will-change: transform;
+      transition:
+        background-color 0.4s var(--ease-out-editorial),
+        color 0.4s var(--ease-out-editorial);
+    }
+    @media (hover: hover) {
+      .studio-pill:hover,
+      .studio-pill:focus-visible {
+        background-color: var(--color-ink);
+        color: var(--color-cream);
+      }
     }
     /* Bloc texte ADN — 4 lignes en text-align: justify CSS natif. Pattern
        data-justify-multi (setupJustifyMulti) qui calague les mots au scroll
@@ -1264,6 +1284,49 @@ const stats: StatCard[] = [
       top: 0;
       height: 100vh;
       overflow: hidden;
+    }
+
+    /* ─── Variante RANGÉE de 4 cartes (trame « modif finales », retour Morgan
+       2026-06-04 : pas de carousel pinné, une simple rangée de 4). Override
+       de toute la mécanique carousel. ─────────────────────────────────────── */
+    .htypo-section--row {
+      height: auto;
+    }
+    .htypo-section--row .htypo-sticky {
+      position: static;
+      height: auto;
+      overflow: visible;
+    }
+    .htypo-section--row .htypo-header {
+      position: static;
+      left: auto;
+      right: auto;
+      padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+    }
+    .htypo-section--row .htypo-rail {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(1rem, 2vw, 2rem);
+      width: 100%;
+      height: auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vw, 7rem);
+      will-change: auto;
+    }
+    .htypo-section--row .htypo-panel {
+      flex: initial;
+      width: auto;
+      height: auto;
+      padding-bottom: 0;
+    }
+    @media (max-width: 900px) {
+      .htypo-section--row .htypo-rail {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 540px) {
+      .htypo-section--row .htypo-rail {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Header — refonte v4 2026-05-15 (retour Morgan) : remonté en haut
