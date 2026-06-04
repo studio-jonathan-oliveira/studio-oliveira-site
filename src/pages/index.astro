@@ -33,36 +33,36 @@ const typologies = [
     file: '01-micro-urbain',
     nom: 'Micro urbain',
     tagline: 'ROOF TOPS / PATIOS / MICRO JARDINS',
-    cta: 'Choisir',
+    cta: 'Découvrir',
   },
   {
     slug: 'coeur-urbain',
     file: '02-coeur-urbain',
     nom: 'Cœur urbain',
     tagline: 'COURS / JARDINS CONFINÉS / JARDINS DE VILLE',
-    cta: 'Choisir',
+    cta: 'Découvrir',
   },
   {
     slug: 'frange-urbaine',
     file: '03-frange-urbaine',
     nom: 'Frange urbaine',
     tagline: 'JARDINS PÉRI URBAINS / PROPRIÉTÉS PRINCIPALES / ET SECONDAIRES',
-    cta: 'Choisir',
+    cta: 'Découvrir',
   },
   {
     slug: 'domaine-caractere',
     file: '04-domaine-caractere',
     nom: 'Domaine & Caractère',
     tagline: 'CHÂTEAUX & MANOIRS / PROPRIÉTÉS FAMILIALES / PROPRIÉTÉS PATRIMONIALES',
-    cta: 'Choisir',
+    cta: 'Découvrir',
   },
-  {
-    slug: 'architecture-publique',
-    file: '05-architecture-publique',
-    nom: 'Architecture publique',
-    tagline: 'GÉNIE VÉGÉTAL / DESIGN BIOPHILIQUE / SECTEUR PUBLIC',
-    cta: 'Explorer',
-  },
+];
+
+// Section STATS (trame home « modif finales » — chiffres verbatim trame).
+const stats = [
+  { valeur: '+10', label: 'Études' },
+  { valeur: '+10', label: 'ans' },
+  { valeur: '+3', label: 'régions' },
 ];
 
 // Méthode — sourcée PDF PROCESS page parcours commercial
@@ -163,8 +163,8 @@ const typologies = [
   <section
     id="identite"
     data-section-label="Identité"
-    data-theme="dark"
-    class="identite-band full-bleed-bg relative overflow-hidden border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="identite-band full-bleed-bg relative overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Identité du studio"
   >
     {
@@ -199,8 +199,8 @@ const typologies = [
   <section
     id="studio-presentation"
     data-section-label="Studio"
-    data-theme="dark"
-    class="studio-presentation relative bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    data-theme="light"
+    class="studio-presentation relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="studio-presentation-title"
   >
     <div class="studio-presentation__wrap" data-reveal="up">
@@ -236,7 +236,7 @@ const typologies = [
         <CtaLink
           href="/studio"
           label="Découvrir le studio"
-          tone="dark"
+          tone="light"
           size="lg"
           magnetic={0.3}
           showDot={false}
@@ -252,37 +252,29 @@ const typologies = [
        data-theme="red" → le curseur custom bascule en cream/black via la
        détection theme JS (CustomCursor.astro). */
   }
+  {
+    /* 04 · STATS — refonte DA finale 2026-06-04 (trame home). Remplace le
+       manifeste rouge. Fond beige, 3 chiffres-clés (verbatim trame) + CTA
+       vers le parcours/projets. Le curseur custom affiche « Découvrir le
+       parcours » au survol (data-cursor-label). */
+  }
   <section
-    id="manifeste"
-    data-section-label="Manifeste"
-    data-theme="red"
-    class="pull-quote-section full-bleed-bg relative overflow-hidden bg-[var(--color-red)] text-[var(--color-cream)]"
-    aria-label="Citation Jonathan Oliveira"
+    id="stats"
+    data-section-label="Studio en chiffres"
+    data-theme="light"
+    class="stats-band full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    aria-label="Le studio en chiffres"
   >
-    {
-      /* Refonte v4 2026-05-15 (retour Morgan) : retrait du min-h-[100vh] et
-       du justify-center qui créaient une zone rouge excédentaire sous la
-       signature. Padding-block symétrique pour que le rouge avant le texte
-       et le rouge après la signature aient la même hauteur. */
-    }
-    <div class="pull-quote-sticky">
-      <div class="manifeste-block mx-auto max-w-[108rem] px-6 md:pr-8 md:pl-10">
-        <blockquote
-          class="manifeste-fade"
-          data-words-fade
-          data-words-fade-stagger="0.02"
-          data-words-fade-window="0,0.42"
-        >
-          <strong class="manifeste-bold">Je ne vends pas qu'une étude.</strong>
-          {' '}
-          Je vends par une méthode précise, une réflexion et une structuration globale qui sécurise un
-          résultat final pour garantir une expérience d'usage durable.
-        </blockquote>
-        <footer class="manifeste-signature">
-          Jonathan OLIVEIRA, fondateur et designer-gérant du studio
-        </footer>
-      </div>
-    </div>
+    <a href="/projets" class="stats-band__inner" data-cursor-label="DÉCOUVRIR">
+      {
+        stats.map((s) => (
+          <span class="stats-item">
+            <span class="stats-item__value">{s.valeur}</span>
+            <span class="stats-item__label">{s.label}</span>
+          </span>
+        ))
+      }
+    </a>
   </section>
 
   {
@@ -295,9 +287,9 @@ const typologies = [
   <section
     id="typologies"
     data-section-label="Typologies"
-    data-theme="dark"
+    data-theme="light"
     data-hscroll-typologies
-    class="htypo-section full-bleed-bg relative border-t border-[var(--color-cream)]/10 bg-[var(--color-black-deep)] text-[var(--color-cream)]"
+    class="htypo-section full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
@@ -617,7 +609,7 @@ const typologies = [
     .identite-band,
     .studio-presentation,
     .htypo-section,
-    #manifeste,
+    #stats,
     #contact-cta {
       position: relative;
       z-index: 1;
@@ -643,7 +635,7 @@ const typologies = [
       text-transform: uppercase;
       text-align: justify;
       text-align-last: justify;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
       hyphens: none;
       white-space: nowrap;
@@ -682,7 +674,7 @@ const typologies = [
       text-transform: none;
       text-align: justify;
       text-align-last: justify;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
       hyphens: none;
       white-space: nowrap;
@@ -714,6 +706,39 @@ const typologies = [
       text-align: left;
       color: color-mix(in oklab, var(--color-cream) 38%, transparent);
       margin: 0;
+    }
+
+    /* Section STATS (DA finale 2026-06-04) — 3 chiffres-clés beige/noir,
+       cliquables vers /projets, curseur « Découvrir ». */
+    .stats-band__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-around;
+      gap: clamp(2rem, 5vw, 4rem);
+      padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+      text-decoration: none;
+      color: var(--color-ink);
+    }
+    .stats-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .stats-item__value {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 11vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+    }
+    .stats-item__label {
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(1rem, 1.6vw, 1.6rem);
+      color: color-mix(in oklab, var(--color-ink) 80%, transparent);
     }
 
     /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +
@@ -1144,7 +1169,7 @@ const typologies = [
       line-height: 1.4;
       letter-spacing: 0;
       text-transform: none;
-      color: var(--color-cream);
+      color: var(--color-ink);
       max-width: 100%;
       margin: 0;
       text-align: justify;
@@ -1168,7 +1193,9 @@ const typologies = [
          viewport 100vw → travel = 115+3+74-100 = 92vw = position panel 5
          (3+92=95) - position panel 1 (3) = 92vw. La dernière typologie
          arrive donc exactement à la place de la première. */
-      padding: 0 74vw 0 clamp(2rem, 4vw, 5rem);
+      /* padding-right recalibré 2026-06-04 : 4 panneaux (architecture
+         publique retirée) au lieu de 5. */
+      padding: 0 40vw 0 clamp(2rem, 4vw, 5rem);
       will-change: transform;
     }
 
@@ -1209,7 +1236,7 @@ const typologies = [
       line-height: 1.2;
       letter-spacing: 0;
       text-transform: uppercase;
-      color: var(--color-cream);
+      color: var(--color-ink);
       margin: 0;
     }
     /* Variante .htypo-name--light → Architecture publique en ExtraLight 200
@@ -1239,9 +1266,16 @@ const typologies = [
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transition: transform 0.9s var(--ease-out-editorial);
+      transition: filter 0.4s var(--ease-out-editorial);
     }
-    /* Pas d'animation au hover sur les images (demande Jonathan 2026-04-30). */
+    /* Flou au survol (trame « modif finales ») — l'image se floute, le
+       curseur affiche « Découvrir » + tagline. Clic → page typologie. */
+    @media (hover: hover) {
+      .htypo-visual:hover .htypo-img,
+      .htypo-visual:focus-visible .htypo-img {
+        filter: blur(6px) brightness(0.95);
+      }
+    }
 
     /* .htypo-cta retiré 2026-05-02 (Morgan) avec le span correspondant. */
 
