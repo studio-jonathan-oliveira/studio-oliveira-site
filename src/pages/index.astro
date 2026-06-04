@@ -32,37 +32,45 @@ const typologies = [
     slug: 'micro-urbain',
     file: '01-micro-urbain',
     nom: 'Micro urbain',
-    tagline: 'ROOF TOPS / PATIOS / MICRO JARDINS',
+    sousTypes: ['Roof Tops', 'Patios', 'Micros jardins'],
     cta: 'Découvrir',
   },
   {
     slug: 'coeur-urbain',
     file: '02-coeur-urbain',
-    nom: 'Cœur urbain',
-    tagline: 'COURS / JARDINS CONFINÉS / JARDINS DE VILLE',
+    nom: 'Coeur urbain',
+    sousTypes: ['Cours urbaines', 'Jardins confinés', 'Jardins de ville'],
     cta: 'Découvrir',
   },
   {
     slug: 'frange-urbaine',
     file: '03-frange-urbaine',
     nom: 'Frange urbaine',
-    tagline: 'JARDINS PÉRI URBAINS / PROPRIÉTÉS PRINCIPALES / ET SECONDAIRES',
+    sousTypes: ['Jardins péri-urbains', 'Propriétés principales,', 'secondaires et résidentielles'],
     cta: 'Découvrir',
   },
   {
     slug: 'domaine-caractere',
     file: '04-domaine-caractere',
     nom: 'Domaine & Caractère',
-    tagline: 'CHÂTEAUX & MANOIRS / PROPRIÉTÉS FAMILIALES / PROPRIÉTÉS PATRIMONIALES',
+    sousTypes: ['Châteaux, Manoirs', 'Front de mer', 'Domaines', 'Viticoles', 'Aras'],
     cta: 'Découvrir',
   },
 ];
 
-// Section STATS (trame home « modif finales » — chiffres verbatim trame).
+// Section STATS (trame home « modif finales » — verbatim trame).
 const stats = [
-  { valeur: '+10', label: 'Études' },
-  { valeur: '+10', label: 'ans' },
-  { valeur: '+3', label: 'régions' },
+  { valeur: '+10', label: 'Etudes', sous: 'réalisées par le studio depuis sa création' },
+  {
+    valeur: '+10',
+    label: 'ans',
+    sous: "D'expérience dans le domaine de l'architecture paysagère",
+  },
+  {
+    valeur: '+3',
+    label: 'régions',
+    sous: "Régions d'intervention du studio sur toute la France depuis sa création",
+  },
 ];
 
 // Méthode — sourcée PDF PROCESS page parcours commercial
@@ -180,13 +188,13 @@ const stats = [
       data-justify-line-window="0.6"
     >
       <p class="identite-line" data-justify-line data-justify-direction="from-right">
-        ARCHITECTURE PAYSAGE DESIGN
+        Architecture Design Contexte
       </p>
       <p class="identite-line" data-justify-line data-justify-direction="from-left">
-        ERGONOMIE BIOPHILIE CONCEPTION
+        Expérientiel Signature
       </p>
       <p class="identite-line" data-justify-line data-justify-direction="from-right">
-        VEGETAL PILOTAGE
+        Art de vivre Vivant Immersif
       </p>
     </div>
   </section>
@@ -220,22 +228,26 @@ const stats = [
         data-justify-line-window="0.55"
       >
         <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
-          Le Studio J. Oliveira est un studio de design spatial spécialisé dans l'aménagement
+          Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif
         </p>
         <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
-          environnemental immersif et expérientiel. Sa mission est d'étudier et concevoir des
+          et expérientiel. De la conception au suivi de chantier, il conçoit et structure
         </p>
         <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
-          espaces extérieurs comme intérieurs en dialogue avec le bâti, l'environnement et l'humain,
+          des espaces de vie en prenant en compte le dialogue bâti - environnement - humain.
         </p>
         <p class="studio-presentation-line" data-justify-line data-justify-direction="from-right">
-          de la conception jusqu'au pilotage chantier.
+          Chaque projet tente ainsi de concevoir des espaces logiques, cohérents et ergonomiques
+        </p>
+        <p class="studio-presentation-line" data-justify-line data-justify-direction="from-left">
+          où le végétal se tisse en harmonie avec son environnement, pour créer l'expérience de ses
+          usagers.
         </p>
       </div>
       <div class="studio-presentation__cta">
         <CtaLink
           href="/studio"
-          label="Découvrir le studio"
+          label="Découvrir le STUDIO"
           tone="light"
           size="lg"
           magnetic={0.3}
@@ -265,16 +277,26 @@ const stats = [
     class="stats-band full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Le studio en chiffres"
   >
-    <a href="/projets" class="stats-band__inner" data-cursor-label="DÉCOUVRIR">
-      {
-        stats.map((s) => (
-          <span class="stats-item">
-            <span class="stats-item__value">{s.valeur}</span>
-            <span class="stats-item__label">{s.label}</span>
-          </span>
-        ))
-      }
-    </a>
+    <div class="stats-band__inner">
+      <div class="stats-grid">
+        {
+          stats.map((s) => (
+            <div class="stats-card">
+              <span class="stats-card__value">
+                {s.valeur}
+                <span class="stats-card__label">{s.label}</span>
+              </span>
+              <span class="stats-card__sous">{s.sous}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="stats-cta">
+        <a href="/projets" class="stats-pill" data-cursor-label="DÉCOUVRIR">Découvrir les projets</a
+        >
+        <a href="/studio" class="stats-pill" data-cursor-label="PARCOURS">Découvrir le parcours</a>
+      </div>
+    </div>
   </section>
 
   {
@@ -284,6 +306,13 @@ const stats = [
        Le curseur custom affiche "CHOISIR" (4 typos privées) ou "EXPLORER"
        (architecture-publique uniquement) au hover de chaque card. */
   }
+  {/* Bandeau transition vers les typologies (trame). */}
+  <section data-theme="light" class="typo-transition" aria-hidden="false">
+    <p class="typo-transition__text">
+      Chaque étude appartient à une <strong>typologie de jardin</strong>
+    </p>
+  </section>
+
   <section
     id="typologies"
     data-section-label="Typologies"
@@ -300,9 +329,10 @@ const stats = [
             ExtraLight 200 lowercase + 1res lettres des phrases capitalisées. */
         }
         <p class="htypo-intro">
-          Chaque projet appartient à une typologie de jardin. L'architecture bâti, le contexte
-          environnemental et géographique ainsi que les contraintes structurelles du lieu
-          définissent le type d'étude paysagère adaptée à votre projet. Découvrez votre typologie.
+          L'architecture bâtie, le contexte environnemental et géographique ainsi que les
+          contraintes structurelles de chaque type de propriété ont été classifiés selon une
+          nomenclature précise et définissent l'étude paysagère adaptée au contexte de votre projet.
+          Découvrez votre typologie de jardin.
         </p>
         <h2 id="typologies-title" class="sr-only">Typologies de jardins & propriétés</h2>
       </header>
@@ -320,19 +350,17 @@ const stats = [
                     plus toute la card mais UNIQUEMENT l'image. Le nom n'est
                     plus cliquable (« le clic doit être possible que dans
                     les images des typologies »). */}
-                <h3
-                  class:list={[
-                    'htypo-name',
-                    t.slug === 'architecture-publique' && 'htypo-name--light',
-                  ]}
-                >
-                  {t.nom}
-                </h3>
+                <h3 class="htypo-name">{t.nom}</h3>
+                <ul class="htypo-subtypes">
+                  {t.sousTypes.map((st) => (
+                    <li>{st}</li>
+                  ))}
+                </ul>
                 <a
                   href={`/architecture-paysagere/${t.slug}`}
                   class="htypo-visual"
                   data-cursor-label={t.cta}
-                  data-cursor-tooltip={t.tagline}
+                  data-cursor-tooltip={t.sousTypes.join(' / ')}
                   aria-label={`${t.cta} la typologie ${t.nom}`}
                 >
                   <picture>
@@ -343,7 +371,7 @@ const stats = [
                     <img
                       src={`/typologies/${t.file}.jpg`}
                       srcset={`/typologies/${t.file}.jpg 1x, /typologies/${t.file}@2x.jpg 2x`}
-                      alt={`Typologie ${t.nom} — ${t.tagline}`}
+                      alt={`Typologie ${t.nom} — ${t.sousTypes.join(', ')}`}
                       loading={i === 0 ? 'eager' : 'lazy'}
                       decoding="async"
                       class="htypo-img"
@@ -610,9 +638,29 @@ const stats = [
     .studio-presentation,
     .htypo-section,
     #stats,
+    .typo-transition,
     #contact-cta {
       position: relative;
       z-index: 1;
+    }
+    /* Bandeau transition « Chaque étude appartient à une typologie de jardin ». */
+    .typo-transition {
+      background-color: var(--color-cream);
+      color: var(--color-ink);
+      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .typo-transition__text {
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.5rem, 3.5vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      margin: 0;
+      max-width: 28ch;
+    }
+    .typo-transition__text strong {
+      font-weight: 800;
     }
     /* Reduce-motion : désactive le sticky (scroll normal) */
     @media (prefers-reduced-motion: reduce) {
@@ -632,7 +680,7 @@ const stats = [
       font-size: clamp(1.4rem, 5vw, 4.5rem);
       line-height: 1.1;
       letter-spacing: -0.01em;
-      text-transform: uppercase;
+      text-transform: none;
       text-align: justify;
       text-align-last: justify;
       color: var(--color-ink);
@@ -712,33 +760,78 @@ const stats = [
        cliquables vers /projets, curseur « Découvrir ». */
     .stats-band__inner {
       display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      justify-content: space-around;
-      gap: clamp(2rem, 5vw, 4rem);
+      flex-direction: column;
+      gap: clamp(2rem, 4vw, 3.5rem);
       padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 5vw, 4rem);
-      text-decoration: none;
-      color: var(--color-ink);
     }
-    .stats-item {
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.25rem, 2.5vw, 2rem);
+    }
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch;
+      }
+    }
+    .stats-card {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+      padding: clamp(1.75rem, 3vw, 2.75rem);
+      border: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-radius: clamp(16px, 2vw, 28px);
     }
-    .stats-item__value {
+    .stats-card__value {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
       font-family: var(--font-heading), sans-serif;
       font-weight: 900;
-      font-size: clamp(3.5rem, 11vw, 10rem);
+      font-size: clamp(3rem, 7vw, 6rem);
       line-height: 0.9;
       letter-spacing: -0.02em;
       color: var(--color-ink);
     }
-    .stats-item__label {
+    .stats-card__label {
+      font-weight: 700;
+      font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+    }
+    .stats-card__sous {
       font-family: var(--font-body), sans-serif;
       font-weight: 400;
-      font-size: clamp(1rem, 1.6vw, 1.6rem);
-      color: color-mix(in oklab, var(--color-ink) 80%, transparent);
+      font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+      line-height: 1.4;
+      color: color-mix(in oklab, var(--color-ink) 78%, transparent);
+    }
+    .stats-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    }
+    .stats-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.85rem 1.6rem;
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+      border-radius: 9999px;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.9rem, 1.05vw, 1rem);
+      text-decoration: none;
+      transition:
+        background-color 0.35s var(--ease-out-editorial),
+        transform 0.35s var(--ease-out-editorial);
+    }
+    @media (hover: hover) {
+      .stats-pill:hover,
+      .stats-pill:focus-visible {
+        background-color: var(--color-violet);
+        color: var(--color-ink);
+        transform: scale(1.03);
+      }
     }
 
     /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +
@@ -1235,9 +1328,23 @@ const stats = [
       font-size: clamp(1.1rem, 1.5vw, 1.6rem);
       line-height: 1.2;
       letter-spacing: 0;
-      text-transform: uppercase;
+      text-transform: none;
       color: var(--color-ink);
       margin: 0;
+    }
+    /* Liste des sous-types sous le nom (trame : visible au-dessus de l'image). */
+    .htypo-subtypes {
+      list-style: none;
+      margin: 0.35rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+      font-family: var(--font-body), sans-serif;
+      font-weight: 400;
+      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+      line-height: 1.3;
+      color: color-mix(in oklab, var(--color-ink) 72%, transparent);
     }
     /* Variante .htypo-name--light → Architecture publique en ExtraLight 200
        UPPERCASE (retour v5 Morgan : « doit être écris en MAJUSCULE mais

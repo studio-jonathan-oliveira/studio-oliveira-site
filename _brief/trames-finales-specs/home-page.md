@@ -1,5 +1,66 @@
 # Spec — HOME PAGE (page d'accueil)
 
+## ⚠️ ANALYSE APPROFONDIE 2026-06-04
+
+> Relecture exhaustive des tuiles HD `C:/tmp/colslices/home__col{0..4}_b{0..4}.png` (5 colonnes × 5 blocs).
+> **Lecture des colonnes** : col2 = la PAGE telle qu'elle se rend (état repos, top→bas). col0 / col1 = états alternatifs (menu ouvert, survols, blur). col3 / col4 = colonnes d'ANNOTATIONS designer (instructions d'animation, à NE PAS rendre) + un état coloré (topbar violette clic, topbar noire survol).
+> Toutes les annotations ci-dessous sont **verbatim** (casse/fautes incluses : « CURDEUR », « UVEC », « APPARAIT »).
+
+### Palette confirmée
+
+- **NOIR** `#000000` : cartes stats sombres, footer, topbar au survol, pills CTA noires.
+- **BEIGE** `#EDE6D6` : fond de page, topbar au repos, cartes claires, pastille logo footer.
+- **VIOLET** `#e0afff` : topbar au CLIC + logo `oliveim.` + `MENU` au clic (col4_b0 montre topbar pill violette texte noir, logo violet, MENU violet).
+
+### Ordre vertical réel (col2, haut→bas)
+
+1. **Topbar** : pill beige pleine largeur `Démarrer un projet` (centré) + logo `oliveim.` (gauche) + `MENU ☰` (droite). Sur le hero le logo/MENU sont en crème.
+2. **HERO** plein écran : photo jardin/terrasse tropicale au crépuscule (canapé + 2 personnes, bassin/piscine premier plan, pergola bois). Wordmark crème bas-gauche `Studio` / `J. Oliveira` (sentence case, énorme). Annotation col3_b0 : **« HERO INCHANGE »** + **« ANIMATION TEXTE A CONSERVER COMME L'EXISTANT »**.
+3. **Bande VALEURS** (fond beige, Bold noir, sentence case) sur 3 lignes :
+   - `Architecture   Design   Contexte`
+   - `Expérientiel   Signature`
+   - `Art de vivre   Vivant   Immersif`
+     Annotation col4 : **« ANIMATION DES TEXTES EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »**.
+4. **STUDIO — paragraphe ADN** (light noir, justifié), VERBATIM :
+   > « Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif et expérientiel. De la conception au suivi de chantier, il conçoit et structure des espaces de vie en prenant en compte le dialogue bâti - environnement - humain. Chaque projet tente ainsi de concevoir des espaces logiques, cohérents et ergonomiques où le végétal se tisse en harmonie avec son environnement, pour créer l'expérience de ses usagers. »
+   - CTA pill **à contour** `Découvrir le STUDIO` + curseur carré `■.`.
+   - Annotation col3_b1 : **« ANIMATION DU TEXTE "STUDIO" EN APPARITION WAVY/VAGUE AVEC APPARITION/DISPARITION EN FONCTION DU SCROLL »** + **« CLIC + SURVOL CTA / BLOC AIMANTE AU CURDEUR DURANT LE SURVOL »**.
+   - État survol CTA (col3_b1) : pill devient **NOIRE pleine**, texte crème `Découvrir le STUDIO`, magnétique au curseur.
+5. **BLOC STATS** — 3 cartes (fond beige de section) :
+   - **Carte `+10 Etudes`** (≈60% largeur). Variante claire (col1_b2) : carte beige contour, `+10` géant noir, `Etudes` Bold, sous-texte `réalisées par le studio depuis sa création`, pill noire `Découvrir les projets`. Variante survol (col2_b2) : carte **NOIRE**, texte crème, sous-texte reformulé `Conçues par le studio depuis sa création`.
+   - **Carte `+10 ans`** : col2_b2 noire / col3_b2 beige contour. `+10` + `ans` (petit, collé). Sous-texte `D'expérience dans le domaine de l'architecture paysagère`. Pill noire `Découvrir le parcours`.
+   - **Carte `+3`** (col2_b2, sous +10 ans, fond beige) : `+3` outline, sous-texte `Régions d'intervention du studio sur toute la France depuis sa création`.
+   - Annotations (col1_b1 / col3_b1-b2 / col4_b1) :
+     - **« SURVOL + CLIC / LIEN VERS LA PAGE PROJET / AU SURVOL LE CURSEUR S'ALLONGE ET FAIT APPARAITRE "DECOUVRIR LES PROJETS" / BLOC AIMANTE AU CURDEUR DURANT LE SURVOL »** (carte Études)
+     - **« AU SURVOL LE CURSEUR SE TRANSFORME ET FAIT APPARAITRE "DECOUVRIR LE PARCOURS" / BLOC AIMANTE AU CURDEUR DURANT LE SURVOL »** (carte +10 ans)
+6. **BANDEAU transition** (carte beige contour fin) : `Chaque étude appartient à une ` **`typologie de jardin`** (2 derniers mots en Bold).
+7. **TYPOLOGIES — intro** (light noir justifié), VERBATIM :
+   > « L'architecture bâtie, le contexte environnemental et géographique ainsi que les contraintes structurelles de chaque type de propriété ont été classifiés selon une nomenclature précise et définissent l'étude paysagère adaptée au contexte de votre projet. **Découvrez votre typologie de jardin.** »
+8. **TYPOLOGIES — 4 cartes en RANGÉE** (PAS 5, pas d'« Architecture publique »). Chaque carte = **nom (Bold) + LISTE de sous-types** au-dessus d'une image carrée. Listes verbatim (col1_b2) :
+   - **Micro urbain** : `Roof Tops` / `Patios` / `Micros jardins`
+   - **Coeur urbain** : `Cours urbaines` / `Jardins confinés` / `Jardins de ville`
+   - **Frange urbaine** : `Jardins péri-urbains` / `Propriétés principales,` / `secondaires et résidentielles`
+   - **Domaine & Caractère** : `Châteaux, Manoirs` / `Front de mer` / `Domaines` / `Viticoles` / `Aras` _(probable `Haras` — à confirmer)_
+   - Annotation col1_b2 : **« FLOU SURVOL + CLIC / CHANGEMENT "CHOISIR" PAR "DECOUVRIR" »**. État survol (col1_b3/b4) : image **floutée (blur)** + pill noire `Découvrir` centrée. Donc le libellé bulle/curseur est **`Choisir` au repos → `Découvrir` au survol**.
+9. **FOOTER** noir : pastille beige arrondie contenant logo `oliveim.` noir. Colonne gauche crème : `Siège social Studio` / `41 Rue Général Souham` / `19100 BRIVE` / `06 61 08 84 44` / `contact.jonathanbiodesign@gmail.com` ; `Territoires d'intervention` / `National` ; bas `Droits réservés, mentions légales, etc.`. Colonne droite (nav crème alignée droite) : `Home` / `Studio` / `Projets` / `Démarrer un projet` / `Etudes par typologies de jardin` (+ curseur carré `■`) / mini-liste `Micro urbain  Coeur urbain  Frange urbaine  Domaine & Caractère`.
+
+### Topbar — 3 états confirmés
+
+- **Repos** (col2_b0) : pill **beige** texte noir `Démarrer un projet`, logo/MENU crème sur hero.
+- **Survol** (col3_b0) : pill **NOIRE** texte crème. Annotation : **« SURVOL TOP BARRE / LA TOP BARRE N'APPARAIT PAS QUAND LE HERO EST EN PLEIN ECRAN / APPARAIT FIXE QUAND ON QUITTE L'AFFICHAGE HERO EN PLEIN ECRAN »**.
+- **Clic** (col4_b0) : pill **VIOLET** texte noir, logo + MENU violets. Annotation : **« CLIC TOP BARRE / RENVOIE VERS LA PAGE "DEMARRER UN PROJET" »**.
+
+### Menu ouvert (col1_b0)
+
+- Annotation : **« MENU OUVERT / LA TOP BARRE APPARAIT UVEC UN LEGER LISERET PERIPHERIQUE »**.
+- Overlay noir, liseret clair. Logo `oliveim.` crème + `Fermer X`. Nav droite : `■. Home` (Bold actif) / `Studio` / `Projets` / `Démarrer un projet`. Puis `Etudes par typologie de jardin` + 4 pills contour : `Micro urbain` `Coeur urbain` / `Frange urbaine` `Domaine & Caractère`. (col0_b0 : topbar en état menu-ouvert = `Fermer X` + curseur carré.)
+
+### Règle de casse globale (col3_b0-b1, col4_b1)
+
+- **« PASSER TOUT EN MINUSCULE AVEC PREMIERE DE EN MAJUSCULE UNIQUEMENT »** → sentence case (PAS d'UPPERCASE) sur les contenus.
+
+---
+
 > Source de vérité : trame Jonathan « home page » (9827×5726 px), découpée en grille 5×4 (recouvrement 160px).
 > Cette maquette est **large/annotée** : panneaux côte à côte montrant plusieurs ÉTATS du même composant (au repos, au survol, au clic) + des annotations rouges décrivant les animations.
 > Les **traits rouges** = cadre d'un viewport 1920×1080 (servent à juger la taille/proportion above-the-fold). Ne sont PAS des éléments de design.
@@ -375,3 +436,94 @@ Comparaison avec l'implémentation existante (ne rien modifier — analyse seule
 4. **Manifeste rouge** : supprimé de la home ou hors-cadre de la trame ?
 5. Hero : image fixe unique (trame) ou conserver le slideshow swipe ?
 6. `Coeur` vs `Cœur` (la trame écrit `Coeur` sans ligature).
+
+---
+
+## DELTAS vs index.astro actuel
+
+> Comparaison ligne-à-ligne avec `src/pages/index.astro` (état 2026-06-04). Liste actionnable, du plus structurant au détail.
+
+### Ordre des sections
+
+- **Actuel** : Hero → Identité → Studio → **Stats** → Typologies. (Pas de bande Valeurs, pas de bandeau transition.)
+- **Trame** : Hero → **Valeurs** → Studio → Stats → **Bandeau transition** → Typologies → Footer.
+- → Insérer la bande **Valeurs** entre Hero et Studio ; insérer le **bandeau « Chaque étude appartient à une typologie de jardin »** entre Stats et Typologies.
+
+### 1. Section IDENTITÉ → à REMPLACER par bande VALEURS
+
+- Actuel : `#identite`, 3 lignes **UPPERCASE** justify-multi : `ARCHITECTURE PAYSAGE DESIGN` / `ERGONOMIE BIOPHILIE CONCEPTION` / `VEGETAL PILOTAGE`.
+- Trame : **mots différents**, Bold **sentence case** : `Architecture Design Contexte` / `Expérientiel Signature` / `Art de vivre Vivant Immersif`.
+- → Mots faux + casse fausse. Remplacer les 3 lignes par les 8 valeurs, retirer `text-transform: uppercase`. Animation wavy/vague conservée.
+
+### 2. Section STUDIO → texte ADN FAUX
+
+- Actuel (lignes 222-233) : « Le Studio J. Oliveira est un studio de design spatial spécialisé dans l'aménagement environnemental immersif et expérientiel. Sa mission est d'étudier et concevoir des espaces extérieurs comme intérieurs en dialogue avec le bâti, l'environnement et l'humain, de la conception jusqu'au pilotage chantier. »
+- Trame : **texte entièrement différent** → « Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif et expérientiel. De la conception au suivi de chantier, il conçoit et structure des espaces de vie… pour créer l'expérience de ses usagers. » (cf. §4 ci-dessus, verbatim).
+- → Remplacer le paragraphe par le verbatim trame.
+- CTA actuel : `Découvrir le studio` (minuscule), `href="/studio"`. Trame : `Découvrir le STUDIO` (STUDIO en capitales). État survol = pill noire pleine + magnétique (déjà magnetic={0.3}, OK).
+
+### 3. Section STATS → incomplète
+
+- Actuel (lignes 261-278) : 3 items inline `+10 Études` / `+10 ans` / `+3 régions`, un seul lien `/projets`, label curseur `DÉCOUVRIR`. **Pas de cartes, pas de sous-textes, pas de variantes claire/sombre, pas de séparation Études vs parcours.**
+- Trame : **3 cartes distinctes** avec sous-textes verbatim + 2 CTA différents :
+  - Carte `+10 Etudes` → `réalisées par le studio depuis sa création` (variante claire) / `Conçues par le studio depuis sa création` (variante survol noire) + pill `Découvrir les projets` → `/projets`.
+  - Carte `+10 ans` → `D'expérience dans le domaine de l'architecture paysagère` + pill `Découvrir le parcours` → page parcours/studio.
+  - Carte `+3` → `Régions d'intervention du studio sur toute la France depuis sa création`.
+- → Refonte complète : layout cartes (grande Études gauche + colonne droite +10ans/+3), sous-textes, états clair/sombre au survol, curseur allongé qui révèle « Découvrir les projets » / « Découvrir le parcours », magnétique. (Note : `Études` actuel ≠ `Etudes` trame, sans accent.)
+
+### 4. Bandeau transition → ABSENT
+
+- Aucun équivalent dans l'actuel.
+- → Ajouter carte beige contour `Chaque étude appartient à une **typologie de jardin**` entre Stats et Typologies. (L'actuel a fusionné cette phrase dans `.htypo-intro` ligne 302-306 — texte différent et reformulé.)
+
+### 5. Section TYPOLOGIES → plusieurs écarts
+
+- **Intro** (lignes 302-306) : texte actuel reformulé/raccourci ≠ verbatim trame. → Remplacer par le verbatim (§7).
+- **Nombre** : l'actuel commente « 5 typos / 4 visibles + 5e cropée » et gère `architecture-publique` (htypo-name--light, cursor EXPLORER, padding rail calibré 5 panels). MAIS le tableau `typologies` (lignes 30-59) ne contient que **4 entrées** → l'architecture-publique est déjà absente des données. ✅ conforme trame (4 cartes). Nettoyer les commentaires/CSS résiduels qui parlent de 5 panels / EXPLORER.
+- **Taglines** (lignes 35-57) : actuellement **UPPERCASE et abrégées** :
+  - `ROOF TOPS / PATIOS / MICRO JARDINS` → trame : `Roof Tops` / `Patios` / `Micros jardins`
+  - `COURS / JARDINS CONFINÉS / JARDINS DE VILLE` → trame : `Cours urbaines` / `Jardins confinés` / `Jardins de ville`
+  - `JARDINS PÉRI URBAINS / PROPRIÉTÉS PRINCIPALES / ET SECONDAIRES` → trame : `Jardins péri-urbains` / `Propriétés principales,` / `secondaires et résidentielles`
+  - `CHÂTEAUX & MANOIRS / PROPRIÉTÉS FAMILIALES / PROPRIÉTÉS PATRIMONIALES` → trame : `Châteaux, Manoirs` / `Front de mer` / `Domaines` / `Viticoles` / `Aras`
+  - → Réécrire les 4 taglines (sentence case + listes verbatim), domaine-caractère passe à 5 sous-types.
+- **Layout** : actuel = carousel horizontal **pinné scroll-driven** (htypo-section 320vh, sticky). Trame = simple **rangée de 4 cartes** visibles. → À trancher : la trame ne montre pas de pin, juste 4 cartes alignées. Probable simplification en grille/rangée.
+- **CTA hover** : actuel `cta: 'Découvrir'` constant (label curseur). Trame : **`Choisir` au repos → `Découvrir` au survol** (annotation « CHANGEMENT "CHOISIR" PAR "DECOUVRIR" »). → label repos manquant.
+- **Noms** : `htypo-name` est en `text-transform: uppercase` (ligne 1238) → trame demande sentence case. `Cœur urbain` (ligature) vs trame `Coeur urbain`.
+- **Blur au survol** : déjà présent (lignes 1273-1278). ✅ conforme.
+- **Fond** : actuel beige ✅ (data-theme light). Conforme.
+
+### 6. Hero → globalement conforme (« HERO INCHANGE »)
+
+- L'annotation dit **« HERO INCHANGE »** → garder le `<HeroSwipe />` actuel. ✅
+- Seul écart : le wordmark visuel. Vérifier qu'il est en **sentence case** `Studio` / `J. Oliveira` (trame) et non `STUDIO J. OLIVEIRA` UPPERCASE (à contrôler dans HeroSwipe.astro).
+
+### 7. Topbar → à (re)créer
+
+- Actuel : pas de topbar (retirée, gradient + Header auto-hide).
+- Trame : **topbar = gros CTA `Démarrer un projet`** pleine largeur, masquée en hero plein écran / fixe après, 3 états (beige repos → noir survol → violet clic), logo + `MENU ☰`. → composant à créer.
+
+### 8. Footer → divergences
+
+- Territoires : actuel = liste villes ; trame = **`National`**.
+- Nav droite : actuel = services (Architecture paysagère, etc.) ; trame = **Home / Studio / Projets / Démarrer un projet** + `Etudes par typologies de jardin` + mini-liste 4 typologies.
+- Logo dans **pastille beige arrondie**. NAP gauche conforme (vérifier `Siège social Studio`).
+
+### 9. Couleur VIOLET → à introduire
+
+- Variable de thème `#e0afff` absente (l'actuel utilise `--color-laterite` / `--color-red`). → créer le token, l'appliquer sur topbar clic + logo/MENU clic.
+
+### 10. MANIFESTE → confirmé ABSENT de la trame home
+
+- L'actuel a déjà retiré le manifeste rouge de la home (remplacé par Stats). ✅ La trame ne montre aucun manifeste. (CSS `.manifeste-*` résiduel dans le `<style>` à nettoyer.)
+
+### Récap priorités
+
+1. Bande **Valeurs** (mots + casse) ← faux contenu.
+2. Texte **Studio** ADN ← faux contenu.
+3. **Stats** en cartes + sous-textes + 2 CTA ← incomplet.
+4. **Taglines typologies** (listes verbatim + sentence case + 5e sous-type domaine).
+5. Bandeau transition typologie.
+6. CTA typologies `Choisir → Découvrir`.
+7. Casse sentence-case globale (identité/typo names/wordmark).
+8. Topbar CTA `Démarrer un projet` 3 états + violet.
+9. Footer (National + nav simplifiée + pastille logo).
