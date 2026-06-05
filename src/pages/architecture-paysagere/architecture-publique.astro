@@ -19,7 +19,7 @@ import DraftOnly from '@/components/astro/DraftOnly.astro';
 
 const breadcrumbItems = [
   { name: 'Accueil', item: '/' },
-  { name: 'Architecture paysagère', item: '/architecture-paysagere' },
+  { name: 'Projets', item: '/projets' },
   { name: 'Architecture publique', item: '/architecture-paysagere/architecture-publique' },
 ];
 
@@ -43,7 +43,7 @@ const schema = jsonLdGraph([organization(), localBusiness(), breadcrumbs(breadcr
     >
       <a href="/">Accueil</a>
       <span aria-hidden="true">·</span>
-      <a href="/architecture-paysagere">Architecture paysagère</a>
+      <a href="/projets">Projets</a>
       <span aria-hidden="true">·</span>
       <span aria-current="page">Architecture publique</span>
     </nav>

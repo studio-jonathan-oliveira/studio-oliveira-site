@@ -18,6 +18,12 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   adapter: vercel(),
+  // Hub /architecture-paysagere supprimé 2026-06-05 (Morgan) — redirection 301
+  // vers /projets (nouveau hub portefeuille). Les 4 typologies restent sous
+  // /architecture-paysagere/[slug].
+  redirects: {
+    '/architecture-paysagere': '/projets',
+  },
   build: {
     format: 'directory',
   },

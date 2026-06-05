@@ -37,13 +37,6 @@ export const OG_PAGES: OgPage[] = [
     variant: 'light',
   },
   {
-    path: '/architecture-paysagere',
-    filename: 'architecture-paysagere',
-    eyebrow: 'Service · Conception extérieure',
-    title: 'Architecture paysagère',
-    variant: 'dark',
-  },
-  {
     path: '/amenagement-vegetal-interieur',
     filename: 'amenagement-vegetal-interieur',
     eyebrow: 'Service · Décors intérieurs',
