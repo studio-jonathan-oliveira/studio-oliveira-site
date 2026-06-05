@@ -52,13 +52,13 @@ const { darkHero = false } = Astro.props;
 
     <button
       type="button"
-      class="menu-trigger relative flex items-center gap-3 text-[12px] tracking-[0.24em] uppercase"
+      class="menu-trigger relative flex items-center gap-3"
       aria-label="Ouvrir le menu principal"
       aria-expanded="false"
       aria-controls="primary-menu"
       data-menu-trigger
     >
-      <span>Menu</span>
+      <span class="menu-trigger__label">Menu</span>
       <span class="menu-bars flex flex-col gap-1.5" aria-hidden="true">
         <span class="block h-px w-6 bg-current transition-transform"></span>
         <span class="block h-px w-6 bg-current transition-transform"></span>
@@ -124,10 +124,10 @@ const { darkHero = false } = Astro.props;
     background-color: var(--color-ink);
     color: var(--color-cream);
   }
-  /* Clic : flash violet avant la navigation vers /demarrer. */
+  /* Survol ET clic : NOIR (plus de mauve au clic — Morgan 2026-06-05). */
   .site-header__cta:active {
-    background-color: var(--color-violet);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
   }
 
   /* Rangée 2 — logo gauche · MENU droite (avec marge latérale propre) */
@@ -166,6 +166,15 @@ const { darkHero = false } = Astro.props;
     cursor: pointer;
     padding: 0.4rem 0;
     color: var(--color-ink);
+  }
+  /* « Menu » plus visible (Morgan 2026-06-05) : grossi, gras, casse normale
+     (M maj + reste minuscule), plus de tracking eyebrow ni uppercase. */
+  .menu-trigger__label {
+    font-family: var(--font-heading), sans-serif;
+    font-size: clamp(15px, 1.25vw, 19px);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
   }
   .menu-bars {
     position: relative;

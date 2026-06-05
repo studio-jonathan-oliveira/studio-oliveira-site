@@ -158,6 +158,19 @@
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
 
+  /* ─── Tokens UI globaux 2026-06-05 (uniformisation sitewide — Morgan) ───
+   * Objectif : une seule épaisseur de liseret, une seule courbure « à droite »,
+   * un seul arrondi d'image accentué, une seule marge gauche/droite partout. */
+  --stroke-liseret: 1px; /* épaisseur UNIQUE de tous les liserets (réf. page Projets) */
+  --radius-liseret: clamp(
+    20px,
+    3.5vw,
+    48px
+  ); /* courbure bas-droite des liserets (réf. TypologieHero) */
+  --radius-cta: clamp(16px, 1.8vw, 26px); /* arrondi des CTA/cartes bordées (topbar, Fermer…) */
+  --radius-image: clamp(22px, 2.8vw, 40px); /* arrondi ACCENTUÉ des images sitewide */
+  --page-x: clamp(1.5rem, 5vw, 4rem); /* marge gauche/droite UNIFORME (réf. texte studio) */
+
   /* Durations & easings — cinématique, jamais saccadé */
   --ease-out-editorial: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-editorial: cubic-bezier(0.76, 0, 0.24, 1);

@@ -275,10 +275,8 @@ const typologies = [
           <span class="stat-card__value">+10</span>
           <span class="stat-card__body">
             <span class="stat-card__label">Etudes</span>
-            <span class="stat-card__sous">
-              <span class="stat-card__sous-repos">Conçues par le studio depuis sa création</span>
-              <span class="stat-card__sous-hover">réalisées par le studio depuis sa création</span>
-            </span>
+            {/* Texte UNIQUE, identique au repos et au survol (Morgan 2026-06-05). */}
+            <span class="stat-card__sous">Conçues par le studio depuis sa création</span>
           </span>
         </a>
 
@@ -949,21 +947,11 @@ const typologies = [
     .stat-card--regions .stat-card__sous {
       opacity: 0.82;
     }
-    /* Swap de sous-texte Études (« Conçues » repos → « réalisées » survol),
-       superposés dans la même cellule grille pour éviter tout décalage. */
+    /* Études : texte sur toute la largeur dispo de la carte pour éviter que
+       « création » se retrouve orpheline sur sa propre ligne (Morgan
+       2026-06-05). Plus de swap de texte au survol. */
     .stat-card--etudes .stat-card__sous {
-      display: grid;
-    }
-    .stat-card__sous-repos,
-    .stat-card__sous-hover {
-      grid-area: 1 / 1;
-      transition: opacity 0.3s ease;
-    }
-    .stat-card__sous-repos {
-      opacity: 0.85;
-    }
-    .stat-card__sous-hover {
-      opacity: 0;
+      max-width: none;
     }
 
     /* Pill interne retirée (Morgan 2026-06-05) : faisait doublon avec le
@@ -991,14 +979,6 @@ const typologies = [
       .stat-card--link:hover .stat-card__value,
       .stat-card--link:focus-visible .stat-card__value {
         font-weight: 800;
-      }
-      .stat-card--etudes.stat-card--link:hover .stat-card__sous-repos,
-      .stat-card--etudes.stat-card--link:focus-visible .stat-card__sous-repos {
-        opacity: 0;
-      }
-      .stat-card--etudes.stat-card--link:hover .stat-card__sous-hover,
-      .stat-card--etudes.stat-card--link:focus-visible .stat-card__sous-hover {
-        opacity: 0.85;
       }
     }
 

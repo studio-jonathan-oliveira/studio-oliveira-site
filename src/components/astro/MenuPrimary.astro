@@ -272,8 +272,11 @@ const isActive = (href: string) =>
     text-align: right;
     margin: clamp(0.6rem, 1.2vw, 1.1rem) clamp(0.6rem, 1.2vw, 1.1rem) 0;
     padding: clamp(1.3rem, 2.6vw, 2.4rem) clamp(1.6rem, 3vw, 2.8rem);
-    border: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
-    border-radius: clamp(16px, 1.8vw, 26px);
+    /* Pas de bordure au repos : le liseret périphérique du menu fait déjà le
+       cadre. Une bordure ici créait un DOUBLE liseret aux coins haut (Morgan
+       2026-06-05). Le radius sert au remplissage beige du survol. */
+    border: none;
+    border-radius: var(--radius-cta);
     background: transparent;
     color: var(--color-cream);
     font-family: var(--font-heading), sans-serif;
@@ -372,26 +375,34 @@ const isActive = (href: string) =>
       padding: 0.6rem 0;
     }
   }
+  /* Titres : minuscule (1re lettre maj, écrite telle quelle), graisse normale
+     au repos → GRAS au survol (Morgan 2026-06-05). */
   .primary-menu__label-main {
     font-family: var(--font-heading), sans-serif;
     font-size: clamp(1.8rem, 4.4vw, 3.4rem);
     line-height: 1.05;
     letter-spacing: -0.01em;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-weight: 400;
+    text-transform: none;
     transition:
       opacity 0.4s var(--ease-out-editorial),
+      font-weight 0.3s var(--ease-out-editorial),
       transform 0.45s var(--ease-out-editorial);
   }
-  /* Focus/blur signature : au survol d'un item, les autres se dim. */
+  /* Focus/blur signature : au survol d'un item, les autres se dim ; l'item
+     survolé passe en gras. */
   @media (hover: hover) and (min-width: 768px) {
     .primary-menu__nav-list:hover .primary-menu__item .primary-menu__label-main {
       opacity: 0.35;
     }
     .primary-menu__nav-list .primary-menu__item:hover .primary-menu__label-main {
       opacity: 1;
+      font-weight: 700;
       transform: translateX(-10px);
     }
+  }
+  .primary-menu__item.is-active .primary-menu__label-main {
+    font-weight: 700;
   }
 
   /* Liseret fin séparateur entre liens principaux et bloc typologies. */

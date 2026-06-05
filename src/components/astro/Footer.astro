@@ -110,26 +110,40 @@ const typologies = [
 <style>
   /* Variante NOIRE (home + studio) — pilotée par data-theme="dark". Fond ink,
      texte crème, tuile logo beige (logo noir). */
+  /* Footer sombre — accent VIOLET (Morgan 2026-06-05) : coins hauts mauve
+     (liseré révélé par l'inset de l'inner), tous les textes en violet, macaron
+     du logo en violet (logo noir à l'intérieur). */
   .site-footer[data-theme='dark'] {
+    background-color: var(--color-violet);
+    color: var(--color-violet);
+  }
+  .site-footer[data-theme='dark'] .site-footer__inner {
     background-color: var(--color-ink);
-    color: var(--color-cream);
+    border-top-left-radius: clamp(20px, 3.5vw, 48px);
+    border-top-right-radius: clamp(20px, 3.5vw, 48px);
+    margin-top: clamp(8px, 1vw, 14px);
   }
   .site-footer[data-theme='dark'] .site-footer__heading,
   .site-footer[data-theme='dark'] .site-footer__navlink,
   .site-footer[data-theme='dark'] .site-footer__typo-title,
   .site-footer[data-theme='dark'] .site-footer__typo-link--active {
-    color: var(--color-cream);
+    color: var(--color-violet);
   }
   .site-footer[data-theme='dark'] .site-footer__address,
   .site-footer[data-theme='dark'] .site-footer__national,
   .site-footer[data-theme='dark'] .site-footer__typo-link {
-    color: color-mix(in oklab, var(--color-cream) 82%, transparent);
+    color: color-mix(in oklab, var(--color-violet) 82%, transparent);
   }
   .site-footer[data-theme='dark'] .site-footer__legal {
-    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    color: color-mix(in oklab, var(--color-violet) 60%, transparent);
+  }
+  .site-footer[data-theme='dark'] .site-footer__link:hover,
+  .site-footer[data-theme='dark'] .site-footer__navlink:hover,
+  .site-footer[data-theme='dark'] .site-footer__typo-link:hover {
+    color: var(--color-violet);
   }
   .site-footer[data-theme='dark'] .site-footer__logo {
-    background-color: var(--color-cream);
+    background-color: var(--color-violet);
   }
   .site-footer[data-theme='dark'] .site-footer__logo-mark {
     background-color: var(--color-ink);
