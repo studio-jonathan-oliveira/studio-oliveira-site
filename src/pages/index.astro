@@ -366,12 +366,10 @@ const typologies = [
                     plus toute la card mais UNIQUEMENT l'image. Le nom n'est
                     plus cliquable (« le clic doit être possible que dans
                     les images des typologies »). */}
+                {/* Seul le nom de la typologie reste affiché (Morgan
+                    2026-06-05) — les sous-types apparaissent au survol via le
+                    tooltip curseur (data-cursor-tooltip). */}
                 <h3 class="htypo-name">{t.nom}</h3>
-                <ul class="htypo-subtypes">
-                  {t.sousTypes.map((st) => (
-                    <li>{st}</li>
-                  ))}
-                </ul>
                 <a
                   href={`/architecture-paysagere/${t.slug}`}
                   class="htypo-visual"
@@ -658,6 +656,13 @@ const typologies = [
     #contact-cta {
       position: relative;
       z-index: 1;
+    }
+    /* Section juste sous le HERO : angles HAUTS arrondis (trame « modif
+       finales », Morgan 2026-06-05). Comme #identite glisse par-dessus le
+       hero sticky sombre, les coins arrondis laissent voir le hero derrière. */
+    .identite-band {
+      border-top-left-radius: clamp(24px, 4vw, 56px);
+      border-top-right-radius: clamp(24px, 4vw, 56px);
     }
     /* CTA transition « Chaque étude appartient à une typologie de jardin »
        (trame) : liseré rectangulaire arrondi quasi pleine largeur, cliquable
@@ -1538,20 +1543,6 @@ const typologies = [
       color: var(--color-ink);
       margin: 0;
     }
-    /* Liste des sous-types sous le nom (trame : visible au-dessus de l'image). */
-    .htypo-subtypes {
-      list-style: none;
-      margin: 0.35rem 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.05rem;
-      font-family: var(--font-body), sans-serif;
-      font-weight: 400;
-      font-size: clamp(0.78rem, 0.95vw, 0.95rem);
-      line-height: 1.3;
-      color: color-mix(in oklab, var(--color-ink) 72%, transparent);
-    }
     /* Variante .htypo-name--light → Architecture publique en ExtraLight 200
        UPPERCASE (retour v5 Morgan : « doit être écris en MAJUSCULE mais
        en extra light 200 »). Garde la casse héritée de .htypo-name. */
@@ -1570,6 +1561,8 @@ const typologies = [
       aspect-ratio: 1 / 1;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
+      /* Angles arrondis des photos du carousel (Morgan 2026-06-05). */
+      border-radius: clamp(12px, 1.4vw, 20px);
       /* Refonte v4 2026-05-15 (retour Morgan) : seul l'<a> autour de l'image
          est cliquable. Le h3 .htypo-name au-dessus n'est plus un lien. */
       cursor: none; /* curseur custom takes over */
@@ -1579,14 +1572,20 @@ const typologies = [
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transition: filter 0.4s var(--ease-out-editorial);
+      transition:
+        filter 0.4s var(--ease-out-editorial),
+        transform 0.4s var(--ease-out-editorial);
     }
-    /* Flou au survol (trame « modif finales ») — l'image se floute, le
-       curseur affiche « Découvrir » + tagline. Clic → page typologie. */
+    /* Flou au survol (trame « modif finales ») — l'image se floute (~30 %),
+       le curseur affiche « Découvrir » + tagline. Clic → page typologie.
+       Le léger scale(1.06) pousse les bords floutés hors du cadre arrondi
+       pour SUPPRIMER le liseré sombre que le blur créait sur les bordures
+       (Morgan 2026-06-05). Pas de brightness — plus d'ombrage. */
     @media (hover: hover) {
       .htypo-visual:hover .htypo-img,
       .htypo-visual:focus-visible .htypo-img {
-        filter: blur(6px) brightness(0.95);
+        filter: blur(10px);
+        transform: scale(1.06);
       }
     }
 

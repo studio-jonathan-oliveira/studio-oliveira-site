@@ -21,14 +21,7 @@
          le séparateur " / " produit des sauts de ligne. Suit le ring (lerp).
          v5 2026-05-15 : flèche rouge Jonathan au-dessus du premier mot. -->
     <div class="cursor-tooltip" id="cursor-tooltip">
-      <img
-        src="/brand/fleche-dark.webp"
-        alt=""
-        aria-hidden="true"
-        class="cursor-tooltip__arrow"
-        width="32"
-        height="32"
-      />
+      {/* Flèche retirée (Morgan 2026-06-05 : « enlève partout les flèches »). */}
       <span class="cursor-tooltip__text" id="cursor-tooltip-text"></span>
     </div>
   </div>
@@ -176,6 +169,9 @@
       height: 96px;
       top: -48px;
       left: -48px;
+      /* Arrondi accentué quand le ring s'agrandit pour « DÉCOUVRIR » — le
+         radius 7px paraissait trop carré à cette taille (Morgan 2026-06-05). */
+      border-radius: 26px;
     }
     .custom-cursor.is-labeled .cursor-dot {
       opacity: 0;
@@ -199,7 +195,9 @@
       align-items: center;
       white-space: nowrap;
       padding: 0.6em 1.05em;
-      border-radius: 9999px;
+      /* Rectangle à angles arrondis (Morgan 2026-06-05) — plus une pill
+         9999px, au survol des CTA stats +X études / +X ans. */
+      border-radius: 14px;
       background-color: var(--cursor-fill);
       color: var(--cursor-text);
       font-family: var(--font-heading), sans-serif;

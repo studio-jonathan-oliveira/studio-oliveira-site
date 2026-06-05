@@ -226,7 +226,8 @@
       "Bash(grep -rn \"split\\(\\\\|\\\\\\\\\\\\\\\\s\\\\|space\\\\|nbsp\\\\|\\\\\\\\\\\\\\\\u00A0\\\\|wordsClass\\\\|charsClass\\\\|/ /\\\\|' '\" node_modules/split-type/dist/index.js)",
       "Bash(grep -n \"wordsRegex\\\\|splitWords\\\\|\\\\\\\\\\\\\\\\s+\\\\|/\\\\\\\\\\\\\\\\s/\\\\|whitespace\\\\|reduceWhitespace\\\\|\\\\\\\\\\\\\\\\u00A0\\\\|nbsp\\\\|String.fromCharCode\\\\|/ +/\\\\|split\\(' '\\)\\\\|/\\(\\\\\\\\\\\\\\\\s\\)/\" node_modules/split-type/dist/index.js)",
       "Bash(python3 -c \"from PIL import Image; im=Image.open\\('v2.jpg'\\); print\\(im.size\\)\")",
-      "Bash(python -c \"from PIL import Image; [print\\(f, Image.open\\(f\\).size\\) for f in ['v0.jpg','v1.jpg','v2.jpg','v3.jpg']]\")"
+      "Bash(python -c \"from PIL import Image; [print\\(f, Image.open\\(f\\).size\\) for f in ['v0.jpg','v1.jpg','v2.jpg','v3.jpg']]\")",
+      "Bash(echo \"pushed: $?\")"
     ],
     "additionalDirectories": [
       "\\tmp"

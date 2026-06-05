@@ -144,9 +144,13 @@ const typologies = [
     margin-top: 0;
     overflow: hidden;
   }
+  /* Pleine largeur (Morgan 2026-06-05) : on retire le cap 1500px centré pour
+     que la colonne gauche aille vers le bord gauche et la droite vers le bord
+     droit, alignées aux textes/images des sections — en gardant une marge
+     latérale (le padding sert de marge). */
   .site-footer__inner {
-    max-width: 1500px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
     padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
   }
 
@@ -300,9 +304,12 @@ const typologies = [
     text-decoration: none;
     transition: opacity 0.3s ease;
   }
+  /* Survol typologies : on passe en GRAS sans griser (Morgan 2026-06-05).
+     font-synthesis-weight évité ; léger reflow accepté (liste qui wrap). */
   .site-footer__typo-link:hover,
   .site-footer__typo-link:focus-visible {
-    opacity: 0.6;
+    opacity: 1;
+    font-weight: 700;
   }
   .site-footer__typo-link--active {
     font-weight: 700;
