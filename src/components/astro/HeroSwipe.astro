@@ -19,6 +19,8 @@
 // 05-ruelle) sont remplacés. Le tableau `slides` ci-dessous pilote l'ordre
 // d'affichage. Si Morgan change le nombre de slides, ajuster aussi le CSS
 // `.hero-slide__track { width }` + `.hero-slide__panel { flex }`.
+// 8 photos hero fournies par Jonathan (`_assets/image site web/01-home page/
+// 01-hero/0N-hero.jpg`), optimisées → public/hero/0N-image.{webp,jpg} @1x/@2x.
 const slides = [
   { name: '01-image', label: 'Projet Studio J Oliveira — visuel 1', position: '50% 50%' },
   { name: '02-image', label: 'Projet Studio J Oliveira — visuel 2', position: '50% 50%' },
@@ -26,6 +28,8 @@ const slides = [
   { name: '04-image', label: 'Projet Studio J Oliveira — visuel 4', position: '50% 50%' },
   { name: '05-image', label: 'Projet Studio J Oliveira — visuel 5', position: '50% 50%' },
   { name: '06-image', label: 'Projet Studio J Oliveira — visuel 6', position: '50% 50%' },
+  { name: '07-image', label: 'Projet Studio J Oliveira — visuel 7', position: '50% 50%' },
+  { name: '08-image', label: 'Projet Studio J Oliveira — visuel 8', position: '50% 50%' },
 ];
 ---
 
@@ -121,7 +125,7 @@ const slides = [
      ces deux valeurs ici ET le tableau `slides` dans le frontmatter. */
   .hero-slide__track {
     display: flex;
-    width: 600%;
+    width: 800%;
     height: 100%;
     will-change: transform;
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
@@ -130,7 +134,7 @@ const slides = [
     transition: none;
   }
   .hero-slide__panel {
-    flex: 0 0 16.6667%;
+    flex: 0 0 12.5%;
     position: relative;
     height: 100%;
     overflow: hidden;
