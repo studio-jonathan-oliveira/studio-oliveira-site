@@ -13,6 +13,9 @@
  * ils restent accessibles via le menu principal.
  */
 const currentPath = Astro.url.pathname;
+// Sur la home le footer est NOIR (override body.is-home) → on le marque
+// data-theme="dark" pour que le curseur custom bascule en crème au survol.
+const footerTheme = currentPath === '/' ? 'dark' : 'light';
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -29,7 +32,7 @@ const typologies = [
 ];
 ---
 
-<footer class="site-footer" aria-label="Pied de page" data-theme="light">
+<footer class="site-footer" aria-label="Pied de page" data-theme={footerTheme}>
   <div class="site-footer__inner">
     <header class="site-footer__top">
       <a href="/" class="site-footer__logo" aria-label="Studio J Oliveira — accueil">
