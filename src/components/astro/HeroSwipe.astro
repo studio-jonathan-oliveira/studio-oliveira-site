@@ -185,13 +185,13 @@ const slides = [
     align-items: center;
     gap: 1rem;
     width: 100%;
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem var(--page-x);
     pointer-events: none;
     box-sizing: border-box;
   }
   @media (min-width: 768px) {
     .hero-slide__topbar-mimic {
-      padding: 1.5rem 2.5rem;
+      padding: 1.5rem var(--page-x);
     }
   }
   .hero-slide__logo {
@@ -221,9 +221,8 @@ const slides = [
   /* Wordmark FIGÉ — réduit (Morgan : « un peu plus petit »). */
   .hero-slide__wordmark {
     position: absolute;
-    /* Aligné au bord gauche du logo Oliveira (même retrait que
-       .hero-slide__topbar-mimic padding-left) — Morgan 2026-06-05. */
-    left: clamp(1.5rem, 2.5vw, 2.5rem);
+    /* Aligné au bord gauche du logo Oliveira = marge unique --page-x. */
+    left: var(--page-x);
     bottom: clamp(4rem, 9vh, 7rem);
     margin: 0;
     pointer-events: none;

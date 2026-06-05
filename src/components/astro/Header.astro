@@ -136,7 +136,9 @@ const { darkHero = false } = Astro.props;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 clamp(1rem, 3vw, 2.5rem);
+    /* Marge logo/MENU alignée sur la marge UNIQUE du site (--page-x = marge
+       du texte studio), Morgan 2026-06-05. */
+    padding: 0 var(--page-x);
   }
   .site-logo {
     height: clamp(28px, 3vw, 40px);
