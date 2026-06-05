@@ -180,7 +180,15 @@ const typologies = [
       <p class="identite-line" data-justify-line data-justify-direction="from-right">
         Expérientiel Signature
       </p>
-      <p class="identite-line" data-justify-line>Art de vivre Vivant Immersif</p>
+      {
+        /* « Art de vivre » = unité insécable (data-justify-word) : le bloc
+         entier bouge ensemble, il ne se dissocie pas. */
+      }
+      <p class="identite-line" data-justify-line>
+        <span data-justify-word>Art de vivre</span>
+        <span data-justify-word>Vivant</span>
+        <span data-justify-word>Immersif</span>
+      </p>
     </div>
   </section>
 
@@ -1618,39 +1626,6 @@ const typologies = [
         height: auto;
         padding-bottom: 1rem;
       }
-    }
-  </style>
-
-  {
-    /* Exception DA home (trame « modif finales » r3_c2) : le footer est NOIR
-       avec tuile logo BEIGE (logo noir dedans) + texte crème. Override
-       page-level du footer global, même pattern que /demarrer-un-projet. */
-  }
-  <style is:global>
-    body.is-home .site-footer {
-      background-color: var(--color-ink);
-      color: var(--color-cream);
-    }
-    body.is-home .site-footer__heading,
-    body.is-home .site-footer__navlink,
-    body.is-home .site-footer__typo-title,
-    body.is-home .site-footer__typo-link--active {
-      color: var(--color-cream);
-    }
-    body.is-home .site-footer__address,
-    body.is-home .site-footer__national,
-    body.is-home .site-footer__typo-link {
-      color: color-mix(in oklab, var(--color-cream) 82%, transparent);
-    }
-    body.is-home .site-footer__legal {
-      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
-    }
-    /* Tuile logo BEIGE + wordmark NOIR (trame). */
-    body.is-home .site-footer__logo {
-      background-color: var(--color-cream);
-    }
-    body.is-home .site-footer__logo-mark {
-      background-color: var(--color-ink);
     }
   </style>
 

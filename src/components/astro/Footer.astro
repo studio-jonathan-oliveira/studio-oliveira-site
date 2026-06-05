@@ -13,9 +13,10 @@
  * ils restent accessibles via le menu principal.
  */
 const currentPath = Astro.url.pathname;
-// Sur la home le footer est NOIR (override body.is-home) → on le marque
-// data-theme="dark" pour que le curseur custom bascule en crème au survol.
-const footerTheme = currentPath === '/' ? 'dark' : 'light';
+// Footer NOIR (data-theme="dark") sur la home ET /studio (trame). Le style
+// sombre est porté par .site-footer[data-theme='dark'] ci-dessous, et le
+// data-theme fait aussi basculer le curseur custom en crème au survol.
+const footerTheme = currentPath === '/' || currentPath === '/studio' ? 'dark' : 'light';
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -106,7 +107,34 @@ const typologies = [
 </footer>
 
 <style>
-  /* Carte beige à coins hauts arrondis, texte noir. */
+  /* Variante NOIRE (home + studio) — pilotée par data-theme="dark". Fond ink,
+     texte crème, tuile logo beige (logo noir). */
+  .site-footer[data-theme='dark'] {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .site-footer[data-theme='dark'] .site-footer__heading,
+  .site-footer[data-theme='dark'] .site-footer__navlink,
+  .site-footer[data-theme='dark'] .site-footer__typo-title,
+  .site-footer[data-theme='dark'] .site-footer__typo-link--active {
+    color: var(--color-cream);
+  }
+  .site-footer[data-theme='dark'] .site-footer__address,
+  .site-footer[data-theme='dark'] .site-footer__national,
+  .site-footer[data-theme='dark'] .site-footer__typo-link {
+    color: color-mix(in oklab, var(--color-cream) 82%, transparent);
+  }
+  .site-footer[data-theme='dark'] .site-footer__legal {
+    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+  }
+  .site-footer[data-theme='dark'] .site-footer__logo {
+    background-color: var(--color-cream);
+  }
+  .site-footer[data-theme='dark'] .site-footer__logo-mark {
+    background-color: var(--color-ink);
+  }
+
+  /* Carte beige à coins hauts arrondis, texte noir (pages claires). */
   .site-footer {
     background-color: var(--color-cream);
     color: var(--color-ink);

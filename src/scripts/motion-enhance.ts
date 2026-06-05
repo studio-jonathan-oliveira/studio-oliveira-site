@@ -446,8 +446,14 @@ function setupJustifyMulti(root: ParentNode) {
       if (getComputedStyle(line).textAlign !== 'justify') {
         line.style.textAlign = 'justify';
       }
-      const split = new SplitType(line, { types: 'words' });
-      const words = (split.words as HTMLElement[] | null) || [];
+      // Mots MANUELS insécables : si la ligne contient des [data-justify-word]
+      // pré-écrits (ex. « Art de vivre » qui doit rester groupé), on les utilise
+      // comme unités au lieu du découpage auto SplitType. Sinon, fallback auto.
+      const manual = Array.from(line.querySelectorAll<HTMLElement>('[data-justify-word]'));
+      const words =
+        manual.length > 0
+          ? manual
+          : ((new SplitType(line, { types: 'words' }).words as HTMLElement[] | null) ?? []);
       words.forEach((w) => {
         w.style.display = 'inline-block';
         w.style.willChange = 'transform';
