@@ -436,7 +436,7 @@
           cursor.classList.add('is-pill');
           cursor.classList.remove('is-hover', 'is-labeled');
         } else if (labeledAncestor && labelEl) {
-          labelEl.textContent = labeledAncestor.dataset.cursorLabel || '→';
+          labelEl.textContent = labeledAncestor.dataset.cursorLabel || '';
           cursor.classList.add('is-labeled');
           cursor.classList.remove('is-hover');
         } else if (interactive && !cursorSkip) {

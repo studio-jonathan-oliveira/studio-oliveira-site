@@ -401,12 +401,6 @@ export default function ContactForm(): React.JSX.Element {
           className="group inline-flex items-center gap-3 border-b border-[var(--color-ink)] pb-1 font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] text-[var(--color-ink)] transition-colors hover:text-[var(--color-laterite)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span>{submitting ? 'Envoi en cours…' : 'Envoyer ma demande'}</span>
-          <span
-            aria-hidden="true"
-            className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-          >
-            →
-          </span>
         </button>
         <p className="font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/45 uppercase">
           Vos données ne sont utilisées que pour répondre à votre demande.

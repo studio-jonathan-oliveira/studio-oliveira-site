@@ -607,7 +607,8 @@ export default function DemarrerForm(): React.JSX.Element {
           </div>
         )}
 
-        {/* ENVOYER AU STUDIO — pill NOIR, texte crème, flèche, magnétique (trame). */}
+        {/* ENVOYER AU STUDIO — pill NOIR, texte crème, magnétique (trame).
+            Flèche retirée sitewide (Morgan 2026-06-05). */}
         <div className="flex justify-center pt-6">
           <button
             ref={sendBtnRef}
@@ -617,14 +618,6 @@ export default function DemarrerForm(): React.JSX.Element {
             className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.18em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
-            <img
-              src="/brand/fleche-white.webp"
-              alt=""
-              aria-hidden="true"
-              width={16}
-              height={16}
-              className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-            />
           </button>
         </div>
       </div>

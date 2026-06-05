@@ -37,27 +37,6 @@ export const OG_PAGES: OgPage[] = [
     variant: 'light',
   },
   {
-    path: '/amenagement-vegetal-interieur',
-    filename: 'amenagement-vegetal-interieur',
-    eyebrow: 'Service · Décors intérieurs',
-    title: 'Aménagement végétal intérieur',
-    variant: 'light',
-  },
-  {
-    path: '/lcd-atypiques',
-    filename: 'lcd-atypiques',
-    eyebrow: 'Service · Locations signature',
-    title: 'LCD atypiques',
-    variant: 'dark',
-  },
-  {
-    path: '/pros',
-    filename: 'pros',
-    eyebrow: 'Professionnels · Hôtellerie · Restauration · Bureaux',
-    title: 'Design biophilique pour pros',
-    variant: 'light',
-  },
-  {
     path: '/projets',
     filename: 'projets',
     eyebrow: 'Portefeuille',

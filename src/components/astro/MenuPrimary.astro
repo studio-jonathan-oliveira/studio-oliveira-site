@@ -266,9 +266,12 @@ const isActive = (href: string) =>
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* Carte pleine largeur, mais libellé « Fermer » aligné à DROITE
+       (Morgan 2026-06-05). */
+    justify-content: flex-end;
+    text-align: right;
     margin: clamp(0.6rem, 1.2vw, 1.1rem) clamp(0.6rem, 1.2vw, 1.1rem) 0;
-    padding: clamp(1.3rem, 2.6vw, 2.4rem);
+    padding: clamp(1.3rem, 2.6vw, 2.4rem) clamp(1.6rem, 3vw, 2.8rem);
     border: 1px solid color-mix(in oklab, var(--color-cream) 40%, transparent);
     border-radius: clamp(16px, 1.8vw, 26px);
     background: transparent;
