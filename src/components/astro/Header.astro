@@ -69,26 +69,20 @@ const { darkHero = false } = Astro.props;
 
 <style>
   /* Header beige sitewide (DA finale). */
+  /* Conteneur TRANSPARENT (trame) : la topbar beige arrondie ne couvre QUE le
+     CTA « Démarrer un projet » ; la rangée logo + MENU passe juste dessous sur
+     fond transparent. */
   .site-header {
-    background-color: var(--color-cream);
     color: var(--color-ink);
+    background-color: transparent;
     transform: translateY(0);
     transition: transform 0.55s var(--ease-out-editorial);
     will-change: transform;
-    padding: 0 0 clamp(0.5rem, 1vw, 1rem);
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: clamp(0.5rem, 1vw, 1rem);
-    /* Carte flottante à angles arrondis + liseré périphérique (trame « modif
-       finales » : la top barre est une carte arrondie détachée). Inset via
-       marge ; overflow hidden pour clipper le fond de la barre CTA. */
-    margin: clamp(0.5rem, 1.1vw, 0.9rem);
-    border: 1px solid color-mix(in oklab, var(--color-ink) 16%, transparent);
-    border-radius: clamp(16px, 1.8vw, 26px);
-    overflow: hidden;
   }
-  /* Auto-hide : on dégage aussi la marge (sinon le bas de la carte reste
-     visible). */
   .site-header.is-hidden {
     transform: translateY(calc(-100% - 1.5rem));
   }
@@ -96,13 +90,16 @@ const { darkHero = false } = Astro.props;
   /* Rangée 1 — gros CTA pleine largeur (bord à bord), libellé centré.
      Repos : beige. Survol → NOIR (libellé cream). Clic/actif → VIOLET.
      Plus haute / plus grosse (retour Morgan 2026-06-04). */
+  /* Carte beige arrondie + liseré périphérique (trame) : la topbar S'ARRÊTE
+     ici, elle ne contient QUE le CTA. Inset via marge (top + côtés). */
   .site-header__cta {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    margin: clamp(0.5rem, 1.1vw, 0.9rem) clamp(0.5rem, 1.1vw, 0.9rem) 0;
     padding: clamp(1.3rem, 2.6vw, 2.4rem);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 18%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 16%, transparent);
+    border-radius: clamp(16px, 1.8vw, 26px);
     text-decoration: none;
     color: var(--color-ink);
     background-color: var(--color-cream);
