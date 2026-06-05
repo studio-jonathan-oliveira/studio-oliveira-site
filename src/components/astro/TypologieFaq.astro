@@ -78,9 +78,6 @@ const marqueeUnit = MARQUEE.repeat(6);
     animation: typo-faq-marquee 38s linear infinite;
     will-change: transform;
   }
-  .typo-faq__marquee:hover .typo-faq__marquee-track {
-    animation-play-state: paused;
-  }
   .typo-faq__marquee-text {
     font-family: var(--font-heading), sans-serif;
     font-weight: 800;
@@ -89,10 +86,20 @@ const marqueeUnit = MARQUEE.repeat(6);
     letter-spacing: -0.01em;
     white-space: nowrap;
     padding-right: 0.2em;
-    /* Lettres évidées (outline) : remplissage transparent + contour ink. */
+    /* Lettres évidées (outline) : remplissage transparent + contour ink fin.
+       1px (au lieu de 1.5px) + paint-order pour limiter les pics de tracé aux
+       angles aigus (apex du « v », terminaisons « e »/« t »). */
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--color-ink);
-    text-stroke: 1.5px var(--color-ink);
+    -webkit-text-stroke: 1px var(--color-ink);
+    text-stroke: 1px var(--color-ink);
+    paint-order: stroke fill;
+    transition: color 0.4s var(--ease-out-editorial);
+  }
+  /* Survol : le marquee CONTINUE de défiler (pas de pause) et l'intérieur des
+     lettres se remplit en NOIR (Morgan 2026-06-05). */
+  .typo-faq__marquee:hover .typo-faq__marquee-text,
+  .typo-faq__marquee:focus-visible .typo-faq__marquee-text {
+    color: var(--color-ink);
   }
   @keyframes typo-faq-marquee {
     from {
