@@ -264,11 +264,19 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
       color: var(--color-cream);
       padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
     }
+    /* Liserets COURBÉS À DROITE (réf. TypologieHero, uniformisation sitewide
+       Morgan 2026-06-05) : trait bas + trait droit qui se rejoignent en courbe
+       au coin bas-droit. Épaisseur unique --stroke-liseret. */
     .proj-acc__item {
-      border-top: 1px solid color-mix(in oklab, var(--color-cream) 20%, transparent);
+      border-bottom: var(--stroke-liseret) solid
+        color-mix(in oklab, var(--color-cream) 22%, transparent);
+      border-right: var(--stroke-liseret) solid
+        color-mix(in oklab, var(--color-cream) 22%, transparent);
+      border-bottom-right-radius: var(--radius-liseret);
     }
-    .proj-acc__item:last-of-type {
-      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 20%, transparent);
+    .proj-acc__item:first-of-type {
+      border-top: var(--stroke-liseret) solid
+        color-mix(in oklab, var(--color-cream) 22%, transparent);
     }
     .proj-acc__summary {
       list-style: none;
@@ -277,18 +285,26 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
       align-items: center;
       justify-content: space-between;
       gap: 1.5rem;
-      padding: clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
+      /* Écart titre→liseret = padding-bottom, égal à l'écart liseret→texte
+         (panel padding-top) — règle accordéon globale Morgan 2026-06-05. */
+      padding: clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 2.5vw, 2rem);
     }
     .proj-acc__summary::-webkit-details-marker {
       display: none;
     }
+    /* Titre : graisse normale au repos → GRAS quand l'accordéon est ouvert
+       (règle accordéon globale). */
     .proj-acc__title {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 700;
+      font-weight: 400;
       font-size: clamp(1.6rem, 4vw, 3.5rem);
       line-height: 1;
       letter-spacing: -0.01em;
       color: var(--color-cream);
+      transition: font-weight 0.3s var(--ease-out-editorial);
+    }
+    .proj-acc__item[open] .proj-acc__title {
+      font-weight: 700;
     }
     /* Icône + (fermé) → × (ouvert) via rotation 45°. */
     .proj-acc__icon {

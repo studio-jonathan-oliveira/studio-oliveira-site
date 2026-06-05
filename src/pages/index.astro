@@ -676,8 +676,8 @@ const typologies = [
       justify-content: center;
       width: 100%;
       padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3rem);
-      border: 1px solid var(--color-ink);
-      border-radius: clamp(18px, 2vw, 28px);
+      border: var(--stroke-liseret) solid var(--color-ink);
+      border-radius: var(--radius-cta);
     }
     .typo-transition__text {
       font-family: var(--font-heading), sans-serif;
@@ -1541,8 +1541,8 @@ const typologies = [
       aspect-ratio: 1 / 1;
       overflow: hidden;
       background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
-      /* Angles arrondis des photos du carousel (Morgan 2026-06-05). */
-      border-radius: clamp(12px, 1.4vw, 20px);
+      /* Arrondi ACCENTUÉ des images (token global, Morgan 2026-06-05). */
+      border-radius: var(--radius-image);
       /* Refonte v4 2026-05-15 (retour Morgan) : seul l'<a> autour de l'image
          est cliquable. Le h3 .htypo-name au-dessus n'est plus un lien. */
       cursor: none; /* curseur custom takes over */
@@ -1552,20 +1552,14 @@ const typologies = [
       height: 100%;
       object-fit: cover;
       object-position: center;
-      transition:
-        filter 0.4s var(--ease-out-editorial),
-        transform 0.4s var(--ease-out-editorial);
+      transition: filter 0.4s var(--ease-out-editorial);
     }
-    /* Flou au survol (trame « modif finales ») — l'image se floute (~30 %),
-       le curseur affiche « Découvrir » + tagline. Clic → page typologie.
-       Le léger scale(1.06) pousse les bords floutés hors du cadre arrondi
-       pour SUPPRIMER le liseré sombre que le blur créait sur les bordures
-       (Morgan 2026-06-05). Pas de brightness — plus d'ombrage. */
+    /* Flou au survol RENFORCÉ + AUCUN zoom (Morgan 2026-06-05). Le curseur
+       affiche « Découvrir » + tagline. Clic → page typologie. */
     @media (hover: hover) {
       .htypo-visual:hover .htypo-img,
       .htypo-visual:focus-visible .htypo-img {
-        filter: blur(10px);
-        transform: scale(1.06);
+        filter: blur(18px);
       }
     }
 
