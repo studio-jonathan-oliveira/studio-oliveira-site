@@ -212,6 +212,18 @@ La trame montre **plusieurs états empilés** du même composant top barre.
 
 ## 6. BLOC STATS (tuiles r1_c1, r1_c3, r1_c4)
 
+> ⚠️ CORRECTION 2026-06-05 (re-analyse pixel multi-agents, vérif col2 = page
+> au repos) : le sens repos/survol était INVERSÉ dans la 1re rédaction.
+> **Au REPOS (col2)** : carte Études = **NOIRE** pleine (chiffre crème FIN,
+> sous-texte « **Conçues** par le studio depuis sa création », **sans pill**) ;
+> carte +10 ans = **NOIRE** ; +3 régions = **texte nu sur beige** (pas de carte,
+> statique). **Au SURVOL (col1)** : la carte cliquable **s'inverse** → beige +
+> contour ink, chiffre en **gras**, sous-texte Études devient « **réalisées**
+> par le studio… », **pill apparaît** + curseur s'allonge + bloc aimanté.
+> Bento : Études ~64 % largeur pleine hauteur à gauche ; +10 ans / +3 empilés
+> à droite. Implémenté commit `53e7a22` (`.stats-bento` / `.stat-card*` dans
+> index.astro). Le texte ci-dessous garde l'ancienne description (à ignorer).
+
 Cartes de chiffres-clés, fond beige, deux variantes (claire et sombre) montrées côte à côte = états repos/survol.
 
 ### Carte « Études » (variante claire au repos)
