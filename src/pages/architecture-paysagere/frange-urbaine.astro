@@ -26,6 +26,7 @@ import gal04 from '@/assets/typologies/frange-urbaine/04-chemin.jpg';
 import gal05 from '@/assets/typologies/frange-urbaine/05-maison.jpg';
 import gal06 from '@/assets/typologies/frange-urbaine/06-piscine.jpg';
 import gal07 from '@/assets/typologies/frange-urbaine/07-photo.jpg';
+import gal08 from '@/assets/typologies/frange-urbaine/08-photo.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'frange-urbaine')!;
 
@@ -193,6 +194,19 @@ const schema = jsonLdGraph([
         />
       </figure>
     </div>
+
+    <figure class="fu-gallery__large" data-reveal="image-rise">
+      <Image
+        src={gal08}
+        alt="Projet frange urbaine — aménagement paysager"
+        widths={[960, 1440, 1800]}
+        sizes="(min-width: 1024px) 92vw, 96vw"
+        quality={92}
+        format="webp"
+        loading="lazy"
+        class="fu-gallery__img"
+      />
+    </figure>
 
     {/* Manifeste « Comprendre » */}
     <div class="fu-manifeste fu-manifeste--comprendre">

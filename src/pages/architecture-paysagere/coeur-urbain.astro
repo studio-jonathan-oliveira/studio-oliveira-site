@@ -37,6 +37,8 @@ import gal06 from '@/assets/typologies/coeur-urbain/06-restaurant.jpg';
 import gal07 from '@/assets/typologies/coeur-urbain/07-piscine.jpg';
 import gal08 from '@/assets/typologies/coeur-urbain/08-porche.jpg';
 import gal09 from '@/assets/typologies/coeur-urbain/09-cheminement.jpg';
+import gal10 from '@/assets/typologies/coeur-urbain/10-terrasse.jpg';
+import gal11 from '@/assets/typologies/coeur-urbain/11-chemin.jpg';
 
 const typologie = SITE.typologies.find((t) => t.slug === 'coeur-urbain')!;
 
@@ -213,6 +215,33 @@ const schema = jsonLdGraph([
           alt="Projet cœur urbain — porche bois ouvrant sur un patio de briques végétalisé"
           widths={[480, 720, 1100]}
           sizes="(min-width: 1024px) 38vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+    </div>
+
+    <div class="cu-gallery__diptyque cu-gallery__diptyque--mid">
+      <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={gal10}
+          alt="Projet cœur urbain — terrasse paysagère"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 46vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="cu-gallery__img"
+        />
+      </figure>
+      <figure class="cu-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={gal11}
+          alt="Projet cœur urbain — cheminement végétalisé"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 46vw, 92vw"
           quality={92}
           format="webp"
           loading="lazy"

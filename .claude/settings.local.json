@@ -232,7 +232,10 @@
       "Bash(perl -CSD -i -pe 's/Voir la zone →/Voir la zone/' src/pages/zones/index.astro)",
       "Bash(perl -CSD -i -pe 's/Passer →/Passer/' src/components/astro/IntroBumper.astro)",
       "Bash(perl -CSD -i -pe 's/>→<\\\\/span/></span/g' src/pages/contact.astro)",
-      "Bash(perl -CSD -i -pe \"s/\\\\|\\\\| '→'/|| ''/\" src/components/astro/CustomCursor.astro)"
+      "Bash(perl -CSD -i -pe \"s/\\\\|\\\\| '→'/|| ''/\" src/components/astro/CustomCursor.astro)",
+      "Bash(cp '__TRACKED_VAR__/05-coeur urbain/09-terrasse.jpg' src/assets/typologies/coeur-urbain/10-terrasse.jpg)",
+      "Bash(cp '__TRACKED_VAR__/05-coeur urbain/10-chemin.jpg' src/assets/typologies/coeur-urbain/11-chemin.jpg)",
+      "Bash(cp '__TRACKED_VAR__/06-frange urbaine/07-image.jpg' src/assets/typologies/frange-urbaine/08-photo.jpg)"
     ],
     "additionalDirectories": [
       "\\tmp"
