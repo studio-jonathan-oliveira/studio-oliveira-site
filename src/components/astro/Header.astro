@@ -75,15 +75,22 @@ const { darkHero = false } = Astro.props;
     transform: translateY(0);
     transition: transform 0.55s var(--ease-out-editorial);
     will-change: transform;
-    /* Pas de padding horizontal → la barre CTA est BORD À BORD (pleine
-       largeur écran). */
     padding: 0 0 clamp(0.5rem, 1vw, 1rem);
     display: flex;
     flex-direction: column;
     gap: clamp(0.5rem, 1vw, 1rem);
+    /* Carte flottante à angles arrondis + liseré périphérique (trame « modif
+       finales » : la top barre est une carte arrondie détachée). Inset via
+       marge ; overflow hidden pour clipper le fond de la barre CTA. */
+    margin: clamp(0.5rem, 1.1vw, 0.9rem);
+    border: 1px solid color-mix(in oklab, var(--color-ink) 16%, transparent);
+    border-radius: clamp(16px, 1.8vw, 26px);
+    overflow: hidden;
   }
+  /* Auto-hide : on dégage aussi la marge (sinon le bas de la carte reste
+     visible). */
   .site-header.is-hidden {
-    transform: translateY(-100%);
+    transform: translateY(calc(-100% - 1.5rem));
   }
 
   /* Rangée 1 — gros CTA pleine largeur (bord à bord), libellé centré.

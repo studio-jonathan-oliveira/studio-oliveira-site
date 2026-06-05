@@ -333,7 +333,12 @@ const typologies = [
           /* Texte verbatim trame Jonathan (retour Morgan 2026-05-15) :
             ExtraLight 200 lowercase + 1res lettres des phrases capitalisées. */
         }
-        <p class="htypo-intro">
+        <p
+          class="htypo-intro"
+          data-words-fade
+          data-words-fade-stagger="0.008"
+          data-words-fade-window="0,0.7"
+        >
           L'architecture bâtie, le contexte environnemental et géographique ainsi que les
           contraintes structurelles de chaque type de propriété ont été classifiés selon une
           nomenclature précise et définissent l'étude paysagère adaptée au contexte de votre projet.
@@ -799,6 +804,15 @@ const typologies = [
       display: inline-block;
       opacity: 0;
       transform: translateY(12px);
+      will-change: opacity, transform;
+    }
+    /* Intro typologies — apparition wavy réversible (data-words-fade) : état
+       initial masqué (pas de flash avant JS ; sur mobile REDUCE_MOBILE ne
+       splitte pas → aucun .word, le texte reste visible). */
+    .htypo-intro .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
       will-change: opacity, transform;
     }
 
