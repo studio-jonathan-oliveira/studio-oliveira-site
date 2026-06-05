@@ -100,11 +100,14 @@ const marqueeUnit = MARQUEE.repeat(6);
     font-weight: 800;
     font-size: clamp(2.5rem, 8vw, 8rem);
     letter-spacing: -0.01em;
-    /* Lettres évidées (outline) : contour ink à jointures ARRONDIES (SVG) →
-       aucun pic de tracé qui dépasse aux angles aigus. */
-    fill: transparent;
+    /* Outline NET : on peint d'abord le contour (stroke), puis un remplissage
+       couleur FOND (cream) par-dessus (paint-order: stroke fill). Résultat :
+       seule la moitié EXTÉRIEURE du trait reste visible → les contre-formes du
+       « e »/« t » ne sont plus rongées, et les jointures ARRONDIES suppriment
+       les pics. Stroke épais (3px) car la moitié seulement est visible. */
+    fill: var(--color-cream);
     stroke: var(--color-ink);
-    stroke-width: 1px;
+    stroke-width: 3px;
     stroke-linejoin: round;
     stroke-linecap: round;
     paint-order: stroke fill;
