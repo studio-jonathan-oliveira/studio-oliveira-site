@@ -132,8 +132,8 @@ const parcours = [
         <div
           class="studio-bienvenue__body"
           data-words-fade
-          data-words-fade-stagger="0.004"
-          data-words-fade-window="0.05,0.5"
+          data-words-fade-stagger="0.0015"
+          data-words-fade-window="0,0.35"
         >
           {bienvenue.map((para) => <p>{para}</p>)}
         </div>
@@ -285,14 +285,16 @@ const parcours = [
     .studio-bienvenue__body {
       display: flex;
       flex-direction: column;
-      gap: clamp(1rem, 1.6vw, 1.5rem);
+      /* Plus étalé sur la hauteur (Morgan 2026-06-05). */
+      gap: clamp(1.6rem, 2.6vw, 2.6rem);
       max-width: none;
     }
     .studio-bienvenue__body p {
       font-family: var(--font-body), sans-serif;
       font-weight: 200;
-      font-size: clamp(1rem, 1.15vw, 1.15rem);
-      line-height: 1.65;
+      /* Police grossie (Morgan 2026-06-05). */
+      font-size: clamp(1.35rem, 1.9vw, 2rem);
+      line-height: 1.75;
       color: color-mix(in oklab, var(--color-cream) 92%, transparent);
       /* Aligné gauche (retour Morgan v2 2026-05-15) — la trame Jonathan
          montre les paragraphes en flag-left, pas en justify. */
@@ -346,9 +348,11 @@ const parcours = [
     .studio-manifeste__quote {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(1.5rem, 3.2vw, 3rem);
-      line-height: 1.25;
-      letter-spacing: -0.005em;
+      /* Bien plus gros (Morgan 2026-06-05, trame studio : grande affirmation
+         3 lignes). */
+      font-size: clamp(2.6rem, 6.5vw, 6.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
       text-transform: uppercase;
       text-align: justify;
       color: var(--color-cream);
