@@ -162,13 +162,26 @@ function buildEmailText(input: ContactInput): string {
  * budget, période, documents. Pas de message libre (volonté Jonathan).
  * ───────────────────────────────────────────────────────────────────────── */
 
+// Options VERBATIM trame « demarrer un projet » (2026-06-04). Surface, budget
+// et période sont 3 selects référençant les typologies de jardin.
+export const SURFACE_OPTIONS = [
+  { value: 'moins-100', label: 'Moins de 100 m² (base typologie Micro Urbain)' },
+  { value: '100-500', label: 'Entre 100 m² et 500 m² (base typologie Coeur Urbain)' },
+  { value: '500-1500', label: 'Entre 500 m² et 1500 m² (base typologie Frange Urbaine)' },
+  { value: 'plus-1500', label: 'Plus de 1500 m² (base typologie Domaine & Caractère)' },
+] as const;
+export type SurfaceKey = (typeof SURFACE_OPTIONS)[number]['value'];
+const SURFACE_KEYS = SURFACE_OPTIONS.map((o) => o.value) as [SurfaceKey, ...SurfaceKey[]];
+const SURFACE_LABEL: Record<SurfaceKey, string> = Object.fromEntries(
+  SURFACE_OPTIONS.map((o) => [o.value, o.label]),
+) as Record<SurfaceKey, string>;
+
 export const BUDGET_OPTIONS = [
-  { value: 'sous-10k', label: 'Moins de 10 000 €' },
-  { value: '10-30k', label: '10 000 – 30 000 €' },
-  { value: '30-80k', label: '30 000 – 80 000 €' },
-  { value: '80-200k', label: '80 000 – 200 000 €' },
-  { value: 'plus-200k', label: 'Plus de 200 000 €' },
-  { value: 'non-defini', label: 'À cadrer ensemble' },
+  { value: 'moins-20k', label: 'Moins de 20 000 € (base typologie Micro Urbain)' },
+  { value: '20-50k', label: 'Entre 20 000 € et 50 000 € (base typologie Coeur Urbain)' },
+  { value: '50-90k', label: 'Entre 50 000 € et 90 000 € (base typologie Frange Urbaine)' },
+  { value: 'plus-90k', label: 'Plus de 90 000 € (base typologie Domaine & Caractère)' },
+  { value: 'a-discuter', label: 'Aucune notion de budget réaliste, on en discute ensemble' },
 ] as const;
 export type BudgetKey = (typeof BUDGET_OPTIONS)[number]['value'];
 const BUDGET_KEYS = BUDGET_OPTIONS.map((o) => o.value) as [BudgetKey, ...BudgetKey[]];
@@ -177,11 +190,11 @@ const BUDGET_LABEL: Record<BudgetKey, string> = Object.fromEntries(
 ) as Record<BudgetKey, string>;
 
 export const PERIODE_OPTIONS = [
-  { value: 'sous-3m', label: 'Moins de 3 mois' },
-  { value: '3-6m', label: '3 à 6 mois' },
-  { value: '6-12m', label: '6 à 12 mois' },
-  { value: 'plus-12m', label: 'Plus de 12 mois' },
-  { value: 'non-defini', label: 'Pas de date fixée' },
+  { value: 'ete-courante', label: "Saison estivale de l'année en cours" },
+  { value: 'auto-hiver-courante', label: "Saison automnale / hivernale de l'année en cours" },
+  { value: 'printemps-ete-prochaine', label: "Saison printanière / estivale de l'année prochaine" },
+  { value: 'auto-hiver-prochaine', label: "Saison automnale / hivernale de l'année prochaine" },
+  { value: 'phases', label: 'Par phases à déterminer ensemble' },
 ] as const;
 export type PeriodeKey = (typeof PERIODE_OPTIONS)[number]['value'];
 const PERIODE_KEYS = PERIODE_OPTIONS.map((o) => o.value) as [PeriodeKey, ...PeriodeKey[]];
@@ -230,7 +243,7 @@ export const demarrerSchema = z.object({
     .trim()
     .min(2, 'Localisation trop courte.')
     .max(120, 'Localisation trop longue.'),
-  surface: z.string().trim().min(1, 'Surface requise.').max(80, 'Surface trop longue.'),
+  surface: z.enum(SURFACE_KEYS, { message: 'Surface invalide.' }),
   budget: z.enum(BUDGET_KEYS, { message: 'Budget invalide.' }),
   periode: z.enum(PERIODE_KEYS, { message: 'Période invalide.' }),
   documents: z.array(documentSchema).max(MAX_FILES, `${MAX_FILES} fichiers maximum.`).default([]),
@@ -245,7 +258,7 @@ function buildDemarrerEmailHtml(input: DemarrerInput): string {
     ['Email', escapeHtml(input.email)],
     ['Téléphone', input.telephone ? escapeHtml(input.telephone) : '—'],
     ['Localisation', escapeHtml(input.localisation)],
-    ['Surface', escapeHtml(input.surface)],
+    ['Surface', escapeHtml(SURFACE_LABEL[input.surface])],
     ['Budget', escapeHtml(BUDGET_LABEL[input.budget])],
     ['Période', escapeHtml(PERIODE_LABEL[input.periode])],
     [
@@ -288,7 +301,7 @@ function buildDemarrerEmailText(input: DemarrerInput): string {
     `Email        : ${input.email}`,
     `Téléphone    : ${input.telephone || '—'}`,
     `Localisation : ${input.localisation}`,
-    `Surface      : ${input.surface}`,
+    `Surface      : ${SURFACE_LABEL[input.surface]}`,
     `Budget       : ${BUDGET_LABEL[input.budget]}`,
     `Période      : ${PERIODE_LABEL[input.periode]}`,
     `Documents    : ${input.documents.length}`,

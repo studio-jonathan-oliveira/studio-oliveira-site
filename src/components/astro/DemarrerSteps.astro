@@ -86,6 +86,18 @@ const { steps } = Astro.props;
     object-fit: cover;
     object-position: center;
     display: block;
+    transition:
+      filter 0.6s var(--ease-out-editorial),
+      transform 0.6s var(--ease-out-editorial);
+  }
+  /* Flou + assombrissement de la photo quand un accordéon est ouvert (trame :
+     « FLOU IMAGE AU CLIC DE L'ACCORDÉON »). Classe posée par le script. */
+  .dem-steps__bg.is-blurred .dem-steps__bg-img {
+    filter: blur(14px) brightness(0.55);
+    transform: scale(1.06);
+  }
+  .dem-steps__veil {
+    transition: background 0.6s var(--ease-out-editorial);
   }
   /* Voile sombre — lisibilité du texte sur la photo (la trame montre la photo
      fortement assombrie sous les accordéons). */
@@ -154,3 +166,27 @@ const { steps } = Astro.props;
     outline-color: color-mix(in oklab, var(--color-violet) 60%, transparent);
   }
 </style>
+
+<script>
+  // Flou de la photo de fond quand un accordéon de la section est ouvert
+  // (trame). On observe l'attribut aria-expanded (posé par l'island React).
+  function initDemStepsBlur() {
+    const section = document.querySelector<HTMLElement>('.dem-steps');
+    const bg = section?.querySelector<HTMLElement>('.dem-steps__bg');
+    if (!section || !bg) return;
+    const sync = () => {
+      const open = section.querySelector('.faq-acc__summary[aria-expanded="true"]');
+      bg.classList.toggle('is-blurred', !!open);
+    };
+    const obs = new MutationObserver(sync);
+    obs.observe(section, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-expanded'],
+    });
+    sync();
+  }
+
+  initDemStepsBlur();
+  document.addEventListener('astro:page-load', initDemStepsBlur);
+</script>

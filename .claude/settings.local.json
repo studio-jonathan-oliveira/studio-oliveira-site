@@ -222,7 +222,11 @@
       "Bash(python -c \"from PIL import Image; im=Image.open\\('r2_c2.jpg'\\); im.crop\\(\\(0,0,1500,400\\)\\).resize\\(\\(1500,400\\)\\).save\\('stats_crop.jpg'\\)\")",
       "Bash(\" src/)",
       "Bash(grep -rn \"href=\\\\\"/architecture-paysagere\\\\\"\\\\|'/architecture-paysagere'\\\\|/architecture-paysagere<\\\\|/architecture-paysagere`\" src/)",
-      "Bash(perl -CSD -i -pe \"s/\\\\{ name: 'Architecture paysagère', item: '\\\\/architecture-paysagere' \\\\}/{ name: 'Projets', item: '\\\\/projets' }/g\" src/pages/architecture-paysagere/micro-urbain.astro src/pages/architecture-paysagere/coeur-urbain.astro src/pages/architecture-paysagere/frange-urbaine.astro src/pages/architecture-paysagere/domaine-caractere.astro \"src/pages/architecture-paysagere/[slug].astro\" src/pages/architecture-paysagere/architecture-publique.astro)"
+      "Bash(perl -CSD -i -pe \"s/\\\\{ name: 'Architecture paysagère', item: '\\\\/architecture-paysagere' \\\\}/{ name: 'Projets', item: '\\\\/projets' }/g\" src/pages/architecture-paysagere/micro-urbain.astro src/pages/architecture-paysagere/coeur-urbain.astro src/pages/architecture-paysagere/frange-urbaine.astro src/pages/architecture-paysagere/domaine-caractere.astro \"src/pages/architecture-paysagere/[slug].astro\" src/pages/architecture-paysagere/architecture-publique.astro)",
+      "Bash(grep -rn \"split\\(\\\\|\\\\\\\\\\\\\\\\s\\\\|space\\\\|nbsp\\\\|\\\\\\\\\\\\\\\\u00A0\\\\|wordsClass\\\\|charsClass\\\\|/ /\\\\|' '\" node_modules/split-type/dist/index.js)",
+      "Bash(grep -n \"wordsRegex\\\\|splitWords\\\\|\\\\\\\\\\\\\\\\s+\\\\|/\\\\\\\\\\\\\\\\s/\\\\|whitespace\\\\|reduceWhitespace\\\\|\\\\\\\\\\\\\\\\u00A0\\\\|nbsp\\\\|String.fromCharCode\\\\|/ +/\\\\|split\\(' '\\)\\\\|/\\(\\\\\\\\\\\\\\\\s\\)/\" node_modules/split-type/dist/index.js)",
+      "Bash(python3 -c \"from PIL import Image; im=Image.open\\('v2.jpg'\\); print\\(im.size\\)\")",
+      "Bash(python -c \"from PIL import Image; [print\\(f, Image.open\\(f\\).size\\) for f in ['v0.jpg','v1.jpg','v2.jpg','v3.jpg']]\")"
     ],
     "additionalDirectories": [
       "\\tmp"

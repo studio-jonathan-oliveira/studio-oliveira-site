@@ -27,12 +27,14 @@ import { actions, isInputError } from 'astro:actions';
 import { bindMagnetic } from '@/scripts/magnetic';
 import {
   demarrerSchema,
+  SURFACE_OPTIONS,
   BUDGET_OPTIONS,
   PERIODE_OPTIONS,
   MAX_FILES,
   MAX_FILE_BYTES,
   MAX_TOTAL_BYTES,
   ACCEPTED_MIME,
+  type SurfaceKey,
   type BudgetKey,
   type PeriodeKey,
 } from '@/actions';
@@ -48,7 +50,7 @@ interface FormValues {
   email: string;
   telephone: string;
   localisation: string;
-  surface: string;
+  surface: SurfaceKey | '';
   budget: BudgetKey | '';
   periode: PeriodeKey | '';
 }
@@ -263,7 +265,7 @@ export default function DemarrerForm(): React.JSX.Element {
       email: values.email,
       telephone: values.telephone || undefined,
       localisation: values.localisation,
-      surface: values.surface,
+      surface: values.surface as SurfaceKey,
       budget: values.budget as BudgetKey,
       periode: values.periode as PeriodeKey,
       documents: files,
@@ -434,19 +436,26 @@ export default function DemarrerForm(): React.JSX.Element {
             <label htmlFor="df-surf" className={labelClass}>
               Surface
             </label>
-            <input
+            <select
               id="df-surf"
               name="surface"
-              type="text"
               required
-              placeholder="ex. 350 m²"
               value={values.surface}
-              onChange={(e) => update('surface', e.target.value)}
+              onChange={(e) => update('surface', e.target.value as SurfaceKey)}
               aria-invalid={Boolean(fieldErrors.surface) || undefined}
               aria-describedby={fieldErrors.surface ? 'df-surf-err' : undefined}
-              className={inputClass}
+              className={selectClass}
               disabled={submitting}
-            />
+            >
+              <option value="" disabled style={optionStyle}>
+                Sélectionner une surface…
+              </option>
+              {SURFACE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value} style={optionStyle}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
             {fieldErrors.surface && (
               <p id="df-surf-err" className={errorClass}>
                 {fieldErrors.surface}
@@ -598,16 +607,16 @@ export default function DemarrerForm(): React.JSX.Element {
           </div>
         )}
 
-        {/* ENVOYER ↗ — lien underline centré, cream pur, magnétique. */}
+        {/* ENVOYER AU STUDIO — pill NOIR, texte crème, flèche, magnétique (trame). */}
         <div className="flex justify-center pt-6">
           <button
             ref={sendBtnRef}
             type="submit"
             disabled={submitting}
             style={{ willChange: 'transform' }}
-            className="group inline-flex items-center gap-3 border-b-2 border-[var(--color-ink)] pb-1.5 font-[family-name:var(--font-heading)] text-[17px] font-bold tracking-[0.2em] text-[var(--color-ink)] uppercase transition-opacity hover:opacity-85 disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.18em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
           >
-            <span>{submitting ? 'Envoi en cours…' : 'Envoyer'}</span>
+            <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
             <img
               src="/brand/fleche-white.webp"
               alt=""
