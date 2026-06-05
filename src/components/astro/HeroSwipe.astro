@@ -86,8 +86,8 @@ const slides = [
       (retour Morgan : « un peu plus petit »). ExtraLight 200 UPPERCASE rouge. */
   }
   <p class="hero-slide__wordmark" aria-hidden="true">
-    <span class="hero-slide__wordmark-line">STUDIO</span>
-    <span class="hero-slide__wordmark-line">J. OLIVEIRA</span>
+    <span class="hero-slide__wordmark-line">Studio</span>
+    <span class="hero-slide__wordmark-line">J. Oliveira</span>
   </p>
 
   {/* Dots indicateurs — bas-centre. */}
@@ -231,10 +231,12 @@ const slides = [
   .hero-slide__wordmark-line {
     font-family: var(--font-heading), sans-serif;
     font-weight: 200;
-    font-size: clamp(2.4rem, 6.8vw, 7.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.005em;
-    text-transform: uppercase;
+    /* Plus grand (trame « modif finales » : wordmark quasi pleine largeur) +
+       casse douce « Studio / J. Oliveira » (text-transform retiré). */
+    font-size: clamp(3.2rem, 12vw, 13rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: none;
     display: block;
   }
 

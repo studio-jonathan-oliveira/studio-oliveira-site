@@ -307,10 +307,16 @@ const typologies = [
        (architecture-publique uniquement) au hover de chaque card. */
   }
   {/* Bandeau transition vers les typologies (trame). */}
-  <section data-theme="light" class="typo-transition" aria-hidden="false">
-    <p class="typo-transition__text">
-      Chaque étude appartient à une <strong>typologie de jardin</strong>
-    </p>
+  <section data-theme="light" class="typo-transition">
+    {
+      /* CTA quasi pleine largeur, liseré rectangulaire arrondi (trame). Lien
+         vers le hub des typologies de jardin. */
+    }
+    <a href="/architecture-paysagere" class="typo-transition__cta">
+      <span class="typo-transition__text">
+        Chaque étude appartient à une <strong>typologie de jardin</strong>
+      </span>
+    </a>
   </section>
 
   <section
@@ -642,11 +648,27 @@ const typologies = [
       position: relative;
       z-index: 1;
     }
-    /* Bandeau transition « Chaque étude appartient à une typologie de jardin ». */
+    /* CTA transition « Chaque étude appartient à une typologie de jardin »
+       (trame) : liseré rectangulaire arrondi quasi pleine largeur, cliquable
+       vers le hub typologies. Survol → remplissage ink. */
     .typo-transition {
       background-color: var(--color-cream);
       color: var(--color-ink);
-      padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .typo-transition__cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3rem);
+      border: 1px solid var(--color-ink);
+      border-radius: clamp(18px, 2vw, 28px);
+      text-decoration: none;
+      cursor: none;
+      transition:
+        background-color 0.45s var(--ease-out-editorial),
+        color 0.45s var(--ease-out-editorial);
     }
     .typo-transition__text {
       font-family: var(--font-heading), sans-serif;
@@ -654,12 +676,19 @@ const typologies = [
       font-size: clamp(1.5rem, 3.5vw, 3rem);
       line-height: 1.2;
       letter-spacing: -0.01em;
-      color: var(--color-ink);
+      color: inherit;
       margin: 0;
-      max-width: 28ch;
+      text-align: center;
     }
     .typo-transition__text strong {
       font-weight: 800;
+    }
+    @media (hover: hover) {
+      .typo-transition__cta:hover,
+      .typo-transition__cta:focus-visible {
+        background-color: var(--color-ink);
+        color: var(--color-cream);
+      }
     }
     /* Reduce-motion : désactive le sticky (scroll normal) */
     @media (prefers-reduced-motion: reduce) {
@@ -718,7 +747,8 @@ const typologies = [
       align-items: center;
       padding: clamp(0.9rem, 1.4vw, 1.2rem) clamp(1.6rem, 2.4vw, 2.4rem);
       border: 1px solid var(--color-ink);
-      border-radius: 9999px;
+      /* Rectangle aux bords arrondis (trame) — plus une pill 9999px. */
+      border-radius: clamp(12px, 1.2vw, 16px);
       background-color: transparent;
       color: var(--color-ink);
       font-family: var(--font-heading), sans-serif;
@@ -1615,6 +1645,39 @@ const typologies = [
         height: auto;
         padding-bottom: 1rem;
       }
+    }
+  </style>
+
+  {
+    /* Exception DA home (trame « modif finales » r3_c2) : le footer est NOIR
+       avec tuile logo BEIGE (logo noir dedans) + texte crème. Override
+       page-level du footer global, même pattern que /demarrer-un-projet. */
+  }
+  <style is:global>
+    body.is-home .site-footer {
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+    }
+    body.is-home .site-footer__heading,
+    body.is-home .site-footer__navlink,
+    body.is-home .site-footer__typo-title,
+    body.is-home .site-footer__typo-link--active {
+      color: var(--color-cream);
+    }
+    body.is-home .site-footer__address,
+    body.is-home .site-footer__national,
+    body.is-home .site-footer__typo-link {
+      color: color-mix(in oklab, var(--color-cream) 82%, transparent);
+    }
+    body.is-home .site-footer__legal {
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    }
+    /* Tuile logo BEIGE + wordmark NOIR (trame). */
+    body.is-home .site-footer__logo {
+      background-color: var(--color-cream);
+    }
+    body.is-home .site-footer__logo-mark {
+      background-color: var(--color-ink);
     }
   </style>
 
