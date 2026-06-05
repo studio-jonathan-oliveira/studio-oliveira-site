@@ -83,8 +83,21 @@ const realisations = [
   { titre: 'Jardinet tropical', etab: '', annee: '2021', ville: 'Limoges' },
 ];
 
-// ── Galerie Studio : grille de vignettes (placeholders en attendant photos) ──
+// Conceptions en 2 colonnes QUINCONCE (trame : colonne droite décalée vers
+// le bas). Positions d'overlay variées par carte (trame : le texte change de
+// coin d'une carte à l'autre). On évite « bas-gauche » (réservé à la pill).
+const concPos = ['pos-tl', 'pos-br', 'pos-tc', 'pos-tr', 'pos-cl', 'pos-bc'];
+const concGauche = conceptions.filter((_, i) => i % 2 === 0);
+const concDroite = conceptions.filter((_, i) => i % 2 === 1);
+
+// ── Galerie Studio : masonry 3 colonnes, ratios variés (trame). ──
 const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
+const galCols: number[][] = [[], [], []];
+galerie.forEach((n, i) => {
+  (galCols[i % 3] as number[]).push(n);
+});
+// Ratios cyclés pour évoquer le masonry tant que les vraies photos manquent.
+const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
 ---
 
 <BaseLayout
@@ -109,48 +122,70 @@ const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
 
   {/* ───── 3 accordéons exclusifs ───── */}
   <section data-theme="dark" class="proj-acc" aria-label="Portefeuille du studio">
-    {/* 1 · Études et Conceptions */}
+    {/* 1 · Études et Conceptions — 2 colonnes quinconce, texte crème sur image */}
     <details class="proj-acc__item" name="projets-acc">
       <summary class="proj-acc__summary">
         <span class="proj-acc__title">Etudes et Conceptions</span>
         <span class="proj-acc__icon" aria-hidden="true"></span>
       </summary>
       <div class="proj-acc__panel">
-        <div class="proj-grid">
-          {
-            conceptions.map((c) => (
-              <button
-                class="zoom-card proj-card"
-                data-zoom-src=""
-                data-zoom-alt={`${c.l1} — ${c.l4}`}
-              >
-                <span class="proj-card__ph" aria-hidden="true" />
-                <span class="zoom-card__pill">Agrandir</span>
-                <span class="proj-card__overlay">
-                  <span class="proj-card__l1">{c.l1}</span>
-                  {c.l2 && <span class="proj-card__l">{c.l2}</span>}
-                  <span class="proj-card__l">{c.l3}</span>
-                  <span class="proj-card__l">{c.l4}</span>
-                </span>
-              </button>
-            ))
-          }
+        <div class="proj-masonry proj-masonry--2">
+          <div class="proj-col">
+            {
+              concGauche.map((c, j) => (
+                <button
+                  class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j) % concPos.length]}`}
+                  data-zoom-src=""
+                  data-zoom-alt={`${c.l1} — ${c.l4}`}
+                >
+                  <span class="proj-card__ph" aria-hidden="true" />
+                  <span class="zoom-card__pill">Agrandir</span>
+                  <span class="proj-card__overlay">
+                    <span class="proj-card__l1">{c.l1}</span>
+                    {c.l2 && <span class="proj-card__l">{c.l2}</span>}
+                    <span class="proj-card__l">{c.l3}</span>
+                    <span class="proj-card__l">{c.l4}</span>
+                  </span>
+                </button>
+              ))
+            }
+          </div>
+          <div class="proj-col proj-col--offset">
+            {
+              concDroite.map((c, j) => (
+                <button
+                  class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j + 1) % concPos.length]}`}
+                  data-zoom-src=""
+                  data-zoom-alt={`${c.l1} — ${c.l4}`}
+                >
+                  <span class="proj-card__ph" aria-hidden="true" />
+                  <span class="zoom-card__pill">Agrandir</span>
+                  <span class="proj-card__overlay">
+                    <span class="proj-card__l1">{c.l1}</span>
+                    {c.l2 && <span class="proj-card__l">{c.l2}</span>}
+                    <span class="proj-card__l">{c.l3}</span>
+                    <span class="proj-card__l">{c.l4}</span>
+                  </span>
+                </button>
+              ))
+            }
+          </div>
         </div>
       </div>
     </details>
 
-    {/* 2 · Réalisations */}
+    {/* 2 · Réalisations — 2 colonnes régulières, texte crème haut-gauche */}
     <details class="proj-acc__item" name="projets-acc">
       <summary class="proj-acc__summary">
         <span class="proj-acc__title">Réalisations</span>
         <span class="proj-acc__icon" aria-hidden="true"></span>
       </summary>
       <div class="proj-acc__panel">
-        <div class="proj-grid proj-grid--3">
+        <div class="proj-grid proj-grid--2">
           {
             realisations.map((r) => (
               <button
-                class="zoom-card proj-card"
+                class="zoom-card proj-card proj-card--real"
                 data-zoom-src=""
                 data-zoom-alt={`${r.titre} — ${r.ville}`}
               >
@@ -169,24 +204,29 @@ const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
       </div>
     </details>
 
-    {/* 3 · Galerie Studio */}
+    {/* 3 · Galerie Studio — masonry 3 colonnes, vignettes seules (sans texte) */}
     <details class="proj-acc__item" name="projets-acc">
       <summary class="proj-acc__summary">
         <span class="proj-acc__title">Galerie Studio</span>
         <span class="proj-acc__icon" aria-hidden="true"></span>
       </summary>
       <div class="proj-acc__panel">
-        <div class="proj-grid proj-grid--3">
+        <div class="proj-masonry proj-masonry--3">
           {
-            galerie.map((n) => (
-              <button
-                class="zoom-card proj-card proj-card--gal"
-                data-zoom-src=""
-                data-zoom-alt={`Galerie studio ${n}`}
-              >
-                <span class="proj-card__ph" aria-hidden="true" />
-                <span class="zoom-card__pill">Agrandir</span>
-              </button>
+            galCols.map((col) => (
+              <div class="proj-col">
+                {col.map((n) => (
+                  <button
+                    class="zoom-card proj-card proj-card--gal"
+                    data-zoom-src=""
+                    data-zoom-alt={`Galerie studio ${n}`}
+                    style={`aspect-ratio:${galRatios[(n - 1) % galRatios.length]}`}
+                  >
+                    <span class="proj-card__ph" aria-hidden="true" />
+                    <span class="zoom-card__pill">Agrandir</span>
+                  </button>
+                ))}
+              </div>
             ))
           }
         </div>
@@ -285,40 +325,63 @@ const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
       padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
     }
 
-    /* Grille de cartes projet. */
+    /* Grille régulière (réalisations) — 2 colonnes, cartes paysage. */
     .proj-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
       gap: clamp(1rem, 2.5vw, 2rem);
     }
     @media (min-width: 768px) {
-      .proj-grid--3 {
+      .proj-grid--2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Masonry par colonnes (conceptions 2 col quinconce, galerie 3 col). */
+    .proj-masonry {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1rem, 2.5vw, 2rem);
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .proj-masonry--2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .proj-masonry--3 {
         grid-template-columns: repeat(3, 1fr);
       }
     }
-    .proj-card {
-      aspect-ratio: 4 / 5;
+    .proj-col {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(1rem, 2.5vw, 2rem);
     }
-    .proj-card--gal {
-      aspect-ratio: 3 / 4;
+    /* Quinconce : colonne droite décalée vers le bas (trame conceptions). */
+    @media (min-width: 768px) {
+      .proj-col--offset {
+        margin-top: clamp(3rem, 8vw, 7rem);
+      }
     }
-    /* Placeholder visuel (en attendant les vraies photos Jonathan). Rendu
-       CLAIR et contrasté sur le fond noir → la carte se lit même sans image
-       (avant : rayures sombre-sur-noir = invisible, « on voit rien »). Les
-       vraies photos remplaceront ce bloc (data-zoom-src renseigné). */
+
+    /* Ratios par défaut des cartes (galerie surchargée inline par carte). */
+    .proj-card--conc {
+      aspect-ratio: 3 / 2;
+    }
+    .proj-card--real {
+      aspect-ratio: 16 / 10;
+    }
+
+    /* Placeholder visuel (en attendant les vraies photos Jonathan) : carte
+       charbon nettement plus claire que le fond noir → la carte se lit, et le
+       texte crème reste lisible par-dessus. Remplacé par la vraie photo
+       (.zoom-card__img) quand data-zoom-src est renseigné. */
     .proj-card__ph {
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(
-        135deg,
-        color-mix(in oklab, var(--color-cream) 32%, var(--color-ink)),
-        color-mix(in oklab, var(--color-cream) 32%, var(--color-ink)) 16px,
-        color-mix(in oklab, var(--color-cream) 20%, var(--color-ink)) 16px,
-        color-mix(in oklab, var(--color-cream) 20%, var(--color-ink)) 32px
-      );
+      background-color: color-mix(in oklab, var(--color-cream) 16%, var(--color-ink));
     }
-    /* Mention « visuel à venir » centrée sur le placeholder. */
-    .proj-card__ph::after {
+    .proj-card--gal .proj-card__ph::after {
       content: 'Visuel à venir';
       position: absolute;
       inset: 0;
@@ -328,35 +391,108 @@ const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
       font-family: var(--font-body), sans-serif;
       font-size: clamp(0.7rem, 0.9vw, 0.85rem);
       letter-spacing: 0.04em;
-      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
+      color: color-mix(in oklab, var(--color-cream) 55%, transparent);
     }
-    /* Overlay infos (bloc beige posé sur la carte). */
+
+    /* Overlay texte — crème DIRECTEMENT sur la carte (trame : pas d'encart),
+       text-shadow pour rester lisible sur photo claire. Position variable. */
     .proj-card__overlay {
       position: absolute;
-      top: clamp(0.6rem, 1.2vw, 1rem);
-      left: clamp(0.6rem, 1.2vw, 1rem);
       display: flex;
       flex-direction: column;
-      gap: 0.1rem;
-      padding: 0.6rem 0.85rem;
-      background-color: color-mix(in oklab, var(--color-cream) 92%, transparent);
-      color: var(--color-ink);
-      border-radius: 10px;
-      text-align: left;
-      max-width: 80%;
+      gap: 0.05rem;
+      padding: clamp(0.85rem, 1.5vw, 1.3rem);
+      max-width: 88%;
+      color: var(--color-cream);
+      text-shadow: 0 1px 14px color-mix(in oklab, var(--color-ink) 75%, transparent);
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* Réalisations : texte constant en haut-gauche (trame). */
+    .proj-card--real .proj-card__overlay {
+      top: 0;
+      left: 0;
+    }
+    /* Conceptions : positions variées (trame). */
+    .proj-card.pos-tl .proj-card__overlay {
+      top: 0;
+      left: 0;
+    }
+    .proj-card.pos-tr .proj-card__overlay {
+      top: 0;
+      right: 0;
+      text-align: right;
+      align-items: flex-end;
+    }
+    .proj-card.pos-tc .proj-card__overlay {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      align-items: center;
+    }
+    .proj-card.pos-cl .proj-card__overlay {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+    .proj-card.pos-bc .proj-card__overlay {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      align-items: center;
+    }
+    .proj-card.pos-br .proj-card__overlay {
+      bottom: 0;
+      right: 0;
+      text-align: right;
+      align-items: flex-end;
     }
     .proj-card__l1 {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-      line-height: 1.1;
+      font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+      line-height: 1.15;
     }
     .proj-card__l {
       font-family: var(--font-body), sans-serif;
-      font-weight: 400;
-      font-size: clamp(0.7rem, 0.9vw, 0.85rem);
-      line-height: 1.25;
-      color: color-mix(in oklab, var(--color-ink) 80%, transparent);
+      font-weight: 300;
+      font-size: clamp(0.72rem, 0.95vw, 0.9rem);
+      line-height: 1.3;
+      color: color-mix(in oklab, var(--color-cream) 88%, transparent);
+    }
+
+    /* Pill « Agrandir » (composant global zoom-card) : repositionnée par la
+       trame — bas-gauche sur conceptions/réalisations, centrée sur la galerie.
+       Rayon squircle (pas une pill pleine). Les styles scoped page priment sur
+       le global grâce à l'attribut de scope Astro. */
+    .proj-card .zoom-card__pill {
+      top: auto;
+      right: auto;
+      bottom: clamp(0.7rem, 1.4vw, 1.1rem);
+      left: clamp(0.7rem, 1.4vw, 1.1rem);
+      border-radius: 14px;
+      transform: translateY(6px);
+    }
+    @media (hover: hover) {
+      .proj-card:hover .zoom-card__pill,
+      .proj-card:focus-visible .zoom-card__pill {
+        transform: translateY(0);
+      }
+    }
+    .proj-card--gal .zoom-card__pill {
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, calc(-50% + 6px));
+    }
+    @media (hover: hover) {
+      .proj-card--gal:hover .zoom-card__pill,
+      .proj-card--gal:focus-visible .zoom-card__pill {
+        transform: translate(-50%, -50%);
+      }
     }
   </style>
 </BaseLayout>
