@@ -147,18 +147,18 @@ const { darkHero = false } = Astro.props;
     transition: background-color 0.35s var(--ease-out-editorial);
   }
 
-  /* Topbar par-dessus le hero sombre de la home (scroll-up dans la zone hero) :
-     le logo + MENU passeraient en ink (noir) sur la photo sombre → invisibles.
-     On les force en crème tant que la topbar surplombe le hero (toggle JS
-     `is-over-hero`). Morgan 2026-06-05. */
-  .site-header.is-over-hero {
-    color: var(--color-cream);
-  }
-  .site-header.is-over-hero .site-logo {
+  /* Logo + MENU ADAPTATIFS (Morgan 2026-06-05) : crème quand ils surplombent
+     une zone sombre OU une image, ink sinon. Détecté par élément (le logo et le
+     MENU peuvent surplomber des zones différentes), toggles JS is-logo-light /
+     is-menu-light via elementsFromPoint. */
+  .site-header.is-logo-light .site-logo {
     background-color: var(--color-cream);
   }
-  .site-header.is-over-hero .menu-trigger {
+  .site-header.is-menu-light .menu-trigger {
     color: var(--color-cream);
+  }
+  .menu-trigger {
+    transition: color 0.35s var(--ease-out-editorial);
   }
 
   /* Burger ↔ X — animation préservée (designbyad). */
@@ -266,16 +266,52 @@ const { darkHero = false } = Astro.props;
     headerWired = true;
     lastScrollY = window.scrollY;
 
+    // Détecte si la zone DERRIÈRE un point (x,y) est sombre/image → texte crème.
+    // On masque temporairement le header (pointer-events) pour que
+    // elementsFromPoint retourne ce qu'il y a DESSOUS.
+    const needsLight = (x: number, y: number): boolean => {
+      const prev = header.style.pointerEvents;
+      header.style.pointerEvents = 'none';
+      const els = document.elementsFromPoint(x, y);
+      header.style.pointerEvents = prev;
+      for (const el of els) {
+        if (!(el instanceof HTMLElement)) continue;
+        if (header.contains(el)) continue;
+        const tag = el.tagName;
+        if (tag === 'IMG' || tag === 'PICTURE' || tag === 'VIDEO' || tag === 'CANVAS') return true;
+        const sec = el.closest<HTMLElement>('[data-theme]');
+        if (sec && !sec.classList.contains('site-header')) {
+          const t = sec.dataset.theme;
+          return t === 'dark' || t === 'red';
+        }
+      }
+      return false;
+    };
+
+    const updateContrast = () => {
+      const logo = header.querySelector<HTMLElement>('[data-header-logo]');
+      const trigger = header.querySelector<HTMLElement>('[data-menu-trigger]');
+      if (logo) {
+        const r = logo.getBoundingClientRect();
+        header.classList.toggle(
+          'is-logo-light',
+          needsLight(r.left + r.width / 2, r.top + r.height / 2),
+        );
+      }
+      if (trigger) {
+        const r = trigger.getBoundingClientRect();
+        header.classList.toggle(
+          'is-menu-light',
+          needsLight(r.left + r.width / 2, r.top + r.height / 2),
+        );
+      }
+    };
+
     const onScroll = () => {
       const y = window.scrollY;
       const delta = y - lastScrollY;
       header.classList.toggle('is-scrolled', y > TOP_THRESHOLD_PX);
-
-      // Home : la topbar surplombe le hero sticky (100vh) tant qu'on n'a pas
-      // scrollé au-delà ; on bascule logo + MENU en crème dans cette zone.
-      if (isDarkHero) {
-        header.classList.toggle('is-over-hero', y < window.innerHeight - header.offsetHeight);
-      }
+      updateContrast();
 
       if (Math.abs(delta) < HIDE_DELTA_PX) return;
 

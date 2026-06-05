@@ -691,7 +691,9 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem);
+  /* Règle accordéon globale (Morgan 2026-06-05) : écart titre→liseret
+     (padding-bottom) = écart liseret→texte (panel padding-top). */
+  padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2rem);
   transition: background-color 0.3s ease;
 }
 .faq-acc__summary:focus-visible {
@@ -699,7 +701,8 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   outline-offset: -1px;
 }
 /* Titre — Inter ExtraLight 200 oversized (clone strict du
-   `.studio-architectures__title`). Title Case Jonathan respecté. */
+   `.studio-architectures__title`). Title Case Jonathan respecté.
+   Règle accordéon globale : passe en GRAS à l'ouverture. */
 .faq-acc__question {
   font-family: var(--font-heading), sans-serif;
   font-weight: 200;
@@ -707,6 +710,10 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
   line-height: 1.15;
   letter-spacing: -0.005em;
   color: var(--color-cream);
+  transition: font-weight 0.3s var(--ease-out-editorial);
+}
+.faq-acc__summary[aria-expanded='true'] .faq-acc__question {
+  font-weight: 700;
 }
 /* Icône `+` qui rotate 45° (clone strict `.studio-architectures__icon`).
    Remplace l'ancienne flèche Jonathan image webp pour aligner sitewide
@@ -737,7 +744,7 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
    Padding horizontal aligné sur `.faq-acc__summary`, conteneur paragraphe
    ExtraLight 200, ligne lisible. */
 .faq-acc__panel {
-  padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
   display: flex;
   flex-direction: column;
   gap: clamp(0.9rem, 1.5vw, 1.25rem);
