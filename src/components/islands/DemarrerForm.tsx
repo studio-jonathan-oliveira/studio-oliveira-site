@@ -74,8 +74,9 @@ const INITIAL: FormValues = {
 
 const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
+// Casse normale (1re lettre maj) — plus d'uppercase (Morgan 2026-06-05).
 const labelClass =
-  'block font-[family-name:var(--font-heading)] text-[14px] md:text-[15px] font-bold tracking-[0.14em] uppercase text-[var(--color-ink)]';
+  'block font-[family-name:var(--font-heading)] text-[15px] md:text-[16px] font-bold tracking-[0.01em] text-[var(--color-ink)]';
 
 // Inputs : underline cream uniquement, fond transparent (le bloc rouge porte
 // le fond). Forçage Bold strict (grammaire 200/700) ET pour éviter la
@@ -94,19 +95,23 @@ const selectClass = inputClass + ' appearance-none cursor-pointer';
 // Message d'erreur en pastille INK (fond noir) avec texte cream : contraste
 // largement ≥ 7:1 (AAA). Évite cream/ink direct sur rouge plein.
 const errorClass =
-  'mt-2 inline-block bg-[var(--color-ink)] px-2.5 py-1 font-[family-name:var(--font-heading)] text-[11px] font-bold tracking-[0.12em] uppercase text-[var(--color-cream)]';
+  'mt-2 inline-block bg-[var(--color-ink)] px-2.5 py-1 font-[family-name:var(--font-heading)] text-[12px] font-bold tracking-[0.01em] text-[var(--color-cream)]';
 
 // Style des <option> du dropdown : le navigateur les rend selon ses propres
 // styles, pas l'inline `bg-transparent text-cream` du `<select>`. Sans forcer
 // fond/couleur, les options apparaissent illisibles (cream sur cream).
 // Inter Bold (retour Jonathan 2026-05-22 : "écritures en inter gras, fond
 // blanc ou noir à voir" — choix cream pour rester lisible sur le rouge).
+// Options : texte MAUVE sur fond NOIR + liseret entre choix (Morgan 2026-06-05).
+// NB : le liseret <option> n'est rendu que par certains navigateurs (Firefox) —
+// best-effort, le natif <select> ne permet pas un séparateur garanti.
 const optionStyle: React.CSSProperties = {
-  backgroundColor: 'var(--color-cream)',
-  color: 'var(--color-ink)',
+  backgroundColor: 'var(--color-ink)',
+  color: 'var(--color-violet)',
   fontFamily: 'var(--font-heading), sans-serif',
   fontWeight: 700,
   padding: '0.5rem 0.75rem',
+  borderBottom: '1px solid color-mix(in oklab, var(--color-violet) 45%, transparent)',
 };
 
 function bytesHuman(n: number): string {
@@ -615,7 +620,7 @@ export default function DemarrerForm(): React.JSX.Element {
             type="submit"
             disabled={submitting}
             style={{ willChange: 'transform' }}
-            className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.18em] text-[var(--color-cream)] uppercase transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
+            className="group rounded-cta inline-flex items-center gap-3 bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-cream)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
           </button>

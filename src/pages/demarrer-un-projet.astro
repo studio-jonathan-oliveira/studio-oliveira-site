@@ -111,5 +111,15 @@ const schema = jsonLdGraph([
     body.is-demarrer .site-header__cta {
       background-color: var(--color-violet);
     }
+    /* Curseur (Morgan 2026-06-05) : NOIR sur le mauve (défaut light), MAUVE sur
+       les images/zones sombres — JAMAIS de beige sur cette page. */
+    body.is-demarrer #cursor.is-on-dark {
+      --cursor-fill: var(--color-violet);
+      --cursor-text: var(--color-ink);
+    }
+    /* Logo topbar : noir sur le mauve (annule l'adaptatif sur le hero violet). */
+    body.is-demarrer .site-header:not(.is-logo-light) .site-logo {
+      background-color: var(--color-ink);
+    }
   </style>
 </BaseLayout>
