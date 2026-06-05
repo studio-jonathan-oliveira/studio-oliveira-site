@@ -2,18 +2,11 @@
 /*
  * <DemarrerHero> — hero de /demarrer-un-projet.
  *
- * DA finale 2026-06-04 (trame « demarrer un projet ») : fond VIOLET #e0afff,
- * H1 oversized NOIR « Démarrer votre projet » (typographique, bas-gauche,
- * sans photo). Bloc intro 2 paragraphes juste dessous, violet/noir.
+ * DA finale 2026-06-04 (trame « demarrer un projet ») : carte VIOLET #e0afff,
+ * H1 oversized NOIR « Démarrer votre projet » (typographique, haut-gauche),
+ * puis sous-titre « Comment ça marche ? » plus bas (introduit la section
+ * étapes). Pas de photo, pas de paragraphes d'intro (absents de la trame).
  */
-interface Props {
-  intro: {
-    accroche: string;
-    invite: string;
-  };
-}
-
-const { intro } = Astro.props;
 ---
 
 <section
@@ -23,32 +16,32 @@ const { intro } = Astro.props;
   class="dem-hero"
   aria-labelledby="dem-hero-title"
 >
-  <h1 id="dem-hero-title" class="dem-hero__title">
-    <span class="dem-hero__title-line">Démarrer</span>
-    <span class="dem-hero__title-line">votre projet</span>
-  </h1>
-</section>
-
-<section data-theme="light" class="dem-hero-intro" aria-label="Introduction parcours">
-  <div class="dem-hero-intro__inner" data-reveal-stagger="0.18">
-    <p class="dem-hero-intro__accroche" data-reveal="up">{intro.accroche}</p>
-    <p class="dem-hero-intro__invite" data-reveal="up">{intro.invite}</p>
+  <div class="dem-hero__inner">
+    <h1 id="dem-hero-title" class="dem-hero__title">
+      <span class="dem-hero__title-line">Démarrer</span>
+      <span class="dem-hero__title-line">votre projet</span>
+    </h1>
+    <p class="dem-hero__subtitle">Comment ça marche ?</p>
   </div>
 </section>
 
 <style>
-  /* Hero violet, H1 noir typographique bas-gauche (trame). */
+  /* Hero violet, H1 noir typographique + sous-titre « Comment ça marche ? ». */
   .dem-hero {
     position: relative;
     width: 100%;
     min-height: 100svh;
     background-color: var(--color-violet);
     color: var(--color-ink);
-    display: flex;
-    align-items: flex-end;
     box-sizing: border-box;
-    padding: clamp(2rem, 6vh, 5rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 8vh, 6rem);
+    padding: clamp(7rem, 16vh, 12rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 8vh, 6rem);
     overflow: hidden;
+  }
+  .dem-hero__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: calc(100svh - clamp(10rem, 24vh, 18rem));
   }
   .dem-hero__title {
     margin: 0;
@@ -65,38 +58,14 @@ const { intro } = Astro.props;
     letter-spacing: -0.02em;
     text-transform: none;
   }
-
-  /* Bloc intro — fond violet, texte noir. */
-  .dem-hero-intro {
-    background-color: var(--color-violet);
-    color: var(--color-ink);
-    padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 9vw, 8rem);
-  }
-  .dem-hero-intro__inner {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.25rem, 2vw, 2rem);
-    text-align: left;
-  }
-  .dem-hero-intro__accroche {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 700;
-    font-size: clamp(1.1rem, 1.8vw, 1.9rem);
-    line-height: 1.4;
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--color-ink);
-    margin: 0;
-  }
-  .dem-hero-intro__invite {
+  /* Sous-titre « Comment ça marche ? » — plus petit, poussé vers le bas. */
+  .dem-hero__subtitle {
+    margin: clamp(3rem, 10vh, 9rem) 0 0;
     font-family: var(--font-heading), sans-serif;
     font-weight: 300;
-    font-size: clamp(1rem, 1.5vw, 1.5rem);
-    line-height: 1.55;
-    letter-spacing: 0;
-    text-transform: none;
-    color: color-mix(in oklab, var(--color-ink) 82%, transparent);
-    margin: 0;
+    font-size: clamp(1.25rem, 2.6vw, 2.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
   }
 </style>

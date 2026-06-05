@@ -13,10 +13,11 @@
  * ils restent accessibles via le menu principal.
  */
 const currentPath = Astro.url.pathname;
-// Footer NOIR (data-theme="dark") sur la home ET /studio (trame). Le style
-// sombre est porté par .site-footer[data-theme='dark'] ci-dessous, et le
-// data-theme fait aussi basculer le curseur custom en crème au survol.
-const footerTheme = currentPath === '/' || currentPath === '/studio' ? 'dark' : 'light';
+// Footer NOIR (data-theme="dark") sur la home, /studio ET /demarrer-un-projet
+// (trame). Le style sombre est porté par .site-footer[data-theme='dark'] plus
+// bas, et le data-theme fait aussi basculer le curseur custom en crème au survol.
+const darkFooterPaths = ['/', '/studio', '/demarrer-un-projet'];
+const footerTheme = darkFooterPaths.includes(currentPath) ? 'dark' : 'light';
 
 const nav = [
   { href: '/', label: 'Home' },
