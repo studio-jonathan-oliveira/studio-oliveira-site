@@ -57,40 +57,10 @@ const typologies = [
   },
 ];
 
-// Section STATS (trame home « modif finales » — verbatim trame).
-// Cartes Études + ans = cliquables (hover → carte NOIRE, curseur allongé
-// « DÉCOUVRIR… » + bloc aimanté au curseur). +3 régions = carte statique.
-interface StatCard {
-  valeur: string;
-  label: string;
-  sous: string;
-  href?: string;
-  cta?: string;
-  cursor?: string;
-}
-const stats: StatCard[] = [
-  {
-    valeur: '+10',
-    label: 'Etudes',
-    sous: 'réalisées par le studio depuis sa création',
-    href: '/projets',
-    cta: 'Découvrir les projets',
-    cursor: 'PROJETS',
-  },
-  {
-    valeur: '+10',
-    label: 'ans',
-    sous: "D'expérience dans le domaine de l'architecture paysagère",
-    href: '/studio',
-    cta: 'Découvrir le parcours',
-    cursor: 'PARCOURS',
-  },
-  {
-    valeur: '+3',
-    label: 'régions',
-    sous: "Régions d'intervention du studio sur toute la France depuis sa création",
-  },
-];
+// Section STATS — bento écrit en dur dans le markup (trame « modif finales »
+// 2026-06-04, re-analyse pixel) : carte Études NOIRE pleine hauteur à gauche,
+// colonne droite +10 ans (NOIRE) / +3 régions (texte nu). Cartes Études + ans
+// cliquables (survol → inversion beige + pill + curseur allongé + magnétique).
 
 // Méthode — sourcée PDF PROCESS page parcours commercial
 // Méthode 3 étapes migrée vers /demarrer-un-projet (refonte 2026-04-28).
@@ -201,13 +171,16 @@ const stats: StatCard[] = [
     }
     <div
       class="identite-words px-6 py-32 md:px-10 md:py-44"
-      data-words-fade
-      data-words-fade-stagger="0.012"
-      data-words-fade-window="0,0.55"
+      data-justify-multi
+      data-justify-amp="55"
+      data-justify-line-step="0.12"
+      data-justify-line-window="0.5"
     >
-      <p class="identite-line">Architecture Design Contexte</p>
-      <p class="identite-line">Expérientiel Signature</p>
-      <p class="identite-line">Art de vivre Vivant Immersif</p>
+      <p class="identite-line" data-justify-line>Architecture Design Contexte</p>
+      <p class="identite-line" data-justify-line data-justify-direction="from-right">
+        Expérientiel Signature
+      </p>
+      <p class="identite-line" data-justify-line>Art de vivre Vivant Immersif</p>
     </div>
   </section>
 
@@ -274,35 +247,54 @@ const stats: StatCard[] = [
     class="stats-band full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
     aria-label="Le studio en chiffres"
   >
+    {
+      /* Bento exact trame (col2 = repos) : grande carte Études NOIRE à gauche
+         (~64%, pleine hauteur), colonne droite empilée +10 ans (carte NOIRE) /
+         +3 régions (texte nu sur beige, statique). Au SURVOL (col1) les cartes
+         cliquables s'INVERSENT (beige + contour), le chiffre passe en gras, le
+         sous-texte d'Études change (« Conçues » → « réalisées »), la pill
+         apparaît + le curseur s'allonge (data-cursor-pill) + bloc aimanté. */
+    }
     <div class="stats-band__inner">
-      <div class="stats-grid">
-        {
-          stats.map((s) =>
-            s.href ? (
-              <a
-                href={s.href}
-                class="stats-card stats-card--link"
-                data-cursor-label={s.cursor}
-                data-magnetic="0.15"
-              >
-                <span class="stats-card__value">
-                  {s.valeur}
-                  <span class="stats-card__label">{s.label}</span>
-                </span>
-                <span class="stats-card__sous">{s.sous}</span>
-                <span class="stats-card__pill">{s.cta}</span>
-              </a>
-            ) : (
-              <div class="stats-card">
-                <span class="stats-card__value">
-                  {s.valeur}
-                  <span class="stats-card__label">{s.label}</span>
-                </span>
-                <span class="stats-card__sous">{s.sous}</span>
-              </div>
-            ),
-          )
-        }
+      <div class="stats-bento">
+        <a
+          href="/projets"
+          class="stat-card stat-card--etudes stat-card--link"
+          data-cursor-pill="Découvrir les projets"
+          data-magnetic="0.12"
+          aria-label="Découvrir les projets du studio"
+        >
+          <span class="stat-card__value">+10</span>
+          <span class="stat-card__body">
+            <span class="stat-card__label">Etudes</span>
+            <span class="stat-card__sous">
+              <span class="stat-card__sous-repos">Conçues par le studio depuis sa création</span>
+              <span class="stat-card__sous-hover">réalisées par le studio depuis sa création</span>
+            </span>
+          </span>
+          <span class="stat-card__pill" aria-hidden="true">Découvrir les projets</span>
+        </a>
+
+        <a
+          href="/studio"
+          class="stat-card stat-card--ans stat-card--link"
+          data-cursor-pill="Découvrir le parcours"
+          data-magnetic="0.12"
+          aria-label="Découvrir le parcours du studio"
+        >
+          <span class="stat-card__value">+10<span class="stat-card__unit">ans</span></span>
+          <span class="stat-card__sous"
+            >D'expérience dans le domaine de l'architecture paysagère</span
+          >
+          <span class="stat-card__pill" aria-hidden="true">Découvrir le parcours</span>
+        </a>
+
+        <div class="stat-card stat-card--regions">
+          <span class="stat-card__value">+3</span>
+          <span class="stat-card__sous">
+            Régions d'intervention du studio sur toute la France depuis sa création
+          </span>
+        </div>
       </div>
     </div>
   </section>
@@ -688,9 +680,19 @@ const stats: StatCard[] = [
       line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: none;
+      /* justify designbyad (trame 2026-06-04) : chaque ligne en justify CSS
+         natif, setupJustifyMulti calage les mots au scroll (motion-enhance.ts). */
+      text-align: justify;
       color: var(--color-ink);
       margin: 0;
       hyphens: none;
+    }
+    /* Sur très petit écran, le justify d'une ligne de 2-3 mots crée des trous
+       énormes — on désactive (le JS ne tourne pas non plus en REDUCE_MOBILE). */
+    @media (max-width: 640px) {
+      .identite-line {
+        text-align: left;
+      }
     }
     .identite-line + .identite-line {
       margin-top: clamp(0.4rem, 1vw, 1rem);
@@ -763,7 +765,6 @@ const stats: StatCard[] = [
     /* Apparition mot par mot en cascade au scroll (data-words-fade) — même
        mécanique que le dépliage des accordéons (trame « apparition wavy/vague
        du texte »). setupWordsFade (motion-enhance.ts) révèle chaque .word. */
-    .identite-words .word,
     .studio-presentation-text .word {
       display: inline-block;
       opacity: 0;
@@ -786,105 +787,203 @@ const stats: StatCard[] = [
       margin: 0;
     }
 
-    /* Section STATS (DA finale 2026-06-04) — 3 chiffres-clés beige/noir,
-       cliquables vers /projets, curseur « Découvrir ». */
+    /* Section STATS — refonte bento DA finale (trame home « modif finales »
+       2026-06-04, re-analyse pixel multi-agents). Layout exact col2 (repos) :
+       grande carte Études NOIRE à gauche (~64 %, pleine hauteur) + colonne
+       droite empilée +10 ans (carte NOIRE) / +3 régions (texte nu sur beige).
+       Au SURVOL (col1) : inversion beige + contour, chiffre en gras, swap de
+       sous-texte Études, pill + curseur allongé + magnétique. */
     .stats-band__inner {
       display: flex;
       flex-direction: column;
       gap: clamp(2rem, 4vw, 3.5rem);
       padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 5vw, 4rem);
     }
-    .stats-grid {
+    .stats-bento {
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(1.25rem, 2.5vw, 2rem);
+      gap: clamp(0.9rem, 1.6vw, 1.25rem);
     }
-    @media (min-width: 768px) {
-      .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        align-items: stretch;
+    @media (min-width: 900px) {
+      .stats-bento {
+        grid-template-columns: 1.85fr 1fr;
+        grid-auto-rows: 1fr;
+      }
+      .stat-card--etudes {
+        grid-row: 1 / span 2;
       }
     }
-    .stats-card {
+
+    .stat-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(0.9rem, 2.2vw, 2.4rem);
+      padding: clamp(1.6rem, 2.6vw, 2.6rem);
+      border: 1px solid transparent;
+      border-radius: clamp(18px, 2.2vw, 30px);
+      overflow: hidden;
+    }
+    /* Cartes pleines NOIRES au repos (trame col2). */
+    .stat-card--etudes,
+    .stat-card--ans {
+      background-color: var(--color-ink);
+      color: var(--color-cream);
+    }
+    .stat-card--etudes {
+      min-height: clamp(210px, 26vw, 340px);
+    }
+    /* +3 régions : texte nu sur le beige de section (pas de carte). */
+    .stat-card--regions {
+      background-color: transparent;
+      color: var(--color-ink);
+      padding-left: clamp(0.5rem, 1vw, 1rem);
+    }
+
+    /* Chiffre géant — FIN au repos (weight 300), passe en gras au survol des
+       cartes cliquables (trame : +10 crème fin → +10 noir gras). */
+    .stat-card__value {
+      display: inline-flex;
+      align-items: flex-start;
+      flex-shrink: 0;
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 300;
+      line-height: 0.82;
+      letter-spacing: -0.03em;
+      color: inherit;
+    }
+    .stat-card--etudes .stat-card__value {
+      font-size: clamp(4.2rem, 10vw, 9.5rem);
+    }
+    .stat-card--ans .stat-card__value,
+    .stat-card--regions .stat-card__value {
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+    }
+    /* « ans » petit, collé en bas-droite du 10. */
+    .stat-card__unit {
+      font-size: 0.26em;
+      font-weight: 400;
+      letter-spacing: 0;
+      align-self: flex-end;
+      margin-left: 0.12em;
+      margin-bottom: 0.55em;
+    }
+
+    .stat-card__body {
       display: flex;
       flex-direction: column;
-      gap: clamp(0.75rem, 1.5vw, 1.25rem);
-      padding: clamp(1.75rem, 3vw, 2.75rem);
-      border: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
-      border-radius: clamp(16px, 2vw, 28px);
+      gap: clamp(0.35rem, 0.8vw, 0.7rem);
+      min-width: 0;
     }
-    .stats-card__value {
-      display: flex;
-      align-items: baseline;
-      gap: 0.4rem;
+    .stat-card__label {
       font-family: var(--font-heading), sans-serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      color: var(--color-ink);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+      line-height: 1;
+      color: inherit;
     }
-    .stats-card__label {
-      font-weight: 700;
-      font-size: clamp(1.1rem, 1.8vw, 1.8rem);
-    }
-    .stats-card__sous {
+    .stat-card__sous {
       font-family: var(--font-body), sans-serif;
-      font-weight: 400;
-      font-size: clamp(0.9rem, 1.1vw, 1.05rem);
-      line-height: 1.4;
-      color: color-mix(in oklab, var(--color-ink) 78%, transparent);
+      font-weight: 300;
+      font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+      line-height: 1.35;
+      color: inherit;
+      max-width: 34ch;
     }
-    /* Cartes cliquables (Études / ans) : lien + bloc magnétique (data-magnetic),
-       curseur custom allongé « DÉCOUVRIR… » (data-cursor-label), et BASCULE EN
-       NOIR au survol (trame : « AU SURVOL LE CURSEUR S'ALLONGE… / carte noire »). */
-    .stats-card--link {
-      text-decoration: none;
-      cursor: none;
-      will-change: transform;
-      transition:
-        background-color 0.4s var(--ease-out-editorial),
-        color 0.4s var(--ease-out-editorial),
-        border-color 0.4s var(--ease-out-editorial),
-        transform 0.35s var(--ease-out-editorial);
+    .stat-card--ans .stat-card__sous,
+    .stat-card--regions .stat-card__sous {
+      opacity: 0.82;
     }
-    @media (hover: hover) {
-      .stats-card--link:hover,
-      .stats-card--link:focus-visible {
-        background-color: var(--color-ink);
-        border-color: var(--color-ink);
-        color: var(--color-cream);
-      }
-      .stats-card--link:hover .stats-card__value,
-      .stats-card--link:focus-visible .stats-card__value {
-        color: var(--color-cream);
-      }
-      .stats-card--link:hover .stats-card__sous,
-      .stats-card--link:focus-visible .stats-card__sous {
-        color: color-mix(in oklab, var(--color-cream) 82%, transparent);
-      }
-      .stats-card--link:hover .stats-card__pill,
-      .stats-card--link:focus-visible .stats-card__pill {
-        background-color: var(--color-cream);
-        color: var(--color-ink);
-      }
+    /* Swap de sous-texte Études (« Conçues » repos → « réalisées » survol),
+       superposés dans la même cellule grille pour éviter tout décalage. */
+    .stat-card--etudes .stat-card__sous {
+      display: grid;
     }
-    /* Pill interne « Découvrir les projets / le parcours ». */
-    .stats-card__pill {
-      align-self: flex-start;
-      margin-top: auto;
+    .stat-card__sous-repos,
+    .stat-card__sous-hover {
+      grid-area: 1 / 1;
+      transition: opacity 0.3s ease;
+    }
+    .stat-card__sous-repos {
+      opacity: 0.85;
+    }
+    .stat-card__sous-hover {
+      opacity: 0;
+    }
+
+    /* Pill CTA — masquée au repos, révélée au survol (trame). */
+    .stat-card__pill {
+      position: absolute;
       display: inline-flex;
       align-items: center;
-      padding: 0.7rem 1.3rem;
+      padding: 0.65rem 1.25rem;
       background-color: var(--color-ink);
       color: var(--color-cream);
       border-radius: 9999px;
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(0.85rem, 1vw, 0.95rem);
+      font-size: clamp(0.8rem, 1vw, 0.95rem);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
       transition:
-        background-color 0.4s var(--ease-out-editorial),
-        color 0.4s var(--ease-out-editorial);
+        opacity 0.3s ease,
+        transform 0.4s var(--ease-out-editorial);
+    }
+    .stat-card--etudes .stat-card__pill {
+      top: 50%;
+      right: clamp(1.6rem, 2.6vw, 2.6rem);
+      transform: translateY(-50%) scale(0.9);
+    }
+    .stat-card--ans .stat-card__pill {
+      right: clamp(1.4rem, 2vw, 2rem);
+      bottom: clamp(1.2rem, 2vw, 1.8rem);
+      transform: scale(0.9);
+    }
+
+    /* Carte cliquable : lien + magnétique + curseur allongé (data-cursor-pill).
+       Au survol : INVERSION noir → beige + contour ink (trame col1). */
+    .stat-card--link {
+      text-decoration: none;
+      cursor: none;
+      will-change: transform;
+      transition:
+        background-color 0.45s var(--ease-out-editorial),
+        color 0.45s var(--ease-out-editorial),
+        border-color 0.45s var(--ease-out-editorial),
+        transform 0.35s var(--ease-out-editorial);
+    }
+    @media (hover: hover) {
+      .stat-card--link:hover,
+      .stat-card--link:focus-visible {
+        background-color: var(--color-cream);
+        border-color: var(--color-ink);
+        color: var(--color-ink);
+      }
+      .stat-card--link:hover .stat-card__value,
+      .stat-card--link:focus-visible .stat-card__value {
+        font-weight: 800;
+      }
+      .stat-card--etudes.stat-card--link:hover .stat-card__sous-repos,
+      .stat-card--etudes.stat-card--link:focus-visible .stat-card__sous-repos {
+        opacity: 0;
+      }
+      .stat-card--etudes.stat-card--link:hover .stat-card__sous-hover,
+      .stat-card--etudes.stat-card--link:focus-visible .stat-card__sous-hover {
+        opacity: 0.85;
+      }
+      .stat-card--link:hover .stat-card__pill,
+      .stat-card--link:focus-visible .stat-card__pill {
+        opacity: 1;
+      }
+      .stat-card--etudes.stat-card--link:hover .stat-card__pill,
+      .stat-card--etudes.stat-card--link:focus-visible .stat-card__pill {
+        transform: translateY(-50%) scale(1);
+      }
+      .stat-card--ans.stat-card--link:hover .stat-card__pill,
+      .stat-card--ans.stat-card--link:focus-visible .stat-card__pill {
+        transform: scale(1);
+      }
     }
 
     /* Manifeste — refonte 2026-05-02 v2 (Morgan) : alignement gauche +

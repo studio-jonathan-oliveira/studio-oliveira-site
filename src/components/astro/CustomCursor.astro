@@ -12,6 +12,10 @@
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring">
     <span class="cursor-label" id="cursor-label"></span>
+    <!-- Curseur ALLONGÉ (trame home 2026-06-04 : « le curseur s'allonge et
+         fait apparaître DECOUVRIR LES PROJETS »). Pill auto-largeur centrée
+         sur l'origine du ring. Activée via data-cursor-pill="…". -->
+    <span class="cursor-pill" id="cursor-pill"></span>
     <!-- Tooltip flottant haut-droite du ring (refonte 2026-04-30 Jonathan).
          Utilisation : <a data-cursor-tooltip="LIGNE1 / LIGNE2 / LIGNE3"> -
          le séparateur " / " produit des sauts de ligne. Suit le ring (lerp).
@@ -178,6 +182,47 @@
     }
     .custom-cursor.is-labeled .cursor-label {
       opacity: 1;
+    }
+
+    /* Curseur ALLONGÉ — pill auto-largeur qui apparaît au survol des cartes
+       stats (trame home : « le curseur s'allonge et fait apparaître
+       DECOUVRIR LES PROJETS »). Centrée sur l'origine du ring, suit le lerp.
+       Couleur via --cursor-fill / --cursor-text (inversion par section). */
+    .cursor-pill {
+      position: absolute;
+      /* centre du ring (24px → centre 12,12) = position souris. */
+      top: 12px;
+      left: 12px;
+      transform: translate(-50%, -50%) scale(0.8);
+      transform-origin: center;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      padding: 0.6em 1.05em;
+      border-radius: 9999px;
+      background-color: var(--cursor-fill);
+      color: var(--cursor-text);
+      font-family: var(--font-heading), sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.25s ease,
+        transform 0.4s var(--ease-out-editorial);
+    }
+    .custom-cursor.is-pill .cursor-pill {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    /* En mode pill, le ring (carré) et le dot s'effacent — la pill prend toute
+       la place visuelle. */
+    .custom-cursor.is-pill .cursor-ring {
+      background-color: transparent;
+    }
+    .custom-cursor.is-pill .cursor-dot {
+      opacity: 0;
     }
 
     /* Tooltip flottant — ajouté 2026-04-30 (Jonathan, typologies).
@@ -362,12 +407,14 @@
     // dans le ring agrandi. Fallback : 'LIRE' sur gallery-item, 'VOIR' sur les
     // liens vers /projets /realisations /conceptions, flèche '→' sinon.
     const labelEl = document.getElementById('cursor-label');
+    const pillEl = document.getElementById('cursor-pill');
     const tooltipEl = document.getElementById('cursor-tooltip');
     const tooltipTextEl = document.getElementById('cursor-tooltip-text');
     document.addEventListener(
       'pointerover',
       (e) => {
         const target = e.target as HTMLElement | null;
+        const pillAncestor = target?.closest?.('[data-cursor-pill]') as HTMLElement | null;
         const labeledAncestor = target?.closest?.('[data-cursor-label]') as HTMLElement | null;
         const tooltipAncestor = target?.closest?.('[data-cursor-tooltip]') as HTMLElement | null;
         const interactive = target?.closest?.(hoverSelectors);
@@ -385,7 +432,12 @@
           tooltipTextEl.textContent = raw.split(' / ').join('\n');
           cursor.classList.add('is-tooltipped');
         }
-        if (labeledAncestor && labelEl) {
+        if (pillAncestor && pillEl) {
+          // Curseur allongé (cartes stats) — prioritaire sur is-labeled / is-hover.
+          pillEl.textContent = pillAncestor.dataset.cursorPill || '';
+          cursor.classList.add('is-pill');
+          cursor.classList.remove('is-hover', 'is-labeled');
+        } else if (labeledAncestor && labelEl) {
           labelEl.textContent = labeledAncestor.dataset.cursorLabel || '→';
           cursor.classList.add('is-labeled');
           cursor.classList.remove('is-hover');
@@ -399,9 +451,11 @@
       'pointerout',
       (e) => {
         const target = e.target as HTMLElement | null;
+        const pillAncestor = target?.closest?.('[data-cursor-pill]');
         const labeledAncestor = target?.closest?.('[data-cursor-label]');
         const tooltipAncestor = target?.closest?.('[data-cursor-tooltip]');
         const interactive = target?.closest?.(hoverSelectors);
+        if (pillAncestor) cursor.classList.remove('is-pill');
         if (labeledAncestor) cursor.classList.remove('is-labeled');
         if (tooltipAncestor) cursor.classList.remove('is-tooltipped');
         if (interactive) cursor.classList.remove('is-hover');
