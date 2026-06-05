@@ -38,9 +38,18 @@ const marqueeUnit = MARQUEE.repeat(6);
   aria-labelledby="faq-title"
 >
   <a href="/projets" class="typo-faq__marquee" aria-label="Découvrir les projets">
-    <div class="typo-faq__marquee-track" aria-hidden="true">
-      <span class="typo-faq__marquee-text">{marqueeUnit}</span>
-      <span class="typo-faq__marquee-text">{marqueeUnit}</span>
+    {
+      /* Marquee en SVG : contour avec stroke-linejoin: round → aucun pic de
+        tracé aux angles (le « e »/« v »/« t » ne dépassent plus). Le script
+        dimensionne chaque SVG sur la largeur réelle du texte. */
+    }
+    <div class="typo-faq__marquee-track" aria-hidden="true" data-typo-marquee>
+      <svg class="typo-faq__marquee-svg"
+        ><text class="typo-faq__marquee-text" x="0" y="0">{marqueeUnit}</text></svg
+      >
+      <svg class="typo-faq__marquee-svg"
+        ><text class="typo-faq__marquee-text" x="0" y="0">{marqueeUnit}</text></svg
+      >
     </div>
   </a>
 
@@ -78,28 +87,34 @@ const marqueeUnit = MARQUEE.repeat(6);
     animation: typo-faq-marquee 38s linear infinite;
     will-change: transform;
   }
+  /* SVG dimensionné par le script (width/height/viewBox posés depuis la bbox
+     du texte). flex:none pour que les 2 moitiés gardent leur largeur. */
+  .typo-faq__marquee-svg {
+    display: block;
+    flex: none;
+    overflow: visible;
+    margin-right: 0.2em;
+  }
   .typo-faq__marquee-text {
     font-family: var(--font-heading), sans-serif;
     font-weight: 800;
     font-size: clamp(2.5rem, 8vw, 8rem);
-    line-height: 1;
     letter-spacing: -0.01em;
-    white-space: nowrap;
-    padding-right: 0.2em;
-    /* Lettres évidées (outline) : remplissage transparent + contour ink fin.
-       1px (au lieu de 1.5px) + paint-order pour limiter les pics de tracé aux
-       angles aigus (apex du « v », terminaisons « e »/« t »). */
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-ink);
-    text-stroke: 1px var(--color-ink);
+    /* Lettres évidées (outline) : contour ink à jointures ARRONDIES (SVG) →
+       aucun pic de tracé qui dépasse aux angles aigus. */
+    fill: transparent;
+    stroke: var(--color-ink);
+    stroke-width: 1px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
     paint-order: stroke fill;
-    transition: color 0.4s var(--ease-out-editorial);
+    transition: fill 0.4s var(--ease-out-editorial);
   }
   /* Survol : le marquee CONTINUE de défiler (pas de pause) et l'intérieur des
      lettres se remplit en NOIR (Morgan 2026-06-05). */
   .typo-faq__marquee:hover .typo-faq__marquee-text,
   .typo-faq__marquee:focus-visible .typo-faq__marquee-text {
-    color: var(--color-ink);
+    fill: var(--color-ink);
   }
   @keyframes typo-faq-marquee {
     from {
@@ -170,3 +185,44 @@ const marqueeUnit = MARQUEE.repeat(6);
     outline: 1px solid color-mix(in oklab, var(--color-ink) 45%, transparent);
   }
 </style>
+
+<script>
+  // Dimensionne chaque SVG du marquee sur la bbox réelle de son texte (le SVG
+  // ne sait pas s'auto-ajuster au contenu). Recalcule après chargement des
+  // fonts et au resize (la taille de police est en clamp responsive).
+  function sizeTypoMarquee() {
+    const svgs = document.querySelectorAll<SVGSVGElement>(
+      '[data-typo-marquee] .typo-faq__marquee-svg',
+    );
+    svgs.forEach((svg) => {
+      const text = svg.querySelector<SVGTextElement>('text');
+      if (!text) return;
+      const bb = text.getBBox();
+      if (bb.width === 0) return;
+      const padY = bb.height * 0.06;
+      const x = bb.x;
+      const y = bb.y - padY;
+      const w = bb.width;
+      const h = bb.height + padY * 2;
+      svg.setAttribute('viewBox', `${x} ${y} ${w} ${h}`);
+      svg.setAttribute('width', String(w));
+      svg.setAttribute('height', String(h));
+    });
+  }
+
+  function initTypoMarquee() {
+    if (!document.querySelector('[data-typo-marquee]')) return;
+    sizeTypoMarquee();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => sizeTypoMarquee());
+    }
+    let t = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(sizeTypoMarquee, 150);
+    });
+  }
+
+  initTypoMarquee();
+  document.addEventListener('astro:page-load', initTypoMarquee);
+</script>
