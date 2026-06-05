@@ -272,7 +272,6 @@ const typologies = [
               <span class="stat-card__sous-hover">réalisées par le studio depuis sa création</span>
             </span>
           </span>
-          <span class="stat-card__pill" aria-hidden="true">Découvrir les projets</span>
         </a>
 
         <a
@@ -286,7 +285,6 @@ const typologies = [
           <span class="stat-card__sous"
             >D'expérience dans le domaine de l'architecture paysagère</span
           >
-          <span class="stat-card__pill" aria-hidden="true">Découvrir le parcours</span>
         </a>
 
         <div class="stat-card stat-card--regions">
@@ -309,14 +307,14 @@ const typologies = [
   {/* Bandeau transition vers les typologies (trame). */}
   <section data-theme="light" class="typo-transition">
     {
-      /* CTA quasi pleine largeur, liseré rectangulaire arrondi (trame). Lien
-         vers le hub des typologies de jardin. */
+      /* Bandeau (non cliquable) quasi pleine largeur, liseré rectangulaire
+         arrondi (trame). Beige + bordure noire, aucune animation au survol. */
     }
-    <a href="/architecture-paysagere" class="typo-transition__cta">
+    <div class="typo-transition__cta">
       <span class="typo-transition__text">
         Chaque étude appartient à une <strong>typologie de jardin</strong>
       </span>
-    </a>
+    </div>
   </section>
 
   <section
@@ -669,11 +667,6 @@ const typologies = [
       padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3rem);
       border: 1px solid var(--color-ink);
       border-radius: clamp(18px, 2vw, 28px);
-      text-decoration: none;
-      cursor: none;
-      transition:
-        background-color 0.45s var(--ease-out-editorial),
-        color 0.45s var(--ease-out-editorial);
     }
     .typo-transition__text {
       font-family: var(--font-heading), sans-serif;
@@ -681,19 +674,12 @@ const typologies = [
       font-size: clamp(1.5rem, 3.5vw, 3rem);
       line-height: 1.2;
       letter-spacing: -0.01em;
-      color: inherit;
+      color: var(--color-ink);
       margin: 0;
       text-align: center;
     }
     .typo-transition__text strong {
       font-weight: 800;
-    }
-    @media (hover: hover) {
-      .typo-transition__cta:hover,
-      .typo-transition__cta:focus-visible {
-        background-color: var(--color-ink);
-        color: var(--color-cream);
-      }
     }
     /* Reduce-motion : désactive le sticky (scroll normal) */
     @media (prefers-reduced-motion: reduce) {
@@ -903,14 +889,14 @@ const typologies = [
     .stat-card--regions .stat-card__value {
       font-size: clamp(3rem, 5.5vw, 5.5rem);
     }
-    /* « ans » petit, collé en bas-droite du 10. */
+    /* « ans » collé en bas-droite du 10 (grossi — Morgan 2026-06-05). */
     .stat-card__unit {
-      font-size: 0.26em;
+      font-size: 0.34em;
       font-weight: 400;
       letter-spacing: 0;
       align-self: flex-end;
       margin-left: 0.12em;
-      margin-bottom: 0.55em;
+      margin-bottom: 0.5em;
     }
 
     .stat-card__body {
@@ -919,17 +905,18 @@ const typologies = [
       gap: clamp(0.35rem, 0.8vw, 0.7rem);
       min-width: 0;
     }
+    /* Polices internes grossies (Morgan 2026-06-05). */
     .stat-card__label {
       font-family: var(--font-heading), sans-serif;
       font-weight: 800;
-      font-size: clamp(1.8rem, 3.4vw, 3.4rem);
+      font-size: clamp(2.2rem, 4.4vw, 4.4rem);
       line-height: 1;
       color: inherit;
     }
     .stat-card__sous {
       font-family: var(--font-body), sans-serif;
       font-weight: 300;
-      font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+      font-size: clamp(1rem, 1.4vw, 1.45rem);
       line-height: 1.35;
       color: inherit;
       max-width: 34ch;
@@ -955,35 +942,8 @@ const typologies = [
       opacity: 0;
     }
 
-    /* Pill CTA — masquée au repos, révélée au survol (trame). */
-    .stat-card__pill {
-      position: absolute;
-      display: inline-flex;
-      align-items: center;
-      padding: 0.65rem 1.25rem;
-      background-color: var(--color-ink);
-      color: var(--color-cream);
-      border-radius: 9999px;
-      font-family: var(--font-heading), sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.8rem, 1vw, 0.95rem);
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition:
-        opacity 0.3s ease,
-        transform 0.4s var(--ease-out-editorial);
-    }
-    .stat-card--etudes .stat-card__pill {
-      top: 50%;
-      right: clamp(1.6rem, 2.6vw, 2.6rem);
-      transform: translateY(-50%) scale(0.9);
-    }
-    .stat-card--ans .stat-card__pill {
-      right: clamp(1.4rem, 2vw, 2rem);
-      bottom: clamp(1.2rem, 2vw, 1.8rem);
-      transform: scale(0.9);
-    }
+    /* Pill interne retirée (Morgan 2026-06-05) : faisait doublon avec le
+       curseur allongé « Découvrir les projets / le parcours » (data-cursor-pill). */
 
     /* Carte cliquable : lien + magnétique + curseur allongé (data-cursor-pill).
        Au survol : INVERSION noir → beige + contour ink (trame col1). */
@@ -1015,18 +975,6 @@ const typologies = [
       .stat-card--etudes.stat-card--link:hover .stat-card__sous-hover,
       .stat-card--etudes.stat-card--link:focus-visible .stat-card__sous-hover {
         opacity: 0.85;
-      }
-      .stat-card--link:hover .stat-card__pill,
-      .stat-card--link:focus-visible .stat-card__pill {
-        opacity: 1;
-      }
-      .stat-card--etudes.stat-card--link:hover .stat-card__pill,
-      .stat-card--etudes.stat-card--link:focus-visible .stat-card__pill {
-        transform: translateY(-50%) scale(1);
-      }
-      .stat-card--ans.stat-card--link:hover .stat-card__pill,
-      .stat-card--ans.stat-card--link:focus-visible .stat-card__pill {
-        transform: scale(1);
       }
     }
 
