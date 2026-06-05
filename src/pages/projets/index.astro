@@ -302,17 +302,33 @@ const galerie = Array.from({ length: 12 }, (_, i) => i + 1);
     .proj-card--gal {
       aspect-ratio: 3 / 4;
     }
-    /* Placeholder visuel (en attendant les vraies photos Jonathan). */
+    /* Placeholder visuel (en attendant les vraies photos Jonathan). Rendu
+       CLAIR et contrasté sur le fond noir → la carte se lit même sans image
+       (avant : rayures sombre-sur-noir = invisible, « on voit rien »). Les
+       vraies photos remplaceront ce bloc (data-zoom-src renseigné). */
     .proj-card__ph {
       position: absolute;
       inset: 0;
       background: repeating-linear-gradient(
         135deg,
-        color-mix(in oklab, var(--color-cream) 10%, var(--color-ink)),
-        color-mix(in oklab, var(--color-cream) 10%, var(--color-ink)) 14px,
-        color-mix(in oklab, var(--color-cream) 6%, var(--color-ink)) 14px,
-        color-mix(in oklab, var(--color-cream) 6%, var(--color-ink)) 28px
+        color-mix(in oklab, var(--color-cream) 32%, var(--color-ink)),
+        color-mix(in oklab, var(--color-cream) 32%, var(--color-ink)) 16px,
+        color-mix(in oklab, var(--color-cream) 20%, var(--color-ink)) 16px,
+        color-mix(in oklab, var(--color-cream) 20%, var(--color-ink)) 32px
       );
+    }
+    /* Mention « visuel à venir » centrée sur le placeholder. */
+    .proj-card__ph::after {
+      content: 'Visuel à venir';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body), sans-serif;
+      font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+      letter-spacing: 0.04em;
+      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
     }
     /* Overlay infos (bloc beige posé sur la carte). */
     .proj-card__overlay {
