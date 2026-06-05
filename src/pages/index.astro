@@ -696,9 +696,9 @@ const typologies = [
     .identite-line {
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
-      font-size: clamp(1.4rem, 5vw, 4.5rem);
-      line-height: 1.1;
-      letter-spacing: -0.01em;
+      font-size: clamp(1.9rem, 6.6vw, 6.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
       text-transform: none;
       /* justify designbyad (trame 2026-06-04) : chaque ligne en justify CSS
          natif, setupJustifyMulti calage les mots au scroll (motion-enhance.ts). */
@@ -883,7 +883,18 @@ const typologies = [
       color: inherit;
     }
     .stat-card--etudes .stat-card__value {
-      font-size: clamp(4.2rem, 10vw, 9.5rem);
+      font-size: clamp(5rem, 13vw, 12rem);
+    }
+    /* Le contenu de la carte Études occupe davantage l'espace (Morgan
+       2026-06-05) : le bloc texte s'étire et le tout respire plus large. */
+    .stat-card--etudes {
+      gap: clamp(1.2rem, 3vw, 3rem);
+    }
+    .stat-card--etudes .stat-card__body {
+      flex: 1;
+    }
+    .stat-card--etudes .stat-card__label {
+      font-size: clamp(2.6rem, 5.5vw, 5.5rem);
     }
     .stat-card--ans .stat-card__value,
     .stat-card--regions .stat-card__value {
