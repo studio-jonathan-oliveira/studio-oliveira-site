@@ -177,7 +177,8 @@ export default function DemarrerForm(): React.JSX.Element {
         void animate(
           el,
           { x: (e.clientX - cx) * STRENGTH, y: (e.clientY - cy) * STRENGTH },
-          { duration: 0.3, ease: EASE },
+          // Suivi serré pour qu'il « colle » au curseur quand on est dessus.
+          { duration: 0.2, ease: EASE },
         );
       } else if (engaged) {
         engaged = false;

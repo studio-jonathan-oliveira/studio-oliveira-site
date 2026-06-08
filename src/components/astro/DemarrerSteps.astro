@@ -171,12 +171,15 @@ const { steps } = Astro.props;
     left: 0;
     right: 0;
     bottom: 0;
-    height: clamp(12px, 1.4vw, 20px);
+    /* Hauteur = radius → quart de cercle complet, MÊME courbe que les specs typo
+       (token --radius-liseret) tout en remontant beaucoup moins que l'ancien
+       border-right pleine hauteur (Morgan 2026-06-08). */
+    height: var(--radius-liseret);
     border-bottom: var(--stroke-liseret) solid
       color-mix(in oklab, var(--color-violet) 45%, transparent);
     border-right: var(--stroke-liseret) solid
       color-mix(in oklab, var(--color-violet) 45%, transparent);
-    border-bottom-right-radius: clamp(9px, 1vw, 15px);
+    border-bottom-right-radius: var(--radius-liseret);
     pointer-events: none;
   }
   .dem-steps .faq-acc__summary:focus-visible {
