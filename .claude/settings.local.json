@@ -303,7 +303,8 @@
       "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_03.png'\\).extract\\({left:620,top:1100,width:280,height:70}\\).resize\\({width:1680}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/z03c_xiii2.png'\\)\")",
       "Bash(node -e \"const sharp=require\\('sharp'\\);\\(async\\(\\)=>{const m=await sharp\\('_assets/modif finales/demarrer un projet.jpg'\\).metadata\\(\\);console.log\\('demarrer trame',m.width+'x'+m.height\\);}\\)\\(\\);\")",
       "Bash(ls src/components/astro/Demarrer*)",
-      "Bash(ls src/components/islands/Demarrer*)"
+      "Bash(ls src/components/islands/Demarrer*)",
+      "Bash(node -e \"try{require.resolve\\('playwright'\\);console.log\\('playwright OK'\\)}catch{console.log\\('no playwright'\\)}; try{require.resolve\\('puppeteer'\\);console.log\\('puppeteer OK'\\)}catch{console.log\\('no puppeteer'\\)}\")"
     ],
     "additionalDirectories": [
       "\\tmp"

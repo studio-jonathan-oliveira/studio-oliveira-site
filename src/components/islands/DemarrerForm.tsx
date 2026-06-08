@@ -143,49 +143,15 @@ export default function DemarrerForm(): React.JSX.Element {
   const turnstileRef = useRef<TurnstileInstance | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
-  const sendBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
 
-  // Magnétique du bouton ENVOYER — transform BRUT + transition CSS, sans
-  // dépendance motion ni garde reduced-motion (le magnétique global de la home
-  // n'en a pas → parité ; le garde court-circuitait l'effet quand l'OS a
-  // « réduire les animations », Morgan 2026-06-08 : « il ne bouge pas »).
-  // Proximité : attiré vers le curseur dès qu'il approche, puis le suit tant
-  // qu'on est dessus ; revient à zéro en sortant de la zone.
-  useEffect(() => {
-    const el = sendBtnRef.current;
-    if (!el) return;
-    const STRENGTH = 0.4;
-    const RADIUS = 130; // px d'attraction autour du bouton
-    let engaged = false;
-    el.style.willChange = 'transform';
-    el.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-    const onMove = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      const near =
-        e.clientX >= r.left - RADIUS &&
-        e.clientX <= r.right + RADIUS &&
-        e.clientY >= r.top - RADIUS &&
-        e.clientY <= r.bottom + RADIUS;
-      if (near) {
-        engaged = true;
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        el.style.transform = `translate(${(e.clientX - cx) * STRENGTH}px, ${(e.clientY - cy) * STRENGTH}px)`;
-      } else if (engaged) {
-        engaged = false;
-        el.style.transform = 'translate(0px, 0px)';
-      }
-    };
-    window.addEventListener('pointermove', onMove, { passive: true });
-    return () => {
-      window.removeEventListener('pointermove', onMove);
-      el.style.transform = '';
-    };
-  }, []);
+  // NB : le magnétique du bouton ENVOYER est géré par un <script> Astro dans
+  // DemarrerRedBlock.astro (ciblant [data-magnetic-cta]), PAS ici — il tourne au
+  // chargement indépendamment de l'hydratation de cette island (Morgan
+  // 2026-06-08 : le magnétique React « ne bougeait pas » → suspicion d'hydratation).
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
     setValues((v) => ({ ...v, [key]: value }));
@@ -642,10 +608,9 @@ export default function DemarrerForm(): React.JSX.Element {
             Flèche retirée sitewide (Morgan 2026-06-05). */}
         <div className="flex justify-center pt-6">
           <button
-            ref={sendBtnRef}
+            data-magnetic-cta
             type="submit"
             disabled={submitting}
-            style={{ willChange: 'transform' }}
             className="group inline-flex items-center gap-3 rounded-[14px] border border-[var(--color-ink)] bg-[var(--color-violet)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>

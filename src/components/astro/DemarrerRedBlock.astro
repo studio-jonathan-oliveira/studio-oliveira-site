@@ -77,3 +77,48 @@ const { invite } = Astro.props;
     width: 100%;
   }
 </style>
+
+<script>
+  // Magnétique du bouton « Envoyer au studio ». Géré ICI (script Astro qui tourne
+  // au chargement) et NON dans l'island React : l'effet React « ne bougeait pas »
+  // (l'island DemarrerForm est client:visible → hydratation possiblement non
+  // déclenchée). Le bouton existe dans le HTML SSR, donc on le cible directement.
+  // Boucle rAF + lerp : attiré vers le curseur dès qu'il entre dans la zone et le
+  // suit tant qu'on est dessus ; revient à zéro en sortant.
+  function initDemarrerCtaMagnet() {
+    const el = document.querySelector<HTMLElement>('[data-magnetic-cta]');
+    if (!el || el.dataset.magnetBound) return;
+    el.dataset.magnetBound = 'true';
+    const STRENGTH = 0.4;
+    const RADIUS = 130;
+    let mx = -1e6;
+    let my = -1e6;
+    let curX = 0;
+    let curY = 0;
+    el.style.willChange = 'transform';
+    const onMove = (e: PointerEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+    };
+    const loop = () => {
+      if (!el.isConnected) return; // arrête après navigation SPA
+      const r = el.getBoundingClientRect();
+      const near =
+        mx >= r.left - RADIUS &&
+        mx <= r.right + RADIUS &&
+        my >= r.top - RADIUS &&
+        my <= r.bottom + RADIUS;
+      const tgtX = near ? (mx - (r.left + r.width / 2)) * STRENGTH : 0;
+      const tgtY = near ? (my - (r.top + r.height / 2)) * STRENGTH : 0;
+      curX += (tgtX - curX) * 0.2;
+      curY += (tgtY - curY) * 0.2;
+      el.style.transform = `translate(${curX.toFixed(2)}px, ${curY.toFixed(2)}px)`;
+      requestAnimationFrame(loop);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    requestAnimationFrame(loop);
+  }
+
+  initDemarrerCtaMagnet();
+  document.addEventListener('astro:page-load', initDemarrerCtaMagnet);
+</script>
