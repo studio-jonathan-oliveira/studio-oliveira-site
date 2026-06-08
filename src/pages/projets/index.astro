@@ -133,8 +133,26 @@ const conceptions = [
   },
 ];
 
-// ── Cartes RÉALISATIONS (overlay Titre / Établissement / Type / année / ville) ──
+// ── Cartes RÉALISATIONS — 16 cartes dans l'ORDRE EXACT de la trame (OCR zoomé
+// 2026-06-08), doublons de projets CONSERVÉS comme dans la maquette (la grille
+// 3 colonnes répète Airbnb Chammartz ×3, Verrière ×2, Glycine ×2, Mur en
+// bouteille ×3). Chaque carte = 1 photo (public/projets/realisations/0N.webp,
+// N = index trame). NB carte 2 (centre rangée 1) : bloc illisible dans la trame
+// → inféré identique à ses voisines (Airbnb Chammartz). L'appariement
+// photo↔carte est en ordre trame ; à confirmer visuellement par Morgan.
 const realisations = [
+  {
+    titre: 'Airbnb atypique',
+    etab: 'Jungle Room — Chammartz Suite',
+    annee: '2024',
+    ville: 'Uzerche',
+  },
+  {
+    titre: 'Airbnb atypique',
+    etab: 'Jungle Room — Chammartz Suite',
+    annee: '2024',
+    ville: 'Uzerche',
+  },
   {
     titre: 'Airbnb atypique',
     etab: 'Jungle Room — Chammartz Suite',
@@ -146,6 +164,18 @@ const realisations = [
     titre: 'Verrière végétalisée',
     etab: 'Café de Paris — Brasserie',
     annee: '2025',
+    ville: 'Brive',
+  },
+  {
+    titre: 'Verrière végétalisée',
+    etab: 'Café de Paris — Brasserie',
+    annee: '2025',
+    ville: 'Brive',
+  },
+  {
+    titre: 'Glycine artificielle 5m',
+    etab: 'Atelier Elite Coiffure',
+    annee: '2022',
     ville: 'Brive',
   },
   {
@@ -161,8 +191,20 @@ const realisations = [
     annee: '2025',
     ville: 'Brive',
   },
-  { titre: 'Jungle Work Box', etab: 'Schmidt Cuisine', annee: '2025', ville: 'Brive' },
+  {
+    titre: 'Mur en bouteille floral',
+    etab: 'Café de Paris — Brasserie',
+    annee: '2025',
+    ville: 'Brive',
+  },
+  {
+    titre: 'Mur en bouteille floral',
+    etab: 'Café de Paris — Brasserie',
+    annee: '2025',
+    ville: 'Brive',
+  },
   { titre: 'Airbnb atypique', etab: 'Jungle Room — Eden Suite', annee: '2025', ville: 'Roanne' },
+  { titre: 'Jungle Work Box', etab: 'Schmidt Cuisine', annee: '2025', ville: 'Brive' },
   { titre: 'Mur végétalisé', etab: 'YG coiffure', annee: '2023', ville: 'Objat' },
   { titre: 'Jardinet tropical', etab: '', annee: '2021', ville: 'Limoges' },
 ];

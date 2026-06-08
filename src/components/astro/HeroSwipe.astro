@@ -74,14 +74,11 @@ const slides = [
   }
   <div class="hero-slide__topbar-mimic" aria-hidden="true">
     <a href="/" class="hero-slide__logo" aria-label="Studio J Oliveira — accueil">
-      <img
-        src="/brand/wordmark-cream.png?v=3"
-        alt="Studio J Oliveira"
-        width="1200"
-        height="288"
-        loading="eager"
-        decoding="async"
-      />
+      {
+        /* Masque (et non <img>) pour garantir la couleur EXACTE --color-cream :
+          le PNG « cream » était rendu blanc pur (retour Morgan 2026-06-08). */
+      }
+      <span class="hero-slide__logo-mark" aria-hidden="true"></span>
     </a>
   </div>
 
@@ -202,18 +199,22 @@ const slides = [
     pointer-events: auto;
     filter: drop-shadow(0 1px 6px color-mix(in oklab, var(--color-ink) 45%, transparent));
   }
-  .hero-slide__logo img {
+  /* Wordmark en MASQUE coloré --color-cream (exact). Ratio source 1200×288. */
+  .hero-slide__logo-mark {
     display: block;
     height: 36px;
-    width: auto;
+    aspect-ratio: 1200 / 288;
+    background-color: var(--color-cream);
+    -webkit-mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
+    mask: url('/brand/wordmark-black.png?v=3') left center / contain no-repeat;
   }
   @media (min-width: 768px) {
-    .hero-slide__logo img {
+    .hero-slide__logo-mark {
       height: 40px;
     }
   }
   @media (min-width: 1024px) {
-    .hero-slide__logo img {
+    .hero-slide__logo-mark {
       height: 44px;
     }
   }

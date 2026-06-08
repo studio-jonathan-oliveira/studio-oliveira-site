@@ -1,9 +1,10 @@
 ---
 /*
  * Footer — refonte DA finale 2026-06-04 (trames « modif finales »).
- *   - Carte BEIGE (#EDE6D6) à coins HAUTS arrondis, texte/logo NOIR.
- *     (Décision Morgan : footer beige/noir partout SAUF /demarrer-un-projet.)
- *   - Logo en tuile carrée NOIRE arrondie (wordmark cream à l'intérieur).
+ *   - Carte à coins HAUTS arrondis. Couleur selon la page (cf. footerMode) :
+ *     NOIR/crème (home, studio, typologies) · VIOLET (/demarrer) · BEIGE/noir
+ *     (projets, zones, journal… = base).
+ *   - Logo en tuile carrée arrondie (couleurs inversées par variante).
  *   - Colonne gauche : Siège social Studio (NAP) + Territoires « National ».
  *   - Colonne droite : nav Home / Studio / Projets / Démarrer un projet +
  *     bloc « Etudes par typologies de jardin » (4 typologies, active en gras).
@@ -13,11 +14,22 @@
  * ils restent accessibles via le menu principal.
  */
 const currentPath = Astro.url.pathname;
-// Footer NOIR (data-theme="dark") sur la home, /studio ET /demarrer-un-projet
-// (trame). Le style sombre est porté par .site-footer[data-theme='dark'] plus
-// bas, et le data-theme fait aussi basculer le curseur custom en crème au survol.
-const darkFooterPaths = ['/', '/studio', '/demarrer-un-projet'];
-const footerTheme = darkFooterPaths.includes(currentPath) ? 'dark' : 'light';
+// Couleur du footer par page (trames « modif finales » + retours Morgan
+// 2026-06-08) :
+//   - NOIR + texte/logo CRÈME : home, studio, pages typologies (trames coeur/
+//     home/studio). Plus de violet ici.
+//   - NOIR + VIOLET : /demarrer-un-projet UNIQUEMENT (« la seule page »).
+//   - BEIGE + texte/logo NOIR : tout le reste (projets, zones, journal…).
+// Coins hauts arrondis dans tous les cas. data-theme="dark" sur les variantes
+// sombres → le curseur custom passe en crème au survol.
+const isDemarrer = currentPath === '/demarrer-un-projet';
+const isTypologie = currentPath.startsWith('/architecture-paysagere/');
+const darkCreamPaths = ['/', '/studio'];
+const footerMode = isDemarrer
+  ? 'violet'
+  : darkCreamPaths.includes(currentPath) || isTypologie
+    ? 'dark'
+    : 'light';
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -34,7 +46,15 @@ const typologies = [
 ];
 ---
 
-<footer class="site-footer" aria-label="Pied de page" data-theme={footerTheme}>
+<footer
+  class:list={[
+    'site-footer',
+    footerMode === 'dark' && 'site-footer--dark',
+    footerMode === 'violet' && 'site-footer--violet',
+  ]}
+  aria-label="Pied de page"
+  data-theme={footerMode === 'light' ? 'light' : 'dark'}
+>
   <div class="site-footer__inner">
     <header class="site-footer__top">
       <a href="/" class="site-footer__logo" aria-label="Studio J Oliveira — accueil">
@@ -108,48 +128,10 @@ const typologies = [
 </footer>
 
 <style>
-  /* Variante NOIRE (home + studio) — pilotée par data-theme="dark". Fond ink,
-     texte crème, tuile logo beige (logo noir). */
-  /* Footer sombre — accent VIOLET (Morgan 2026-06-05) : coins hauts mauve
-     (liseré révélé par l'inset de l'inner), tous les textes en violet, macaron
-     du logo en violet (logo noir à l'intérieur). */
-  .site-footer[data-theme='dark'] {
-    background-color: var(--color-violet);
-    color: var(--color-violet);
-  }
-  .site-footer[data-theme='dark'] .site-footer__inner {
-    background-color: var(--color-ink);
-    border-top-left-radius: clamp(20px, 3.5vw, 48px);
-    border-top-right-radius: clamp(20px, 3.5vw, 48px);
-    margin-top: clamp(8px, 1vw, 14px);
-  }
-  .site-footer[data-theme='dark'] .site-footer__heading,
-  .site-footer[data-theme='dark'] .site-footer__navlink,
-  .site-footer[data-theme='dark'] .site-footer__typo-title,
-  .site-footer[data-theme='dark'] .site-footer__typo-link--active {
-    color: var(--color-violet);
-  }
-  .site-footer[data-theme='dark'] .site-footer__address,
-  .site-footer[data-theme='dark'] .site-footer__national,
-  .site-footer[data-theme='dark'] .site-footer__typo-link {
-    color: color-mix(in oklab, var(--color-violet) 82%, transparent);
-  }
-  .site-footer[data-theme='dark'] .site-footer__legal {
-    color: color-mix(in oklab, var(--color-violet) 60%, transparent);
-  }
-  .site-footer[data-theme='dark'] .site-footer__link:hover,
-  .site-footer[data-theme='dark'] .site-footer__navlink:hover,
-  .site-footer[data-theme='dark'] .site-footer__typo-link:hover {
-    color: var(--color-violet);
-  }
-  .site-footer[data-theme='dark'] .site-footer__logo {
-    background-color: var(--color-violet);
-  }
-  .site-footer[data-theme='dark'] .site-footer__logo-mark {
-    background-color: var(--color-ink);
-  }
-
-  /* Carte beige à coins hauts arrondis, texte noir (pages claires). */
+  /* Base = footer BEIGE à coins HAUTS arrondis, texte/logo NOIR (pages claires :
+     projets, zones, journal…). Les variantes .site-footer--dark (home/studio/
+     typologies) et .site-footer--violet (/demarrer) inversent les couleurs en
+     bas du bloc. Coins arrondis communs. */
   .site-footer {
     background-color: var(--color-cream);
     color: var(--color-ink);
@@ -171,7 +153,7 @@ const typologies = [
   .site-footer__top {
     margin-bottom: clamp(2rem, 5vw, 4rem);
   }
-  /* Logo = tuile carrée NOIRE arrondie, wordmark cream à l'intérieur. */
+  /* Logo (base beige) = tuile carrée NOIRE arrondie, wordmark crème dedans. */
   .site-footer__logo {
     display: inline-flex;
     align-items: center;
@@ -328,5 +310,61 @@ const typologies = [
   .site-footer__typo-link--active {
     font-weight: 700;
     color: var(--color-ink);
+  }
+
+  /* ── Variante NOIRE (home, studio, pages typologies) : fond ink, texte +
+     logo CRÈME (wordmark ink). data-theme="dark" géré côté markup. ── */
+  .site-footer--dark {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .site-footer--dark .site-footer__heading,
+  .site-footer--dark .site-footer__navlink,
+  .site-footer--dark .site-footer__typo-title,
+  .site-footer--dark .site-footer__typo-link--active {
+    color: var(--color-cream);
+  }
+  .site-footer--dark .site-footer__address,
+  .site-footer--dark .site-footer__national {
+    color: color-mix(in oklab, var(--color-cream) 85%, transparent);
+  }
+  .site-footer--dark .site-footer__typo-link {
+    color: color-mix(in oklab, var(--color-cream) 78%, transparent);
+  }
+  .site-footer--dark .site-footer__legal {
+    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
+  }
+  .site-footer--dark .site-footer__logo {
+    background-color: var(--color-cream);
+  }
+  .site-footer--dark .site-footer__logo-mark {
+    background-color: var(--color-ink);
+  }
+
+  /* ── Variante VIOLET — /demarrer-un-projet UNIQUEMENT (Morgan 2026-06-08 :
+     « c'est la seule page, noir et violet, aucune trace de beige »). Fond ink
+     conservé ; textes + tuile logo en violet (wordmark ink à l'intérieur). */
+  .site-footer--violet {
+    color: var(--color-violet);
+  }
+  .site-footer--violet .site-footer__heading,
+  .site-footer--violet .site-footer__navlink,
+  .site-footer--violet .site-footer__typo-title,
+  .site-footer--violet .site-footer__typo-link--active {
+    color: var(--color-violet);
+  }
+  .site-footer--violet .site-footer__address,
+  .site-footer--violet .site-footer__national,
+  .site-footer--violet .site-footer__typo-link {
+    color: color-mix(in oklab, var(--color-violet) 82%, transparent);
+  }
+  .site-footer--violet .site-footer__legal {
+    color: color-mix(in oklab, var(--color-violet) 60%, transparent);
+  }
+  .site-footer--violet .site-footer__logo {
+    background-color: var(--color-violet);
+  }
+  .site-footer--violet .site-footer__logo-mark {
+    background-color: var(--color-ink);
   }
 </style>

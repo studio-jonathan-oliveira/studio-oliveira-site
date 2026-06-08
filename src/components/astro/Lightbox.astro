@@ -139,11 +139,12 @@
     height: auto;
     object-fit: contain;
     border-radius: clamp(14px, 1.6vw, 24px);
-    transform: scale(0.96);
-    transition: transform 0.45s var(--ease-out-editorial, ease);
-  }
-  .lightbox.is-open .lightbox__img {
-    transform: scale(1);
+    /* L'ouverture est animée en FLIP (JS) : l'image part de la position/échelle
+       de la carte cliquée et grandit jusqu'au plein écran. transform-origin
+       haut-gauche pour que le calcul invert/play soit exact. */
+    transform-origin: top left;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   /* ── Carte « Approche projet » (mode conception) ─────────────────────── */
@@ -248,71 +249,124 @@
     const approcheBody = document.querySelector<HTMLElement>('[data-lightbox-approche-body]');
     if (!overlay || !img || !figure || !approche || !approcheBody) return;
 
-    // ── Aimantation de la carte « Approche projet » au curseur ───────────
-    // Parallax magnétique léger : la carte se décale de quelques px vers la
-    // position du pointeur (lerp en rAF). Amplitude volontairement faible pour
-    // garder le texte lisible (annotation trame « CADRE AIMANTÉ AU CURSEUR »).
-    const MAGNET = 14; // amplitude max en px
-    let targetX = 0;
-    let targetY = 0;
-    let curX = 0;
-    let curY = 0;
-    let rafId = 0;
-    let magnetActive = false;
+    const fine = window.matchMedia('(pointer: fine)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const magnetLoop = () => {
-      curX += (targetX - curX) * 0.12;
-      curY += (targetY - curY) * 0.12;
-      approche.style.setProperty('--magnet-x', `${curX.toFixed(2)}px`);
-      approche.style.setProperty('--magnet-y', `${curY.toFixed(2)}px`);
-      if (magnetActive) rafId = requestAnimationFrame(magnetLoop);
-    };
+    // ── Carte « Approche projet » qui SUIT LE CURSEUR (annotation trame
+    // « CADRE AIMANTÉ AU CURSEUR »), comme le cursor-tooltip des typologies
+    // home. Position fixed pilotée par --lb-x / --lb-y (lerp en rAF), placée
+    // en haut-droite du pointeur et clampée dans le viewport. ───────────────
+    let tx = 0,
+      ty = 0,
+      cx = 0,
+      cy = 0,
+      rafId = 0,
+      following = false,
+      snap = false;
+    const OFFX = 26;
+    const OFFY = 22;
+    const M = 14;
 
-    const onMagnetMove = (e: PointerEvent) => {
-      const r = figure.getBoundingClientRect();
-      const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2); // -1..1
-      const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-      targetX = Math.max(-1, Math.min(1, nx)) * MAGNET;
-      targetY = Math.max(-1, Math.min(1, ny)) * MAGNET;
+    const followLoop = () => {
+      cx += (tx - cx) * 0.18;
+      cy += (ty - cy) * 0.18;
+      approche.style.setProperty('--lb-x', `${cx.toFixed(2)}px`);
+      approche.style.setProperty('--lb-y', `${cy.toFixed(2)}px`);
+      if (following) rafId = requestAnimationFrame(followLoop);
     };
-
-    const startMagnet = () => {
-      if (magnetActive) return;
-      magnetActive = true;
-      window.addEventListener('pointermove', onMagnetMove);
-      rafId = requestAnimationFrame(magnetLoop);
-    };
-    const stopMagnet = () => {
-      magnetActive = false;
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('pointermove', onMagnetMove);
-      targetX = targetY = curX = curY = 0;
-      approche.style.setProperty('--magnet-x', '0px');
-      approche.style.setProperty('--magnet-y', '0px');
-    };
-
-    const open = (src: string, alt: string, approcheText?: string) => {
-      img.src = src;
-      img.alt = alt;
-      if (approcheText) {
-        approcheBody.textContent = approcheText;
-        approche.hidden = false;
-        approche.setAttribute('aria-hidden', 'false');
-        startMagnet();
-      } else {
-        approche.hidden = true;
-        approche.setAttribute('aria-hidden', 'true');
-        stopMagnet();
+    const onFollowMove = (e: PointerEvent) => {
+      const w = approche.offsetWidth;
+      const h = approche.offsetHeight;
+      let x = e.clientX + OFFX;
+      let y = e.clientY - h - OFFY; // au-dessus-droite du curseur
+      if (x + w > window.innerWidth - M) x = e.clientX - w - OFFX;
+      if (y < M) y = e.clientY + OFFY;
+      x = Math.max(M, Math.min(x, window.innerWidth - w - M));
+      y = Math.max(M, Math.min(y, window.innerHeight - h - M));
+      tx = x;
+      ty = y;
+      if (snap) {
+        cx = tx;
+        cy = ty;
+        snap = false;
       }
-      overlay.classList.add('is-open');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.documentElement.style.overflow = 'hidden';
+    };
+    const startFollow = () => {
+      if (following || !fine) return;
+      following = true;
+      snap = true;
+      window.addEventListener('pointermove', onFollowMove);
+      rafId = requestAnimationFrame(followLoop);
+    };
+    const stopFollow = () => {
+      following = false;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('pointermove', onFollowMove);
+    };
+
+    // ── FLIP : l'image part de la position/échelle de la carte cliquée et
+    // grandit jusqu'au plein écran (ouverture fluide, pas brute). ───────────
+    const playFlip = (cardRect: DOMRect) => {
+      if (reduce) return;
+      const last = img.getBoundingClientRect();
+      if (!last.width || !last.height) return;
+      const dx = cardRect.left - last.left;
+      const dy = cardRect.top - last.top;
+      const sx = cardRect.width / last.width;
+      const sy = cardRect.height / last.height;
+      img.style.transition = 'none';
+      img.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+      void img.offsetWidth; // reflow
+      img.style.transition = 'transform 0.6s var(--ease-out-editorial, ease)';
+      img.style.transform = 'translate(0, 0) scale(1)';
+    };
+
+    const open = (
+      src: string,
+      alt: string,
+      approcheText: string | undefined,
+      cardRect: DOMRect,
+    ) => {
+      img.alt = alt;
+      const run = () => {
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflow = 'hidden';
+        if (approcheText) {
+          approcheBody.textContent = approcheText;
+          approche.hidden = false;
+          approche.setAttribute('aria-hidden', 'false');
+          startFollow();
+        } else {
+          approche.hidden = true;
+          approche.setAttribute('aria-hidden', 'true');
+          stopFollow();
+        }
+        // FLIP après application du layout (image à sa taille finale).
+        requestAnimationFrame(() => playFlip(cardRect));
+      };
+      // L'image doit être chargée pour mesurer sa taille finale (FLIP).
+      if (img.getAttribute('src') === src && img.complete) {
+        run();
+      } else {
+        img.onload = () => {
+          img.onload = null;
+          run();
+        };
+        img.src = src;
+        if (img.complete) {
+          img.onload = null;
+          run();
+        }
+      }
     };
     const close = () => {
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
-      stopMagnet();
+      stopFollow();
+      img.style.transition = '';
+      img.style.transform = '';
     };
 
     // Délégation : clic sur toute carte [data-zoom-src].
@@ -321,10 +375,14 @@
       const card = target?.closest?.('[data-zoom-src]') as HTMLElement | null;
       if (card) {
         e.preventDefault();
-        // Placeholder sans image (ex: /projets en attente des visuels) →
-        // on n'ouvre pas un overlay vide.
         const src = card.dataset.zoomSrc;
-        if (src) open(src, card.dataset.zoomAlt || '', card.dataset.zoomApproche);
+        if (src)
+          open(
+            src,
+            card.dataset.zoomAlt || '',
+            card.dataset.zoomApproche,
+            card.getBoundingClientRect(),
+          );
         return;
       }
       // Le clic sur la carte « Approche projet » (pointer-events: none) tombe
