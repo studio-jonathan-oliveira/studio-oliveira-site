@@ -139,7 +139,8 @@ const LABELS = [
   .typo-hero-specs__label,
   .typo-hero-specs__value {
     font-family: var(--font-body), sans-serif;
-    font-weight: 400;
+    /* Extra-light 200 (Morgan 2026-06-08) — Inter Variable supporte 100-900. */
+    font-weight: 200;
     font-size: clamp(1.05rem, 1.5vw, 1.65rem);
     line-height: 1.3;
     letter-spacing: 0;
@@ -161,6 +162,9 @@ const LABELS = [
     font-size: clamp(0.74rem, 1vw, 1.05rem);
     line-height: 1.25;
     word-spacing: -0.1em;
+    /* « \n » dans la valeur → vrai retour à la ligne (ex. domaine & caractère
+       coupé après « Maison de campagne »). N'affecte pas les valeurs courtes. */
+    white-space: pre-line;
   }
   @media (max-width: 767px) {
     .typo-hero-specs__row {
