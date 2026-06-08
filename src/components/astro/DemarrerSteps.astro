@@ -114,7 +114,9 @@ const { steps } = Astro.props;
     flex-direction: column;
     /* ~1 écran de vide entre le groupe 1 et le groupe 2. */
     gap: 96svh;
-    padding: 18svh clamp(1.5rem, 5vw, 4rem) 60svh;
+    /* Marge DROITE à 0 → les accordéons (et leur liseret) atteignent le bord
+       droit de l'écran (Morgan 2026-06-08). Marge gauche conservée. */
+    padding: 18svh 0 60svh clamp(1.5rem, 5vw, 4rem);
   }
 
   .dem-steps__group {
@@ -154,15 +156,28 @@ const { steps } = Astro.props;
   .dem-steps .faq-acc__item {
     border-bottom: 0;
   }
-  /* Liseret aligné sur celui des SPECS typologies (Morgan 2026-06-08 : « la ça
-     remonte trop ») : même épaisseur + même courbe via les tokens
-     --stroke-liseret / --radius-liseret. Couleur violette conservée (page). */
+  /* Liseret (Morgan 2026-06-08 : « ils doivent aller jusqu'au bord à droite et
+     moins remonter »). Le border-right de base longeait toute la hauteur du
+     summary (~100px) → trop de remontée. On le redessine en ::after de HAUTEUR
+     FIXE petite : ligne basse pleine largeur jusqu'au bord droit + courbe douce
+     qui ne remonte que de ~16px. Couleur violette. */
   .dem-steps .faq-acc__summary {
+    position: relative;
+    border: 0;
+  }
+  .dem-steps .faq-acc__summary::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(12px, 1.4vw, 20px);
     border-bottom: var(--stroke-liseret) solid
       color-mix(in oklab, var(--color-violet) 45%, transparent);
     border-right: var(--stroke-liseret) solid
       color-mix(in oklab, var(--color-violet) 45%, transparent);
-    border-bottom-right-radius: var(--radius-liseret);
+    border-bottom-right-radius: clamp(9px, 1vw, 15px);
+    pointer-events: none;
   }
   .dem-steps .faq-acc__summary:focus-visible {
     outline-color: color-mix(in oklab, var(--color-violet) 60%, transparent);
