@@ -142,7 +142,9 @@ const LABELS = [
     font-weight: 400;
     font-size: clamp(1.05rem, 1.5vw, 1.65rem);
     line-height: 1.3;
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
+    /* Mots resserrés (Morgan 2026-06-08) pour gagner de la largeur. */
+    word-spacing: -0.08em;
     color: var(--color-ink);
     margin: 0;
     flex: 0 1 auto;
@@ -156,8 +158,9 @@ const LABELS = [
      ligne parasite (ex. « propriété » qui tombait sous le label en frange). */
   .typo-hero-specs__value {
     text-align: right;
-    font-size: clamp(0.88rem, 1.2vw, 1.28rem);
+    font-size: clamp(0.74rem, 1vw, 1.05rem);
     line-height: 1.25;
+    word-spacing: -0.1em;
   }
   @media (max-width: 767px) {
     .typo-hero-specs__row {
