@@ -90,25 +90,17 @@ const { steps } = Astro.props;
       filter 0.6s var(--ease-out-editorial),
       transform 0.6s var(--ease-out-editorial);
   }
-  /* Flou + assombrissement de la photo quand un accordéon est ouvert (trame :
-     « FLOU IMAGE AU CLIC DE L'ACCORDÉON »). Classe posée par le script. */
+  /* Image VISIBLE par défaut (Morgan 2026-06-08 : « on doit pouvoir la voir »).
+     Le FLOU ne s'applique QUE quand un accordéon est ouvert — même flou que le
+     survol des typos (blur 18px pur, sans assombrissement ni zoom). */
   .dem-steps__bg.is-blurred .dem-steps__bg-img {
-    filter: blur(14px) brightness(0.55);
-    transform: scale(1.06);
+    filter: blur(18px);
   }
-  .dem-steps__veil {
-    transition: background 0.6s var(--ease-out-editorial);
-  }
-  /* Voile sombre — lisibilité du texte sur la photo (la trame montre la photo
-     fortement assombrie sous les accordéons). */
+  /* Voile RETIRÉ par défaut (plus d'opacification permanente). */
   .dem-steps__veil {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in oklab, var(--color-black-deep) 62%, transparent),
-      color-mix(in oklab, var(--color-black-deep) 78%, transparent)
-    );
+    background: transparent;
   }
 
   /* Image immersive étalée sur ~3 écrans (Morgan 2026-06-08) : le « 1 » + ses
