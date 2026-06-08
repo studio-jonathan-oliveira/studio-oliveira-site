@@ -344,9 +344,21 @@ const typologies = [
   /* ── Variante VIOLET — /demarrer-un-projet UNIQUEMENT (Morgan 2026-06-08 :
      « c'est la seule page, noir et violet, aucune trace de beige »). Fond ink
      conservé ; textes + tuile logo en violet (wordmark ink à l'intérieur). */
+  /* Variante violet en « liseré » (Morgan 2026-06-08 : « laisser passer le violet
+     dans l'angle ») : l'extérieur est VIOLET (sans radius → aucune révélation du
+     body), la carte intérieure est NOIRE à coins hauts arrondis avec un léger
+     margin-top → le violet apparaît au-dessus du logo et dans les coins. */
   .site-footer--violet {
-    background-color: var(--color-ink);
+    background-color: var(--color-violet);
     color: var(--color-violet);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .site-footer--violet .site-footer__inner {
+    background-color: var(--color-ink);
+    border-top-left-radius: clamp(24px, 4vw, 56px);
+    border-top-right-radius: clamp(24px, 4vw, 56px);
+    margin-top: clamp(10px, 1.4vw, 18px);
   }
   .site-footer--violet .site-footer__heading,
   .site-footer--violet .site-footer__navlink,

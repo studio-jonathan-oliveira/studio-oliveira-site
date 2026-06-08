@@ -24,7 +24,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
-import { bindMagnetic } from '@/scripts/magnetic';
+import { animate } from 'motion';
 import {
   demarrerSchema,
   SURFACE_OPTIONS,
@@ -150,17 +150,42 @@ export default function DemarrerForm(): React.JSX.Element {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
 
-  // Magnétique sur le bouton ENVOYER — réutilise EXACTEMENT `bindMagnetic`
-  // de motion-enhance.ts (même helper que celui appelé pour tous les
-  // `data-magnetic` du site, dont le bouton CONTACTER). Garantit le rendu
-  // strictement identique sans duplication de code.
+  // Magnétique du bouton ENVOYER — version PROXIMITÉ (Morgan 2026-06-08 : le
+  // magnétique element-level ne se déclenchait qu'une fois le pointeur DÉJÀ sur
+  // le bouton, donc imperceptible). Ici on écoute le pointeur sur la fenêtre :
+  // dès qu'il entre dans une zone autour du bouton, celui-ci est attiré vers le
+  // curseur (l'effet « aimanté » devient net).
   useEffect(() => {
     const el = sendBtnRef.current;
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // Force 0.3 = parité avec le CTA « Découvrir le STUDIO » de la home
-    // (data-magnetic="0.3"), Morgan 2026-06-08.
-    return bindMagnetic(el, 0.3);
+    const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+    const STRENGTH = 0.4;
+    const RADIUS = 130; // px d'attraction autour du bouton
+    let engaged = false;
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      const near =
+        e.clientX >= r.left - RADIUS &&
+        e.clientX <= r.right + RADIUS &&
+        e.clientY >= r.top - RADIUS &&
+        e.clientY <= r.bottom + RADIUS;
+      if (near) {
+        engaged = true;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        void animate(
+          el,
+          { x: (e.clientX - cx) * STRENGTH, y: (e.clientY - cy) * STRENGTH },
+          { duration: 0.3, ease: EASE },
+        );
+      } else if (engaged) {
+        engaged = false;
+        void animate(el, { x: 0, y: 0 }, { duration: 0.45, ease: EASE });
+      }
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
   }, []);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
@@ -622,7 +647,7 @@ export default function DemarrerForm(): React.JSX.Element {
             type="submit"
             disabled={submitting}
             style={{ willChange: 'transform' }}
-            className="group inline-flex items-center gap-3 rounded-[14px] bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-cream)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-3 rounded-[14px] border border-[var(--color-ink)] bg-[var(--color-violet)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
           </button>
