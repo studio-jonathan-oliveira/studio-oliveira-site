@@ -158,7 +158,9 @@ export default function DemarrerForm(): React.JSX.Element {
     const el = sendBtnRef.current;
     if (!el) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    return bindMagnetic(el, 0.25);
+    // Force 0.3 = parité avec le CTA « Découvrir le STUDIO » de la home
+    // (data-magnetic="0.3"), Morgan 2026-06-08.
+    return bindMagnetic(el, 0.3);
   }, []);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
@@ -620,7 +622,7 @@ export default function DemarrerForm(): React.JSX.Element {
             type="submit"
             disabled={submitting}
             style={{ willChange: 'transform' }}
-            className="group rounded-cta inline-flex items-center gap-3 bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-cream)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-3 rounded-[14px] bg-[var(--color-ink)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-cream)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
           </button>

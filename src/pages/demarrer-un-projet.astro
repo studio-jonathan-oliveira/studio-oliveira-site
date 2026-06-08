@@ -110,6 +110,11 @@ const schema = jsonLdGraph([
        data-theme="dark" dans Footer.astro (currentPath inclut /demarrer). */
   }
   <style is:global>
+    /* Fond de page NOIR : les coins arrondis (footer, bloc violet) révèlent du
+       NOIR et non du beige (Morgan 2026-06-08 : « que du noir et du mauve »). */
+    body.is-demarrer {
+      background-color: var(--color-ink);
+    }
     body.is-demarrer .site-header__cta {
       background-color: var(--color-violet);
     }
