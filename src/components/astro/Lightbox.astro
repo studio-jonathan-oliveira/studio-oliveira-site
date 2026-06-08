@@ -58,7 +58,10 @@
     height: 100%;
     overflow: hidden;
     border-radius: var(--radius-image);
-    cursor: pointer;
+    /* Pas de `cursor: pointer` : il réafficherait le curseur natif PAR-DESSUS
+       le carré custom (Morgan 2026-06-08). On laisse la règle globale
+       `cursor: none` (CustomCursor, @media pointer:fine) → seul le carré. */
+    cursor: none;
   }
   .zoom-card__img {
     width: 100%;

@@ -297,7 +297,9 @@
       font-size: clamp(18px, 1.6vw, 26px);
       letter-spacing: 0;
       line-height: 1.25;
-      text-transform: uppercase;
+      /* Casse normale (1re lettre en majuscule selon le contenu authored, plus
+         d'UPPERCASE forcé) — home typologies + cartes /projets (Morgan 2026-06-08). */
+      text-transform: none;
       white-space: pre;
     }
     /* Sur fond sombre (pages DA noires : /projets, hero, footer…), le texte
