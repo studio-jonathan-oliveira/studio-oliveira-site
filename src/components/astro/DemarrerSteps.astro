@@ -154,10 +154,15 @@ const { steps } = Astro.props;
   .dem-steps .faq-acc__item {
     border-bottom: 0;
   }
+  /* Liseret aligné sur celui des SPECS typologies (Morgan 2026-06-08 : « la ça
+     remonte trop ») : même épaisseur + même courbe via les tokens
+     --stroke-liseret / --radius-liseret. Couleur violette conservée (page). */
   .dem-steps .faq-acc__summary {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-violet) 45%, transparent);
-    border-right: 1px solid color-mix(in oklab, var(--color-violet) 45%, transparent);
-    border-bottom-right-radius: clamp(16px, 2.2vw, 28px);
+    border-bottom: var(--stroke-liseret) solid
+      color-mix(in oklab, var(--color-violet) 45%, transparent);
+    border-right: var(--stroke-liseret) solid
+      color-mix(in oklab, var(--color-violet) 45%, transparent);
+    border-bottom-right-radius: var(--radius-liseret);
   }
   .dem-steps .faq-acc__summary:focus-visible {
     outline-color: color-mix(in oklab, var(--color-violet) 60%, transparent);
