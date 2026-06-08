@@ -28,11 +28,11 @@ const schema = jsonLdGraph([
 
 // ── Cartes ÉTUDES & CONCEPTIONS ──
 // `approche` = texte « Approche projet » affiché dans la lightbox (carte beige
-// qui suit le curseur). VERBATIM extrait par OCR des trames Jonathan
-// (`accordeon etude et conception.jpg`, re-audit + OCR zoomé 2026-06-08) :
-// orthographe/accents/fautes de l'auteur CONSERVÉS tels quels (règle éditoriale
-// — ne rien inventer ni corriger sans accord Jonathan). Typos signalées dans
-// `_brief/contenus-manquants.md`. Paragraphes séparés par une ligne vide.
+// qui suit le curseur). Contenu extrait par OCR des trames Jonathan
+// (`accordeon etude et conception.jpg`) puis ORTHOGRAPHE CORRIGÉE (validé Morgan
+// 2026-06-08 : « faut corriger ça absolument »). Le fond/verbe restent ceux de
+// Jonathan ; seules les fautes (accents, accords, doublons) sont rectifiées.
+// Paragraphes séparés par une ligne vide.
 const conceptions = [
   {
     l1: 'Coeur urbain',
@@ -41,7 +41,7 @@ const conceptions = [
     l4: 'Corrèze',
     approche: [
       "Conception d'un jardin de ville surplombant une piscine centrale au jardin.",
-      "Renovation de la terrasse piscine avec création d'une plage pour transats, réalignement des éléments du jardin à la piscine, création d'un escalier esprit \"suspendu\" en pierre à l'arrière de la piscine, recomposition globale de la végétation dans un esprit tropical ont été les directives de ce projet.",
+      "Rénovation de la terrasse piscine avec création d'une plage pour transats, réalignement des éléments du jardin à la piscine, création d'un escalier esprit « suspendu » en pierre à l'arrière de la piscine, recomposition globale de la végétation dans un esprit tropical ont été les directives de ce projet.",
     ],
   },
   {
@@ -62,8 +62,8 @@ const conceptions = [
     l4: 'Corrèze',
     approche: [
       "Conception d'un domaine familial en Corrèze.",
-      "La réflexion s'est portée sur l'entrée, l'accueil des convives, la circulation comprenant l'accès des véhicules au carport, un passage piéton du carport jusqu'à l'entrée traversant la voie carrossable, l'intégration architecturale et environnemenntale des éléments de construction et de la palette végétale, dans un style provence romantique.",
-      "La structuration du projet s'articule autour de la courbe de Fibonacci qui en son centre accueille la statut et distibue selon sa géométrie native tous les accès de cette entrée.",
+      "La réflexion s'est portée sur l'entrée, l'accueil des convives, la circulation comprenant l'accès des véhicules au carport, un passage piéton du carport jusqu'à l'entrée traversant la voie carrossable, l'intégration architecturale et environnementale des éléments de construction et de la palette végétale, dans un style Provence romantique.",
+      "La structuration du projet s'articule autour de la courbe de Fibonacci qui, en son centre, accueille la statue et distribue selon sa géométrie native tous les accès de cette entrée.",
     ],
   },
   {
@@ -72,9 +72,9 @@ const conceptions = [
     l3: 'Conception, 2023',
     l4: 'Polyclinique Chénieux – Limoges',
     approche: [
-      "Réflexion d'un jardin-fôret pour les patients en chimiothérapie et oncologie de la Polyclinique de Chénieux à Limoges.",
-      "Autour de la fôret, la volonté d'offrir aux patients les bienfaits que procure cet environnement sur la santé humaine a été l'axe majeur de cette conception.",
-      'Immersion végétale, expérience de la fôret, calme du jardin, … tout a été pensé pour reconnecter les patients au vivant pour leur permettre de vivre leur derniers temps de la manière la plus apaisante possible.',
+      "Réflexion d'un jardin-forêt pour les patients en chimiothérapie et oncologie de la Polyclinique de Chénieux à Limoges.",
+      "Autour de la forêt, la volonté d'offrir aux patients les bienfaits que procure cet environnement sur la santé humaine a été l'axe majeur de cette conception.",
+      'Immersion végétale, expérience de la forêt, calme du jardin… tout a été pensé pour reconnecter les patients au vivant, pour leur permettre de vivre leurs derniers temps de la manière la plus apaisante possible.',
     ],
   },
   {
@@ -84,7 +84,7 @@ const conceptions = [
     l4: 'Corrèze',
     approche: [
       "Conception d'un patio ouvert de 10 m² en plein centre de Brive.",
-      "Refonte totale de l'espace en conservant l'architecture bâti et les arbres existants.",
+      "Refonte totale de l'espace en conservant l'architecture bâtie et les arbres existants.",
       "La végétalisation en périphérie de la pièce enveloppe l'espace pour venir gommer les limites structurelles du patio. Faire grimper la végétation sur les murs permet à l'espace de s'élever et de le rendre plus profond.",
       "Le reste, c'est tout pour l'expérience d'usage et de vie des clients.",
     ],
@@ -95,9 +95,9 @@ const conceptions = [
     l3: 'Co-conception, 2025',
     l4: 'Agde',
     approche: [
-      "Conception pour une rénovation totale d'un studio mezzanine en plein centre d'Agde dans le sud de la France.",
-      "Isolation, plomberie, électricité, sols, murs, … tout à été réfléchi en co-conception avec l'Atelier Laura Levadoux, architecte d'intérieur et coloriste experte, pour rendre cette appartement immersif et expérientiel dans le cadre d'une future location courte durée atypique.",
-      "L'idée générale, une jungle room sauvage et moderne en se se rapprochant au plus près des ambiance de la jungle : carrelage au sol qui rappel la rivière, la végétation qui rappelle celle qui serpente sur les rochers de la jungle, l'enclavement de la cuisine et de la douche sous mezzanine pour rappeler la grotte, …",
+      "Conception pour une rénovation totale d'un studio mezzanine en plein centre d'Agde, dans le sud de la France.",
+      "Isolation, plomberie, électricité, sols, murs… tout a été réfléchi en co-conception avec l'Atelier Laura Levadoux, architecte d'intérieur et coloriste experte, pour rendre cet appartement immersif et expérientiel dans le cadre d'une future location courte durée atypique.",
+      "L'idée générale, une jungle room sauvage et moderne en se rapprochant au plus près des ambiances de la jungle : carrelage au sol qui rappelle la rivière, végétation qui évoque celle qui serpente sur les rochers de la jungle, enclavement de la cuisine et de la douche sous mezzanine pour rappeler la grotte…",
     ],
   },
   {
@@ -106,8 +106,8 @@ const conceptions = [
     l3: 'Conception, 2026',
     l4: 'Valenciennes',
     approche: [
-      "Conception pour une rénovation complète d'un studio en plein centre de Valenciennes dans le nord de la France.",
-      "L'optimisation des espaces a été le fer de lance de ce projet. Des décrochés à noyer qui se transforment en rangement, une pièces principale qui alimente 3 espaces de vie : la cuisine, le salon et la chambre ; séparés par une cloison ouverte sur-mesure avec l'intégration de plantes, une teinte générale chaude et chaleureuse pour rendre ce studio atypique dans le cadre d'une future location courte durée.",
+      "Conception pour une rénovation complète d'un studio en plein centre de Valenciennes, dans le nord de la France.",
+      "L'optimisation des espaces a été le fer de lance de ce projet. Des décrochés à noyer qui se transforment en rangement, une pièce principale qui alimente 3 espaces de vie : la cuisine, le salon et la chambre ; séparés par une cloison ouverte sur-mesure avec l'intégration de plantes, une teinte générale chaude et chaleureuse pour rendre ce studio atypique dans le cadre d'une future location courte durée.",
     ],
   },
   {
@@ -116,8 +116,8 @@ const conceptions = [
     l3: 'Conception, 2021',
     l4: 'Haute-Vienne',
     approche: [
-      "Conception d'une terrasse en hauteur, enclavée entre la batisse d'un appartement architectural en plein centre de Limoges.",
-      'Mur végétalisé structuré pour atténuer les sons de la route, composition végétale des bacs existants, disposition des pots arborés et choix du mobiliers ont été les directives de ce projet.',
+      "Conception d'une terrasse en hauteur, enclavée entre la bâtisse d'un appartement architectural en plein centre de Limoges.",
+      'Mur végétalisé structuré pour atténuer les sons de la route, composition végétale des bacs existants, disposition des pots arborés et choix du mobilier ont été les directives de ce projet.',
     ],
   },
   {
@@ -126,9 +126,9 @@ const conceptions = [
     l3: 'Conception, 2024',
     l4: 'Corrèze',
     approche: [
-      "Conception d'une entrée de jardin pour un château classé du XIII s. en Corrèze.",
-      "Restructurer l'espace à l'abandon, organiser des cheminements piétons et carrossables, créer des box de stationnement pour les véhicules, re-créer un circuit dans le jardin en définissant une idéntité spatiale ont été les defis de ce projet.",
-      "L'architecture de ce jardin repose principalement sur ce damier dallé qui dessert à la fois le piéton et le véhicule, où le traitement en négatif des matière relève la vraie identité du cheminement : dallage plein et joint engazonné pour les piétons, joints dallés et engazonnement plein (avec renforcement de l'assise carrossabe complètement perméable). Une fois cette strcuture posée, les éléments naissent de l'équilibre entre structure et végétal, de perspectives et refuges.",
+      "Conception d'une entrée de jardin pour un château classé du XIIIᵉ siècle, en Corrèze.",
+      "Restructurer l'espace à l'abandon, organiser des cheminements piétons et carrossables, créer des box de stationnement pour les véhicules, recréer un circuit dans le jardin en définissant une identité spatiale ont été les défis de ce projet.",
+      "L'architecture de ce jardin repose principalement sur ce damier dallé qui dessert à la fois le piéton et le véhicule, où le traitement en négatif des matières révèle la vraie identité du cheminement : dallage plein et joint engazonné pour les piétons, joints dallés et engazonnement plein (avec renforcement de l'assise carrossable, complètement perméable). Une fois cette structure posée, les éléments naissent de l'équilibre entre structure et végétal, de perspectives et de refuges.",
     ],
   },
 ];
