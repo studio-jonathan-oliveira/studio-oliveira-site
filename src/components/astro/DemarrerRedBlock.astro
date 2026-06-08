@@ -64,6 +64,8 @@ const { invite } = Astro.props;
     /* Titre élargi sur toute la page (Morgan 2026-06-05) — plus de max-width. */
     max-width: none;
     margin: 0;
+    /* « \n » dans l'invite → 2 lignes, saut APRÈS « : » (Morgan 2026-06-08). */
+    white-space: pre-line;
   }
   .dem-red__form {
     width: 100%;

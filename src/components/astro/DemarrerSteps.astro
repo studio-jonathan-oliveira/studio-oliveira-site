@@ -111,13 +111,18 @@ const { steps } = Astro.props;
     );
   }
 
+  /* Image immersive étalée sur ~3 écrans (Morgan 2026-06-08) : le « 1 » + ses
+     accordéons en haut, puis un GRAND ESPACE d'environ un écran (gap), puis le
+     « 2 ». La photo (bg position:absolute inset:0) remplit toute la hauteur du
+     bloc → impression d'image étalée sur la hauteur. */
   .dem-steps__groups {
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: clamp(3rem, 8vw, 7rem);
-    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    /* ~1 écran de vide entre le groupe 1 et le groupe 2. */
+    gap: 96svh;
+    padding: 18svh clamp(1.5rem, 5vw, 4rem) 60svh;
   }
 
   .dem-steps__group {

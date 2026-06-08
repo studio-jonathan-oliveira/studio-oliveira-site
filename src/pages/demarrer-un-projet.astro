@@ -52,7 +52,9 @@ const validation = [
   },
 ] as const;
 
-const invite = 'Anticipez le premier échange : parlez-moi de votre projet';
+// Saut de ligne APRÈS « : » (Morgan 2026-06-08) — rendu par white-space:
+// pre-line dans DemarrerRedBlock.
+const invite = 'Anticipez le premier échange :\nparlez-moi de votre projet';
 
 const schema = jsonLdGraph([
   organization(),

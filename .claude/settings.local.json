@@ -300,7 +300,10 @@
       "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_03.png'\\).extract\\({left:400,top:1090,width:380,height:90}\\).resize\\({width:1900}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/z03c_line.png'\\)\")",
       "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_12.png'\\).extract\\({left:200,top:560,width:200,height:160}\\).resize\\({width:1600}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/sq12.png'\\)\")",
       "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_03.png'\\).extract\\({left:600,top:1100,width:200,height:70}\\).resize\\({width:1600}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/z03c_xiii.png'\\)\")",
-      "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_03.png'\\).extract\\({left:620,top:1100,width:280,height:70}\\).resize\\({width:1680}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/z03c_xiii2.png'\\)\")"
+      "Bash(node -e \"require\\('sharp'\\)\\('C:/tmp/trame-ocr/etude_03.png'\\).extract\\({left:620,top:1100,width:280,height:70}\\).resize\\({width:1680}\\).png\\(\\).toFile\\('C:/tmp/trame-ocr/z03c_xiii2.png'\\)\")",
+      "Bash(node -e \"const sharp=require\\('sharp'\\);\\(async\\(\\)=>{const m=await sharp\\('_assets/modif finales/demarrer un projet.jpg'\\).metadata\\(\\);console.log\\('demarrer trame',m.width+'x'+m.height\\);}\\)\\(\\);\")",
+      "Bash(ls src/components/astro/Demarrer*)",
+      "Bash(ls src/components/islands/Demarrer*)"
     ],
     "additionalDirectories": [
       "\\tmp"
