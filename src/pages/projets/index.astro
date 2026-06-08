@@ -219,14 +219,11 @@ const concItems = conceptions.map((c, i) => ({ ...c, n: i + 1 }));
 const concGauche = concItems.filter((_, i) => i % 2 === 0);
 const concDroite = concItems.filter((_, i) => i % 2 === 1);
 
-// ── Galerie Studio : masonry 3 colonnes, ratios variés. 28 photos Jonathan
-// (public/projets/galerie/0N.webp). ──
+// ── Galerie Studio : vrai masonry en colonnes CSS (columns) — équilibre
+// automatiquement les HAUTEURS, donc plus de photos isolées en bas (les 3
+// dernières s'empilaient avec l'ancien masonry par comptage, Morgan 2026-06-08).
+// 28 photos Jonathan (public/projets/galerie/0N.webp), ratios variés cyclés. ──
 const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
-const galCols: number[][] = [[], [], []];
-galerie.forEach((n, i) => {
-  (galCols[i % 3] as number[]).push(n);
-});
-// Ratios cyclés pour évoquer le masonry tant que les vraies photos manquent.
 const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
 ---
 
@@ -366,28 +363,24 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
         <span class="proj-acc__icon" aria-hidden="true"></span>
       </summary>
       <div class="proj-acc__panel">
-        <div class="proj-masonry proj-masonry--3">
+        <div class="proj-gal">
           {
-            galCols.map((col) => (
-              <div class="proj-col">
-                {col.map((n) => (
-                  <button
-                    class="zoom-card proj-card proj-card--gal"
-                    data-zoom-src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
-                    data-zoom-alt={`Galerie studio ${n}`}
-                    style={`aspect-ratio:${galRatios[(n - 1) % galRatios.length]}`}
-                  >
-                    <img
-                      class="zoom-card__img"
-                      src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
-                      alt={`Galerie studio ${n}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <span class="zoom-card__pill">Agrandir</span>
-                  </button>
-                ))}
-              </div>
+            galerie.map((n) => (
+              <button
+                class="zoom-card proj-card proj-card--gal"
+                data-zoom-src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
+                data-zoom-alt={`Galerie studio ${n}`}
+                style={`aspect-ratio:${galRatios[(n - 1) % galRatios.length]}`}
+              >
+                <img
+                  class="zoom-card__img"
+                  src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
+                  alt={`Galerie studio ${n}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="zoom-card__pill">Agrandir</span>
+              </button>
             ))
           }
         </div>
@@ -539,6 +532,31 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
       .proj-col--offset {
         margin-top: clamp(3rem, 8vw, 7rem);
       }
+    }
+
+    /* Galerie Studio — masonry CSS multi-colonnes : équilibre auto des hauteurs
+       (les colonnes se remplissent uniformément → plus de photos isolées en bas,
+       continuité visuelle). 1 col mobile, 2 tablette, 3 desktop. */
+    .proj-gal {
+      columns: 1;
+      column-gap: clamp(1rem, 2.5vw, 2rem);
+    }
+    @media (min-width: 640px) {
+      .proj-gal {
+        columns: 2;
+      }
+    }
+    @media (min-width: 1024px) {
+      .proj-gal {
+        columns: 3;
+      }
+    }
+    .proj-gal .proj-card--gal {
+      width: 100%;
+      height: auto;
+      margin: 0 0 clamp(1rem, 2.5vw, 2rem);
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
     }
 
     /* Ratios par défaut des cartes (galerie surchargée inline par carte). */

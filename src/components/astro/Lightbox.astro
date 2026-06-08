@@ -121,6 +121,18 @@
     opacity: 1;
     visibility: visible;
   }
+  /* Fermeture (FLIP inverse) : on garde l'overlay visible et l'image opaque
+     pendant qu'elle rétrécit vers sa vignette ; seul le FOND sombre se dissipe
+     (background transparent), + la carte approche et le × disparaissent. */
+  .lightbox.is-closing {
+    background-color: transparent;
+    transition: background-color 0.6s var(--ease-out-editorial, ease);
+  }
+  .lightbox.is-closing .lightbox__approche,
+  .lightbox.is-closing .lightbox__close {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
   /* Figure = conteneur relatif pour aimanter la carte « Approche projet »
      sur l'image. En mode image seule, se comporte comme l'ancien <img>. */
   .lightbox__figure {
@@ -252,6 +264,11 @@
     const fine = window.matchMedia('(pointer: fine)').matches;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Carte d'origine du clic — mémorisée pour rejouer le FLIP À L'ENVERS à la
+    // fermeture (l'image rétrécit vers sa vignette dans la galerie).
+    let originCard: HTMLElement | null = null;
+    let closing = false;
+
     // ── Carte « Approche projet » qui SUIT LE CURSEUR (annotation trame
     // « CADRE AIMANTÉ AU CURSEUR »), comme le cursor-tooltip des typologies
     // home. Position fixed pilotée par --lb-x / --lb-y (lerp en rAF), placée
@@ -317,7 +334,8 @@
       img.style.transition = 'none';
       img.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
       void img.offsetWidth; // reflow
-      img.style.transition = 'transform 0.6s var(--ease-out-editorial, ease)';
+      // Ouverture ralentie (Morgan 2026-06-08 : « plus lent l'animation »).
+      img.style.transition = 'transform 0.8s var(--ease-out-editorial, ease)';
       img.style.transform = 'translate(0, 0) scale(1)';
     };
 
@@ -360,13 +378,45 @@
         }
       }
     };
-    const close = () => {
-      overlay.classList.remove('is-open');
+    const hardClose = () => {
+      overlay.classList.remove('is-open', 'is-closing');
       overlay.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
       stopFollow();
       img.style.transition = '';
       img.style.transform = '';
+      originCard = null;
+      closing = false;
+    };
+    // Fermeture : FLIP À L'ENVERS — l'image rétrécit vers sa vignette d'origine
+    // (Morgan 2026-06-08 : « qu'on voie l'image réduire pour se repositionner
+    // dans la galerie »). Le fond se dissipe pendant que l'image rejoint sa carte.
+    const close = () => {
+      if (closing) return;
+      const last = img.getBoundingClientRect();
+      const target = originCard?.getBoundingClientRect();
+      if (reduce || !target || !last.width || !target.width) {
+        hardClose();
+        return;
+      }
+      closing = true;
+      overlay.classList.add('is-closing');
+      stopFollow();
+      const dx = target.left - last.left;
+      const dy = target.top - last.top;
+      const sx = target.width / last.width;
+      const sy = target.height / last.height;
+      img.style.transition = 'transform 0.8s var(--ease-out-editorial, ease)';
+      img.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        img.removeEventListener('transitionend', finish);
+        hardClose();
+      };
+      img.addEventListener('transitionend', finish);
+      window.setTimeout(finish, 950); // filet de sécurité si transitionend manque
     };
 
     // Délégation : clic sur toute carte [data-zoom-src].
@@ -376,13 +426,15 @@
       if (card) {
         e.preventDefault();
         const src = card.dataset.zoomSrc;
-        if (src)
+        if (src) {
+          originCard = card;
           open(
             src,
             card.dataset.zoomAlt || '',
             card.dataset.zoomApproche,
             card.getBoundingClientRect(),
           );
+        }
         return;
       }
       // Le clic sur la carte « Approche projet » (pointer-events: none) tombe
