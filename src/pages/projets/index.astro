@@ -26,27 +26,111 @@ const schema = jsonLdGraph([
   ]),
 ]);
 
-// ── Cartes ÉTUDES & CONCEPTIONS (vignette Twinmotion + overlay 4 lignes) ──
+// ── Cartes ÉTUDES & CONCEPTIONS ──
+// `approche` = texte « Approche projet » affiché dans la lightbox (carte beige
+// qui suit le curseur). VERBATIM extrait par OCR des trames Jonathan
+// (`accordeon etude et conception.jpg`, re-audit + OCR zoomé 2026-06-08) :
+// orthographe/accents/fautes de l'auteur CONSERVÉS tels quels (règle éditoriale
+// — ne rien inventer ni corriger sans accord Jonathan). Typos signalées dans
+// `_brief/contenus-manquants.md`. Paragraphes séparés par une ligne vide.
 const conceptions = [
-  { l1: 'Coeur urbain', l2: 'Jardin de ville', l3: 'Conception, 2024', l4: 'Corrèze' },
-  { l1: 'Frange urbaine', l2: 'Jardin familial', l3: 'Conception, 2026', l4: 'Corrèze' },
-  { l1: 'Domaine & Caractère', l2: 'Domaine familial', l3: 'Conception, 2023', l4: 'Corrèze' },
+  {
+    l1: 'Coeur urbain',
+    l2: 'Jardin de ville',
+    l3: 'Conception, 2024',
+    l4: 'Corrèze',
+    approche: [
+      "Conception d'un jardin de ville surplombant une piscine centrale au jardin.",
+      "Renovation de la terrasse piscine avec création d'une plage pour transats, réalignement des éléments du jardin à la piscine, création d'un escalier esprit \"suspendu\" en pierre à l'arrière de la piscine, recomposition globale de la végétation dans un esprit tropical ont été les directives de ce projet.",
+    ],
+  },
+  {
+    l1: 'Frange urbaine',
+    l2: 'Jardin familial',
+    l3: 'Conception, 2026',
+    l4: 'Corrèze',
+    approche: [
+      "Conception d'un jardin familial dans les hauteurs de Cosnac, en Corrèze.",
+      'Jardin tout en pente avec mur de soutènement en parpaing existant qui scindait le terrain en deux.',
+      "Composition et réflexion fonctionnelle des espaces sous forme de terrasses et paliers en créant des identités différentes, habillage du mur de soutènement en l'intégrant à l'architecture de la maison, nouvelle plateforme de jeu pour les enfants en enrochement, intégration paysagère avec nouvelle composition arborée en gérant les vis-à-vis gênants.",
+    ],
+  },
+  {
+    l1: 'Domaine & Caractère',
+    l2: 'Domaine familial',
+    l3: 'Conception, 2023',
+    l4: 'Corrèze',
+    approche: [
+      "Conception d'un domaine familial en Corrèze.",
+      "La réflexion s'est portée sur l'entrée, l'accueil des convives, la circulation comprenant l'accès des véhicules au carport, un passage piéton du carport jusqu'à l'entrée traversant la voie carrossable, l'intégration architecturale et environnemenntale des éléments de construction et de la palette végétale, dans un style provence romantique.",
+      "La structuration du projet s'articule autour de la courbe de Fibonacci qui en son centre accueille la statut et distibue selon sa géométrie native tous les accès de cette entrée.",
+    ],
+  },
   {
     l1: 'Jardin Forêt',
     l2: 'Projet Public',
     l3: 'Conception, 2023',
     l4: 'Polyclinique Chénieux – Limoges',
+    approche: [
+      "Réflexion d'un jardin-fôret pour les patients en chimiothérapie et oncologie de la Polyclinique de Chénieux à Limoges.",
+      "Autour de la fôret, la volonté d'offrir aux patients les bienfaits que procure cet environnement sur la santé humaine a été l'axe majeur de cette conception.",
+      'Immersion végétale, expérience de la fôret, calme du jardin, … tout a été pensé pour reconnecter les patients au vivant pour leur permettre de vivre leur derniers temps de la manière la plus apaisante possible.',
+    ],
   },
-  { l1: 'Micro urbain', l2: 'Patio extérieur', l3: 'Conception, 2022', l4: 'Corrèze' },
+  {
+    l1: 'Micro urbain',
+    l2: 'Patio extérieur',
+    l3: 'Conception, 2022',
+    l4: 'Corrèze',
+    approche: [
+      "Conception d'un patio ouvert de 10 m² en plein centre de Brive.",
+      "Refonte totale de l'espace en conservant l'architecture bâti et les arbres existants.",
+      "La végétalisation en périphérie de la pièce enveloppe l'espace pour venir gommer les limites structurelles du patio. Faire grimper la végétation sur les murs permet à l'espace de s'élever et de le rendre plus profond.",
+      "Le reste, c'est tout pour l'expérience d'usage et de vie des clients.",
+    ],
+  },
   {
     l1: 'Airbnb atypique',
     l2: "Collab. archi. d'intérieur",
     l3: 'Co-conception, 2025',
     l4: 'Agde',
+    approche: [
+      "Conception pour une rénovation totale d'un studio mezzanine en plein centre d'Agde dans le sud de la France.",
+      "Isolation, plomberie, électricité, sols, murs, … tout à été réfléchi en co-conception avec l'Atelier Laura Levadoux, architecte d'intérieur et coloriste experte, pour rendre cette appartement immersif et expérientiel dans le cadre d'une future location courte durée atypique.",
+      "L'idée générale, une jungle room sauvage et moderne en se se rapprochant au plus près des ambiance de la jungle : carrelage au sol qui rappel la rivière, la végétation qui rappelle celle qui serpente sur les rochers de la jungle, l'enclavement de la cuisine et de la douche sous mezzanine pour rappeler la grotte, …",
+    ],
   },
-  { l1: 'Airbnb atypique', l2: '', l3: 'Conception, 2026', l4: 'Valenciennes' },
-  { l1: 'Micro urbain', l2: "Terrasse d'appartement", l3: 'Conception, 2021', l4: 'Haute-Vienne' },
-  { l1: 'Domaine & Caractère', l2: 'Château classé XIIIs.', l3: 'Conception, 2024', l4: 'Corrèze' },
+  {
+    l1: 'Airbnb atypique',
+    l2: '',
+    l3: 'Conception, 2026',
+    l4: 'Valenciennes',
+    approche: [
+      "Conception pour une rénovation complète d'un studio en plein centre de Valenciennes dans le nord de la France.",
+      "L'optimisation des espaces a été le fer de lance de ce projet. Des décrochés à noyer qui se transforment en rangement, une pièces principale qui alimente 3 espaces de vie : la cuisine, le salon et la chambre ; séparés par une cloison ouverte sur-mesure avec l'intégration de plantes, une teinte générale chaude et chaleureuse pour rendre ce studio atypique dans le cadre d'une future location courte durée.",
+    ],
+  },
+  {
+    l1: 'Micro urbain',
+    l2: "Terrasse d'appartement",
+    l3: 'Conception, 2021',
+    l4: 'Haute-Vienne',
+    approche: [
+      "Conception d'une terrasse en hauteur, enclavée entre la batisse d'un appartement architectural en plein centre de Limoges.",
+      'Mur végétalisé structuré pour atténuer les sons de la route, composition végétale des bacs existants, disposition des pots arborés et choix du mobiliers ont été les directives de ce projet.',
+    ],
+  },
+  {
+    l1: 'Domaine & Caractère',
+    l2: 'Château classé XIIIs.',
+    l3: 'Conception, 2024',
+    l4: 'Corrèze',
+    approche: [
+      "Conception d'une entrée de jardin pour un château classé du XIII s. en Corrèze.",
+      "Restructurer l'espace à l'abandon, organiser des cheminements piétons et carrossables, créer des box de stationnement pour les véhicules, re-créer un circuit dans le jardin en définissant une idéntité spatiale ont été les defis de ce projet.",
+      "L'architecture de ce jardin repose principalement sur ce damier dallé qui dessert à la fois le piéton et le véhicule, où le traitement en négatif des matière relève la vraie identité du cheminement : dallage plein et joint engazonné pour les piétons, joints dallés et engazonnement plein (avec renforcement de l'assise carrossabe complètement perméable). Une fois cette strcuture posée, les éléments naissent de l'équilibre entre structure et végétal, de perspectives et refuges.",
+    ],
+  },
 ];
 
 // ── Cartes RÉALISATIONS (overlay Titre / Établissement / Type / année / ville) ──
@@ -141,6 +225,8 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
                   class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j) % concPos.length]}`}
                   data-zoom-src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
                   data-zoom-alt={`${c.l1} — ${c.l4}`}
+                  data-zoom-approche={c.approche.join('\n\n')}
+                  data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                 >
                   <img
                     class="zoom-card__img"
@@ -167,6 +253,8 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
                   class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j + 1) % concPos.length]}`}
                   data-zoom-src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
                   data-zoom-alt={`${c.l1} — ${c.l4}`}
+                  data-zoom-approche={c.approche.join('\n\n')}
+                  data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                 >
                   <img
                     class="zoom-card__img"
@@ -204,6 +292,9 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
                 class="zoom-card proj-card proj-card--real"
                 data-zoom-src={`/projets/realisations/${String(i + 1).padStart(2, '0')}.webp`}
                 data-zoom-alt={`${r.titre} — ${r.ville}`}
+                data-cursor-tooltip={[r.titre, r.etab, `Réalisation, ${r.annee}`, r.ville]
+                  .filter(Boolean)
+                  .join(' / ')}
               >
                 <img
                   class="zoom-card__img"
@@ -444,19 +535,23 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
       color: color-mix(in oklab, var(--color-cream) 55%, transparent);
     }
 
-    /* Overlay texte — crème DIRECTEMENT sur la carte (trame : pas d'encart),
-       text-shadow pour rester lisible sur photo claire. Position variable. */
+    /* Overlay texte — l'info N'EST PLUS imprimée sur la carte : elle s'affiche
+       dans l'infobulle qui SUIT LE CURSEUR (retour Morgan 2026-06-08 : « partout
+       dans la page projet c'est des infos qui suivent le curseur », comme les
+       cartes typologies de la home). On conserve l'overlay dans le DOM en
+       sr-only — il reste lisible par les crawlers (SEO prioritaire) et sert de
+       source de données au suiveur `.proj-follow`. */
     .proj-card__overlay {
       position: absolute;
-      display: flex;
-      flex-direction: column;
-      gap: 0.05rem;
-      padding: clamp(0.85rem, 1.5vw, 1.3rem);
-      max-width: 88%;
-      color: var(--color-cream);
-      text-shadow: 0 1px 14px color-mix(in oklab, var(--color-ink) 75%, transparent);
-      pointer-events: none;
-      z-index: 2;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
     }
     /* Réalisations : texte constant en haut-gauche (trame). */
     .proj-card--real .proj-card__overlay {

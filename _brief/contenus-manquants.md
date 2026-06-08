@@ -284,6 +284,32 @@ Remplacé par description factuelle générée sur les faits du PDF (biophilie, 
 **Contexte** : message affiché après envoi réussi du formulaire. Doit engager l'utilisateur sur le délai de réponse réel de Jonathan (« sous 48 h », « sous 2 jours ouvrés »…) et la suite (appel de qualification 15-25 min). Placeholder actuel : « Nous revenons vers vous sous quelques jours ouvrés pour engager l'appel de qualification. »
 **Deadline suggérée** : avant mise en ligne fin mai 2026.
 
+### PROJETS-APPROCHE-PROJET-TYPOS (décision éditoriale Jonathan)
+
+**Type** : validation orthographique, pas un contenu manquant.
+**Emplacement** : `src/pages/projets/index.astro` — champ `approche` des 9 cartes Études & Conceptions.
+**Contexte** : les 9 textes « Approche projet » (affichés dans la lightbox qui suit le
+curseur) ont été extraits VERBATIM par OCR des trames Jonathan
+(`_assets/modif finales/accordeon etude et conception.jpg`). Conformément à la règle
+éditoriale, les fautes de l'auteur sont **conservées telles quelles**. À faire trancher
+par Jonathan : garder verbatim (parti-pris « son verbe brut ») ou corriger. Liste des
+graphies à confirmer :
+
+- Coeur urbain : `Renovation` (sans accent), guillemets droits `"suspendu"`.
+- Domaine familial : `environnemenntale` (double n), `la statut`, `distibue` (sans r),
+  `style provence` (sans majuscule).
+- Jardin Forêt : `jardin-fôret` / `fôret` (circonflexe au lieu de `forêt`, 3×),
+  `leur derniers temps`.
+- Micro / Patio : `l'architecture bâti` (accord absent).
+- Airbnb Agde : `tout à été`, `cette appartement`, `des ambiance`, `qui rappel`,
+  `en se se rapprochant` (doublon « se »).
+- Airbnb Valenciennes : `une pièces principale` (accord).
+- Micro / Terrasse : `batisse` (sans circonflexe), `choix du mobiliers`.
+- Château XIIIs. : `idéntité spatiale`, `les defis`, `des matière`, `carrossabe`
+  (sans l final), `cette strcuture` (lettres inversées).
+
+**Deadline suggérée** : avant mise en ligne fin mai 2026.
+
 ---
 
 **Mise à jour** : à compléter à chaque nouveau placeholder inséré dans le code ou la doc.

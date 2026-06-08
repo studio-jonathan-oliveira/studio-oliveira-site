@@ -300,6 +300,12 @@
       text-transform: uppercase;
       white-space: pre;
     }
+    /* Sur fond sombre (pages DA noires : /projets, hero, footer…), le texte
+       ink serait illisible → on bascule en crème. Le tooltip suit le curseur
+       sur les cartes /projets exactement comme sur les typologies home. */
+    .custom-cursor.is-on-dark .cursor-tooltip__text {
+      color: var(--color-cream);
+    }
     .custom-cursor.is-tooltipped .cursor-tooltip {
       opacity: 1;
     }

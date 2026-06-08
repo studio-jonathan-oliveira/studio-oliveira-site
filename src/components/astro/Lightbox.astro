@@ -12,12 +12,20 @@
  * → survol : image floutée + pastille « Agrandir » ; clic : overlay plein
  *   écran avec l'image agrandie (coins arrondis) + bouton ×.
  *
+ * MODE « Approche projet » (trame accordeon-etude-et-conception, annotation
+ * « AGRANDISSEMENT DE L'IMAGE » + « TEXTE + CADRE AIMANTÉ AU CURSEUR ») :
+ * si la carte porte data-zoom-approche="…", la lightbox superpose une carte
+ * beige « Approche projet » (titre noir bold + corps justifié) AIMANTÉE au
+ * curseur (léger parallax magnétique). Les paragraphes du corps sont séparés
+ * par « \n\n » dans l'attribut. Sans cet attribut → image seule (réalisations,
+ * galerie studio, autres galeries sitewide).
+ *
  * Ce composant rend l'overlay (une fois) + le CSS global + le script de
  * délégation. À inclure une seule fois (BaseLayout).
  */
 ---
 
-<div class="lightbox" id="lightbox" aria-hidden="true" data-lightbox>
+<div class="lightbox" id="lightbox" aria-hidden="true" data-theme="dark" data-lightbox>
   <button
     class="lightbox__close"
     type="button"
@@ -26,7 +34,14 @@
   >
     <span aria-hidden="true">×</span>
   </button>
-  <img class="lightbox__img" id="lightbox-img" alt="" data-lightbox-img />
+  <figure class="lightbox__figure" data-lightbox-figure>
+    <img class="lightbox__img" id="lightbox-img" alt="" data-lightbox-img />
+    {/* Carte « Approche projet » — affichée seulement en mode conception. */}
+    <div class="lightbox__approche" data-lightbox-approche hidden aria-hidden="true">
+      <p class="lightbox__approche-title">Approche projet</p>
+      <div class="lightbox__approche-body" data-lightbox-approche-body></div>
+    </div>
+  </figure>
 </div>
 
 <style is:global>
@@ -106,8 +121,19 @@
     opacity: 1;
     visibility: visible;
   }
-  .lightbox__img {
+  /* Figure = conteneur relatif pour aimanter la carte « Approche projet »
+     sur l'image. En mode image seule, se comporte comme l'ancien <img>. */
+  .lightbox__figure {
+    position: relative;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     max-width: min(92vw, 1400px);
+    max-height: 86vh;
+  }
+  .lightbox__img {
+    max-width: 100%;
     max-height: 86vh;
     width: auto;
     height: auto;
@@ -119,6 +145,75 @@
   .lightbox.is-open .lightbox__img {
     transform: scale(1);
   }
+
+  /* ── Carte « Approche projet » (mode conception) ─────────────────────── */
+  /* Fond beige, texte noir. Elle SUIT LE CURSEUR (annotation trame « TEXTE +
+     CADRE AIMANTÉ AU CURSEUR »), comme le cursor-tooltip des cartes typologies
+     sur la home : position fixed pilotée par --lb-x / --lb-y (lerp en JS).
+     pointer-events none → le clic sur le fond ferme toujours la lightbox. */
+  .lightbox__approche {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: min(38ch, 80vw);
+    box-sizing: border-box;
+    padding: clamp(1rem, 1.6vw, 1.6rem) clamp(1.1rem, 1.8vw, 1.8rem);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    border-radius: clamp(14px, 1.2vw, 20px);
+    box-shadow: 0 18px 50px color-mix(in oklab, var(--color-ink) 45%, transparent);
+    pointer-events: none;
+    z-index: 210;
+    opacity: 0;
+    transform: translate3d(var(--lb-x, 0px), var(--lb-y, 0px), 0);
+    /* Seule l'opacité est animée — la position est pilotée image par image
+       (rAF), pas par une transition CSS qui lutterait avec le lerp. */
+    transition: opacity 0.45s var(--ease-out-editorial, ease);
+    will-change: transform;
+  }
+  .lightbox.is-open .lightbox__approche {
+    opacity: 1;
+  }
+  .lightbox__approche-title {
+    margin: 0 0 0.7em;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 1.3vw, 1.4rem);
+    letter-spacing: 0.01em;
+    word-spacing: 0.12em;
+    line-height: 1.1;
+  }
+  .lightbox__approche-body {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.78rem, 0.92vw, 0.95rem);
+    line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    white-space: pre-line; /* « \n\n » → saut de paragraphe */
+    color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+  }
+
+  /* Sous le seuil tablette : la carte passe en bas, pleine largeur, statique
+     (l'aimantation et la superposition n'ont pas de sens sur petit écran). */
+  @media (max-width: 767px) {
+    .lightbox__figure {
+      flex-direction: column;
+      max-height: none;
+    }
+    .lightbox__approche {
+      position: static;
+      width: 100%;
+      transform: none;
+      margin-top: 0.9rem;
+      opacity: 1;
+    }
+    .lightbox__img {
+      max-height: 62vh;
+    }
+  }
+
   .lightbox__close {
     position: absolute;
     top: clamp(1rem, 3vw, 2.5rem);
@@ -131,12 +226,14 @@
     line-height: 1;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
+    z-index: 2;
   }
   @media (prefers-reduced-motion: reduce) {
     .zoom-card__img,
     .zoom-card__pill,
     .lightbox,
-    .lightbox__img {
+    .lightbox__img,
+    .lightbox__approche {
       transition: none;
     }
   }
@@ -146,11 +243,67 @@
   function initLightbox() {
     const overlay = document.querySelector<HTMLElement>('[data-lightbox]');
     const img = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
-    if (!overlay || !img) return;
+    const figure = document.querySelector<HTMLElement>('[data-lightbox-figure]');
+    const approche = document.querySelector<HTMLElement>('[data-lightbox-approche]');
+    const approcheBody = document.querySelector<HTMLElement>('[data-lightbox-approche-body]');
+    if (!overlay || !img || !figure || !approche || !approcheBody) return;
 
-    const open = (src: string, alt: string) => {
+    // ── Aimantation de la carte « Approche projet » au curseur ───────────
+    // Parallax magnétique léger : la carte se décale de quelques px vers la
+    // position du pointeur (lerp en rAF). Amplitude volontairement faible pour
+    // garder le texte lisible (annotation trame « CADRE AIMANTÉ AU CURSEUR »).
+    const MAGNET = 14; // amplitude max en px
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let rafId = 0;
+    let magnetActive = false;
+
+    const magnetLoop = () => {
+      curX += (targetX - curX) * 0.12;
+      curY += (targetY - curY) * 0.12;
+      approche.style.setProperty('--magnet-x', `${curX.toFixed(2)}px`);
+      approche.style.setProperty('--magnet-y', `${curY.toFixed(2)}px`);
+      if (magnetActive) rafId = requestAnimationFrame(magnetLoop);
+    };
+
+    const onMagnetMove = (e: PointerEvent) => {
+      const r = figure.getBoundingClientRect();
+      const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2); // -1..1
+      const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+      targetX = Math.max(-1, Math.min(1, nx)) * MAGNET;
+      targetY = Math.max(-1, Math.min(1, ny)) * MAGNET;
+    };
+
+    const startMagnet = () => {
+      if (magnetActive) return;
+      magnetActive = true;
+      window.addEventListener('pointermove', onMagnetMove);
+      rafId = requestAnimationFrame(magnetLoop);
+    };
+    const stopMagnet = () => {
+      magnetActive = false;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('pointermove', onMagnetMove);
+      targetX = targetY = curX = curY = 0;
+      approche.style.setProperty('--magnet-x', '0px');
+      approche.style.setProperty('--magnet-y', '0px');
+    };
+
+    const open = (src: string, alt: string, approcheText?: string) => {
       img.src = src;
       img.alt = alt;
+      if (approcheText) {
+        approcheBody.textContent = approcheText;
+        approche.hidden = false;
+        approche.setAttribute('aria-hidden', 'false');
+        startMagnet();
+      } else {
+        approche.hidden = true;
+        approche.setAttribute('aria-hidden', 'true');
+        stopMagnet();
+      }
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
       document.documentElement.style.overflow = 'hidden';
@@ -159,6 +312,7 @@
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
+      stopMagnet();
     };
 
     // Délégation : clic sur toute carte [data-zoom-src].
@@ -170,9 +324,11 @@
         // Placeholder sans image (ex: /projets en attente des visuels) →
         // on n'ouvre pas un overlay vide.
         const src = card.dataset.zoomSrc;
-        if (src) open(src, card.dataset.zoomAlt || '');
+        if (src) open(src, card.dataset.zoomAlt || '', card.dataset.zoomApproche);
         return;
       }
+      // Le clic sur la carte « Approche projet » (pointer-events: none) tombe
+      // sur l'overlay → ferme, comme tout clic hors image/×.
       if (target?.closest?.('[data-lightbox-close]') || target === overlay) {
         close();
       }
