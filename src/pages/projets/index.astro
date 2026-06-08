@@ -224,7 +224,6 @@ const concDroite = concItems.filter((_, i) => i % 2 === 1);
 // dernières s'empilaient avec l'ancien masonry par comptage, Morgan 2026-06-08).
 // 28 photos Jonathan (public/projets/galerie/0N.webp), ratios variés cyclés. ──
 const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
-const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
 ---
 
 <BaseLayout
@@ -370,7 +369,6 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
                 class="zoom-card proj-card proj-card--gal"
                 data-zoom-src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
                 data-zoom-alt={`Galerie studio ${n}`}
-                style={`aspect-ratio:${galRatios[(n - 1) % galRatios.length]}`}
               >
                 <img
                   class="zoom-card__img"
@@ -534,29 +532,29 @@ const galRatios = ['3 / 4', '1 / 1', '4 / 3', '3 / 4', '4 / 3', '1 / 1'];
       }
     }
 
-    /* Galerie Studio — masonry CSS multi-colonnes : équilibre auto des hauteurs
-       (les colonnes se remplissent uniformément → plus de photos isolées en bas,
-       continuité visuelle). 1 col mobile, 2 tablette, 3 desktop. */
+    /* Galerie Studio — grille RÉGULIÈRE 3 colonnes, remplissage gauche→droite,
+       cellules uniformes (Morgan 2026-06-08 : lignes pleines finissant « 3 puis
+       1 », pas le « 2 et 2 » du masonry équilibré). 1 col mobile, 2 tablette,
+       3 desktop. Ratio uniforme → lignes propres. */
     .proj-gal {
-      columns: 1;
-      column-gap: clamp(1rem, 2.5vw, 2rem);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1rem, 2.5vw, 2rem);
     }
     @media (min-width: 640px) {
       .proj-gal {
-        columns: 2;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
     @media (min-width: 1024px) {
       .proj-gal {
-        columns: 3;
+        grid-template-columns: repeat(3, 1fr);
       }
     }
     .proj-gal .proj-card--gal {
       width: 100%;
-      height: auto;
-      margin: 0 0 clamp(1rem, 2.5vw, 2rem);
-      break-inside: avoid;
-      -webkit-column-break-inside: avoid;
+      margin: 0;
+      aspect-ratio: 4 / 3;
     }
 
     /* Ratios par défaut des cartes (galerie surchargée inline par carte). */

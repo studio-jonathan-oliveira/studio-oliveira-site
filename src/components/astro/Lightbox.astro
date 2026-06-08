@@ -349,7 +349,12 @@
       const run = () => {
         overlay.classList.add('is-open');
         overlay.setAttribute('aria-hidden', 'false');
+        // Verrou du scroll SANS décalage : on compense la largeur de la
+        // scrollbar par un padding-right équivalent (sinon toute la page saute
+        // quand la scrollbar disparaît/réapparaît — saccade signalée Morgan).
+        const sw = window.innerWidth - document.documentElement.clientWidth;
         document.documentElement.style.overflow = 'hidden';
+        if (sw > 0) document.documentElement.style.paddingRight = `${sw}px`;
         if (approcheText) {
           approcheBody.textContent = approcheText;
           approche.hidden = false;
@@ -379,9 +384,16 @@
       }
     };
     const hardClose = () => {
+      // Masquage INSTANTANÉ de l'overlay (transition coupée) : l'image vient de
+      // rejoindre sa vignette, on évite que le reset de transform / le retour du
+      // fond sombre soient visibles (= la saccade de fin signalée par Morgan).
+      overlay.style.transition = 'none';
       overlay.classList.remove('is-open', 'is-closing');
+      void overlay.offsetWidth; // applique le masquage avant de réactiver la transition
+      overlay.style.transition = '';
       overlay.setAttribute('aria-hidden', 'true');
       document.documentElement.style.overflow = '';
+      document.documentElement.style.paddingRight = '';
       stopFollow();
       img.style.transition = '';
       img.style.transform = '';
