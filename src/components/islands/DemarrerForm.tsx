@@ -24,7 +24,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
-import { animate } from 'motion';
 import {
   demarrerSchema,
   SURFACE_OPTIONS,
@@ -150,19 +149,20 @@ export default function DemarrerForm(): React.JSX.Element {
     if (state.kind === 'success') successRef.current?.focus();
   }, [state.kind]);
 
-  // Magnétique du bouton ENVOYER — version PROXIMITÉ (Morgan 2026-06-08 : le
-  // magnétique element-level ne se déclenchait qu'une fois le pointeur DÉJÀ sur
-  // le bouton, donc imperceptible). Ici on écoute le pointeur sur la fenêtre :
-  // dès qu'il entre dans une zone autour du bouton, celui-ci est attiré vers le
-  // curseur (l'effet « aimanté » devient net).
+  // Magnétique du bouton ENVOYER — transform BRUT + transition CSS, sans
+  // dépendance motion ni garde reduced-motion (le magnétique global de la home
+  // n'en a pas → parité ; le garde court-circuitait l'effet quand l'OS a
+  // « réduire les animations », Morgan 2026-06-08 : « il ne bouge pas »).
+  // Proximité : attiré vers le curseur dès qu'il approche, puis le suit tant
+  // qu'on est dessus ; revient à zéro en sortant de la zone.
   useEffect(() => {
     const el = sendBtnRef.current;
     if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
     const STRENGTH = 0.4;
     const RADIUS = 130; // px d'attraction autour du bouton
     let engaged = false;
+    el.style.willChange = 'transform';
+    el.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       const near =
@@ -174,19 +174,17 @@ export default function DemarrerForm(): React.JSX.Element {
         engaged = true;
         const cx = r.left + r.width / 2;
         const cy = r.top + r.height / 2;
-        void animate(
-          el,
-          { x: (e.clientX - cx) * STRENGTH, y: (e.clientY - cy) * STRENGTH },
-          // Suivi serré pour qu'il « colle » au curseur quand on est dessus.
-          { duration: 0.2, ease: EASE },
-        );
+        el.style.transform = `translate(${(e.clientX - cx) * STRENGTH}px, ${(e.clientY - cy) * STRENGTH}px)`;
       } else if (engaged) {
         engaged = false;
-        void animate(el, { x: 0, y: 0 }, { duration: 0.45, ease: EASE });
+        el.style.transform = 'translate(0px, 0px)';
       }
     };
     window.addEventListener('pointermove', onMove, { passive: true });
-    return () => window.removeEventListener('pointermove', onMove);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      el.style.transform = '';
+    };
   }, []);
 
   function update<K extends keyof FormValues>(key: K, value: FormValues[K]): void {
