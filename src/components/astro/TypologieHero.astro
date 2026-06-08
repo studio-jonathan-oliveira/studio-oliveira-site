@@ -151,8 +151,13 @@ const LABELS = [
     text-align: left;
     color: color-mix(in oklab, var(--color-ink) 85%, transparent);
   }
+  /* Valeurs (droite) un cran plus PETITES que les libellés (Morgan 2026-06-08) :
+     le label garde sa taille et récupère de la largeur → plus de retour à la
+     ligne parasite (ex. « propriété » qui tombait sous le label en frange). */
   .typo-hero-specs__value {
     text-align: right;
+    font-size: clamp(0.88rem, 1.2vw, 1.28rem);
+    line-height: 1.25;
   }
   @media (max-width: 767px) {
     .typo-hero-specs__row {
