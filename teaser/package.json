@@ -1,0 +1,24 @@
+{
+  "name": "teaser-lancement-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Teaser motion design réseaux sociaux — lancement du nouveau site (package séparé, comme /sanity/)",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "pnpm render:reel && pnpm render:feed",
+    "render:reel": "remotion render src/index.ts Teaser ../_brief/client-assets/teaser-lancement-reel-9x16.mp4 --crf 17",
+    "render:feed": "remotion render src/index.ts TeaserFeed ../_brief/client-assets/teaser-lancement-feed-4x5.mp4 --crf 17",
+    "still": "remotion still src/index.ts Teaser"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.290",
+    "@remotion/fonts": "^4.0.290",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remotion": "^4.0.290"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "typescript": "^6.0.3"
+  }
+}

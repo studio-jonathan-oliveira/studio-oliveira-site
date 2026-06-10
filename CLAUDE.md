@@ -185,7 +185,18 @@ pnpm format:check        # Prettier check all
 # Pipeline frames (phase 3+)
 pnpm tsx scripts/generate-test-frames.ts
 pnpm tsx scripts/process-frames.ts <slug> <input-dir> [video-file]
+
+# Motion design réseaux sociaux (package séparé /teaser/, cf. teaser/README.md)
+cd teaser && pnpm install
+pnpm render              # Reel 9:16 + Feed 4:5 → _brief/client-assets/
+pnpm studio              # prévisualisation Remotion interactive
 ```
+
+**Motion design / teasers** : le package `/teaser/` (Remotion, séparé comme
+`/sanity/`) contient tout le système réutilisable — scènes, timeline,
+easings du site, primitives (mask-reveal, eyebrow, curseur ■., grain),
+déclinaison multi-formats via `useK()`. Couleurs importées de
+`src/lib/brand-colors.ts` (jamais de hex), assets lus depuis `/public`.
 
 **Path pnpm Windows local** (si non-PATH dans shell fraîchement spawné) :
 `C:\Users\Morgan\AppData\Local\Microsoft\WinGet\Links\pnpm.exe`
