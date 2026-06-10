@@ -58,16 +58,16 @@ export const Outro = () => {
       >
         Studio J. Oliveira — Design immersif &amp; expérientiel
       </Eyebrow>
-      {/* Crédit Studio Margerit — discret, bas-droite (demande Morgan) */}
+      {/* Crédit Studio Margerit — bas-droite, lisible (retour Morgan) */}
       <Eyebrow
-        size={15}
+        size={20}
         color={C.cream}
-        tracking={2.5}
+        tracking={3}
         style={{
           position: 'absolute',
-          bottom: 84 * k,
-          right: 48,
-          opacity: credit * 0.45,
+          bottom: 88 * k,
+          right: 72,
+          opacity: credit * 0.75,
           transform: `translateY(${(1 - credit) * 14}px)`,
         }}
       >
