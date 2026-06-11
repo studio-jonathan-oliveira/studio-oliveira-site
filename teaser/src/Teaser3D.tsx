@@ -683,7 +683,7 @@ export const Teaser3D = () => {
     frame >= T.outro;
   return (
     <AbsoluteFill style={{ backgroundColor: C.ink }}>
-      <CameraMotionBlur shutterAngle={220} samples={8}>
+      <CameraMotionBlur shutterAngle={220} samples={6}>
         <Scene3D />
       </CameraMotionBlur>
       {/* Optique : vignette + grain par-dessus le monde (jamais bluré) */}
