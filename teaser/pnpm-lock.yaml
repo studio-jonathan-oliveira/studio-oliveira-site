@@ -14,6 +14,9 @@ importers:
       '@remotion/fonts':
         specifier: ^4.0.290
         version: 4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@remotion/motion-blur':
+        specifier: ^4.0.475
+        version: 4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^19.2.5
         version: 19.2.7
@@ -336,6 +339,12 @@ packages:
 
   '@remotion/media-utils@4.0.475':
     resolution: {integrity: sha512-Np8FkKw48IIJbtDImNPHJxbpieps15QBbm6FIn61ByCE7ppW/sDR5LH2zGAZjAIlF9ymqwuv+zD+x5orPVZatg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@remotion/motion-blur@4.0.475':
+    resolution: {integrity: sha512-z+jl7HzS/vBB3RA4itO8b07f0rLHVHimxoSjHhnx7R9faeljfnW7WV6jcUzK2OHf5ZlpwRyfqLnP1UN/rIhRzw==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -1255,13 +1264,13 @@ snapshots:
       '@remotion/timeline-utils': 4.0.475
       '@rspack/core': 1.7.11
       '@rspack/plugin-react-refresh': 1.6.1(react-refresh@0.18.0)
-      css-loader: 7.1.4(@rspack/core@1.7.11)(webpack@5.105.0(postcss@8.5.15))
+      css-loader: 7.1.4(@rspack/core@1.7.11)(webpack@5.105.0(esbuild@0.28.0)(postcss@8.5.15))
       esbuild: 0.28.0
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       react-refresh: 0.18.0
       remotion: 4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      style-loader: 4.0.0(webpack@5.105.0(postcss@8.5.15))
+      style-loader: 4.0.0(webpack@5.105.0(esbuild@0.28.0)(postcss@8.5.15))
       webpack: 5.105.0(esbuild@0.28.0)(postcss@8.5.15)
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -1356,6 +1365,12 @@ snapshots:
   '@remotion/media-utils@4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       mediabunny: 1.45.0
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+      remotion: 4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+
+  '@remotion/motion-blur@4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       remotion: 4.0.475(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -1698,7 +1713,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-loader@7.1.4(@rspack/core@1.7.11)(webpack@5.105.0(postcss@8.5.15)):
+  css-loader@7.1.4(@rspack/core@1.7.11)(webpack@5.105.0(esbuild@0.28.0)(postcss@8.5.15)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.15)
       postcss: 8.5.15
@@ -1999,7 +2014,7 @@ snapshots:
 
   strip-final-newline@2.0.0: {}
 
-  style-loader@4.0.0(webpack@5.105.0(postcss@8.5.15)):
+  style-loader@4.0.0(webpack@5.105.0(esbuild@0.28.0)(postcss@8.5.15)):
     dependencies:
       webpack: 5.105.0(esbuild@0.28.0)(postcss@8.5.15)
 

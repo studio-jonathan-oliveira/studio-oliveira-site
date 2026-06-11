@@ -1,13 +1,14 @@
 import { Composition } from 'remotion';
 import { Teaser } from './Teaser';
+import { Teaser3D, TOTAL_3D } from './Teaser3D';
 import { FPS, H, TOTAL_FRAMES, W } from './theme';
 import './fonts';
 
 /*
- * Deux déclinaisons Instagram de la même composition :
- *  - Teaser     : 1080×1920 (9:16) — Reels + Stories
- *  - TeaserFeed : 1080×1350 (4:5)  — post feed
- * La mise en page verticale s'adapte via useK() (ui.tsx).
+ * Déclinaisons Instagram :
+ *  - Teaser / TeaserFeed     : montage 2D v1 (validé)
+ *  - Teaser3D / Teaser3DFeed : plan-séquence 2.5D cinématographique
+ * 9:16 (1080×1920) = Reels + Stories ; 4:5 (1080×1350) = post feed.
  */
 export const RemotionRoot = () => (
   <>
@@ -23,6 +24,22 @@ export const RemotionRoot = () => (
       id="TeaserFeed"
       component={Teaser}
       durationInFrames={TOTAL_FRAMES}
+      fps={FPS}
+      width={W}
+      height={1350}
+    />
+    <Composition
+      id="Teaser3D"
+      component={Teaser3D}
+      durationInFrames={TOTAL_3D}
+      fps={FPS}
+      width={W}
+      height={H}
+    />
+    <Composition
+      id="Teaser3DFeed"
+      component={Teaser3D}
+      durationInFrames={TOTAL_3D}
       fps={FPS}
       width={W}
       height={1350}

@@ -8,11 +8,15 @@
     "render": "pnpm render:reel && pnpm render:feed",
     "render:reel": "remotion render src/index.ts Teaser ../_brief/client-assets/teaser-lancement-reel-9x16.mp4 --crf 17",
     "render:feed": "remotion render src/index.ts TeaserFeed ../_brief/client-assets/teaser-lancement-feed-4x5.mp4 --crf 17",
+    "render:3d": "pnpm render:3d-reel && pnpm render:3d-feed",
+    "render:3d-reel": "remotion render src/index.ts Teaser3D ../_brief/client-assets/teaser-lancement-3d-reel-9x16.mp4 --crf 17 --concurrency=2",
+    "render:3d-feed": "remotion render src/index.ts Teaser3DFeed ../_brief/client-assets/teaser-lancement-3d-feed-4x5.mp4 --crf 17 --concurrency=2",
     "still": "remotion still src/index.ts Teaser"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.290",
     "@remotion/fonts": "^4.0.290",
+    "@remotion/motion-blur": "^4.0.475",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "remotion": "^4.0.290"

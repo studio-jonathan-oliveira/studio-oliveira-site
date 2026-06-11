@@ -32,6 +32,21 @@ La mise en page verticale s'adapte au format via `useK()` (`src/ui.tsx`).
 Transitions entre scènes : rideaux verticaux dans la couleur de fond de la
 scène suivante (easing `--ease-in-out-editorial`), même esprit que le site.
 
+## Version 2.5D cinématographique (`Teaser3D` / `Teaser3DFeed`)
+
+Plan-séquence continu (~30 s) : les mêmes stations deviennent des plans
+flottants dans un monde CSS 3D (`src/three/core.tsx` = caméra virtuelle,
+poses inverses, profondeur de champ) et une caméra voyage sans coupe :
+push-in logo → dolly hero (parallaxe wordmark) → traversée en profondeur
+du couloir des 8 valeurs → travelling galerie typologies (les cartes se
+dissolvent au départ, sinon elles bloqueraient l'axe) → mur stats →
+annonce + clic → pull-back final. Motion blur multi-échantillons
+(`@remotion/motion-blur`, 10 samples — rendu ~10× plus long que la 2D),
+micro-dérive « handheld », vignette + grain en couche optique.
+
+Sorties : `teaser-lancement-3d-reel-9x16.mp4` / `teaser-lancement-3d-feed-4x5.mp4`
+(`pnpm render:3d`).
+
 Le langage motion reprend les tokens du site (`--ease-out-editorial`,
 mask-reveal `[data-mask-line]`, keyframe `intro-reveal`, grain papier).
 Les couleurs sont importées de `src/lib/brand-colors.ts` (aucun hex ici).
