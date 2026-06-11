@@ -28,7 +28,7 @@ export const LogoIntro = () => {
           }}
         >
           <OffthreadVideo
-            src={staticFile('brand/logo-animation.mp4')}
+            src={staticFile('brand/logo-animation-1080p.mp4')}
             muted
             playbackRate={RATE}
             style={{ width: '100%', display: 'block' }}

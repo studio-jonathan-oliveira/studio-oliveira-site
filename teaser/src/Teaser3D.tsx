@@ -147,8 +147,10 @@ const LogoStation = ({ frame }: { frame: number }) => {
           }}
         >
           <Sequence from={0} durationInFrames={88} layout="none">
+            {/* Proxy 1080p : la source 4K saturait l'extracteur vidéo sous
+                motion blur multi-échantillons (10 seeks/frame) */}
             <OffthreadVideo
-              src={staticFile('brand/logo-animation.mp4')}
+              src={staticFile('brand/logo-animation-1080p.mp4')}
               muted
               playbackRate={1.45}
               style={{ width: '100%', display: 'block' }}
