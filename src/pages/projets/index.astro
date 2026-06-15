@@ -8,7 +8,8 @@
  *
  * Accordéon natif <details name> (exclusif, sans JS). Icône + → × via CSS.
  * Chaque accordéon déploie une grille de cartes projet (zoom-card → lightbox
- * global, flou au survol + « Agrandir »).
+ * global, flou au survol + curseur « Agrandir » qui suit le pointeur — plus de
+ * pastille fixe sur l'image, cf. data-cursor-label).
  *
  * CONTENU = verbatim extrait des trames (fautes conservées). IMAGES =
  * placeholders en attendant les visuels Jonathan (sous-dossiers 01-/02-…).
@@ -265,6 +266,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   data-zoom-alt={`${c.l1} — ${c.l4}`}
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
+                  data-cursor-label="Agrandir"
                 >
                   <img
                     class="zoom-card__img"
@@ -273,7 +275,6 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                     loading="lazy"
                     decoding="async"
                   />
-                  <span class="zoom-card__pill">Agrandir</span>
                   <span class="proj-card__overlay">
                     <span class="proj-card__l1">{c.l1}</span>
                     {c.l2 && <span class="proj-card__l">{c.l2}</span>}
@@ -293,6 +294,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   data-zoom-alt={`${c.l1} — ${c.l4}`}
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
+                  data-cursor-label="Agrandir"
                 >
                   <img
                     class="zoom-card__img"
@@ -301,7 +303,6 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                     loading="lazy"
                     decoding="async"
                   />
-                  <span class="zoom-card__pill">Agrandir</span>
                   <span class="proj-card__overlay">
                     <span class="proj-card__l1">{c.l1}</span>
                     {c.l2 && <span class="proj-card__l">{c.l2}</span>}
@@ -333,6 +334,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                 data-cursor-tooltip={[r.titre, r.etab, `Réalisation, ${r.annee}`, r.ville]
                   .filter(Boolean)
                   .join(' / ')}
+                data-cursor-label="Agrandir"
               >
                 <img
                   class="zoom-card__img"
@@ -341,7 +343,6 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   loading="lazy"
                   decoding="async"
                 />
-                <span class="zoom-card__pill">Agrandir</span>
                 <span class="proj-card__overlay">
                   <span class="proj-card__l1">{r.titre}</span>
                   {r.etab && <span class="proj-card__l">{r.etab}</span>}
@@ -369,6 +370,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                 class="zoom-card proj-card proj-card--gal"
                 data-zoom-src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
                 data-zoom-alt={`Galerie studio ${n}`}
+                data-cursor-label="Agrandir"
               >
                 <img
                   class="zoom-card__img"
@@ -377,7 +379,6 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   loading="lazy"
                   decoding="async"
                 />
-                <span class="zoom-card__pill">Agrandir</span>
               </button>
             ))
           }
@@ -664,38 +665,6 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
       font-size: clamp(0.72rem, 0.95vw, 0.9rem);
       line-height: 1.3;
       color: color-mix(in oklab, var(--color-cream) 88%, transparent);
-    }
-
-    /* Pill « Agrandir » (composant global zoom-card) : repositionnée par la
-       trame — bas-gauche sur conceptions/réalisations, centrée sur la galerie.
-       Rayon squircle (pas une pill pleine). Les styles scoped page priment sur
-       le global grâce à l'attribut de scope Astro. */
-    .proj-card .zoom-card__pill {
-      top: auto;
-      right: auto;
-      bottom: clamp(0.7rem, 1.4vw, 1.1rem);
-      left: clamp(0.7rem, 1.4vw, 1.1rem);
-      border-radius: 14px;
-      transform: translateY(6px);
-    }
-    @media (hover: hover) {
-      .proj-card:hover .zoom-card__pill,
-      .proj-card:focus-visible .zoom-card__pill {
-        transform: translateY(0);
-      }
-    }
-    .proj-card--gal .zoom-card__pill {
-      top: 50%;
-      left: 50%;
-      right: auto;
-      bottom: auto;
-      transform: translate(-50%, calc(-50% + 6px));
-    }
-    @media (hover: hover) {
-      .proj-card--gal:hover .zoom-card__pill,
-      .proj-card--gal:focus-visible .zoom-card__pill {
-        transform: translate(-50%, -50%);
-      }
     }
   </style>
 </BaseLayout>
