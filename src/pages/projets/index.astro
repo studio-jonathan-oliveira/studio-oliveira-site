@@ -267,6 +267,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                   data-cursor-label="Agrandir"
+                  data-cursor-label-case="normal"
                 >
                   <img
                     class="zoom-card__img"
@@ -295,6 +296,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                   data-cursor-label="Agrandir"
+                  data-cursor-label-case="normal"
                 >
                   <img
                     class="zoom-card__img"
@@ -335,6 +337,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   .filter(Boolean)
                   .join(' / ')}
                 data-cursor-label="Agrandir"
+                data-cursor-label-case="normal"
               >
                 <img
                   class="zoom-card__img"
@@ -371,6 +374,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                 data-zoom-src={`/projets/galerie/${String(n).padStart(2, '0')}.webp`}
                 data-zoom-alt={`Galerie studio ${n}`}
                 data-cursor-label="Agrandir"
+                data-cursor-label-case="normal"
               >
                 <img
                   class="zoom-card__img"

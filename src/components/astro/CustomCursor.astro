@@ -179,6 +179,12 @@
     .custom-cursor.is-labeled .cursor-label {
       opacity: 1;
     }
+    /* Casse normale (« Agrandir » et non « AGRANDIR ») pour les éléments qui
+       portent data-cursor-label-case="normal" — cartes /projets. Les
+       typologies home gardent l'UPPERCASE par défaut. */
+    .custom-cursor.is-label-normalcase .cursor-label {
+      text-transform: none;
+    }
 
     /* Curseur ALLONGÉ — pill auto-largeur qui apparaît au survol des cartes
        stats (trame home : « le curseur s'allonge et fait apparaître
@@ -445,6 +451,10 @@
           cursor.classList.remove('is-hover', 'is-labeled');
         } else if (labeledAncestor && labelEl) {
           labelEl.textContent = labeledAncestor.dataset.cursorLabel || '';
+          cursor.classList.toggle(
+            'is-label-normalcase',
+            labeledAncestor.dataset.cursorLabelCase === 'normal',
+          );
           cursor.classList.add('is-labeled');
           cursor.classList.remove('is-hover');
         } else if (interactive && !cursorSkip) {
@@ -462,7 +472,7 @@
         const tooltipAncestor = target?.closest?.('[data-cursor-tooltip]');
         const interactive = target?.closest?.(hoverSelectors);
         if (pillAncestor) cursor.classList.remove('is-pill');
-        if (labeledAncestor) cursor.classList.remove('is-labeled');
+        if (labeledAncestor) cursor.classList.remove('is-labeled', 'is-label-normalcase');
         if (tooltipAncestor) cursor.classList.remove('is-tooltipped');
         if (interactive) cursor.classList.remove('is-hover');
       },
