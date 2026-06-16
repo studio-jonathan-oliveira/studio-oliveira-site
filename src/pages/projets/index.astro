@@ -534,6 +534,13 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
     .proj-acc__item[open] .proj-acc__title {
       font-weight: 700;
     }
+    /* Survol → titre en GRAS : affordance « ça se déroule » (retour Jonathan
+       2026-06-16, aligné sur FAQ / architectures / démarrer). */
+    @media (hover: hover) {
+      .proj-acc__summary:hover .proj-acc__title {
+        font-weight: 700;
+      }
+    }
     /* Icône + (fermé) → × (ouvert) via rotation 45°. */
     .proj-acc__icon {
       position: relative;
