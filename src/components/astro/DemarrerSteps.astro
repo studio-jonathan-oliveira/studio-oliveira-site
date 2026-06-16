@@ -101,6 +101,15 @@ const { steps } = Astro.props;
     position: absolute;
     inset: 0;
     background: transparent;
+    transition: background 0.45s var(--ease-out-editorial);
+  }
+  /* À l'OUVERTURE d'un accordéon (photo floutée), on pose un voile sombre pour
+     rendre le CONTENU des menus lisible même quand la photo floutée est claire
+     (retour Jonathan/Morgan 2026-06-16 : c'est le CONTENU des accordéons, pas
+     les titres). L'image reste pleinement visible tant qu'aucun accordéon n'est
+     ouvert. */
+  .dem-steps__bg.is-blurred .dem-steps__veil {
+    background: color-mix(in oklab, var(--color-ink) 58%, transparent);
   }
 
   /* Image immersive étalée sur ~3 écrans (Morgan 2026-06-08) : le « 1 » + ses
@@ -150,15 +159,15 @@ const { steps } = Astro.props;
   .dem-steps .faq-acc__icon {
     color: var(--color-cream);
   }
-  /* Lisibilité sur la photo floutée CLAIRE (retour Jonathan 2026-06-16 :
-     « les textes ne se voient pas quand l'image est claire, test du gras ») :
-     titres des menus en GRAS + légère ombre portée pour décoller du fond. */
+  /* Lisibilité sur la photo (retour Jonathan/Morgan 2026-06-16) : on garde les
+     titres FINS (design voulu, pas de gras) + une ombre portée discrète, et on
+     compte sur le voile sombre à l'ouverture pour le CONTENU. */
   .dem-steps .faq-acc__question {
-    font-weight: 700;
-    text-shadow: 0 1px 14px color-mix(in oklab, var(--color-ink) 60%, transparent);
+    text-shadow: 0 1px 12px color-mix(in oklab, var(--color-ink) 55%, transparent);
   }
   .dem-steps .faq-acc__answer {
-    color: color-mix(in oklab, var(--color-cream) 88%, transparent);
+    color: var(--color-cream);
+    text-shadow: 0 1px 10px color-mix(in oklab, var(--color-ink) 55%, transparent);
   }
   .dem-steps .faq-acc__item {
     border-bottom: 0;
