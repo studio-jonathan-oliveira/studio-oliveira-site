@@ -14,22 +14,12 @@
  * ils restent accessibles via le menu principal.
  */
 const currentPath = Astro.url.pathname;
-// Couleur du footer par page (trames « modif finales » + retours Morgan
-// 2026-06-08) :
-//   - NOIR + texte/logo CRÈME : home, studio, pages typologies (trames coeur/
-//     home/studio). Plus de violet ici.
-//   - NOIR + VIOLET : /demarrer-un-projet UNIQUEMENT (« la seule page »).
-//   - BEIGE + texte/logo NOIR : tout le reste (projets, zones, journal…).
-// Coins hauts arrondis dans tous les cas. data-theme="dark" sur les variantes
-// sombres → le curseur custom passe en crème au survol.
-const isDemarrer = currentPath === '/demarrer-un-projet';
-const isTypologie = currentPath.startsWith('/architecture-paysagere/');
-const darkCreamPaths = ['/', '/studio'];
-const footerMode = isDemarrer
-  ? 'violet'
-  : darkCreamPaths.includes(currentPath) || isTypologie
-    ? 'dark'
-    : 'light';
+// Inversion DA finale 2026-06-16 (Jonathan) : UN SEUL footer sitewide —
+// BEIGE + texte/logo NOIR, sur TOUTES les pages (« comme la page Projets »),
+// y compris /demarrer-un-projet (le violet est éradiqué partout). Les pages
+// sont en fond noir : les coins hauts arrondis du footer beige laissent voir
+// le noir du body → arrondis visibles partout. data-theme="light" → curseur
+// custom sombre au survol du footer.
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -46,15 +36,7 @@ const typologies = [
 ];
 ---
 
-<footer
-  class:list={[
-    'site-footer',
-    footerMode === 'dark' && 'site-footer--dark',
-    footerMode === 'violet' && 'site-footer--violet',
-  ]}
-  aria-label="Pied de page"
-  data-theme={footerMode === 'light' ? 'light' : 'dark'}
->
+<footer class="site-footer" aria-label="Pied de page" data-theme="light">
   <div class="site-footer__inner">
     <header class="site-footer__top">
       <a href="/" class="site-footer__logo" aria-label="Studio J Oliveira — accueil">
@@ -312,72 +294,6 @@ const typologies = [
     color: var(--color-ink);
   }
 
-  /* ── Variante NOIRE (home, studio, pages typologies) : fond ink, texte +
-     logo CRÈME (wordmark ink). data-theme="dark" géré côté markup. ── */
-  .site-footer--dark {
-    background-color: var(--color-ink);
-    color: var(--color-cream);
-  }
-  .site-footer--dark .site-footer__heading,
-  .site-footer--dark .site-footer__navlink,
-  .site-footer--dark .site-footer__typo-title,
-  .site-footer--dark .site-footer__typo-link--active {
-    color: var(--color-cream);
-  }
-  .site-footer--dark .site-footer__address,
-  .site-footer--dark .site-footer__national {
-    color: color-mix(in oklab, var(--color-cream) 85%, transparent);
-  }
-  .site-footer--dark .site-footer__typo-link {
-    color: color-mix(in oklab, var(--color-cream) 78%, transparent);
-  }
-  .site-footer--dark .site-footer__legal {
-    color: color-mix(in oklab, var(--color-cream) 55%, transparent);
-  }
-  .site-footer--dark .site-footer__logo {
-    background-color: var(--color-cream);
-  }
-  .site-footer--dark .site-footer__logo-mark {
-    background-color: var(--color-ink);
-  }
-
-  /* ── Variante VIOLET — /demarrer-un-projet UNIQUEMENT (Morgan 2026-06-08 :
-     « c'est la seule page, noir et violet, aucune trace de beige »). Fond ink
-     conservé ; textes + tuile logo en violet (wordmark ink à l'intérieur). */
-  /* Variante violet en « liseré » (Morgan 2026-06-08 : « laisser passer le violet
-     dans l'angle ») : l'extérieur est VIOLET (sans radius → aucune révélation du
-     body), la carte intérieure est NOIRE à coins hauts arrondis avec un léger
-     margin-top → le violet apparaît au-dessus du logo et dans les coins. */
-  .site-footer--violet {
-    background-color: var(--color-violet);
-    color: var(--color-violet);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-  .site-footer--violet .site-footer__inner {
-    background-color: var(--color-ink);
-    border-top-left-radius: clamp(24px, 4vw, 56px);
-    border-top-right-radius: clamp(24px, 4vw, 56px);
-    margin-top: clamp(10px, 1.4vw, 18px);
-  }
-  .site-footer--violet .site-footer__heading,
-  .site-footer--violet .site-footer__navlink,
-  .site-footer--violet .site-footer__typo-title,
-  .site-footer--violet .site-footer__typo-link--active {
-    color: var(--color-violet);
-  }
-  .site-footer--violet .site-footer__address,
-  .site-footer--violet .site-footer__national,
-  .site-footer--violet .site-footer__typo-link {
-    color: color-mix(in oklab, var(--color-violet) 82%, transparent);
-  }
-  .site-footer--violet .site-footer__legal {
-    color: color-mix(in oklab, var(--color-violet) 60%, transparent);
-  }
-  .site-footer--violet .site-footer__logo {
-    background-color: var(--color-violet);
-  }
-  .site-footer--violet .site-footer__logo-mark {
-    background-color: var(--color-ink);
-  }
+  /* Variantes --dark / --violet supprimées (inversion DA finale 2026-06-16) :
+     footer beige/noir unique sitewide. Voir l'en-tête du composant. */
 </style>

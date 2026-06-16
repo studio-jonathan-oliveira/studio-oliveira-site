@@ -109,7 +109,7 @@ const schema = jsonLdGraph([
 
   {/* ═════════ 2 · GALERIE beige + manifeste Définir / Comprendre ═════════ */}
   <section
-    data-theme="light"
+    data-theme="dark"
     class="dc-gallery"
     aria-label="Sélection de projets domaines et caractère"
   >
@@ -235,8 +235,8 @@ const schema = jsonLdGraph([
     /* /architecture-paysagere/domaine-caractere — DA finale beige/noir. */
     .dc-gallery {
       width: 100%;
-      background-color: var(--color-cream);
-      color: var(--color-ink);
+      background-color: var(--color-ink);
+      color: var(--color-cream);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
@@ -248,7 +248,7 @@ const schema = jsonLdGraph([
       aspect-ratio: 3 / 2;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     @media (min-width: 1024px) {
       .dc-gallery__large {
@@ -280,7 +280,7 @@ const schema = jsonLdGraph([
       margin: 0;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
       aspect-ratio: 4 / 5;
     }
     @media (min-width: 768px) {
@@ -334,7 +334,7 @@ const schema = jsonLdGraph([
       font-size: clamp(2rem, 4.5vw, 4rem);
       line-height: 1;
       letter-spacing: -0.01em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       text-transform: none;
     }
@@ -349,7 +349,7 @@ const schema = jsonLdGraph([
       font-size: clamp(1.1rem, 1.5vw, 1.5rem);
       line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
     }
     .dc-manifeste__body .word {

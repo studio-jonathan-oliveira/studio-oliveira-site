@@ -33,7 +33,7 @@ const marqueeUnit = MARQUEE.repeat(6);
 <section
   id="faq"
   data-section-label={sectionLabel}
-  data-theme="light"
+  data-theme="dark"
   class="typo-faq"
   aria-labelledby="faq-title"
 >
@@ -68,8 +68,8 @@ const marqueeUnit = MARQUEE.repeat(6);
    * ═══════════════════════════════════════════════════════════════════ */
   .typo-faq {
     width: 100%;
-    background-color: var(--color-cream);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
     padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3rem, 7vw, 6rem);
   }
 
@@ -105,8 +105,8 @@ const marqueeUnit = MARQUEE.repeat(6);
        seule la moitié EXTÉRIEURE du trait reste visible → les contre-formes du
        « e »/« t » ne sont plus rongées, et les jointures ARRONDIES suppriment
        les pics. Stroke épais (3px) car la moitié seulement est visible. */
-    fill: var(--color-cream);
-    stroke: var(--color-ink);
+    fill: var(--color-ink);
+    stroke: var(--color-cream);
     stroke-width: 3px;
     stroke-linejoin: round;
     stroke-linecap: round;
@@ -117,7 +117,7 @@ const marqueeUnit = MARQUEE.repeat(6);
      lettres se remplit en NOIR (Morgan 2026-06-05). */
   .typo-faq__marquee:hover .typo-faq__marquee-text,
   .typo-faq__marquee:focus-visible .typo-faq__marquee-text {
-    fill: var(--color-ink);
+    fill: var(--color-cream);
   }
   @keyframes typo-faq-marquee {
     from {
@@ -160,19 +160,18 @@ const marqueeUnit = MARQUEE.repeat(6);
     font-size: clamp(4rem, 11vw, 11rem);
     line-height: 0.92;
     letter-spacing: -0.01em;
-    color: var(--color-ink);
+    color: var(--color-cream);
     margin: 0;
   }
 
-  /* ── Surcharges accordéon pour fond BEIGE (les styles globaux .faq-acc__*
-     sont en cream pour la FAQ rouge historique) → on passe tout en NOIR
-     dans le scope .typo-faq, et on arrondit le séparateur à DROITE. ──────── */
+  /* ── Surcharges accordéon pour fond NOIR (inversion DA finale 2026-06-16) :
+     question/icône/texte en CRÈME, séparateurs crème, arrondi à DROITE. ──── */
   .typo-faq .faq-acc__question,
   .typo-faq .faq-acc__icon {
-    color: var(--color-ink);
+    color: var(--color-cream);
   }
   .typo-faq .faq-acc__answer {
-    color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+    color: color-mix(in oklab, var(--color-cream) 92%, transparent);
   }
   .typo-faq .faq-acc__item {
     border-bottom: 0;
@@ -180,12 +179,12 @@ const marqueeUnit = MARQUEE.repeat(6);
   /* Séparateur = bord bas + bord droit arrondi au coin bas-droite
      (parti-pris « arrondi à droite » des trames). Gauche/haut ouverts. */
   .typo-faq .faq-acc__summary {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
-    border-right: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
+    border-right: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
     border-bottom-right-radius: clamp(18px, 2.5vw, 32px);
   }
   .typo-faq .faq-acc__summary:focus-visible {
-    outline: 1px solid color-mix(in oklab, var(--color-ink) 45%, transparent);
+    outline: 1px solid color-mix(in oklab, var(--color-cream) 45%, transparent);
   }
 </style>
 

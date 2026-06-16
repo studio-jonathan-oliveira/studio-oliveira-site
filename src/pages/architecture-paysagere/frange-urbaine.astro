@@ -100,7 +100,7 @@ const schema = jsonLdGraph([
   <TypologieHero h1Lines={['Frange', 'urbaine']} valeurs={valeurs} sectionLabel="Frange urbaine" />
 
   {/* ═════════ 2 · GALERIE beige + manifeste Définir / Comprendre ═════════ */}
-  <section data-theme="light" class="fu-gallery" aria-label="Sélection de projets frange urbaine">
+  <section data-theme="dark" class="fu-gallery" aria-label="Sélection de projets frange urbaine">
     <figure class="fu-gallery__large" data-reveal="image-rise">
       <Image
         src={gal02}
@@ -222,8 +222,8 @@ const schema = jsonLdGraph([
     /* /architecture-paysagere/frange-urbaine — DA finale beige/noir. */
     .fu-gallery {
       width: 100%;
-      background-color: var(--color-cream);
-      color: var(--color-ink);
+      background-color: var(--color-ink);
+      color: var(--color-cream);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
@@ -235,7 +235,7 @@ const schema = jsonLdGraph([
       aspect-ratio: 3 / 2;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     @media (min-width: 1024px) {
       .fu-gallery__large {
@@ -262,7 +262,7 @@ const schema = jsonLdGraph([
       margin: 0;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     .fu-gallery__diptyque--portraits .fu-gallery__diptyque-left,
     .fu-gallery__diptyque--portraits .fu-gallery__diptyque-right {
@@ -311,7 +311,7 @@ const schema = jsonLdGraph([
       font-size: clamp(2rem, 4.5vw, 4rem);
       line-height: 1;
       letter-spacing: -0.01em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       text-transform: none;
     }
@@ -326,7 +326,7 @@ const schema = jsonLdGraph([
       font-size: clamp(1.1rem, 1.5vw, 1.5rem);
       line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
     }
     .fu-manifeste__body .word {

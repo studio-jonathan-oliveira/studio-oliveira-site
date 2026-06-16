@@ -32,7 +32,7 @@ const schema = jsonLdGraph([
 >
   <Section variant="cream" id="hero" sectionLabel="Conceptions" class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
         Portefeuille · Conceptions
       </p>
       <h1
@@ -51,13 +51,13 @@ const schema = jsonLdGraph([
         >
       </h1>
       <p
-        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/80"
+        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/80"
       >
         Projets en phase de conception, représentés en rendu photoréaliste Twinmotion. Des
         expériences scroll-driven pour traverser l'espace comme si vous y étiez déjà. Les projets
         livrés sont dans <a
           href="/realisations"
-          class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
+          class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
           >Réalisations</a
         >.
       </p>
@@ -65,9 +65,9 @@ const schema = jsonLdGraph([
   </Section>
 
   {/* ───── BANDE KEYWORDS (mots de la copy hero) ───── */}
-  <section class="bg-[var(--color-cream)] px-6 pb-20 md:px-10 md:pb-28" aria-hidden="true">
+  <section class="bg-[var(--color-ink)] px-6 pb-20 md:px-10 md:pb-28" aria-hidden="true">
     <p
-      class="page-keywords-band page-keywords-band--light"
+      class="page-keywords-band"
       data-reveal="up"
       data-justify-scroll
       data-justify-amp="20"
@@ -84,11 +84,11 @@ const schema = jsonLdGraph([
   <Section variant="cream" topDivider id="liste" sectionLabel="Études">
     {
       conceptions.length === 0 ? (
-        <div class="border border-dashed border-[var(--color-forest)]/20 p-12 text-center">
-          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
+        <div class="border border-dashed border-[var(--color-cream)]/20 p-12 text-center">
+          <p class="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
             En préparation
           </p>
-          <p class="mx-auto mt-4 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-forest)]/70">
+          <p class="mx-auto mt-4 max-w-xl text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/70">
             Les premières conceptions seront publiées dès réception des rendus Twinmotion — chaque
             projet sera immersif, navigable au scroll. La check-list d'export est fournie à Jonathan
             dans <code class="font-mono text-xs">_brief/checklist-twinmotion-jonathan.md</code>.
@@ -98,7 +98,7 @@ const schema = jsonLdGraph([
           </div>
         </div>
       ) : (
-        <p class="text-sm text-[var(--color-forest)]/60">
+        <p class="text-sm text-[var(--color-cream)]/60">
           Liste des conceptions à venir — le template est prêt, les données seront injectées depuis
           Sanity.
         </p>

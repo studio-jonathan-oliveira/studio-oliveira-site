@@ -71,7 +71,7 @@ const schema = jsonLdGraph([
   <!-- 01 · HERO -->
   <Section variant="cream" space="hero" id="hero" sectionLabel={zone.ville} class="pt-40 md:pt-48">
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
+      <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
         Zone d’intervention · {zone.departement} ({zone.codeDepartement})
       </p>
       <h1
@@ -81,7 +81,7 @@ const schema = jsonLdGraph([
         {zone.h1}
       </h1>
       <p
-        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-forest)]/85"
+        class="mt-8 max-w-2xl text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/85"
       >
         {zone.introLead}
       </p>
@@ -102,7 +102,7 @@ const schema = jsonLdGraph([
         >
           Le studio à {zone.villeSimple}
         </h2>
-        <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
           {
             zone.role === 'siege'
               ? 'Siège social — 41 rue Général Souham'
@@ -113,7 +113,7 @@ const schema = jsonLdGraph([
         </p>
       </div>
       <div class="md:col-span-7">
-        <p class="text-[length:var(--text-lg)] leading-relaxed text-[var(--color-ink)]/90">
+        <p class="text-[length:var(--text-lg)] leading-relaxed text-[var(--color-cream)]/90">
           {zone.introLong}
         </p>
       </div>
@@ -124,7 +124,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" space="default" id="climat" topDivider>
     <div class="grid gap-16 md:grid-cols-12">
       <div class="md:col-span-5">
-        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
           Lecture du territoire
         </p>
         <h2
@@ -133,22 +133,22 @@ const schema = jsonLdGraph([
         >
           Climat et palette végétale à {zone.villeSimple}
         </h2>
-        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85">
           <strong>{zone.climat.type}.</strong>
           {zone.climat.description}
         </p>
-        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+        <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85">
           {zone.caracteristiquesPaysageres}
         </p>
       </div>
       <div class="md:col-span-7">
-        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+        <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
           Essences travaillées
         </p>
         <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
           {
             zone.essences.map((e) => (
-              <li class="flex items-baseline gap-3 text-[length:var(--text-base)] text-[var(--color-ink)]/85">
+              <li class="flex items-baseline gap-3 text-[length:var(--text-base)] text-[var(--color-cream)]/85">
                 <span class="text-[var(--color-laterite)]/60">·</span>
                 <span>{e}</span>
               </li>
@@ -162,7 +162,7 @@ const schema = jsonLdGraph([
   <!-- 04 · TYPOLOGIES DOMINANTES -->
   <Section variant="cream" space="default" id="typologies" topDivider>
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
         Typologies de jardin à {zone.villeSimple}
       </p>
       <h2
@@ -180,9 +180,9 @@ const schema = jsonLdGraph([
           return (
             <a
               href={`/architecture-paysagere/${td.slug}`}
-              class="group block border-t border-[var(--color-ink)]/15 pt-6 transition-colors hover:border-[var(--color-laterite)]"
+              class="group block border-t border-[var(--color-cream)]/15 pt-6 transition-colors hover:border-[var(--color-laterite)]"
             >
-              <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+              <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
                 {t.nomProprietaire}
               </p>
               <h3
@@ -191,10 +191,10 @@ const schema = jsonLdGraph([
               >
                 {t.h1Seo}
               </h3>
-              <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/80">
+              <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/80">
                 {td.raison}
               </p>
-              <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-laterite)] uppercase transition-colors group-hover:text-[var(--color-ink)]">
+              <p class="mt-6 font-mono text-xs tracking-[0.18em] text-[var(--color-laterite)] uppercase transition-colors group-hover:text-[var(--color-cream)]">
                 Voir la typologie
               </p>
             </a>
@@ -207,7 +207,7 @@ const schema = jsonLdGraph([
   <!-- 05 · COMMUNES VOISINES -->
   <Section variant="cream" space="default" id="zone" topDivider>
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
         Zone d’intervention élargie
       </p>
       <h2
@@ -216,18 +216,18 @@ const schema = jsonLdGraph([
       >
         Communes desservies autour de {zone.villeSimple}
       </h2>
-      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+      <p class="mt-6 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85">
         Le studio intervient en étude complète et suivi de chantier sur l’ensemble du bassin {
           zone.villeSimple
         } et au-delà — Brive, Bordeaux, Limoges étant les trois points d’ancrage en Nouvelle-Aquitaine.
       </p>
     </div>
     <ul
-      class="mt-10 flex flex-wrap gap-x-3 gap-y-2 font-mono text-xs tracking-[0.12em] text-[var(--color-ink)]/70 uppercase"
+      class="mt-10 flex flex-wrap gap-x-3 gap-y-2 font-mono text-xs tracking-[0.12em] text-[var(--color-cream)]/70 uppercase"
     >
       {
         zone.communesVoisines.map((c) => (
-          <li class="border border-[var(--color-ink)]/15 px-3 py-1.5">{c}</li>
+          <li class="border border-[var(--color-cream)]/15 px-3 py-1.5">{c}</li>
         ))
       }
     </ul>
@@ -236,7 +236,7 @@ const schema = jsonLdGraph([
   <!-- 06 · FAQ -->
   <Section variant="cream" space="default" id="faq" topDivider>
     <div class="max-w-3xl">
-      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-forest)]/55 uppercase">
+      <p class="font-mono text-xs tracking-[0.18em] text-[var(--color-cream)]/55 uppercase">
         Questions fréquentes
       </p>
       <h2
@@ -249,14 +249,14 @@ const schema = jsonLdGraph([
     <div class="mt-12 max-w-3xl space-y-10">
       {
         zone.faq.map((f) => (
-          <div class="border-t border-[var(--color-ink)]/15 pt-6">
+          <div class="border-t border-[var(--color-cream)]/15 pt-6">
             <h3
               class="font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] leading-tight tracking-tight"
               style="font-weight: 500;"
             >
               {f.question}
             </h3>
-            <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-ink)]/85">
+            <p class="mt-4 text-[length:var(--text-base)] leading-relaxed text-[var(--color-cream)]/85">
               {f.answer}
             </p>
           </div>

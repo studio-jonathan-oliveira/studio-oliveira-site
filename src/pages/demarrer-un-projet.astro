@@ -105,28 +105,9 @@ const schema = jsonLdGraph([
   <DemarrerRedBlock invite={invite} />
 
   {
-    /* DA /demarrer (trame) : topbar VIOLETTE au repos (survol → noir, géré par
-       le Header). Le footer noir + tuile logo beige est piloté par
-       data-theme="dark" dans Footer.astro (currentPath inclut /demarrer). */
+    /* Inversion DA finale 2026-06-16 : /demarrer rentre dans le rang — page en
+       fond NOIR + texte BEIGE, topbar et footer BEIGE comme partout. Les
+       overrides violet (topbar mauve, curseur mauve, logo forcé noir) sont
+       supprimés : le comportement adaptatif standard du Header s'applique. */
   }
-  <style is:global>
-    /* Fond de page NOIR : les coins arrondis (footer, bloc violet) révèlent du
-       NOIR et non du beige (Morgan 2026-06-08 : « que du noir et du mauve »). */
-    body.is-demarrer {
-      background-color: var(--color-ink);
-    }
-    body.is-demarrer .site-header__cta {
-      background-color: var(--color-violet);
-    }
-    /* Curseur (Morgan 2026-06-05) : NOIR sur le mauve (défaut light), MAUVE sur
-       les images/zones sombres — JAMAIS de beige sur cette page. */
-    body.is-demarrer #cursor.is-on-dark {
-      --cursor-fill: var(--color-violet);
-      --cursor-text: var(--color-ink);
-    }
-    /* Logo topbar : noir sur le mauve (annule l'adaptatif sur le hero violet). */
-    body.is-demarrer .site-header:not(.is-logo-light) .site-logo {
-      background-color: var(--color-ink);
-    }
-  </style>
 </BaseLayout>

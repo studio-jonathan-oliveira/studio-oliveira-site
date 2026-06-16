@@ -160,8 +160,8 @@ const typologies = [
   <section
     id="identite"
     data-section-label="Identité"
-    data-theme="light"
-    class="identite-band full-bleed-bg relative overflow-hidden bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="identite-band full-bleed-bg relative overflow-hidden bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-label="Identité du studio"
   >
     {
@@ -200,8 +200,8 @@ const typologies = [
   <section
     id="studio-presentation"
     data-section-label="Studio"
-    data-theme="light"
-    class="studio-presentation relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-presentation relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="studio-presentation-title"
   >
     <div class="studio-presentation__wrap" data-reveal="up">
@@ -251,8 +251,8 @@ const typologies = [
   <section
     id="stats"
     data-section-label="Studio en chiffres"
-    data-theme="light"
-    class="stats-band full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="stats-band full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-label="Le studio en chiffres"
   >
     {
@@ -311,7 +311,7 @@ const typologies = [
        (architecture-publique uniquement) au hover de chaque card. */
   }
   {/* Bandeau transition vers les typologies (trame). */}
-  <section data-theme="light" class="typo-transition">
+  <section data-theme="dark" class="typo-transition">
     {
       /* Bandeau (non cliquable) quasi pleine largeur, liseré rectangulaire
          arrondi (trame). Beige + bordure noire, aucune animation au survol. */
@@ -326,8 +326,8 @@ const typologies = [
   <section
     id="typologies"
     data-section-label="Typologies"
-    data-theme="light"
-    class="htypo-section htypo-section--row full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="htypo-section htypo-section--row full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="typologies-title"
   >
     <div class="htypo-sticky">
@@ -666,8 +666,8 @@ const typologies = [
        (trame) : liseré rectangulaire arrondi quasi pleine largeur, cliquable
        vers le hub typologies. Survol → remplissage ink. */
     .typo-transition {
-      background-color: var(--color-cream);
-      color: var(--color-ink);
+      background-color: var(--color-ink);
+      color: var(--color-cream);
       padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
     }
     .typo-transition__cta {
@@ -676,7 +676,7 @@ const typologies = [
       justify-content: center;
       width: 100%;
       padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3rem);
-      border: var(--stroke-liseret) solid var(--color-ink);
+      border: var(--stroke-liseret) solid var(--color-cream);
       border-radius: var(--radius-cta);
     }
     .typo-transition__text {
@@ -685,7 +685,7 @@ const typologies = [
       font-size: clamp(1.5rem, 3.5vw, 3rem);
       line-height: 1.2;
       letter-spacing: -0.01em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       text-align: center;
     }
@@ -714,7 +714,7 @@ const typologies = [
       /* justify designbyad (trame 2026-06-04) : chaque ligne en justify CSS
          natif, setupJustifyMulti calage les mots au scroll (motion-enhance.ts). */
       text-align: justify;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       hyphens: none;
     }
@@ -748,11 +748,11 @@ const typologies = [
       display: inline-flex;
       align-items: center;
       padding: clamp(0.9rem, 1.4vw, 1.2rem) clamp(1.6rem, 2.4vw, 2.4rem);
-      border: 1px solid var(--color-ink);
+      border: 1px solid var(--color-cream);
       /* Rectangle aux bords arrondis (trame) — plus une pill 9999px. */
       border-radius: clamp(12px, 1.2vw, 16px);
       background-color: transparent;
-      color: var(--color-ink);
+      color: var(--color-cream);
       font-family: var(--font-heading), sans-serif;
       font-weight: 700;
       font-size: clamp(0.95rem, 1.15vw, 1.15rem);
@@ -766,8 +766,8 @@ const typologies = [
     @media (hover: hover) {
       .studio-pill:hover,
       .studio-pill:focus-visible {
-        background-color: var(--color-ink);
-        color: var(--color-cream);
+        background-color: var(--color-cream);
+        color: var(--color-ink);
       }
     }
     /* Bloc texte ADN — 4 lignes en text-align: justify CSS natif. Pattern
@@ -785,7 +785,7 @@ const typologies = [
       letter-spacing: 0;
       text-transform: none;
       text-align: justify;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       hyphens: none;
     }
@@ -865,19 +865,20 @@ const typologies = [
       border-radius: clamp(18px, 2.2vw, 30px);
       overflow: hidden;
     }
-    /* Cartes pleines NOIRES au repos (trame col2). */
+    /* Cartes pleines BEIGES au repos (inversion DA finale 2026-06-16 : section
+       noire → cartes beige, chiffre/texte noir). */
     .stat-card--etudes,
     .stat-card--ans {
-      background-color: var(--color-ink);
-      color: var(--color-cream);
+      background-color: var(--color-cream);
+      color: var(--color-ink);
     }
     .stat-card--etudes {
       min-height: clamp(210px, 26vw, 340px);
     }
-    /* +3 régions : texte nu sur le beige de section (pas de carte). */
+    /* +3 régions : texte nu sur le noir de section (pas de carte). */
     .stat-card--regions {
       background-color: transparent;
-      color: var(--color-ink);
+      color: var(--color-cream);
       padding-left: clamp(0.5rem, 1vw, 1rem);
     }
 
@@ -972,9 +973,9 @@ const typologies = [
     @media (hover: hover) {
       .stat-card--link:hover,
       .stat-card--link:focus-visible {
-        background-color: var(--color-cream);
-        border-color: var(--color-ink);
-        color: var(--color-ink);
+        background-color: var(--color-ink);
+        border-color: var(--color-cream);
+        color: var(--color-cream);
       }
       .stat-card--link:hover .stat-card__value,
       .stat-card--link:focus-visible .stat-card__value {
@@ -1453,7 +1454,7 @@ const typologies = [
       line-height: 1.4;
       letter-spacing: 0;
       text-transform: none;
-      color: var(--color-ink);
+      color: var(--color-cream);
       max-width: 100%;
       margin: 0;
       text-align: justify;
@@ -1520,7 +1521,7 @@ const typologies = [
       line-height: 1.2;
       letter-spacing: 0;
       text-transform: none;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
     }
     /* Variante .htypo-name--light → Architecture publique en ExtraLight 200

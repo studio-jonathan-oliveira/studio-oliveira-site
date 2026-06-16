@@ -25,9 +25,10 @@ export const BRAND_COLORS = {
 
 /**
  * Couleur appliquée au meta `theme-color` (chrome mobile / barre URL).
- * Doit refléter le fond dominant du site, donc `cream` par défaut.
+ * Doit refléter le fond dominant du site. Inversion DA finale 2026-06-16 :
+ * pages en fond NOIR → `ink`.
  */
-export const THEME_COLOR_META = BRAND_COLORS.cream;
+export const THEME_COLOR_META = BRAND_COLORS.ink;
 
 /**
  * Palette dérivée pour les templates d'emails (Resend).

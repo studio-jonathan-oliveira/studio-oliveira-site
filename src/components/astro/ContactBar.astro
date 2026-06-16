@@ -152,16 +152,17 @@ const isFormPage =
     display: block;
   }
 
-  /* Bouton "Contact" en VIOLET signature (DA finale 2026-06-04). */
+  /* Bouton "Contact" en BEIGE plein (inversion DA finale 2026-06-16 : violet
+     éradiqué) → pastille crème, libellé noir, sur la barre sombre. */
   .contact-bar__btn--accent {
-    background-color: var(--color-violet);
+    background-color: var(--color-cream);
     color: var(--color-ink);
   }
   .contact-bar__btn--accent:active {
-    background-color: color-mix(in oklab, var(--color-violet) 86%, var(--color-ink));
+    background-color: color-mix(in oklab, var(--color-cream) 86%, var(--color-ink));
   }
   .contact-bar__btn--accent + .contact-bar__btn,
   .contact-bar__btn + .contact-bar__btn--accent {
-    border-left-color: color-mix(in oklab, var(--color-violet) 60%, var(--color-ink));
+    border-left-color: color-mix(in oklab, var(--color-cream) 60%, var(--color-ink));
   }
 </style>

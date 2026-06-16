@@ -27,7 +27,7 @@ const { invite } = Astro.props;
 <section
   id="formulaire"
   data-section-label="Formulaire"
-  data-theme="light"
+  data-theme="dark"
   class="dem-red"
   aria-labelledby="dem-red-title"
 >
@@ -42,13 +42,13 @@ const { invite } = Astro.props;
 
 <style>
   .dem-red {
-    background-color: var(--color-violet);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-cream);
     width: 100%;
     padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem) clamp(5rem, 9vw, 8rem);
-    /* Délimitation violet/noir arrondie juste au-dessus du titre (Morgan
-       2026-06-08) : on arrondit le HAUT du bloc violet → le noir de la section
-       photo apparaît dans les coins. */
+    /* Inversion DA finale 2026-06-16 : bloc formulaire en fond NOIR + texte
+       BEIGE (violet éradiqué). Arrondi haut conservé (sans effet visible sur
+       fond noir continu, mais inoffensif). */
     border-top-left-radius: clamp(24px, 4vw, 56px);
     border-top-right-radius: clamp(24px, 4vw, 56px);
   }
@@ -65,7 +65,7 @@ const { invite } = Astro.props;
     line-height: 1.04;
     letter-spacing: -0.02em;
     text-transform: none;
-    color: var(--color-ink);
+    color: var(--color-cream);
     text-align: left;
     /* Titre élargi sur toute la page (Morgan 2026-06-05) — plus de max-width. */
     max-width: none;

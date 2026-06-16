@@ -92,20 +92,18 @@ const schema = jsonLdGraph([
   <Section variant="cream" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
-      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-forest)]/50 uppercase"
+      class="font-mono text-[11px] tracking-[0.2em] text-[var(--color-cream)]/50 uppercase"
     >
       <ol class="flex flex-wrap items-center gap-2">
         {
           breadcrumbItems.map((b, i) => (
             <li class="flex items-center gap-2">
               {i < breadcrumbItems.length - 1 ? (
-                <a href={b.item} class="hover:text-[var(--color-forest)]">
+                <a href={b.item} class="hover:text-[var(--color-cream)]">
                   {b.name}
                 </a>
               ) : (
-                <span class="line-clamp-1 max-w-[40ch] text-[var(--color-forest)]/80">
-                  {b.name}
-                </span>
+                <span class="line-clamp-1 max-w-[40ch] text-[var(--color-cream)]/80">{b.name}</span>
               )}
               {i < breadcrumbItems.length - 1 && <span aria-hidden="true">/</span>}
             </li>
@@ -119,7 +117,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" space="compact" class="pt-0 pb-0">
     <article>
       <header class="mb-16 max-w-3xl">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-forest)]/55 uppercase">
+        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
           Réalisation · {project.typologyLabel} · {project.year}
         </p>
         <MaskRevealHeading
@@ -129,7 +127,7 @@ const schema = jsonLdGraph([
         />
         {
           cleanLocation && (
-            <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-forest)]/60 italic">
+            <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic">
               {cleanLocation}
             </p>
           )
@@ -164,11 +162,11 @@ const schema = jsonLdGraph([
       <!-- Description projet -->
       <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
         <aside class="md:sticky md:top-32 md:self-start">
-          <div class="border-t border-[var(--color-forest)]/20 pt-6">
+          <div class="border-t border-[var(--color-cream)]/20 pt-6">
             <dl class="space-y-4 text-sm">
               <div>
                 <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
                 >
                   Lieu
                 </dt>
@@ -176,7 +174,7 @@ const schema = jsonLdGraph([
               </div>
               <div>
                 <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
                 >
                   Année
                 </dt>
@@ -184,7 +182,7 @@ const schema = jsonLdGraph([
               </div>
               <div>
                 <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-forest)]/50 uppercase"
+                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
                 >
                   Typologie
                 </dt>
@@ -193,7 +191,7 @@ const schema = jsonLdGraph([
                     project.typologySlug ? (
                       <a
                         href={`/architecture-paysagere/${project.typologySlug}`}
-                        class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
+                        class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
                       >
                         {project.typologyLabel}
                       </a>
@@ -213,11 +211,11 @@ const schema = jsonLdGraph([
               SHOW_DRAFTS ? (
                 <p class="font-mono text-xs text-[color:var(--color-draft)]">{project.summary}</p>
               ) : (
-                <p class="text-[var(--color-forest)]/60 italic">
+                <p class="text-[var(--color-cream)]/60 italic">
                   Description en cours de rédaction. Pour découvrir ce projet en détail,{' '}
                   <a
                     href="/contact"
-                    class="border-b border-[var(--color-forest)]/30 hover:border-[var(--color-forest)]"
+                    class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
                   >
                     me contacter directement
                   </a>
@@ -262,7 +260,7 @@ const schema = jsonLdGraph([
                       data-reveal="image-rise"
                     />
                     {img.caption && (
-                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
+                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
                         {img.caption}
                       </figcaption>
                     )}
@@ -291,7 +289,7 @@ const schema = jsonLdGraph([
                       data-reveal="image-rise"
                     />
                     {img.caption && (
-                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-forest)]/60 uppercase">
+                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
                         {img.caption}
                       </figcaption>
                     )}
@@ -309,7 +307,7 @@ const schema = jsonLdGraph([
     <div class="flex items-center justify-between gap-6">
       <a
         href="/realisations"
-        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-forest)]"
+        class="inline-flex items-center gap-3 text-sm tracking-wide transition-colors hover:text-[var(--color-cream)]"
       >
         <span aria-hidden="true">←</span>
         Toutes les réalisations

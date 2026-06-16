@@ -69,11 +69,15 @@ const {
 // crème partout »). Latérite est le seul vrai accent sombre, à activer
 // intentionnellement par variant="laterite" sur les sections retenues.
 // (Refonte 2026-04-30 : ancien variant "klein" remplacé par "laterite".)
+// Inversion DA finale 2026-06-16 (Jonathan) : les pages passent en fond NOIR +
+// texte BEIGE partout. Les variants « clairs » (cream/forest/cream-accent)
+// basculent donc sur fond ink + texte cream. Toutes les pages éditoriales
+// construites sur <Section> suivent automatiquement.
 const bgClass = {
-  cream: 'bg-[var(--color-cream)] text-[var(--color-ink)]',
-  forest: 'bg-[var(--color-cream)] text-[var(--color-ink)]',
+  cream: 'bg-[var(--color-ink)] text-[var(--color-cream)]',
+  forest: 'bg-[var(--color-ink)] text-[var(--color-cream)]',
   laterite: 'bg-[var(--color-laterite)] text-[var(--color-cream)]',
-  'cream-accent': 'bg-[var(--color-cream)] text-[var(--color-ink)]',
+  'cream-accent': 'bg-[var(--color-ink)] text-[var(--color-cream)]',
   immersive:
     'bg-[var(--color-laterite)] text-[var(--color-cream)] relative isolate overflow-hidden',
 }[variant];
@@ -86,9 +90,10 @@ const spaceVar = {
   hero: 'var(--section-space-hero)',
 }[space];
 
-// Forest aliasé en cream → theme: light. Seuls laterite et immersive sont sombres.
-const isDark = variant === 'laterite' || variant === 'immersive';
-const effectiveTheme = theme ?? (isDark ? 'dark' : 'light');
+// Inversion DA finale 2026-06-16 : tous les variants sont désormais sombres
+// (fond noir). data-theme="dark" partout → curseur custom crème + eyebrows
+// lisibles. Le thème peut toujours être forcé via la prop `theme`.
+const effectiveTheme = theme ?? 'dark';
 
 const dividerClass = topDivider ? 'border-t border-current/10' : '';
 ---

@@ -104,8 +104,8 @@ const parcours = [
   <section
     id="bienvenue"
     data-section-label="Studio"
-    data-theme="light"
-    class="studio-hero full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-hero full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="bienvenue-title"
   >
     <h1 id="bienvenue-title" class="sr-only">
@@ -119,8 +119,8 @@ const parcours = [
   <section
     id="intro"
     data-section-label="Le studio"
-    data-theme="light"
-    class="studio-intro full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-intro full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-label="Présentation du studio"
   >
     <div class="studio-bienvenue__inner">
@@ -158,8 +158,8 @@ const parcours = [
   <section
     id="manifeste"
     data-section-label="Manifeste"
-    data-theme="light"
-    class="studio-manifeste full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-manifeste full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-label="Manifeste du Studio J Oliveira"
   >
     <div class="studio-manifeste__inner">
@@ -183,8 +183,8 @@ const parcours = [
   <section
     id="architectures"
     data-section-label="Architectures"
-    data-theme="light"
-    class="studio-architectures full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-architectures full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="architectures-title"
   >
     <h2 id="architectures-title" class="sr-only">Les quatre architectures connectées</h2>
@@ -195,8 +195,8 @@ const parcours = [
   <section
     id="parcours"
     data-section-label="Parcours"
-    data-theme="light"
-    class="studio-parcours full-bleed-bg relative bg-[var(--color-cream)] text-[var(--color-ink)]"
+    data-theme="dark"
+    class="studio-parcours full-bleed-bg relative bg-[var(--color-ink)] text-[var(--color-cream)]"
     aria-labelledby="parcours-title"
   >
     {
@@ -316,7 +316,7 @@ const parcours = [
       position: relative;
       overflow: hidden;
       aspect-ratio: 4 / 5;
-      background-color: var(--color-ink);
+      background-color: var(--color-cream);
     }
     @media (min-width: 1024px) {
       .studio-bienvenue__visual {
@@ -552,7 +552,7 @@ const parcours = [
       position: relative;
       overflow: hidden;
       aspect-ratio: 3 / 4;
-      background-color: var(--color-ink);
+      background-color: var(--color-cream);
     }
     .studio-parcours__img {
       width: 100%;
@@ -660,22 +660,22 @@ const parcours = [
       line-height: 0.9;
       letter-spacing: -0.02em;
       text-transform: none;
-      color: var(--color-ink);
+      color: var(--color-cream);
     }
     .studio-intro {
       width: 100%;
       padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
     }
     .studio-bienvenue__body p {
-      color: var(--color-ink);
+      color: var(--color-cream);
     }
     .studio-bienvenue__visual {
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
       border-radius: clamp(12px, 1.5vw, 22px);
     }
     /* Manifeste beige : phrase Bold casse normale, aligné gauche. */
     .studio-manifeste__quote {
-      color: var(--color-ink);
+      color: var(--color-cream);
       text-transform: none;
       text-align: left;
       max-width: 24ch;
@@ -684,26 +684,26 @@ const parcours = [
     .studio-architectures__list,
     .studio-architectures__item,
     .studio-architectures__summary {
-      border-color: color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-color: color-mix(in oklab, var(--color-cream) 22%, transparent);
     }
     .studio-architectures__title {
-      color: var(--color-ink);
+      color: var(--color-cream);
       font-weight: 700;
     }
     .studio-architectures__icon {
-      color: var(--color-ink);
+      color: var(--color-cream);
     }
     .studio-architectures__text,
     .studio-architectures__panel p {
-      color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+      color: color-mix(in oklab, var(--color-cream) 92%, transparent);
     }
     .studio-architectures__summary:focus-visible {
-      outline-color: color-mix(in oklab, var(--color-ink) 45%, transparent);
+      outline-color: color-mix(in oklab, var(--color-cream) 45%, transparent);
     }
     /* Séparateurs accordéon arrondis à droite (parti-pris trames). */
     .studio-architectures__summary {
-      border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
-      border-right: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
+      border-right: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
       border-bottom-right-radius: clamp(18px, 2.5vw, 32px);
     }
     .studio-architectures__list {
@@ -718,23 +718,23 @@ const parcours = [
       text-align: left;
       text-align-last: left;
       white-space: normal;
-      color: var(--color-ink);
+      color: var(--color-cream);
       font-size: clamp(2rem, 5vw, 4.5rem);
       font-weight: 800;
     }
     .studio-parcours__timeline,
     .studio-parcours__row {
-      border-color: color-mix(in oklab, var(--color-ink) 22%, transparent);
+      border-color: color-mix(in oklab, var(--color-cream) 22%, transparent);
     }
     .studio-parcours__row-annee {
-      color: var(--color-ink);
+      color: var(--color-cream);
       text-transform: none;
     }
     .studio-parcours__row-detail {
-      color: color-mix(in oklab, var(--color-ink) 70%, transparent);
+      color: color-mix(in oklab, var(--color-cream) 70%, transparent);
     }
     .studio-parcours__photo {
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
       border-radius: clamp(12px, 1.5vw, 22px);
     }
   </style>

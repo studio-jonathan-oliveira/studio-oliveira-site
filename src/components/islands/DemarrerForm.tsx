@@ -106,11 +106,11 @@ const errorClass =
 // best-effort, le natif <select> ne permet pas un séparateur garanti.
 const optionStyle: React.CSSProperties = {
   backgroundColor: 'var(--color-ink)',
-  color: 'var(--color-violet)',
+  color: 'var(--color-cream)',
   fontFamily: 'var(--font-heading), sans-serif',
   fontWeight: 700,
   padding: '0.5rem 0.75rem',
-  borderBottom: '1px solid color-mix(in oklab, var(--color-violet) 45%, transparent)',
+  borderBottom: '1px solid color-mix(in oklab, var(--color-cream) 45%, transparent)',
 };
 
 function bytesHuman(n: number): string {
@@ -611,7 +611,7 @@ export default function DemarrerForm(): React.JSX.Element {
             data-magnetic-cta
             type="submit"
             disabled={submitting}
-            className="group inline-flex items-center gap-3 rounded-[14px] border border-[var(--color-ink)] bg-[var(--color-violet)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-3 rounded-[14px] border border-[var(--color-cream)] bg-[var(--color-cream)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
           </button>

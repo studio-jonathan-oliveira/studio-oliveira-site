@@ -114,7 +114,7 @@ const schema = jsonLdGraph([
   <TypologieHero h1Lines={['Coeur', 'urbain']} valeurs={valeurs} sectionLabel="Cœur urbain" />
 
   {/* ═════════ 2 · GALERIE beige + manifeste « Définir » / « Comprendre » ══ */}
-  <section data-theme="light" class="cu-gallery" aria-label="Sélection de projets cœur urbain">
+  <section data-theme="dark" class="cu-gallery" aria-label="Sélection de projets cœur urbain">
     <div class="cu-gallery__diptyque cu-gallery__diptyque--top">
       <figure class="cu-gallery__diptyque-left" data-reveal="image-rise">
         <Image
@@ -282,8 +282,8 @@ const schema = jsonLdGraph([
     /* ─── Galerie magazine sur fond BEIGE ───────────────────────────────── */
     .cu-gallery {
       width: 100%;
-      background-color: var(--color-cream);
-      color: var(--color-ink);
+      background-color: var(--color-ink);
+      color: var(--color-cream);
       padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
       display: flex;
       flex-direction: column;
@@ -295,7 +295,7 @@ const schema = jsonLdGraph([
       aspect-ratio: 3 / 2;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     @media (min-width: 1024px) {
       .cu-gallery__large {
@@ -326,7 +326,7 @@ const schema = jsonLdGraph([
       margin: 0;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     .cu-gallery__diptyque--top .cu-gallery__diptyque-left,
     .cu-gallery__diptyque--top .cu-gallery__diptyque-right {
@@ -374,7 +374,7 @@ const schema = jsonLdGraph([
       aspect-ratio: 3 / 2;
       overflow: hidden;
       border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-ink) 6%, var(--color-cream));
+      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     @media (min-width: 1024px) {
       .cu-gallery__coda {
@@ -410,7 +410,7 @@ const schema = jsonLdGraph([
       font-size: clamp(2rem, 4.5vw, 4rem);
       line-height: 1;
       letter-spacing: -0.01em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
       /* « Définir » / « Comprendre » en casse normale (annule uppercase global). */
       text-transform: none;
@@ -426,7 +426,7 @@ const schema = jsonLdGraph([
       font-size: clamp(1.1rem, 1.5vw, 1.5rem);
       line-height: 1.5;
       letter-spacing: -0.005em;
-      color: var(--color-ink);
+      color: var(--color-cream);
       margin: 0;
     }
     .cu-manifeste__body .word {

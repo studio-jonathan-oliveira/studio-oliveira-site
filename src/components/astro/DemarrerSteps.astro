@@ -131,24 +131,24 @@ const { steps } = Astro.props;
       column-gap: clamp(2rem, 5vw, 5rem);
     }
   }
-  /* Chiffre géant violet (display fin, trame). */
+  /* Chiffre géant beige (inversion DA finale 2026-06-16 : violet éradiqué). */
   .dem-steps__num {
     font-family: var(--font-heading), sans-serif;
     font-weight: 200;
     font-size: clamp(7rem, 22vw, 22rem);
     line-height: 0.8;
     letter-spacing: -0.04em;
-    color: var(--color-violet);
+    color: var(--color-cream);
   }
   .dem-steps__faq {
     width: 100%;
   }
 
-  /* Accordéon sur photo sombre : titres VIOLET, icône violet, réponses crème,
+  /* Accordéon sur photo sombre : titres + icône CRÈME, réponses crème,
      séparateurs arrondis à droite. */
   .dem-steps .faq-acc__question,
   .dem-steps .faq-acc__icon {
-    color: var(--color-violet);
+    color: var(--color-cream);
   }
   .dem-steps .faq-acc__answer {
     color: color-mix(in oklab, var(--color-cream) 88%, transparent);
@@ -176,14 +176,14 @@ const { steps } = Astro.props;
        border-right pleine hauteur (Morgan 2026-06-08). */
     height: var(--radius-liseret);
     border-bottom: var(--stroke-liseret) solid
-      color-mix(in oklab, var(--color-violet) 45%, transparent);
+      color-mix(in oklab, var(--color-cream) 45%, transparent);
     border-right: var(--stroke-liseret) solid
-      color-mix(in oklab, var(--color-violet) 45%, transparent);
+      color-mix(in oklab, var(--color-cream) 45%, transparent);
     border-bottom-right-radius: var(--radius-liseret);
     pointer-events: none;
   }
   .dem-steps .faq-acc__summary:focus-visible {
-    outline-color: color-mix(in oklab, var(--color-violet) 60%, transparent);
+    outline-color: color-mix(in oklab, var(--color-cream) 60%, transparent);
   }
 </style>
 

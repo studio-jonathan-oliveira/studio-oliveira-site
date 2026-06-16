@@ -94,7 +94,9 @@ if (!images || images.length === 0) {
     margin: 0;
     overflow: hidden;
     border-radius: 2px;
-    background-color: color-mix(in srgb, var(--color-forest) 8%, transparent);
+    /* Placeholder léger BEIGE (inversion DA finale 2026-06-16) → visible sur le
+       fond noir des pages tant que l'image n'est pas chargée. */
+    background-color: color-mix(in srgb, var(--color-cream) 8%, transparent);
   }
 
   .gallery-img {
