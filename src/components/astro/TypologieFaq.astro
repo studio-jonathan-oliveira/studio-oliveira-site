@@ -176,12 +176,28 @@ const marqueeUnit = MARQUEE.repeat(6);
   .typo-faq .faq-acc__item {
     border-bottom: 0;
   }
-  /* Séparateur = bord bas + bord droit arrondi au coin bas-droite
-     (parti-pris « arrondi à droite » des trames). Gauche/haut ouverts. */
+  /* Séparateur courbé bas-droite — IDENTIQUE au liseret des specs du hero
+     typologie (Jonathan 2026-06-16 : « le liseret remonte bien trop, il faut
+     qu'il soit courbé exactement comme celui des Spec »). On dessine la courbe
+     en ::after de HAUTEUR FIXE = --radius-liseret (quart de cercle) au lieu d'un
+     border-right pleine hauteur de summary (qui remontait sur toute la ligne). */
   .typo-faq .faq-acc__summary {
-    border-bottom: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
-    border-right: 1px solid color-mix(in oklab, var(--color-cream) 22%, transparent);
-    border-bottom-right-radius: clamp(18px, 2.5vw, 32px);
+    position: relative;
+    border-bottom: 0;
+  }
+  .typo-faq .faq-acc__summary::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--radius-liseret);
+    border-bottom: var(--stroke-liseret) solid
+      color-mix(in oklab, var(--color-cream) 22%, transparent);
+    border-right: var(--stroke-liseret) solid
+      color-mix(in oklab, var(--color-cream) 22%, transparent);
+    border-bottom-right-radius: var(--radius-liseret);
+    pointer-events: none;
   }
   .typo-faq .faq-acc__summary:focus-visible {
     outline: 1px solid color-mix(in oklab, var(--color-cream) 45%, transparent);
