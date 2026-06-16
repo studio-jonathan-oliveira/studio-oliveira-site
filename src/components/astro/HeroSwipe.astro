@@ -30,6 +30,14 @@ const slides = [
   { name: '06-image', label: 'Projet Studio J Oliveira — visuel 6', position: '50% 50%' },
   { name: '07-image', label: 'Projet Studio J Oliveira — visuel 7', position: '50% 50%' },
   { name: '08-image', label: 'Projet Studio J Oliveira — visuel 8', position: '50% 50%' },
+  // Ajout 2026-06-16 (Jonathan) : domaine de caractère, bâtisse pierre + oliviers
+  // + graminées. Source PORTRAIT 1696×2528 recadrée en 1920×1080 (sharp cover
+  // 'attention' → bande centrale architecture/entrée). object-position ajustable.
+  {
+    name: '09-image',
+    label: 'Studio J Oliveira — domaine de caractère, bâtisse en pierre & oliviers',
+    position: '50% 50%',
+  },
 ];
 ---
 
@@ -117,12 +125,12 @@ const slides = [
     touch-action: pan-y;
   }
   /* Track horizontal — N panels juxtaposés, translateX piloté par JS.
-     Refonte 2026-05-22 : 6 slides (était 3). width = N × 100%,
-     flex panel = 100% / N. Si le nombre de slides change, mettre à jour
-     ces deux valeurs ici ET le tableau `slides` dans le frontmatter. */
+     width = N × 100%, flex panel = 100% / N. Si le nombre de slides change,
+     mettre à jour ces deux valeurs ici ET le tableau `slides` du frontmatter.
+     2026-06-16 : 9 slides (ajout 09-image domaine). */
   .hero-slide__track {
     display: flex;
-    width: 800%;
+    width: 900%;
     height: 100%;
     will-change: transform;
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
@@ -131,7 +139,7 @@ const slides = [
     transition: none;
   }
   .hero-slide__panel {
-    flex: 0 0 12.5%;
+    flex: 0 0 11.1111%;
     position: relative;
     height: 100%;
     overflow: hidden;

@@ -129,12 +129,7 @@ const parcours = [
           /* Apparition wavy/vague mot par mot au scroll (trame « ANIMATION DU
             TEXTE STUDIO… »), même mécanique que les accordéons. */
         }
-        <div
-          class="studio-bienvenue__body"
-          data-words-fade
-          data-words-fade-stagger="0.0015"
-          data-words-fade-window="0.1,0.55"
-        >
+        <div class="studio-bienvenue__body" data-wave>
           {bienvenue.map((para) => <p>{para}</p>)}
         </div>
       </div>
@@ -164,12 +159,7 @@ const parcours = [
   >
     <div class="studio-manifeste__inner">
       {/* Phrase manifeste VERBATIM trame, Bold casse normale. */}
-      <blockquote
-        class="studio-manifeste__quote"
-        data-words-fade
-        data-words-fade-stagger="0.02"
-        data-words-fade-window="0.15,0.6"
-      >
+      <blockquote class="studio-manifeste__quote" data-wave>
         Composer avec toutes les architectures pour créer un ensemble uni.
       </blockquote>
     </div>
@@ -633,6 +623,35 @@ const parcours = [
       }
     }
 
+    /* Wave reveal inView (retour Jonathan/Morgan 2026-06-16 : « le texte intro
+       studio n'a aucune animation, on veut la même wavy que les FAQ »). MÊME
+       mécanique que les FAQ / le parcours : chaque mot porte --i, on révèle en
+       cascade quand le bloc entre dans le viewport (IntersectionObserver dans le
+       script bas de page). Remplace l'ancien data-words-fade scroll-driven sur
+       l'intro + le manifeste. */
+    [data-wave] .studio-wave-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(14px);
+      will-change: opacity, transform;
+      transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--i, 0) * 8ms + 40ms);
+    }
+    [data-wave][data-revealed] .studio-wave-word {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-wave] .studio-wave-word,
+      [data-wave][data-revealed] .studio-wave-word {
+        transition: opacity 0.2s linear;
+        transition-delay: 0s;
+        transform: none;
+      }
+    }
+
     /* full-bleed-bg : sécurité au cas où le layout pose des marges latérales
      non désirées sur les sections (cohérence avec home). */
     .studio-bienvenue,
@@ -788,6 +807,52 @@ const parcours = [
       );
 
       rows.forEach((row) => io.observe(row));
+    })();
+
+    /*
+     * Wave reveal inView pour les blocs [data-wave] (intro studio + manifeste)
+     * — MÊME mécanique que la FAQ / le parcours (retour Jonathan/Morgan
+     * 2026-06-16). On découpe le texte en mots .studio-wave-word (--i), puis on
+     * révèle en cascade quand le bloc entre dans le viewport. Remplace l'ancien
+     * data-words-fade scroll-driven qui ne se déclenchait pas (« aucune anim »).
+     */
+    (() => {
+      const waves = Array.from(document.querySelectorAll<HTMLElement>('[data-wave]'));
+      if (waves.length === 0) return;
+
+      waves.forEach((wave) => {
+        // Cibles à découper : les <p> internes (intro), sinon le bloc lui-même
+        // (manifeste = blockquote sans <p>).
+        const paras = wave.querySelectorAll<HTMLElement>('p');
+        const targets: HTMLElement[] = paras.length > 0 ? Array.from(paras) : [wave];
+        let i = 0;
+        targets.forEach((el) => {
+          const text = el.textContent ?? '';
+          el.textContent = '';
+          text.split(/(\s+)/).forEach((token) => {
+            if (/^\s+$/.test(token)) {
+              el.appendChild(document.createTextNode(token));
+            } else if (token) {
+              const span = document.createElement('span');
+              span.className = 'studio-wave-word';
+              span.style.setProperty('--i', String(i));
+              span.textContent = token;
+              el.appendChild(span);
+              i++;
+            }
+          });
+        });
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.setAttribute('data-revealed', '');
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+      );
+      waves.forEach((w) => io.observe(w));
     })();
   </script>
 </BaseLayout>
