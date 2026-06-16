@@ -26,8 +26,11 @@ Thumbs.db
 # Astro cache
 .astro/
 
-# Sanity
+# Sanity — package Studio AUTONOME (deps non installées par le build du site).
+# node_modules/ (règle plus haut) couvre déjà sanity/node_modules.
+# On garde sanity/pnpm-lock.yaml VERSIONNÉ (install reproductible du Studio).
 sanity/dist/
+sanity/.sanity/
 
 # Pipeline Twinmotion — sources brutes hors repo
 input/

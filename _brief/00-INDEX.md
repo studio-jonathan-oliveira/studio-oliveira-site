@@ -10,6 +10,7 @@ Table des matières de la documentation projet. Mise à jour vivante au fil des 
 | [`prompt-claude-code-jonathan-oliveira.md`](prompt-claude-code-jonathan-oliveira.md) | Brief technique détaillé : stack, architecture, direction artistique, schémas Sanity, critères SEO                               |
 | [`pipeline-frames-scrolldriven.md`](pipeline-frames-scrolldriven.md)                 | Pipeline scroll-driven complet : scripts sharp + ffmpeg, composant `ScrollFrames.tsx`, génération de frames de test synthétiques |
 | [`tuto-twinmotion-jonathan.md`](tuto-twinmotion-jonathan.md)                         | Tutoriel Twinmotion à destination de Jonathan — procédure d'export séquence PNG                                                  |
+| [`deploiement-sanity.md`](deploiement-sanity.md)                                     | Runbook CMS Sanity — Studio isolé, étapes compte/env/seed/deploy/webhook, périmètre éditable, phases de câblage                  |
 
 ## Documents client (fournis par Jonathan)
 

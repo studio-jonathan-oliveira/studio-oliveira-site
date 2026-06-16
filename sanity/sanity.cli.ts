@@ -1,5 +1,6 @@
 /*
  * Sanity CLI — config pour `sanity deploy`, `sanity dataset`, etc.
+ * Vit dans le package Studio autonome (sanity/).
  */
 import { defineCliConfig } from 'sanity/cli';
 

@@ -1,20 +1,20 @@
 /*
- * Sanity Studio — config racine.
+ * Sanity Studio — config racine du package Studio AUTONOME (sanity/).
  *
- * Studio embedded dans ce repo (deps `sanity` + `@sanity/vision` à la racine).
- * Règle dure : ne JAMAIS importer ce fichier ni `/sanity/` depuis `/src/`.
- * Le client front consomme uniquement `src/lib/sanity.ts`.
+ * Ce package est isolé du site Astro : ne JAMAIS l'importer depuis /src/.
+ * Le client front consomme uniquement `src/lib/sanity.ts` (@sanity/client).
  *
- * Lancer le studio en local :
- *   pnpm studio:dev
+ * Lancer le studio en local :   pnpm -C sanity install && pnpm -C sanity dev
+ * Déployer sur *.sanity.studio : pnpm -C sanity deploy   (ou `pnpm studio:deploy` à la racine)
  *
- * Déployer le studio sur sanity.studio :
- *   pnpm studio:deploy
+ * Les IDs projet/dataset viennent de l'env (SANITY_STUDIO_* prioritaire, sinon
+ * PUBLIC_SANITY_* partagé avec le site). Tant qu'ils sont vides, le studio
+ * démarre mais ne se connecte à aucun dataset.
  */
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
-import { schemaTypes } from './sanity/schemas';
+import { schemaTypes } from './schemas';
 
 const projectId =
   process.env.SANITY_STUDIO_PROJECT_ID ?? process.env.PUBLIC_SANITY_PROJECT_ID ?? '';

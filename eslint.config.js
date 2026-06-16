@@ -10,7 +10,7 @@ export default tseslint.config(
       '.astro/**',
       '.vercel/**',
       'node_modules/**',
-      'sanity/dist/**',
+      'sanity/**',
       'public/scrollframes/**',
     ],
   },

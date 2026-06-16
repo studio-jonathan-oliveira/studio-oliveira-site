@@ -1,0 +1,25 @@
+{
+  "name": "studio-oliveira",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Sanity Studio (CMS) — Studio J Oliveira. Package AUTONOME, volontairement isolé du build Astro/Vercel : ses dépendances lourdes (sanity, styled-components) ne sont JAMAIS installées par le build du site (qui ne consomme que @sanity/client via src/lib/sanity.ts). Installer/lancer depuis ce dossier : `pnpm -C sanity install` puis `pnpm -C sanity dev`. Les scripts racine `studio:*` délèguent ici.",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "start": "sanity start"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.0.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "sanity": "^6.0.0",
+    "styled-components": "^6.4.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.5",
+    "typescript": "^5.7.3"
+  }
+}
