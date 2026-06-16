@@ -1114,7 +1114,12 @@ function setupHorizontalTypologies(root: ParentNode) {
  *   - data-words-fade-window="0.0,0.55"  (start,end progress)
  */
 function setupWordsFade(root: ParentNode) {
-  if (REDUCE_MOBILE) return;
+  // Words-fade est léger (fade opacity scroll-driven) — contrairement aux
+  // autres effets, on le laisse tourner sur TOUTES les largeurs (retour
+  // Jonathan 2026-06-16 : « animation wavy inexistante » sur /studio, cas
+  // typique d'un viewport ≤1023 où REDUCE_MOBILE la désactivait). On respecte
+  // uniquement prefers-reduced-motion.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const nodes = root.querySelectorAll<HTMLElement>('[data-words-fade]');
   nodes.forEach((el) => {
     if (el.dataset.wordsFadeDone) return;

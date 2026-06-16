@@ -150,6 +150,13 @@ const { steps } = Astro.props;
   .dem-steps .faq-acc__icon {
     color: var(--color-cream);
   }
+  /* Lisibilité sur la photo floutée CLAIRE (retour Jonathan 2026-06-16 :
+     « les textes ne se voient pas quand l'image est claire, test du gras ») :
+     titres des menus en GRAS + légère ombre portée pour décoller du fond. */
+  .dem-steps .faq-acc__question {
+    font-weight: 700;
+    text-shadow: 0 1px 14px color-mix(in oklab, var(--color-ink) 60%, transparent);
+  }
   .dem-steps .faq-acc__answer {
     color: color-mix(in oklab, var(--color-cream) 88%, transparent);
   }

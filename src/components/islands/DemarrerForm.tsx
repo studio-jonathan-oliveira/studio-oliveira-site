@@ -84,8 +84,11 @@ const labelClass =
 // sur rouge qui ne passe pas WCAG AA (~3.9:1).
 const inputClass =
   'mt-2 block w-full border-0 border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] bg-transparent px-0 pt-1 pb-2 ' +
-  'font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-bold text-[var(--color-cream)] ' +
-  'placeholder:font-bold placeholder:text-[color-mix(in_oklab,var(--color-cream)_75%,transparent)] ' +
+  // Valeur saisie/sélectionnée en EXTRA-LIGHT (retour Jonathan 2026-06-16 :
+  // « le texte dans les cases en extra light, pas en gras, pour garder les
+  // titres des déroulés en évidence »). Les labels restent en gras.
+  'font-[family-name:var(--font-heading)] text-[length:var(--text-base)] font-extralight text-[var(--color-cream)] ' +
+  'placeholder:font-extralight placeholder:text-[color-mix(in_oklab,var(--color-cream)_75%,transparent)] ' +
   'focus:border-[var(--color-cream)] focus:outline-none focus:ring-0 ' +
   'aria-[invalid=true]:border-b-2 aria-[invalid=true]:border-[var(--color-cream)]';
 
@@ -108,7 +111,7 @@ const optionStyle: React.CSSProperties = {
   backgroundColor: 'var(--color-ink)',
   color: 'var(--color-cream)',
   fontFamily: 'var(--font-heading), sans-serif',
-  fontWeight: 700,
+  fontWeight: 200,
   padding: '0.5rem 0.75rem',
   borderBottom: '1px solid color-mix(in oklab, var(--color-cream) 45%, transparent)',
 };

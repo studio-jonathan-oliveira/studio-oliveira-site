@@ -34,6 +34,10 @@ const typologies = [
   { href: '/architecture-paysagere/frange-urbaine', label: 'Frange urbaine' },
   { href: '/architecture-paysagere/domaine-caractere', label: 'Domaine & Caractère' },
 ];
+
+// Ligne légale du footer (retour Jonathan 2026-06-16 : « on en fait quoi des
+// "droits réservés…" ? ») → vrais liens vers les pages légales + © année.
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer" aria-label="Pied de page" data-theme="light">
@@ -63,7 +67,14 @@ const typologies = [
           <p class="site-footer__national">National</p>
         </section>
 
-        <p class="site-footer__legal">Droits réservés, mentions légales, etc.</p>
+        <p class="site-footer__legal">
+          <a href="/mentions-legales" class="site-footer__legal-link">Mentions légales</a>
+          <span aria-hidden="true">·</span>
+          <a href="/confidentialite" class="site-footer__legal-link">Politique de confidentialité</a
+          >
+          <span aria-hidden="true">·</span>
+          © {currentYear} Studio J Oliveira
+        </p>
       </div>
 
       <div class="site-footer__col site-footer__col--right">
@@ -213,6 +224,19 @@ const typologies = [
     font-family: var(--font-body), sans-serif;
     font-size: clamp(0.7rem, 0.85vw, 0.8rem);
     color: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  }
+  .site-footer__legal-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 30%, transparent);
+    transition:
+      border-color 0.3s ease,
+      opacity 0.3s ease;
+  }
+  .site-footer__legal-link:hover,
+  .site-footer__legal-link:focus-visible {
+    border-bottom-color: currentColor;
+    opacity: 1;
   }
 
   .site-footer__link {

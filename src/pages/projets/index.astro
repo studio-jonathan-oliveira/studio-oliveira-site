@@ -742,4 +742,46 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
       color: color-mix(in oklab, var(--color-cream) 88%, transparent);
     }
   </style>
+
+  <script>
+    /*
+     * Recalage des accordéons exclusifs (retour Jonathan 2026-06-16) :
+     * quand on ouvre une section (Conception / Réalisation / Galerie) alors
+     * qu'une autre, longue, était ouverte au-dessus, le reflux de la page nous
+     * laissait au milieu/en bas du nouveau contenu. À l'ouverture, on cale le
+     * HAUT de la section (sa barre de titre) juste sous le header → on démarre
+     * toujours au début des images, de haut en bas.
+     */
+    function initProjAccordionScroll() {
+      const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('.proj-acc__item'));
+      if (items.length === 0) return;
+      items.forEach((d) => {
+        if (d.dataset.scrollBound) return;
+        d.dataset.scrollBound = 'true';
+        d.addEventListener('toggle', () => {
+          if (!d.open) return;
+          // Laisse le reflux (fermeture exclusive des autres <details name>) se
+          // faire avant de mesurer la nouvelle position.
+          requestAnimationFrame(() => {
+            const headerH =
+              parseFloat(
+                getComputedStyle(document.documentElement).getPropertyValue('--header-height'),
+              ) || 80;
+            const y = d.getBoundingClientRect().top + window.scrollY - (headerH + 12);
+            const lenis = (
+              window as unknown as { __lenis?: { scrollTo: (t: number, o?: unknown) => void } }
+            ).__lenis;
+            if (lenis && typeof lenis.scrollTo === 'function') {
+              lenis.scrollTo(y, { duration: 0.8 });
+            } else {
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+          });
+        });
+      });
+    }
+
+    initProjAccordionScroll();
+    document.addEventListener('astro:page-load', initProjAccordionScroll);
+  </script>
 </BaseLayout>

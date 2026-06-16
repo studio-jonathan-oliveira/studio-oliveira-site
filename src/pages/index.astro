@@ -386,7 +386,7 @@ const typologies = [
                       alt={`Typologie ${t.nom} — ${t.sousTypes.join(', ')}`}
                       loading={i === 0 ? 'eager' : 'lazy'}
                       decoding="async"
-                      class="htypo-img"
+                      class:list={['htypo-img', t.slug === 'frange-urbaine' && 'htypo-img--low']}
                     />
                   </picture>
                 </a>
@@ -1397,7 +1397,9 @@ const typologies = [
       position: static;
       left: auto;
       right: auto;
-      padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+      /* Écart intro → images augmenté (retour Jonathan 2026-06-16 : « écarter
+         le texte des images pour aérer »). Bottom padding ↑. */
+      padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(4.5rem, 8vw, 8rem);
     }
     .htypo-section--row .htypo-rail {
       display: grid;
@@ -1554,6 +1556,12 @@ const typologies = [
       object-fit: cover;
       object-position: center;
       transition: filter 0.4s var(--ease-out-editorial);
+    }
+    /* Frange urbaine : photo recadrée vers le BAS pour montrer l'aménagement
+       (retour Jonathan 2026-06-16 : « on ne voit que le ciel, la remonter au
+       max »). object-position bottom = on garde le bas (jardin) au cadrage. */
+    .htypo-img--low {
+      object-position: center bottom;
     }
     /* Flou au survol RENFORCÉ + AUCUN zoom (Morgan 2026-06-05). Le curseur
        affiche « Découvrir » + tagline. Clic → page typologie. */
