@@ -129,6 +129,22 @@ export const projectsListQuery = /* groq */ `
   }
 `;
 
+// Hub /projets — cartes (conceptions ou réalisations) au format trame.
+// Tri : `order` explicite d'abord, sinon année décroissante.
+export const projectsHubQuery = /* groq */ `
+  *[_type == "project" && section == $section] | order(coalesce(order, 9999) asc, year desc, _createdAt desc) {
+    _id,
+    title,
+    subtitle,
+    kind,
+    year,
+    location,
+    "typologyLabel": typology->title,
+    approche,
+    "coverImage": coverImage${IMAGE_FRAGMENT}
+  }
+`;
+
 export const projectsFeaturedQuery = /* groq */ `
   *[_type == "project" && featured == true] | order(year desc) [0...6] {
     _id, title, "slug": slug.current, section, year, location,

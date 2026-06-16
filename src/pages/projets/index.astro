@@ -17,6 +17,8 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+import { fetch, urlFor } from '@/lib/sanity';
+import { projectsHubQuery } from '@/lib/queries';
 
 const schema = jsonLdGraph([
   organization(),
@@ -34,7 +36,7 @@ const schema = jsonLdGraph([
 // 2026-06-08 : « faut corriger ça absolument »). Le fond/verbe restent ceux de
 // Jonathan ; seules les fautes (accents, accords, doublons) sont rectifiées.
 // Paragraphes séparés par une ligne vide.
-const conceptions = [
+const FALLBACK_CONCEPTIONS = [
   {
     l1: 'Coeur urbain',
     l2: 'Jardin de ville',
@@ -141,7 +143,7 @@ const conceptions = [
 // N = index trame). NB carte 2 (centre rangée 1) : bloc illisible dans la trame
 // → inféré identique à ses voisines (Airbnb Chammartz). L'appariement
 // photo↔carte est en ordre trame ; à confirmer visuellement par Morgan.
-const realisations = [
+const FALLBACK_REALISATIONS = [
   {
     titre: 'Airbnb atypique',
     etab: 'Jungle Room — Chammartz Suite',
@@ -210,15 +212,86 @@ const realisations = [
   { titre: 'Jardinet tropical', etab: '', annee: '2021', ville: 'Limoges' },
 ];
 
-// Conceptions en 2 colonnes QUINCONCE (trame : colonne droite décalée vers
-// le bas). Positions d'overlay variées par carte (trame : le texte change de
-// coin d'une carte à l'autre). On évite « bas-gauche » (réservé à la pill).
+// ── Source du contenu : Sanity si configuré ET peuplé, sinon FALLBACK trame
+//    (rendu pixel-identique). `fetch` renvoie [] tant que le CMS n'est pas
+//    branché → on retombe sur les tableaux verbatim ci-dessus. Quand Jonathan
+//    aura saisi ses projets, ils remplacent la maquette. Cf. _brief/deploiement-sanity.md.
+interface SanityImg {
+  asset?: unknown;
+  alt?: string;
+}
+interface SanityCard {
+  title?: string;
+  subtitle?: string;
+  kind?: string;
+  year?: number;
+  location?: string;
+  approche?: string[];
+  coverImage?: SanityImg;
+}
+interface Card {
+  l1: string;
+  l2: string;
+  l3: string;
+  l4: string;
+  approche: string[];
+  img: string;
+  alt: string;
+}
+
+const sanityConc = await fetch<SanityCard[]>(projectsHubQuery, { section: 'conceptions' }, []);
+const sanityReal = await fetch<SanityCard[]>(projectsHubQuery, { section: 'realisations' }, []);
+
+const imgUrl = (im?: SanityImg): string =>
+  im?.asset ? urlFor(im).width(1400).quality(80).auto('format').url() : '';
+
+const conceptions: Card[] =
+  sanityConc.length > 0
+    ? sanityConc.map((c) => ({
+        l1: c.title ?? '',
+        l2: c.subtitle ?? '',
+        l3: [c.kind ?? 'Conception', c.year].filter(Boolean).join(', '),
+        l4: c.location ?? '',
+        approche: c.approche ?? [],
+        img: imgUrl(c.coverImage),
+        alt: c.coverImage?.alt ?? `${c.title ?? ''} — ${c.location ?? ''}`,
+      }))
+    : FALLBACK_CONCEPTIONS.map((c, i) => ({
+        l1: c.l1,
+        l2: c.l2,
+        l3: c.l3,
+        l4: c.l4,
+        approche: c.approche,
+        img: `/projets/conceptions/${String(i + 1).padStart(2, '0')}.webp`,
+        alt: `${c.l1} — ${c.l4}`,
+      }));
+
+const realisations: Card[] =
+  sanityReal.length > 0
+    ? sanityReal.map((r) => ({
+        l1: r.title ?? '',
+        l2: r.subtitle ?? '',
+        l3: ['Réalisation', r.year].filter(Boolean).join(', '),
+        l4: r.location ?? '',
+        approche: [],
+        img: imgUrl(r.coverImage),
+        alt: r.coverImage?.alt ?? `${r.title ?? ''} — ${r.location ?? ''}`,
+      }))
+    : FALLBACK_REALISATIONS.map((r, i) => ({
+        l1: r.titre,
+        l2: r.etab,
+        l3: `Réalisation, ${r.annee}`,
+        l4: r.ville,
+        approche: [],
+        img: `/projets/realisations/${String(i + 1).padStart(2, '0')}.webp`,
+        alt: `${r.titre} — ${r.ville}`,
+      }));
+
+// Conceptions en 2 colonnes QUINCONCE (colonne droite décalée). Positions
+// d'overlay variées par carte. On évite « bas-gauche » (réservé à la pill).
 const concPos = ['pos-tl', 'pos-br', 'pos-tc', 'pos-tr', 'pos-cl', 'pos-bc'];
-// On conserve l'index original (n) pour mapper la photo correspondante
-// (public/projets/conceptions/0N.webp) malgré le split quinconce.
-const concItems = conceptions.map((c, i) => ({ ...c, n: i + 1 }));
-const concGauche = concItems.filter((_, i) => i % 2 === 0);
-const concDroite = concItems.filter((_, i) => i % 2 === 1);
+const concGauche = conceptions.filter((_, i) => i % 2 === 0);
+const concDroite = conceptions.filter((_, i) => i % 2 === 1);
 
 // ── Galerie Studio : vrai masonry en colonnes CSS (columns) — équilibre
 // automatiquement les HAUTEURS, donc plus de photos isolées en bas (les 3
@@ -262,8 +335,8 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
               concGauche.map((c, j) => (
                 <button
                   class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j) % concPos.length]}`}
-                  data-zoom-src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
-                  data-zoom-alt={`${c.l1} — ${c.l4}`}
+                  data-zoom-src={c.img}
+                  data-zoom-alt={c.alt}
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                   data-cursor-label="Agrandir"
@@ -271,8 +344,8 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                 >
                   <img
                     class="zoom-card__img"
-                    src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
-                    alt={`${c.l1} — ${c.l4}`}
+                    src={c.img}
+                    alt={c.alt}
                     loading="lazy"
                     decoding="async"
                   />
@@ -291,8 +364,8 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
               concDroite.map((c, j) => (
                 <button
                   class={`zoom-card proj-card proj-card--conc ${concPos[(2 * j + 1) % concPos.length]}`}
-                  data-zoom-src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
-                  data-zoom-alt={`${c.l1} — ${c.l4}`}
+                  data-zoom-src={c.img}
+                  data-zoom-alt={c.alt}
                   data-zoom-approche={c.approche.join('\n\n')}
                   data-cursor-tooltip={[c.l1, c.l2, c.l3, c.l4].filter(Boolean).join(' / ')}
                   data-cursor-label="Agrandir"
@@ -300,8 +373,8 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                 >
                   <img
                     class="zoom-card__img"
-                    src={`/projets/conceptions/${String(c.n).padStart(2, '0')}.webp`}
-                    alt={`${c.l1} — ${c.l4}`}
+                    src={c.img}
+                    alt={c.alt}
                     loading="lazy"
                     decoding="async"
                   />
@@ -328,29 +401,27 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
       <div class="proj-acc__panel">
         <div class="proj-grid proj-grid--2">
           {
-            realisations.map((r, i) => (
+            realisations.map((r) => (
               <button
                 class="zoom-card proj-card proj-card--real"
-                data-zoom-src={`/projets/realisations/${String(i + 1).padStart(2, '0')}.webp`}
-                data-zoom-alt={`${r.titre} — ${r.ville}`}
-                data-cursor-tooltip={[r.titre, r.etab, `Réalisation, ${r.annee}`, r.ville]
-                  .filter(Boolean)
-                  .join(' / ')}
+                data-zoom-src={r.img}
+                data-zoom-alt={r.alt}
+                data-cursor-tooltip={[r.l1, r.l2, r.l3, r.l4].filter(Boolean).join(' / ')}
                 data-cursor-label="Agrandir"
                 data-cursor-label-case="normal"
               >
                 <img
                   class="zoom-card__img"
-                  src={`/projets/realisations/${String(i + 1).padStart(2, '0')}.webp`}
-                  alt={`${r.titre} — ${r.ville}`}
+                  src={r.img}
+                  alt={r.alt}
                   loading="lazy"
                   decoding="async"
                 />
                 <span class="proj-card__overlay">
-                  <span class="proj-card__l1">{r.titre}</span>
-                  {r.etab && <span class="proj-card__l">{r.etab}</span>}
-                  <span class="proj-card__l">Réalisation, {r.annee}</span>
-                  <span class="proj-card__l">{r.ville}</span>
+                  <span class="proj-card__l1">{r.l1}</span>
+                  {r.l2 && <span class="proj-card__l">{r.l2}</span>}
+                  <span class="proj-card__l">{r.l3}</span>
+                  <span class="proj-card__l">{r.l4}</span>
                 </span>
               </button>
             ))

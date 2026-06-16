@@ -22,11 +22,41 @@ export default defineType({
       validation: (r) => r.required(),
     },
     {
+      name: 'subtitle',
+      type: 'string',
+      title: 'Sous-titre',
+      description:
+        'Ligne secondaire de la carte (ex : « Jardin de ville », « Jungle Room — Chammartz Suite »).',
+    },
+    {
       name: 'slug',
       type: 'slug',
       title: 'Slug URL',
       options: { source: 'title', maxLength: 60 },
       validation: (r) => r.required(),
+    },
+    {
+      name: 'order',
+      type: 'number',
+      title: 'Ordre d’affichage',
+      description:
+        'Plus petit = affiché en premier dans la grille /projets. Vide = trié par année.',
+    },
+    {
+      name: 'kind',
+      type: 'string',
+      title: 'Phase (conceptions)',
+      description:
+        'Pour les conceptions : « Conception » ou « Co-conception ». Les réalisations affichent « Réalisation » automatiquement.',
+      options: {
+        list: [
+          { title: 'Conception', value: 'Conception' },
+          { title: 'Co-conception', value: 'Co-conception' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'Conception',
+      hidden: ({ document }) => document?.section !== 'conceptions',
     },
     {
       name: 'section',
@@ -109,9 +139,17 @@ export default defineType({
       hidden: ({ document }) => document?.section !== 'conceptions',
     },
     {
+      name: 'approche',
+      type: 'array',
+      title: 'Approche projet',
+      description:
+        'Paragraphes affichés dans la fiche agrandie (lightbox). Un bloc = un paragraphe.',
+      of: [{ type: 'text', rows: 3 }],
+    },
+    {
       name: 'description',
       type: 'blockContent',
-      title: 'Description / parti-pris',
+      title: 'Description / parti-pris (pages détaillées)',
     },
     {
       name: 'challenge',
