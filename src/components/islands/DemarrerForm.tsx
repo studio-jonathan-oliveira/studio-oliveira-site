@@ -83,7 +83,9 @@ const labelClass =
 // Erreur signalée par bordure cream épaissie (border-b-2) — éviter ink/noir
 // sur rouge qui ne passe pas WCAG AA (~3.9:1).
 const inputClass =
-  'mt-2 block w-full border-0 border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] bg-transparent px-0 pt-1 pb-2 ' +
+  // Liseret BAS + DROIT arrondi au coin bas-droite (retour Jonathan 2026-06-16 :
+  // « les liserets du formulaire en arrondi à droite comme les menus déroulés »).
+  'mt-2 block w-full border-0 border-r border-b border-[color-mix(in_oklab,var(--color-cream)_55%,transparent)] rounded-br-[clamp(12px,1.8vw,20px)] bg-transparent px-0 pt-1 pb-2 ' +
   // Valeur saisie/sélectionnée en EXTRA-LIGHT (retour Jonathan 2026-06-16 :
   // « le texte dans les cases en extra light, pas en gras, pour garder les
   // titres des déroulés en évidence »). Les labels restent en gras.

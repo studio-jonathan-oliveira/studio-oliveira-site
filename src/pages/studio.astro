@@ -428,9 +428,12 @@ const parcours = [
     .studio-architectures__collapse--open {
       transition: height 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    /* Largeur totale page (retour Morgan v3) — pas de max-width. */
+    /* Largeur totale page (retour Morgan v3) — pas de max-width.
+       Padding-top ajouté (retour Jonathan 2026-06-16 : « écarter un peu le texte
+       sous le déroulé pour aérer ») → de l'air entre le titre/liseret et le
+       contenu déplié. */
     .studio-architectures__panel {
-      padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+      padding: clamp(1.75rem, 3.5vw, 2.5rem) clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 4.5vw, 3.5rem);
     }
     /* Texte : conteneur paragraphe — word-spacing souple, ligne lisible. */
     .studio-architectures__text {
