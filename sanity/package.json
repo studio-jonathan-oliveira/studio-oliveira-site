@@ -12,14 +12,19 @@
   },
   "dependencies": {
     "@sanity/vision": "^6.0.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
     "sanity": "^6.0.0",
     "styled-components": "^6.4.2"
   },
   "devDependencies": {
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "typescript": "^5.7.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

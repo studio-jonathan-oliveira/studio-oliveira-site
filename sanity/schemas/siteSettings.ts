@@ -11,7 +11,9 @@ export default defineType({
   name: 'siteSettings',
   title: 'Paramètres du site',
   type: 'document',
-  __experimental_actions: ['update', 'publish'],
+  // Verrouillage singleton (création/suppression interdites) géré côté config
+  // dans sanity/sanity.config.ts (templates + document.actions). L'ancien
+  // `__experimental_actions` (Sanity v2) n'existe plus en v6.
   fieldsets: [
     { name: 'general', title: 'Général', options: { collapsible: false } },
     { name: 'contact', title: 'Contact (NAP)', options: { collapsible: true } },
