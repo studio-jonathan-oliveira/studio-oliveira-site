@@ -1558,11 +1558,15 @@ const typologies = [
       object-position: center;
       transition: filter 0.4s var(--ease-out-editorial);
     }
-    /* Frange urbaine : photo recadrée vers le BAS pour montrer l'aménagement
-       (retour Jonathan 2026-06-16 : « on ne voit que le ciel, la remonter au
-       max »). object-position bottom = on garde le bas (jardin) au cadrage. */
+    /* Frange urbaine : la vignette ET la carte sont carrées (1:1), donc
+       object-position n'a AUCUN effet (l'image entière s'affiche, ~60% de ciel).
+       Retours Jonathan 2026-06-16 (« on ne voit que le ciel », puis « recentrer
+       pour voir un peu plus le bas »). On zoome donc légèrement en ancrant le
+       cadrage en BAS : la maison, la pergola, les promeneurs et le jardin
+       remontent dans le cadre, le ciel est réduit. */
     .htypo-img--low {
-      object-position: center bottom;
+      transform: scale(1.45);
+      transform-origin: bottom center;
     }
     /* Flou au survol RENFORCÉ + AUCUN zoom (Morgan 2026-06-05). Le curseur
        affiche « Découvrir » + tagline. Clic → page typologie. */
