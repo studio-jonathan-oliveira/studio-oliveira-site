@@ -402,6 +402,7 @@ const parcours = [
       line-height: 1.15;
       letter-spacing: -0.005em;
       color: var(--color-cream);
+      transition: font-weight 0.3s var(--ease-out-editorial);
     }
     .studio-architectures__icon {
       flex-shrink: 0;
@@ -702,7 +703,9 @@ const parcours = [
       text-align: left;
       max-width: 24ch;
     }
-    /* Accordéon architectures beige : filets + textes en ink, titres Bold. */
+    /* Accordéon architectures : filets + textes + titres en cream. Titre FIN au
+       repos → GRAS à l'ouverture ET au survol (affordance « ça se déroule »,
+       retour Jonathan 2026-06-16, aligné sur FAQ / projets / démarrer). */
     .studio-architectures__list,
     .studio-architectures__item,
     .studio-architectures__summary {
@@ -710,7 +713,14 @@ const parcours = [
     }
     .studio-architectures__title {
       color: var(--color-cream);
+    }
+    .studio-architectures__summary[aria-expanded='true'] .studio-architectures__title {
       font-weight: 700;
+    }
+    @media (hover: hover) {
+      .studio-architectures__summary:hover .studio-architectures__title {
+        font-weight: 700;
+      }
     }
     .studio-architectures__icon {
       color: var(--color-cream);

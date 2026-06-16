@@ -722,6 +722,14 @@ nav[aria-label="Fil d'Ariane"] a:focus-visible {
 .faq-acc__summary[aria-expanded='true'] .faq-acc__question {
   font-weight: 700;
 }
+/* Survol → titre en GRAS : affordance « ça se déroule » (retour Jonathan
+   2026-06-16, généralisé à TOUS les accordéons du site). `hover: hover` pour
+   ne pas figer le gras au tap sur mobile/tactile. */
+@media (hover: hover) {
+  .faq-acc__summary:hover .faq-acc__question {
+    font-weight: 700;
+  }
+}
 /* Icône `+` qui rotate 45° (clone strict `.studio-architectures__icon`).
    Remplace l'ancienne flèche Jonathan image webp pour aligner sitewide
    sur le pattern /studio (retour Jonathan 2026-05-22). */
