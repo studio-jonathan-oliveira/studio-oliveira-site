@@ -32,7 +32,12 @@ type SharpPosition = 'attention' | 'centre' | 'south' | 'east' | 'west';
 const POSITION_BY_FILE: Record<string, SharpPosition> = {
   '01-micro-urbain': 'attention',
   '02-coeur-urbain': 'south',
-  '03-frange-urbaine': 'attention',
+  // Refonte 2026-06-18 (Morgan « on ne voit pas le bas, l'image a été crop ») :
+  // 'attention' → 'south'. Le smart-crop gardait la canopée lumineuse + le ciel
+  // (zone la plus saillante) et coupait le premier plan (jardin, terrasse). On
+  // ancre désormais le carré sur le BAS de la source pour conserver ce premier
+  // plan. À régénérer avec la source dans _assets/typologies-source/.
+  '03-frange-urbaine': 'south',
   // Refonte v6 2026-05-15 : 'east' → 'centre' (Morgan « redécale vers la
   // gauche, la tour doit apparaître sur la partie droite »). Centrer garde
   // la tour à droite du frame final au lieu de la pousser au centre.
