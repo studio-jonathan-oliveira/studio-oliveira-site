@@ -237,6 +237,8 @@ interface Card {
   approche: string[];
   img: string;
   alt: string;
+  /** Cadrage vertical de la vignette (object-position). Défaut = center. */
+  imgPos?: string;
 }
 
 const sanityConc = await fetch<SanityCard[]>(projectsHubQuery, { section: 'conceptions' }, []);
@@ -285,6 +287,9 @@ const realisations: Card[] =
         approche: [],
         img: `/projets/realisations/${String(i + 1).padStart(2, '0')}.webp`,
         alt: `${r.titre} — ${r.ville}`,
+        // « Jardinet tropical » (Limoges) : cadrage remonté pour révéler le mur
+        // végétal au-dessus de la cuisine (retour Jonathan 2026-06-24, P2).
+        ...(r.titre === 'Jardinet tropical' && r.ville === 'Limoges' ? { imgPos: 'top' } : {}),
       }));
 
 // Conceptions en 2 colonnes QUINCONCE (colonne droite décalée). Positions
@@ -416,6 +421,7 @@ const galerie = Array.from({ length: 28 }, (_, i) => i + 1);
                   alt={r.alt}
                   loading="lazy"
                   decoding="async"
+                  style={r.imgPos ? `object-position: ${r.imgPos};` : undefined}
                 />
                 <span class="proj-card__overlay">
                   <span class="proj-card__l1">{r.l1}</span>
