@@ -141,41 +141,15 @@ const schema = jsonLdGraph([
       </div>
     </div>
 
-    <figure class="dc-gallery__large" data-reveal="image-rise">
-      <Image
-        src={gal03}
-        alt="Projet domaines et caractère — jardin japonais zen avec maison traditionnelle et buis sculptés"
-        widths={[960, 1440, 1800]}
-        sizes="(min-width: 1024px) 92vw, 96vw"
-        quality={92}
-        format="webp"
-        loading="lazy"
-        class="dc-gallery__img"
-      />
-    </figure>
-
     {
-      /* gal04 portrait centré, puis gal05 (paysage) en PLEINE LARGEUR au ratio
-        naturel — retour Jonathan 2026-06-24 : « mettre l'image dans toute sa
-        longueur, on ne voit rien » (le panorama mer était écrasé en crop 4/5). */
+      /* gal03 = panorama mer (portrait) en ratio NATUREL non rogné — retour
+        Jonathan 2026-06-24 : « mettre l'image dans toute sa longueur, on ne voit
+        rien » (le 16/10 écrasait le panorama en une bande horizontale). */
     }
-    <figure class="dc-gallery__portrait" data-reveal="image-rise">
-      <Image
-        src={gal04}
-        alt="Projet domaines et caractère — jardin Majorelle, façade bleu cobalt et cactus sculpturaux"
-        widths={[480, 720, 1100]}
-        sizes="(min-width: 1024px) 48vw, 92vw"
-        quality={92}
-        format="webp"
-        loading="lazy"
-        class="dc-gallery__img"
-      />
-    </figure>
-
     <figure class="dc-gallery__large dc-gallery__large--natural" data-reveal="image-rise">
       <Image
-        src={gal05}
-        alt="Projet domaines et caractère — vue mer méditerranéenne sous pin parasol depuis une maison à toit ocre"
+        src={gal03}
+        alt="Projet domaines et caractère — vue sur la mer Méditerranée sous un pin parasol depuis une maison à toit ocre, jardin en terrasses"
         widths={[960, 1440, 1800]}
         sizes="(min-width: 1024px) 92vw, 96vw"
         quality={92}
@@ -184,6 +158,33 @@ const schema = jsonLdGraph([
         class="dc-gallery__img"
       />
     </figure>
+
+    <div class="dc-gallery__diptyque dc-gallery__diptyque--top">
+      <figure class="dc-gallery__diptyque-left" data-reveal="image-rise">
+        <Image
+          src={gal04}
+          alt="Projet domaines et caractère — jardin Majorelle, façade bleu cobalt et cactus sculpturaux"
+          widths={[480, 720, 1100]}
+          sizes="(min-width: 1024px) 38vw, 92vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="dc-gallery__img"
+        />
+      </figure>
+      <figure class="dc-gallery__diptyque-right" data-reveal="image-rise">
+        <Image
+          src={gal05}
+          alt="Projet domaines et caractère — jardin japonais zen avec maison traditionnelle et buis sculptés"
+          widths={[640, 960, 1300]}
+          sizes="(min-width: 1024px) 54vw, 96vw"
+          quality={92}
+          format="webp"
+          loading="lazy"
+          class="dc-gallery__img"
+        />
+      </figure>
+    </div>
 
     <figure class="dc-gallery__large" data-reveal="image-rise">
       <Image
@@ -263,16 +264,6 @@ const schema = jsonLdGraph([
        (retour Jonathan 2026-05-22) — pas de crop. */
     .dc-gallery__large--natural {
       aspect-ratio: auto;
-    }
-    /* gal04 isolé (ex-diptyque) : portrait centré, largeur contenue. */
-    .dc-gallery__portrait {
-      margin: 0 auto;
-      width: 100%;
-      max-width: 520px;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border-radius: clamp(12px, 1.5vw, 22px);
-      background-color: color-mix(in oklab, var(--color-cream) 6%, var(--color-ink));
     }
     .dc-gallery__diptyque {
       display: grid;
