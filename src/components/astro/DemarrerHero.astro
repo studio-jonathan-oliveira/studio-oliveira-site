@@ -41,6 +41,9 @@
   .dem-hero__inner {
     display: flex;
     flex-direction: column;
+    /* Titre + sous-titre poussés EN BAS-gauche comme les autres pages (hero
+       typologies = align-items: flex-end). Retour Jonathan 2026-06-24. */
+    justify-content: flex-end;
     height: 100%;
     min-height: calc(100svh - clamp(10rem, 24vh, 18rem));
   }
