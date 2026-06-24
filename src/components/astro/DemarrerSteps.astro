@@ -74,6 +74,12 @@ const { steps } = Astro.props;
     overflow: hidden;
     background-color: var(--color-black-deep);
     color: var(--color-cream);
+    /* Coins BAS arrondis (retour Jonathan 2026-06-24, P4+P5) : la photo de fond
+       (`.dem-steps__bg` inset:0) est clippée par overflow:hidden → ses angles
+       bas gauche/droite deviennent arrondis ET l'image descend jusqu'au bord
+       (plus de liseré noir). Même radius que le bloc en dessous. */
+    border-bottom-left-radius: clamp(24px, 4vw, 56px);
+    border-bottom-right-radius: clamp(24px, 4vw, 56px);
   }
   .dem-steps__bg {
     position: absolute;
