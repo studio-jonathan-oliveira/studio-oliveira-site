@@ -74,19 +74,22 @@ const { steps } = Astro.props;
     overflow: hidden;
     background-color: var(--color-black-deep);
     color: var(--color-cream);
-    /* Coins arrondis SUR LES 4 ANGLES (retour Jonathan 2026-06-24, 2e passe) :
-       la photo de fond (`.dem-steps__bg` inset:0) est clippée par
-       overflow:hidden → ses angles deviennent arrondis. Le 1er correctif ne
-       traitait que le BAS ; le HAUT (jonction avec le hero noir « Comment ça
-       marche ? ») restait carré sur le screenshot de Jonathan. On arrondit
-       aussi le haut pour que la photo se lise comme une carte aux 4 coins
-       arrondis. Même radius partout. */
-    border-radius: clamp(24px, 4vw, 56px);
   }
+  /* Coins arrondis portés par la PHOTO (`.dem-steps__bg`), pas par la section
+     (retour Jonathan 2026-06-25 : « l'angle sous le hero est gris, pas noir »).
+     Pourquoi : si on arrondit la SECTION, les angles transparents laissent voir
+     le fond de page — or le grain global (`body::before`, mix-blend-mode:
+     soft-light) éclaircit ce noir en gris très sombre, alors que le hero, lui,
+     reste noir pur. L'angle tranchait donc en gris. En arrondissant la photo À
+     L'INTÉRIEUR de la section, les angles révèlent le fond NOIR de la section —
+     protégé du grain par `isolation: isolate` → noir pur, raccord parfait avec
+     le hero. Même radius sur les 4 coins. */
   .dem-steps__bg {
     position: absolute;
     inset: 0;
     z-index: 0;
+    overflow: hidden;
+    border-radius: clamp(24px, 4vw, 56px);
   }
   .dem-steps__bg-img {
     width: 100%;
