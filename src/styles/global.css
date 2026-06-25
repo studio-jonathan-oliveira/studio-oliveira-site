@@ -364,22 +364,24 @@ header.intro-revealing {
   }
 
   /*
-   * Texture grain très subtile sur le fond — effet "papier imprimé" qui
-   * casse le plat Figma et crée une matière éditoriale premium (référence
-   * Hermès Digital, Maison Kitsuné, Aesop). Opacity 0.03 seulement.
+   * Grain `body::before` RETIRÉ 2026-06-25.
+   *
+   * C'était un 2e calque de grain (noise BLANC, soft-light, z-index:0) censé
+   * texturer le fond noir. Problème : posé au niveau du FOND de page, il était
+   * masqué par toutes les sections opaques (positionnées, donc peintes au-dessus
+   * de lui → noir pur). Il n'apparaissait donc QUE dans les interstices : les
+   * angles arrondis (coins du footer, des cartes…), où son blanc en soft-light
+   * remontait le noir pur à un gris (~#050505). Résultat : tous les angles
+   * tranchaient en GRIS contre le noir des sections (retour Jonathan/Morgan
+   * 2026-06-25 : « les angles sont gris au lieu de noir ou crème »).
+   *
+   * Le vrai film grain du site est porté par <Grain /> (`.grain-overlay`,
+   * z-index:50, mix-blend-mode:multiply) : posé AU-DESSUS de tout, en multiply,
+   * il ne remonte jamais le noir (multiply × noir = noir) et texture les aplats
+   * clairs. On le garde, et on supprime ce calque blanc redondant qui ne
+   * produisait que les angles gris. Désormais chaque coin arrondi révèle le
+   * fond noir pur → raccord net partout.
    */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    /* Grain BLANC + blend soft-light : visible sur le fond noir dominant
-       (DA finale 2026-06-16) tout en restant discret sur le footer beige. */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
-    opacity: 0.05;
-    mix-blend-mode: soft-light;
-  }
 
   h1,
   h2,
