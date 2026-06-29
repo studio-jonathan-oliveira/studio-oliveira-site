@@ -1,12 +1,26 @@
 # Déploiement Sanity — runbook
 
 Procédure pour activer le CMS **Sanity** sur le site Studio J Oliveira, proprement.
-Dernière mise à jour : 2026-06-16.
+Dernière mise à jour : 2026-06-29.
 
 Objectif : Jonathan édite **lui-même** son contenu via une interface propre (Sanity
 Studio), sans pouvoir casser la direction artistique. Périmètre éditable validé :
 **Projets (conceptions + réalisations + photos)**, **Journal**, **Coordonnées / NAP +
-réseaux**, **Galeries + FAQ des typologies**. (Contour à affiner avec Jonathan ensuite.)
+réseaux**, **Galeries + FAQ des typologies**, **images du carrousel hero (accueil)**.
+(Contour à affiner avec Jonathan ensuite.)
+
+### Les 3 paliers d'autonomie (cadrage Morgan 2026-06-29)
+
+Même outil (Sanity), autonomie croissante — à dérouler dans cet ordre :
+
+- **Palier 1 — créations & journal** : Phase A ci-dessous (créer le projet + seed). La
+  plomberie GROQ existe déjà → ajouter une création/un article + éditer le NAP devient
+  éditable **sans toucher au code**.
+- **Palier 2 — galeries & FAQ** : Phase B — câbler `typology.gallery` + `typology.faq`
+  (les manifestes/specs typologies restent **en dur = DA verrouillée**, décision projet).
+- **Palier 3 — hero & finitions** : le champ `siteSettings.heroImages` et le câblage du
+  carrousel `HeroSwipe.astro` sont **déjà faits** (2026-06-29) — il suffit, une fois Sanity
+  branché, que Jonathan ajoute des images dans le Studio ; à vérifier côté LCP (cf. Phase B).
 
 ---
 
@@ -111,11 +125,18 @@ brancher un sous-domaine `admin.jonathanoliveira.fr` plus tard si souhaité.
    identique** (quinconce, accordéons, infobulle curseur, lightbox « approche »).
 3. **Journal** : déjà câblé — il suffit que Jonathan écrive ses articles. Ajouter une
    intro de page (champ `siteSettings` ou doc dédié) pour remplacer le placeholder.
-4. **Galeries + FAQ typologies** : exposer `typology.gallery` + `typology.faq` dans les
+   Reste à écrire le renderer Portable Text dans `journal/[slug].astro` (placeholder
+   actuel) au moment où le 1er article réel existe (pour tester le rendu des blocs).
+4. **Hero accueil** : **déjà câblé** (`HeroSwipe.astro` lit `siteSettings.heroImages` via
+   `heroImagesQuery`, fallback sur les 8 visuels locaux ; carrousel agnostique au nombre de
+   slides). Une fois Sanity branché : Jonathan ajoute/réordonne les images dans _Paramètres
+   du site → Carrousel hero_. **À vérifier** : LCP du 1er visuel servi en CDN Sanity (le
+   hero est l'élément LCP, cible < 2 s) — ajuster `width()/quality()` si besoin.
+5. **Galeries + FAQ typologies** : exposer `typology.gallery` + `typology.faq` dans les
    4 pages typologies (le hero, les specs et le manifeste restent en dur = DA verrouillée).
-5. **NAP / réseaux** : consommer `siteSettings` (téléphone, email, adresse, Instagram…)
+6. **NAP / réseaux** : consommer `siteSettings` (téléphone, email, adresse, Instagram…)
    dans le Footer / Contact / JSON-LD au lieu de `site-config.ts`.
-6. (Optionnel, plus tard) zones (`location`), verticales pro (`service`), témoignages.
+7. (Optionnel, plus tard) zones (`location`), verticales pro (`service`), témoignages.
 
 > Chaque câblage est **non bloquant** : si Sanity renvoie vide, le fallback s'affiche.
 > On peut donc livrer page par page.
