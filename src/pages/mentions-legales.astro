@@ -32,10 +32,29 @@ import { SITE } from '@/lib/site-config';
         {SITE.address.postalCode}
         {SITE.address.city}, {SITE.address.country}
       </p>
+      {
+        /* SIRET + forme juridique = mentions OBLIGATOIRES (LCEN). Rendus seulement
+          quand renseignés dans site-config.ts → pas de placeholder visible en prod.
+          À FOURNIR PAR JONATHAN avant go-live (cf. _brief/contenus-manquants.md). */
+      }
       <p>
         Directeur de la publication : {SITE.legal.editorName}<br />
-        SIRET : [À FOURNIR PAR JONATHAN]<br />
-        Forme juridique : [À FOURNIR PAR JONATHAN]<br />
+        {
+          SITE.legal.legalForm && (
+            <Fragment>
+              Forme juridique : {SITE.legal.legalForm}
+              <br />
+            </Fragment>
+          )
+        }
+        {
+          SITE.legal.siret && (
+            <Fragment>
+              SIRET : {SITE.legal.siret}
+              <br />
+            </Fragment>
+          )
+        }
         Contact : <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
       </p>
 
@@ -56,11 +75,8 @@ import { SITE } from '@/lib/site-config';
       </p>
 
       <h2>Crédits</h2>
-      <p>
-        Photographies : [À FOURNIR PAR JONATHAN : crédits photographes, si applicable].<br />
-        Rendus photoréalistes : réalisés avec Twinmotion / Epic Games.<br />
-        Conception et développement du site : [À FOURNIR — si souhaité].
-      </p>
+      {/* Crédits photographes à ajouter ici si applicable (À FOURNIR PAR JONATHAN). */}
+      <p>Rendus photoréalistes : réalisés avec Twinmotion / Epic Games.</p>
 
       <p class="text-sm opacity-60">
         Pour toute question concernant les présentes mentions légales, utilisez les coordonnées de

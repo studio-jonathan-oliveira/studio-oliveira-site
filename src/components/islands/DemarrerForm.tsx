@@ -587,8 +587,11 @@ export default function DemarrerForm(): React.JSX.Element {
         </div>
 
         {/* Turnstile — mode interaction-only : widget invisible par défaut,
-            n'apparaît que si Cloudflare détecte un comportement suspect. */}
-        {SITE_KEY && (
+            n'apparaît que si Cloudflare détecte un comportement suspect.
+            Sans clé publique configurée, on dégrade proprement (message + bouton
+            désactivé) au lieu de bloquer silencieusement sur « vérification en
+            cours » — alignement sur ContactForm (audit go-live 2026-06-29). */}
+        {SITE_KEY ? (
           <Turnstile
             ref={turnstileRef}
             siteKey={SITE_KEY}
@@ -597,6 +600,11 @@ export default function DemarrerForm(): React.JSX.Element {
             onExpire={() => setToken('')}
             onError={() => setToken('')}
           />
+        ) : (
+          <p className={errorClass}>
+            Vérification anti-spam non configurée. Merci de nous contacter par téléphone au 06 61 08
+            84 44.
+          </p>
         )}
 
         {/* Erreur globale — pastille ink/cream pour contraste WCAG AAA sur rouge. */}
@@ -615,12 +623,25 @@ export default function DemarrerForm(): React.JSX.Element {
           <button
             data-magnetic-cta
             type="submit"
-            disabled={submitting}
+            disabled={submitting || !SITE_KEY}
             className="group inline-flex items-center gap-3 rounded-[14px] border border-[var(--color-cream)] bg-[var(--color-cream)] px-8 py-4 font-[family-name:var(--font-heading)] text-[15px] font-bold tracking-[0.04em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] disabled:cursor-not-allowed"
           >
             <span>{submitting ? 'Envoi en cours…' : 'Envoyer au studio'}</span>
           </button>
         </div>
+
+        {/* Information RGPD au point de collecte (art. 13). */}
+        <p className="text-center font-[family-name:var(--font-heading)] text-[12px] font-normal text-[var(--color-cream)]/55">
+          En envoyant ce formulaire, vous acceptez le traitement de vos données pour répondre à
+          votre demande.{' '}
+          <a
+            href="/confidentialite"
+            className="underline underline-offset-2 hover:text-[var(--color-cream)]/80"
+          >
+            Politique de confidentialité
+          </a>
+          .
+        </p>
       </div>
     </form>
   );

@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { actions, isInputError } from 'astro:actions';
 import { contactSchema, TYPOLOGIE_LABELS, type TypologieContact } from '@/actions';
+import type { CSSProperties } from 'react';
 
 type FormState =
   | { kind: 'idle' }
@@ -43,17 +44,27 @@ const INITIAL: FormValues = {
 const TYPOLOGIE_KEYS = Object.keys(TYPOLOGIE_LABELS) as TypologieContact[];
 
 const labelClass =
-  'block font-mono text-[11px] tracking-[0.22em] uppercase text-[var(--color-ink)]/60';
+  'block font-mono text-[11px] tracking-[0.22em] uppercase text-[var(--color-cream)]/60';
 
 const inputBaseClass =
-  'mt-3 block w-full border-0 border-b border-[var(--color-ink)]/25 bg-transparent pb-2 ' +
-  'font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] text-[var(--color-ink)] ' +
-  'placeholder:text-[var(--color-ink)]/30 ' +
-  'focus:border-[var(--color-ink)] focus:outline-none focus:ring-0 ' +
-  'aria-[invalid=true]:border-[var(--color-laterite)]';
+  'mt-3 block w-full border-0 border-b border-[var(--color-cream)]/25 bg-transparent pb-2 ' +
+  'font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] text-[var(--color-cream)] ' +
+  'placeholder:text-[var(--color-cream)]/30 ' +
+  'focus:border-[var(--color-cream)] focus:outline-none focus:ring-0 ' +
+  'aria-[invalid=true]:border-b-2 aria-[invalid=true]:border-[var(--color-cream)]';
 
+// Erreur en pastille crème / texte ink : contraste AAA sur fond noir.
+// L'ancien `text-[var(--color-laterite)]` était illisible — laterite est
+// re-routé sur ink (#000) depuis 2026-05-02, donc noir sur noir.
 const errorMessageClass =
-  'mt-2 font-mono text-[11px] tracking-[0.04em] text-[var(--color-laterite)]';
+  'mt-2 inline-block bg-[var(--color-cream)] px-2.5 py-1 font-mono text-[11px] tracking-[0.04em] text-[var(--color-ink)]';
+
+// Les <option> natives n'héritent pas du `text-cream` du <select> : sans fond
+// explicite elles seraient crème-sur-crème. Fond ink + texte cream (cf. DemarrerForm).
+const optionStyle: CSSProperties = {
+  backgroundColor: 'var(--color-ink)',
+  color: 'var(--color-cream)',
+};
 
 const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 
@@ -167,22 +178,22 @@ export default function ContactForm(): React.JSX.Element {
         tabIndex={-1}
         role="status"
         aria-live="polite"
-        className="border border-[var(--color-ink)]/15 bg-[var(--color-ink)]/[0.03] p-10 outline-none"
+        className="border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.03] p-10 outline-none"
       >
-        <p className="font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)]/60 uppercase">
+        <p className="font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)]/60 uppercase">
           Message reçu
         </p>
-        <p className="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-snug text-[var(--color-ink)]">
+        <p className="mt-4 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] leading-snug text-[var(--color-cream)]">
           Merci, votre demande nous est parvenue.
         </p>
-        <p className="mt-4 max-w-prose text-sm leading-relaxed text-[var(--color-ink)]/70">
+        <p className="mt-4 max-w-prose text-sm leading-relaxed text-[var(--color-cream)]/70">
           {/* [À FOURNIR PAR JONATHAN : message de confirmation + délai de réponse engagé] */}
           Nous revenons vers vous sous quelques jours ouvrés pour engager l'appel de qualification.
         </p>
         <button
           type="button"
           onClick={() => setState({ kind: 'idle' })}
-          className="mt-8 font-mono text-[11px] tracking-[0.22em] text-[var(--color-ink)] uppercase underline underline-offset-4 hover:text-[var(--color-laterite)]"
+          className="mt-8 font-mono text-[11px] tracking-[0.22em] text-[var(--color-cream)] uppercase underline underline-offset-4 hover:opacity-70"
         >
           Envoyer un nouveau message
         </button>
@@ -291,11 +302,11 @@ export default function ContactForm(): React.JSX.Element {
             className={inputBaseClass}
             disabled={submitting}
           >
-            <option value="" disabled>
+            <option value="" disabled style={optionStyle}>
               Choisir une typologie…
             </option>
             {TYPOLOGIE_KEYS.map((key) => (
-              <option key={key} value={key}>
+              <option key={key} value={key} style={optionStyle}>
                 {TYPOLOGIE_LABELS[key]}
               </option>
             ))}
@@ -351,7 +362,7 @@ export default function ContactForm(): React.JSX.Element {
         />
         <p
           id="cf-msg-help"
-          className="mt-2 font-mono text-[11px] tracking-[0.04em] text-[var(--color-ink)]/45"
+          className="mt-2 font-mono text-[11px] tracking-[0.04em] text-[var(--color-cream)]/45"
         >
           Lieu, surface approximative, échéance, contraintes connues. {values.message.length} / 5
           000
@@ -369,7 +380,7 @@ export default function ContactForm(): React.JSX.Element {
           <Turnstile
             ref={turnstileRef}
             siteKey={SITE_KEY}
-            options={{ theme: 'light', size: 'flexible' }}
+            options={{ theme: 'dark', size: 'flexible' }}
             onSuccess={(t) => setToken(t)}
             onExpire={() => setToken('')}
             onError={() => setToken('')}
@@ -388,7 +399,7 @@ export default function ContactForm(): React.JSX.Element {
       {state.kind === 'error' && (
         <div
           role="alert"
-          className="border-l-2 border-[var(--color-laterite)] bg-[var(--color-laterite)]/5 px-5 py-4 text-sm text-[var(--color-ink)]"
+          className="bg-[var(--color-cream)] px-5 py-4 text-sm text-[var(--color-ink)]"
         >
           {state.message}
         </div>
@@ -398,12 +409,19 @@ export default function ContactForm(): React.JSX.Element {
         <button
           type="submit"
           disabled={submitting || !SITE_KEY}
-          className="group inline-flex items-center gap-3 border-b border-[var(--color-ink)] pb-1 font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] text-[var(--color-ink)] transition-colors hover:text-[var(--color-laterite)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="group inline-flex items-center gap-3 border-b border-[var(--color-cream)] pb-1 font-[family-name:var(--font-heading)] text-[length:var(--text-lg)] text-[var(--color-cream)] transition-colors hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span>{submitting ? 'Envoi en cours…' : 'Envoyer ma demande'}</span>
         </button>
-        <p className="font-mono text-[10px] tracking-[0.22em] text-[var(--color-ink)]/45 uppercase">
-          Vos données ne sont utilisées que pour répondre à votre demande.
+        <p className="font-mono text-[10px] tracking-[0.12em] text-[var(--color-cream)]/45">
+          Vos données ne sont utilisées que pour répondre à votre demande.{' '}
+          <a
+            href="/confidentialite"
+            className="underline underline-offset-2 hover:text-[var(--color-cream)]/70"
+          >
+            Politique de confidentialité
+          </a>
+          .
         </p>
       </div>
     </form>

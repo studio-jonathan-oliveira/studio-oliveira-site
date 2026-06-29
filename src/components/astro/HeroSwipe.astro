@@ -13,31 +13,66 @@
  *
  * Reste : drag pointer/touch (vrai swipe à la doigt), clavier ←/→, dots.
  */
-// Refonte 2026-05-22 — Morgan a fourni 6 nouvelles photos pour le carousel
-// hero (`_assets/hero-source/01-image.jpg` à `06-image.jpg`). Tous les
-// anciens slides (01-villa, 02-cypres, 03-terrasse-salon, 04-pergola-palmiers,
-// 05-ruelle) sont remplacés. Le tableau `slides` ci-dessous pilote l'ordre
-// d'affichage. Si Morgan change le nombre de slides, ajuster aussi le CSS
-// `.hero-slide__track { width }` + `.hero-slide__panel { flex }`.
-// 8 photos hero fournies par Jonathan (`_assets/image site web/01-home page/
-// 01-hero/0N-hero.jpg`), optimisées → public/hero/0N-image.{webp,jpg} @1x/@2x.
-const slides = [
-  { name: '01-image', label: 'Projet Studio J Oliveira — visuel 1', position: '50% 50%' },
-  { name: '02-image', label: 'Projet Studio J Oliveira — visuel 2', position: '50% 50%' },
-  { name: '03-image', label: 'Projet Studio J Oliveira — visuel 3', position: '50% 50%' },
-  { name: '04-image', label: 'Projet Studio J Oliveira — visuel 4', position: '50% 50%' },
-  { name: '05-image', label: 'Projet Studio J Oliveira — visuel 5', position: '50% 50%' },
-  { name: '06-image', label: 'Projet Studio J Oliveira — visuel 6', position: '50% 50%' },
-  { name: '07-image', label: 'Projet Studio J Oliveira — visuel 7', position: '50% 50%' },
-  { name: '08-image', label: 'Projet Studio J Oliveira — visuel 8', position: '50% 50%' },
-];
-// NB : la 9e image (domaine) a été RETIRÉE le 2026-06-16 (Jonathan : « le format
-// la pixelise »). Source portrait conservée dans _assets/hero-source/09-image.jpg
-// → destinée à /projets « conception » (en attente du texte accroche/survol).
+// Palier 3 CMS (2026-06-29) : le carrousel lit en priorité les images Sanity
+// `siteSettings.heroImages` (Jonathan peut en ajouter/réordonner depuis le
+// Studio, recadrage piloté par le hotspot). Tant que Sanity n'est pas branché
+// OU qu'aucune image n'y est ajoutée, on retombe sur les 8 visuels locaux
+// optimisés ci-dessous (rendu strictement identique à avant). Le carrousel est
+// désormais agnostique au nombre de slides (CSS piloté par --hero-count) :
+// ajouter/retirer une image ne demande plus de toucher au CSS.
+import { fetch, urlFor } from '@/lib/sanity';
+import { heroImagesQuery } from '@/lib/queries';
+import type { SanityImageSource } from '@sanity/image-url';
+
+interface SanityHeroImage {
+  asset?: { _ref?: string };
+  hotspot?: { x: number; y: number };
+  alt?: string;
+}
+
+type Slide =
+  | { kind: 'local'; name: string; label: string; position: string }
+  | { kind: 'sanity'; src1x: string; src2x: string; label: string; position: string };
+
+// 8 photos hero fournies par Jonathan, optimisées → public/hero/0N-image.{webp,jpg}
+// @1x/@2x. La 9e image (domaine) a été retirée le 2026-06-16 (pixelisation).
+const LOCAL_SLIDES: Slide[] = Array.from({ length: 8 }, (_, i) => {
+  const n = String(i + 1).padStart(2, '0');
+  return {
+    kind: 'local',
+    name: `${n}-image`,
+    label: `Projet Studio J Oliveira — visuel ${i + 1}`,
+    position: '50% 50%',
+  };
+});
+
+const sanityHero = await fetch<SanityHeroImage[]>(heroImagesQuery, {}, []);
+
+const slides: Slide[] = sanityHero.length
+  ? sanityHero
+      .filter((img) => img.asset)
+      .map((img, i) => ({
+        kind: 'sanity' as const,
+        src1x: urlFor(img as SanityImageSource)
+          .width(1600)
+          .quality(70)
+          .auto('format')
+          .url(),
+        src2x: urlFor(img as SanityImageSource)
+          .width(3200)
+          .quality(62)
+          .auto('format')
+          .url(),
+        label: img.alt ?? `Studio J Oliveira — visuel ${i + 1}`,
+        position: img.hotspot
+          ? `${Math.round(img.hotspot.x * 100)}% ${Math.round(img.hotspot.y * 100)}%`
+          : '50% 50%',
+      }))
+  : LOCAL_SLIDES;
 ---
 
 <div class="hero-slide" data-hero-slide>
-  <div class="hero-slide__track" data-hero-slide-track>
+  <div class="hero-slide__track" data-hero-slide-track style={`--hero-count: ${slides.length}`}>
     {
       slides.map((slide, i) => (
         <div
@@ -45,14 +80,10 @@ const slides = [
           data-hero-slide-panel={i}
           aria-hidden={i === 0 ? 'false' : 'true'}
         >
-          <picture>
-            <source
-              type="image/webp"
-              srcset={`/hero/${slide.name}.webp 1x, /hero/${slide.name}@2x.webp 2x`}
-            />
+          {slide.kind === 'sanity' ? (
             <img
-              src={`/hero/${slide.name}.jpg`}
-              srcset={`/hero/${slide.name}.jpg 1x, /hero/${slide.name}@2x.jpg 2x`}
+              src={slide.src1x}
+              srcset={`${slide.src1x} 1x, ${slide.src2x} 2x`}
               alt={slide.label}
               loading={i === 0 ? 'eager' : 'lazy'}
               decoding="async"
@@ -60,7 +91,24 @@ const slides = [
               draggable="false"
               style={`object-position: ${slide.position}`}
             />
-          </picture>
+          ) : (
+            <picture>
+              <source
+                type="image/webp"
+                srcset={`/hero/${slide.name}.webp 1x, /hero/${slide.name}@2x.webp 2x`}
+              />
+              <img
+                src={`/hero/${slide.name}.jpg`}
+                srcset={`/hero/${slide.name}.jpg 1x, /hero/${slide.name}@2x.jpg 2x`}
+                alt={slide.label}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchpriority={i === 0 ? 'high' : 'auto'}
+                draggable="false"
+                style={`object-position: ${slide.position}`}
+              />
+            </picture>
+          )}
         </div>
       ))
     }
@@ -120,12 +168,12 @@ const slides = [
     touch-action: pan-y;
   }
   /* Track horizontal — N panels juxtaposés, translateX piloté par JS.
-     width = N × 100%, flex panel = 100% / N. Si le nombre de slides change,
-     mettre à jour ces deux valeurs ici ET le tableau `slides` du frontmatter.
-     2026-06-16 : retour à 8 slides (9e image domaine retirée — pixelisation). */
+     width = N × 100%, flex panel = 100% / N, dérivés de --hero-count (posé en
+     inline depuis slides.length). Plus aucune valeur figée à maintenir quand le
+     nombre de slides change (fallback 8 si la variable manque). */
   .hero-slide__track {
     display: flex;
-    width: 800%;
+    width: calc(var(--hero-count, 8) * 100%);
     height: 100%;
     will-change: transform;
     transition: transform 0.95s cubic-bezier(0.65, 0.05, 0.25, 1);
@@ -134,7 +182,7 @@ const slides = [
     transition: none;
   }
   .hero-slide__panel {
-    flex: 0 0 12.5%;
+    flex: 0 0 calc(100% / var(--hero-count, 8));
     position: relative;
     height: 100%;
     overflow: hidden;
