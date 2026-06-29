@@ -35,6 +35,12 @@ export const siteSettingsQuery = /* groq */ `
   }
 `;
 
+// Hero (carrousel accueil, sous siteSettings) --------------------------------
+
+export const heroImagesQuery = /* groq */ `
+  *[_type == "siteSettings"][0].heroImages[]${IMAGE_FRAGMENT}
+`;
+
 // Typologies (4 docs) --------------------------------------------------------
 
 export const typologiesAllQuery = /* groq */ `

@@ -16,6 +16,7 @@ export default defineType({
   // `__experimental_actions` (Sanity v2) n'existe plus en v6.
   fieldsets: [
     { name: 'general', title: 'Général', options: { collapsible: false } },
+    { name: 'hero', title: 'Carrousel hero (accueil)', options: { collapsible: true } },
     { name: 'contact', title: 'Contact (NAP)', options: { collapsible: true } },
     { name: 'address', title: 'Adresse complète', options: { collapsible: true } },
     { name: 'hours', title: 'Horaires', options: { collapsible: true } },
@@ -53,6 +54,30 @@ export default defineType({
       title: 'Année de création',
       fieldset: 'general',
       initialValue: 2021,
+    },
+
+    // Hero (carrousel page d'accueil)
+    {
+      name: 'heroImages',
+      type: 'array',
+      title: 'Images du carrousel hero',
+      description:
+        "Visuels plein écran du carrousel d'accueil. Glisser-déposer pour réordonner. Le point focal (hotspot) de chaque image définit son recadrage. Tant qu'aucune image n'est ajoutée ici, le site utilise les visuels par défaut intégrés au code.",
+      fieldset: 'hero',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Texte alternatif',
+              description: 'Décrit l’image (accessibilité + SEO).',
+            },
+          ],
+        },
+      ],
     },
 
     // Contact
