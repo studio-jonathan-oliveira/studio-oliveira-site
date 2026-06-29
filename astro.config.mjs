@@ -13,6 +13,13 @@ import vercel from '@astrojs/vercel';
 // Astro Actions du formulaire contact. Toutes les pages restent prerender
 // par défaut, seules les Actions endpoints s'exécutent en SSR. Aucun impact
 // SEO/perf sur le reste du site.
+
+// Sanity branché ? Tant qu'il ne l'est pas, /journal et /conceptions sont vides
+// (fallback []) → noindex côté page + retrait du sitemap. Réintégrés
+// automatiquement dès que Sanity est configuré (et donc peuplé). Voir audit
+// go-live 2026-06-29.
+const sanityConnected = Boolean(process.env.PUBLIC_SANITY_PROJECT_ID);
+
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr',
   trailingSlash: 'never',
@@ -50,7 +57,9 @@ export default defineConfig({
         !page.includes('/realisations/jungle-room-agde') &&
         // architecture-publique = page squelette tant que Jonathan n'a pas
         // fourni le positionnement (noindex en prod via SHOW_DRAFTS).
-        !page.includes('architecture-publique'),
+        !page.includes('architecture-publique') &&
+        // /journal et /conceptions vides tant que Sanity n'est pas branché.
+        (sanityConnected || (!page.includes('/journal') && !page.includes('/conceptions'))),
     }),
     mdx(),
     partytown(),

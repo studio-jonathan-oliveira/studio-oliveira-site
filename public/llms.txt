@@ -41,8 +41,11 @@ Le studio se positionne comme **paysagiste-concepteur** (designer paysagiste, de
 
 - [Accueil](https://www.jonathanoliveira.fr/) : positionnement, typologies, méthode, manifeste
 - [Le studio](https://www.jonathanoliveira.fr/studio) : ADN biophilique, parcours Jonathan Oliveira
-- [Architecture paysagère](https://www.jonathanoliveira.fr/architecture-paysagere) : hub des 4 typologies de jardin
-- [Aménagement végétal d'intérieur](https://www.jonathanoliveira.fr/amenagement-vegetal-interieur) : hub des 5 verticales pro
+- [Projets](https://www.jonathanoliveira.fr/projets) : hub des réalisations, conceptions et galerie du studio
+- [Micro-urbain](https://www.jonathanoliveira.fr/architecture-paysagere/micro-urbain) : petit jardin de ville, terrasse, rooftop, patio
+- [Cœur urbain](https://www.jonathanoliveira.fr/architecture-paysagere/coeur-urbain) : jardin de ville sur mesure, cour patrimoniale
+- [Frange urbaine](https://www.jonathanoliveira.fr/architecture-paysagere/frange-urbaine) : grand jardin péri-urbain, résidence, gîte
+- [Domaines & Caractère](https://www.jonathanoliveira.fr/architecture-paysagere/domaine-caractere) : parc et domaine privé, château, manoir
 - [Réalisations](https://www.jonathanoliveira.fr/realisations) : projets livrés (photos contextuelles)
 - [Conceptions](https://www.jonathanoliveira.fr/conceptions) : études en rendu photoréaliste Twinmotion
 - [Journal](https://www.jonathanoliveira.fr/journal) : articles longs sur biophilie, végétal, méthode
