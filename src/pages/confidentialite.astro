@@ -26,8 +26,8 @@ import { SITE } from '@/lib/site-config';
   <Section variant="cream" topDivider>
     <Prose>
       <p class="text-sm opacity-60">
-        Version du [DATE À FIXER À LA MISE EN LIGNE]. Responsable de traitement :
-        {SITE.legal.companyName}.
+        Responsable de traitement : {SITE.legal.companyName}. Cette politique peut évoluer ; la
+        version en vigueur est celle publiée sur cette page.
       </p>
 
       <h2>Données collectées</h2>
@@ -45,26 +45,38 @@ import { SITE } from '@/lib/site-config';
       </p>
       <h3>Analyse d'audience</h3>
       <p>
-        Le site utilise <strong>Plausible Analytics</strong>, un outil respectueux de la vie privée
-        : aucun cookie n'est déposé, aucune donnée personnelle n'est collectée, aucune bannière de
-        consentement n'est nécessaire.
+        Le site utilise <strong>Vercel Web Analytics</strong> et <strong
+          >Vercel Speed Insights</strong
+        >, des outils de mesure d'audience respectueux de la vie privée : ils collectent des
+        statistiques agrégées et anonymes (pages vues, performances) sans déposer de cookie ni
+        d'identifiant persistant, et sans jamais croiser ces données avec votre identité. Aucune
+        bannière de consentement n'est donc nécessaire.
+      </p>
+
+      <h2>Base légale</h2>
+      <p>
+        Le traitement des données du formulaire repose sur l'exécution de mesures précontractuelles
+        prises à votre demande (article 6.1.b du RGPD) et, pour une éventuelle prospection
+        commerciale ultérieure, sur l'intérêt légitime du studio (article 6.1.f).
       </p>
 
       <h2>Conservation</h2>
       <p>
-        Les données issues du formulaire de contact sont conservées pendant la durée de la relation
-        commerciale, puis archivées 3 ans maximum à des fins de prospection. Les pièces jointes
-        (plans, photos) sont stockées sur <strong>Vercel Blob</strong> avec auto-suppression à 90 jours
-        si aucun projet n'aboutit.
+        Les données issues du formulaire de contact sont transmises par email et conservées dans la
+        messagerie du studio pendant la durée de la relation commerciale, puis archivées 3 ans
+        maximum à des fins de prospection commerciale. Les pièces jointes éventuelles (plans,
+        photos) sont reçues en pièces jointes de ces emails et suivent la même durée de conservation
+        ; elles ne font l'objet d'aucun stockage applicatif distinct sur le site.
       </p>
 
       <h2>Sous-traitants</h2>
       <ul>
         <li>
-          <strong>Vercel Inc.</strong> — hébergement du site et stockage des pièces jointes.
+          <strong>Vercel Inc.</strong> — hébergement du site et mesure d'audience anonyme (Vercel Web
+          Analytics).
         </li>
         <li>
-          <strong>Resend</strong> — routage des emails issus du formulaire.
+          <strong>Resend</strong> — acheminement des emails et des pièces jointes issus du formulaire.
         </li>
         <li>
           <strong>Cloudflare Turnstile</strong> — protection anti-spam du formulaire (sans cookie).
@@ -93,10 +105,14 @@ import { SITE } from '@/lib/site-config';
         préférences d'affichage) peuvent être déposés.
       </p>
 
-      <p class="text-sm opacity-60">
-        [À FOURNIR PAR JONATHAN ou avocat : validation juridique complète avant mise en ligne. Ce
-        contenu est un premier jet à adapter selon les spécificités réglementaires du studio.]
-      </p>
+      {
+        /*
+        À FAIRE AVANT GO-LIVE (cf. _brief/contenus-manquants.md) :
+        - faire valider cette politique par Jonathan / un juriste (premier jet RGPD) ;
+        - renseigner SIRET + forme juridique dans src/lib/site-config.ts (mentions légales).
+        Marqueur visible retiré le 2026-06-29 (audit go-live) : il ne doit pas s'afficher en prod.
+      */
+      }
     </Prose>
   </Section>
 </BaseLayout>

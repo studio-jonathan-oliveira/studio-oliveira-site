@@ -6,6 +6,19 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 
 ---
 
+## ⛔ BLOQUANTS GO-LIVE (audit 2026-06-29)
+
+À fournir par Jonathan **avant la mise en ligne** :
+
+1. **SIRET** + **forme juridique** (micro-entreprise / EI / EURL…) — mentions obligatoires LCEN. À renseigner dans `src/lib/site-config.ts` (`legal.siret`, `legal.legalForm`). Tant que vides, les lignes ne s'affichent pas (rendu conditionnel posé le 2026-06-29) — mais elles sont légalement requises.
+2. **Email pro** sur le domaine (`contact@jonathanoliveira.fr` ?) en remplacement du Gmail provisoire (`SITE.contact.email`).
+3. **Validation juridique** de la politique de confidentialité (`/confidentialite`) — premier jet RGPD, à faire relire par Jonathan / un juriste. Les affirmations factuellement fausses (Plausible, Vercel Blob 90 j) ont été corrigées le 2026-06-29.
+4. **Décision domaine + hébergeur** pour la mise en ligne (cf. `_brief/migration-go-live.md`).
+
+Corrigé le 2026-06-29 (audit) : formulaire `/contact` lisible (était noir sur noir), fallback Turnstile `/demarrer`, lien politique de confidentialité sous les formulaires, `llms.txt` (lien 404 retiré), OG orphelins supprimés, `noindex` /journal + /conceptions tant que vides, code mort `[slug].astro` typologies supprimé, titles SEO /studio + /projets raccourcis.
+
+---
+
 ## Format des entrées
 
 ```
@@ -23,11 +36,10 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 
 ### HOME-STUDIO
 
+**Statut** : ✅ LIVRÉ (vérifié audit 2026-06-29) — `src/pages/index.astro` contient désormais le texte verbatim Jonathan (« Créé en 2021, le STUDIO J. OLIVEIRA est spécialisé en design immersif… »). Entrée conservée pour historique.
 **Type** : texte court
-**Emplacement** : `src/pages/index.astro` section `#studio-presentation` (l. 414)
-**Volume attendu** : 2 à 3 lignes, ~30-50 mots
-**Contexte** : texte ADN du studio juste avant le CTA « Découvrir le Studio J Oliveira ». Doit présenter le studio, son ADN, sa manière de travailler les conceptions. Lu après #identite (mots-clés justify) — sert de transition narrative.
-**Deadline suggérée** : avant mise en ligne mai 2026 — actuellement le bloc est rendu vide en prod (placeholder caché en dev only).
+**Emplacement** : `src/pages/index.astro` section présentation studio
+**Contexte** : texte ADN du studio juste avant le CTA « Découvrir le Studio J Oliveira ».
 
 ### HERO-VIDEO-HOME
 
