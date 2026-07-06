@@ -10,7 +10,21 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { ZONES } from '@/data/zones-content';
+import { fetch } from '@/lib/sanity';
+import { locationsAllQuery } from '@/lib/queries';
 import { jsonLdGraph, organization, localBusiness, breadcrumbs } from '@/lib/schema-org';
+
+// Cartes zones depuis Sanity si peuplé, sinon fallback statique (lossless).
+interface ZoneCard {
+  slug: string;
+  ville: string;
+  role: string;
+  departement: string;
+  codeDepartement: string;
+  introLead: string;
+}
+const sanityZones = await fetch<ZoneCard[]>(locationsAllQuery, {}, []);
+const zones: ZoneCard[] = sanityZones.length > 0 ? sanityZones : ZONES;
 
 const schema = jsonLdGraph([
   organization(),
@@ -21,7 +35,7 @@ const schema = jsonLdGraph([
   ]),
   {
     '@type': 'ItemList',
-    itemListElement: ZONES.map((z, i) => ({
+    itemListElement: zones.map((z, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: `Paysagiste designer à ${z.ville}`,
@@ -64,7 +78,7 @@ const schema = jsonLdGraph([
   <Section variant="cream" space="default" id="zones">
     <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
       {
-        ZONES.map((z) => (
+        zones.map((z) => (
           <a
             href={`/zones/${z.slug}`}
             class="group block border-t border-[var(--color-cream)]/15 pt-6 transition-colors hover:border-[var(--color-laterite)]"

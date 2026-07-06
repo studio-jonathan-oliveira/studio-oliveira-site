@@ -268,20 +268,50 @@ export const articleSlugsQuery = /* groq */ `
 
 // Zones (pages locales) ------------------------------------------------------
 
+// Projeté pour matcher la forme de `ZoneContent` (src/data/zones-content.ts),
+// qui sert de fallback. climat plat → objet, seo → metaTitle/metaDescription,
+// typologiesDominantes : référence typology résolue en slug.
 export const locationBySlugQuery = /* groq */ `
   *[_type == "location" && slug.current == $slug][0]{
-    _id,
-    ville,
     "slug": slug.current,
+    ville,
+    villeSimple,
     region,
+    departement,
+    codeDepartement,
     role,
-    intro,
-    climat,
+    h1,
+    introLead,
+    introLong,
+    "metaTitle": seo.seoTitle,
+    "metaDescription": seo.seoDescription,
+    "climat": { "type": climatType, "description": climatDescription },
+    caracteristiquesPaysageres,
     essences,
-    content${BLOCK_CONTENT},
-    faq,
-    "coverImage": coverImage${IMAGE_FRAGMENT},
-    ...${SEO_FRAGMENT}
+    communesVoisines,
+    "typologiesDominantes": typologiesDominantes[]{
+      "slug": typology->slug.current,
+      raison
+    },
+    "faq": faq[]{ question, answer }
+  }
+`;
+
+export const locationSlugsQuery = /* groq */ `
+  *[_type == "location" && defined(slug.current)] | order(order asc)[].slug.current
+`;
+
+// Cartes de la page hub /zones (ordre explicite).
+export const locationsAllQuery = /* groq */ `
+  *[_type == "location"] | order(order asc) {
+    "slug": slug.current,
+    ville,
+    villeSimple,
+    region,
+    departement,
+    codeDepartement,
+    role,
+    introLead
   }
 `;
 
