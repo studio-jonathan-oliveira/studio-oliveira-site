@@ -27,6 +27,9 @@ import {
   service as serviceSchema,
   faqPage,
 } from '@/lib/schema-org';
+import { fetch } from '@/lib/sanity';
+import { typologyEditableBySlugQuery } from '@/lib/queries';
+import type { FaqItem } from '@/lib/schema-org';
 
 // Galerie — ordre piloté par le préfixe numérique (Morgan 2026-05-21).
 import gal02 from '@/assets/typologies/coeur-urbain/02-jardinet.jpg';
@@ -63,7 +66,7 @@ const manifeste = {
 // FAQ — 3 Q/R VERBATIM trame (colonne droite micro-urbain, accordéons ouverts).
 // Fautes conservées : « règlementaire », « étude végétales », « des entreprise »,
 // « a établit », « nécessité », « compte rendus », « tranquilité ».
-const faq = [
+const faqFallback = [
   {
     question: 'Comment se compose une étude ?',
     answer:
@@ -80,6 +83,15 @@ const faq = [
       "En fonction de la typologie des jardins, le studio a établit des forfaits de base.\n\nViennent s'ajouter à ces forfaits de base :\n- des frais correspondant aux déplacements du studio (frais d'essence, péages, ...)\n- la mission géomètre\nen fonction de votre emplacement et des nécessité du projet et de l'étude.\n\nPour connaître le montant exact de votre étude, je vous invite à me contacter (ou remplir le formulaire via l'onglet \"démarrer un projet\" en haut de la page) afin que nous puissions échanger ensemble et définir tous les paramètres liés à votre projet.",
   },
 ];
+
+// FAQ éditable via Sanity (typology.faq) — fallback verbatim trame si vide.
+const cmsTypologie = await fetch<{ faq?: FaqItem[] } | null>(
+  typologyEditableBySlugQuery,
+  { slug: 'coeur-urbain' },
+  null,
+);
+const faq: FaqItem[] =
+  cmsTypologie?.faq && cmsTypologie.faq.length > 0 ? cmsTypologie.faq : faqFallback;
 
 const breadcrumbItems = [
   { name: 'Accueil', item: '/' },
