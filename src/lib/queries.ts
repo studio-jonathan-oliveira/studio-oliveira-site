@@ -41,13 +41,29 @@ const BLOCK_CONTENT = `[]{
 
 // siteSettings (singleton) ---------------------------------------------------
 
+// Champs plats du schéma siteSettings re-projetés en objets imbriqués pour
+// coller à la forme de src/lib/site-config.ts (fusion défauts ⇄ Sanity).
 export const siteSettingsQuery = /* groq */ `
   *[_type == "siteSettings"][0]{
     siteName,
     tagline,
+    founderName,
+    foundedYear,
+    "contact": { phone, phoneDisplay, email },
+    "address": {
+      "street": addressStreet,
+      "postalCode": addressPostalCode,
+      "city": addressCity,
+      "region": addressRegion,
+      "country": addressCountry,
+      "countryCode": addressCountryCode,
+      "latitude": addressLatitude,
+      "longitude": addressLongitude
+    },
+    "hours": { "days": hoursDays, "open": hoursOpen, "close": hoursClose },
+    "social": { instagram, linkedin, pinterest },
+    "legal": { companyName, siret, legalForm, editorName },
     "logo": logo${IMAGE_FRAGMENT},
-    contact,
-    social,
     "defaultOgImage": defaultOgImage${IMAGE_FRAGMENT}
   }
 `;
@@ -95,6 +111,15 @@ export const typologyBySlugQuery = /* groq */ `
 
 export const typologySlugsQuery = /* groq */ `
   *[_type == "typology" && defined(slug.current)][].slug.current
+`;
+
+// Champs éditables des pages typologies bespoke (FAQ + galerie). Le reste de la
+// page (hero, specs, manifeste) reste en dur = DA verrouillée.
+export const typologyEditableBySlugQuery = /* groq */ `
+  *[_type == "typology" && slug.current == $slug][0]{
+    "faq": faq[]{question, answer},
+    "gallery": gallery[]${IMAGE_FRAGMENT}
+  }
 `;
 
 // Services — verticales d'aménagement intérieur (hôtellerie, resto, etc.) ---
