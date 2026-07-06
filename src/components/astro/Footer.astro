@@ -59,8 +59,13 @@ const currentYear = new Date().getFullYear();
         <section aria-labelledby="footer-siege">
           <h2 id="footer-siege" class="site-footer__heading">Siège social Studio</h2>
           <address class="site-footer__address">
-            <span>{siteSettings.address.street}</span>
-            <span>{siteSettings.address.postalCode} {siteSettings.address.city}</span>
+            {
+              /* Adresse en graphie stylisée validée par Jonathan (« Rue », « BRIVE ») —
+                gardée en dur : elle diffère volontairement de la forme canonique du
+                JSON-LD (« Brive-la-Gaillarde »). Le tel/email restent éditables via Sanity. */
+            }
+            <span>41 Rue Général Souham</span>
+            <span>19100 BRIVE</span>
             <a href={`tel:${siteSettings.contact.phone}`} class="site-footer__link">
               {siteSettings.contact.phoneDisplay}
             </a>
