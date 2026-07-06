@@ -3,8 +3,10 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
+import PortableText from '@/components/astro/portable-text/PortableText.astro';
 import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
+import type { PtNode } from '@/lib/portable-text';
 import { fetch } from '@/lib/sanity';
 import { projectSlugsQuery, projectBySlugQuery } from '@/lib/queries';
 import {
@@ -38,9 +40,9 @@ interface FullProject {
   scrollFramesCount?: number;
   twinmotionVideo?: string;
   coverImage?: unknown;
-  description?: unknown[];
-  challenge?: unknown[];
-  solution?: unknown[];
+  description?: PtNode[];
+  challenge?: PtNode[];
+  solution?: PtNode[];
   outcomeStats?: { value: string; label: string }[];
   seoTitle?: string;
   seoDescription?: string;
@@ -149,11 +151,7 @@ const schema = jsonLdGraph([
           </p>
         </aside>
         <Prose size="lg">
-          <p>
-            [Rendu depuis Portable Text Sanity. Composant <code class="text-xs"
-              >PortableTextRenderer</code
-            > à implémenter.]
-          </p>
+          <PortableText value={project.description} />
         </Prose>
       </div>
     </article>
@@ -181,34 +179,39 @@ const schema = jsonLdGraph([
     )
   }
 
-  <Section variant="cream" topDivider>
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-      <div>
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
-          Le défi
-        </p>
-      </div>
-      <Prose size="lg">
-        <p>
-          [Rendu Portable Text — `project.challenge`. Section optionnelle qui ne s'affiche que si
-          renseignée côté Sanity.]
-        </p>
-      </Prose>
-    </div>
-  </Section>
+  {
+    project.challenge && project.challenge.length > 0 && (
+      <Section variant="cream" topDivider>
+        <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+          <div>
+            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
+              Le défi
+            </p>
+          </div>
+          <Prose size="lg">
+            <PortableText value={project.challenge} />
+          </Prose>
+        </div>
+      </Section>
+    )
+  }
 
-  <Section variant="cream" topDivider>
-    <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-      <div>
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
-          La réponse
-        </p>
-      </div>
-      <Prose size="lg">
-        <p>[Rendu Portable Text — `project.solution`.]</p>
-      </Prose>
-    </div>
-  </Section>
+  {
+    project.solution && project.solution.length > 0 && (
+      <Section variant="cream" topDivider>
+        <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+          <div>
+            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
+              La réponse
+            </p>
+          </div>
+          <Prose size="lg">
+            <PortableText value={project.solution} />
+          </Prose>
+        </div>
+      </Section>
+    )
+  }
 
   <Section variant="forest" topDivider id="contact-cta" sectionLabel="Contact">
     <div class="text-center">

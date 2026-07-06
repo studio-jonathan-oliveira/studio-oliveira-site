@@ -1,0 +1,17 @@
+---
+/*
+ * Spans — rend la suite d'enfants (spans) d'un bloc Portable Text.
+ * Délègue chaque span à Mark pour l'application des marks.
+ */
+import type { PtSpan, PtMarkDef } from '@/lib/portable-text';
+import Mark from './Mark.astro';
+
+interface Props {
+  spans: PtSpan[];
+  markDefs: PtMarkDef[];
+}
+
+const { spans, markDefs } = Astro.props;
+---
+
+{spans.map((span) => <Mark span={span} marks={span.marks ?? []} markDefs={markDefs} />)}

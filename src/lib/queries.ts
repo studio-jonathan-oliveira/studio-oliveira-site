@@ -22,6 +22,23 @@ const SEO_FRAGMENT = `{
   "ogImage": ogImage${IMAGE_FRAGMENT}
 }`;
 
+// Portable Text : spread brut + résolution des liens internes (type + slug +
+// section) pour que le renderer construise l'URL de destination. Les images et
+// blocs custom passent par le spread `...` (asset/_ref inclus, suffisant pour urlFor).
+const BLOCK_CONTENT = `[]{
+  ...,
+  markDefs[]{
+    ...,
+    _type == "internalLink" => {
+      "reference": {
+        "_type": @.reference->_type,
+        "slug": @.reference->slug.current,
+        "section": @.reference->section
+      }
+    }
+  }
+}`;
+
 // siteSettings (singleton) ---------------------------------------------------
 
 export const siteSettingsQuery = /* groq */ `
@@ -63,10 +80,7 @@ export const typologyBySlugQuery = /* groq */ `
     prixEtude,
     exemple,
     shortDescription,
-    description[]{
-      ...,
-      markDefs[]{..., _type == "internalLink" => {"slug": @.reference->slug.current}}
-    },
+    description${BLOCK_CONTENT},
     complexity,
     livrablesInclus,
     faq,
@@ -101,7 +115,7 @@ export const serviceBySlugQuery = /* groq */ `
     title,
     "slug": slug.current,
     shortDescription,
-    content[]{...},
+    content${BLOCK_CONTENT},
     faq,
     "coverImage": coverImage${IMAGE_FRAGMENT},
     "gallery": gallery[]${IMAGE_FRAGMENT},
@@ -171,9 +185,9 @@ export const projectBySlugQuery = /* groq */ `
     scrollFramesSlug,
     scrollFramesCount,
     "twinmotionVideo": twinmotionVideo.asset->url,
-    description[]{...},
-    challenge[]{...},
-    solution[]{...},
+    description${BLOCK_CONTENT},
+    challenge${BLOCK_CONTENT},
+    solution${BLOCK_CONTENT},
     outcomeStats[],
     ...${SEO_FRAGMENT}
   }
@@ -211,7 +225,7 @@ export const articleBySlugQuery = /* groq */ `
     publishedAt,
     readingTime,
     tags,
-    content[]{...},
+    content${BLOCK_CONTENT},
     "coverImage": coverImage${IMAGE_FRAGMENT},
     "author": author->{
       name, "slug": slug.current, bio, "avatar": avatar${IMAGE_FRAGMENT}
@@ -239,7 +253,7 @@ export const locationBySlugQuery = /* groq */ `
     intro,
     climat,
     essences,
-    content[]{...},
+    content${BLOCK_CONTENT},
     faq,
     "coverImage": coverImage${IMAGE_FRAGMENT},
     ...${SEO_FRAGMENT}

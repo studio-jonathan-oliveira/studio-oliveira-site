@@ -1,0 +1,35 @@
+---
+/*
+ * Figure — image légendée insérée dans le flux Portable Text.
+ * Sert les images depuis le CDN Sanity via urlFor (format auto WebP/AVIF).
+ */
+import type { PtImage } from '@/lib/portable-text';
+import type { SanityImageSource } from '@sanity/image-url';
+import { urlFor } from '@/lib/sanity';
+
+interface Props {
+  node: PtImage;
+}
+
+const { node } = Astro.props;
+const source = node as SanityImageSource;
+const hasAsset = Boolean(node.asset);
+const src = hasAsset ? urlFor(source).width(1600).auto('format').url() : null;
+const src2x = hasAsset ? urlFor(source).width(3200).auto('format').url() : null;
+---
+
+{
+  src && (
+    <figure>
+      <img
+        src={src}
+        srcset={src2x ? `${src} 1600w, ${src2x} 3200w` : undefined}
+        sizes="(min-width: 768px) 68ch, 100vw"
+        alt={node.alt ?? ''}
+        loading="lazy"
+        decoding="async"
+      />
+      {node.caption && <figcaption>{node.caption}</figcaption>}
+    </figure>
+  )
+}

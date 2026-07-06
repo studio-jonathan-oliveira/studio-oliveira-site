@@ -3,7 +3,9 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
+import PortableText from '@/components/astro/portable-text/PortableText.astro';
 import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
+import type { PtNode } from '@/lib/portable-text';
 import { fetch } from '@/lib/sanity';
 import { articleSlugsQuery, articleBySlugQuery } from '@/lib/queries';
 import {
@@ -30,7 +32,7 @@ interface FullArticle {
   publishedAt: string;
   readingTime?: number;
   tags?: string[];
-  content?: unknown[];
+  content?: PtNode[];
   coverImage?: { asset?: { _ref: string }; alt?: string };
   author?: { name: string; slug: string; bio?: string; avatar?: unknown };
   relatedArticles?: Array<{
@@ -142,13 +144,7 @@ const formatDate = (iso: string) =>
       </header>
 
       <Prose size="lg">
-        {
-          /* Portable Text rendering — à implémenter quand Sanity connecté. Pour l'instant, placeholder. */
-        }
-        <p>
-          [CONTENU PORTABLE TEXT — sera rendu depuis Sanity via un composant PortableTextRenderer à
-          créer en Phase 4 (après scaffold Sanity Studio).]
-        </p>
+        <PortableText value={article.content} />
       </Prose>
 
       {

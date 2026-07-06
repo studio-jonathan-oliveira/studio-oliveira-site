@@ -1,0 +1,45 @@
+---
+/*
+ * Block — rend un bloc texte (paragraphe, titre Hn, citation) selon son `style`.
+ * Le mode `inline` sert aux items de liste : on ne rend que les spans, sans
+ * élément englobant (le <li> est posé par le parent PortableText).
+ */
+import type { PtBlock } from '@/lib/portable-text';
+import Spans from './Spans.astro';
+
+interface Props {
+  block: PtBlock;
+  inline?: boolean;
+}
+
+const { block, inline = false } = Astro.props;
+const style = block.style ?? 'normal';
+const spans = block.children ?? [];
+const markDefs = block.markDefs ?? [];
+---
+
+{
+  inline ? (
+    <Spans spans={spans} markDefs={markDefs} />
+  ) : style === 'h2' ? (
+    <h2>
+      <Spans spans={spans} markDefs={markDefs} />
+    </h2>
+  ) : style === 'h3' ? (
+    <h3>
+      <Spans spans={spans} markDefs={markDefs} />
+    </h3>
+  ) : style === 'h4' ? (
+    <h4>
+      <Spans spans={spans} markDefs={markDefs} />
+    </h4>
+  ) : style === 'blockquote' ? (
+    <blockquote>
+      <Spans spans={spans} markDefs={markDefs} />
+    </blockquote>
+  ) : (
+    <p>
+      <Spans spans={spans} markDefs={markDefs} />
+    </p>
+  )
+}
