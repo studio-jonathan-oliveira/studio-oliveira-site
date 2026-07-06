@@ -69,6 +69,41 @@ reste s'enchaîne en quelques heures une fois les comptes ouverts.
 
 ---
 
+## Migration turnkey (≤ 2 jours) — état & séquence
+
+Objectif : ne laisser que des **actions de compte** à Morgan/Jonathan. Tout le code est prêt.
+
+### Ce qui est câblé et **sans perte** après seed (identique, mais éditable)
+
+- **NAP + réseaux** (Footer, ContactBar, contact, JSON-LD) — seed complet.
+- **Zones** (`/zones` + `/zones/[slug]`) — seed complet (schéma `location` aligné).
+- **FAQ typologies** — s'affiche via fallback verbatim ; _voir caveat 2_ pour l'édition CMS.
+- **Détail réalisations/conceptions** + **journal** — rendus Portable Text prêts (attendent le contenu).
+
+### ⚠️ Caveats à connaître avant de brancher Sanity
+
+1. **`/projets` n'est PAS lossless.** Le seed crée 7 projets mock **sans** `subtitle`/`kind`/
+   `approche`, alors que le fallback actuel affiche 9 conceptions + 16 réalisations riches.
+   Dès que Sanity contient ≥ 1 projet, `/projets` bascule sur Sanity → **cartes plus rares et
+   sans texte « approche »** tant que Jonathan n'a pas saisi ses **vrais projets** (avec leur
+   approche). → **Action Jonathan** : saisir les projets réels dans le Studio avant/juste après
+   la bascule. C'est du contenu, aucun code ne le remplace.
+2. **FAQ typologies éditable dans le CMS** : le seed ne remplit pas encore `typology.faq`
+   (le contenu vit en dur dans les 4 pages `.astro`). Le site l'affiche via fallback, mais pour
+   que Jonathan l'édite dans Sanity il faut d'abord **extraire ces FAQ vers un module data**
+   partagé (`src/data/typologies-faq.ts`) puis les seeder. Petit chantier de suivi, non bloquant.
+
+### Séquence de bascule (jour J)
+
+1. Morgan crée le projet Sanity + tokens (Phase A.1) et renseigne l'env local + Vercel (A.2).
+2. `pnpm sanity:seed` (token Editor) → siteSettings, author, typologies, services, **zones**, 7 projets.
+3. `pnpm studio:deploy` → Studio en ligne. Inviter Jonathan (Editor).
+4. **Jonathan saisit ses vrais projets** (caveat 1) + coordonnées + FAQ si besoin.
+5. Repasser `SANITY_API_TOKEN` sur le Viewer, re-déployer Vercel, brancher le Deploy Hook (A.6).
+6. Domaine + DNS + redirections 301 (section « Mise en ligne »).
+
+---
+
 ## Phase A — Activer le Studio (actions Morgan)
 
 ### 1. Créer le projet Sanity (~10 min)
