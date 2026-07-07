@@ -21,7 +21,7 @@
     "studio:dev": "pnpm -C sanity dev",
     "studio:build": "pnpm -C sanity build",
     "studio:deploy": "pnpm -C sanity deploy",
-    "sanity:seed": "tsx scripts/sanity-seed.ts",
+    "sanity:seed": "node --import tsx --import ./scripts/register-asset-stub.mjs scripts/sanity-seed.ts",
     "og:default": "tsx scripts/generate-og-default.ts",
     "og:pages": "tsx scripts/generate-og-pages.ts",
     "optimize:posters": "tsx scripts/optimize-hero-posters.mjs"

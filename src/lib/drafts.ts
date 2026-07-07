@@ -32,7 +32,9 @@ export function cleanDraft<T extends string | undefined>(value: T, fallback: str
  * masque en prod. Utiliser via `{SHOW_DRAFTS && (<...>)}` ou via le composant
  * `<DraftOnly>`.
  */
-export const SHOW_DRAFTS = import.meta.env.DEV;
+// `import.meta.env` n'existe que sous Astro/Vite ; optional chaining pour rester
+// exécutable hors build (ex. scripts/sanity-seed.ts lancé par node/tsx).
+export const SHOW_DRAFTS = import.meta.env?.DEV ?? false;
 
 /**
  * Détecte si un projet mock est encore "draft" (summary placeholder). Sert
