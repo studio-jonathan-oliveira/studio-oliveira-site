@@ -43,7 +43,9 @@ jobs:
         run: pnpm -C sanity install
 
       - name: Deploy du Studio
-        run: pnpm -C sanity deploy
+        # `run deploy` explicite : sinon `pnpm deploy` invoque la commande pnpm
+        # intégrée (déploiement de workspace) au lieu du script du package.json.
+        run: pnpm -C sanity run deploy
         env:
           SANITY_STUDIO_PROJECT_ID: ${{ secrets.PUBLIC_SANITY_PROJECT_ID }}
           SANITY_STUDIO_DATASET: production
