@@ -11,13 +11,13 @@ export const SITE = {
   tagline: 'Designer paysagiste · Studio de design biophilique',
   founderName: 'Jonathan Oliveira',
   foundedYear: 2021,
-  url: 'https://www.jonathanoliveira.fr',
+  url: 'https://www.studiojonathanoliveira.fr',
 
   contact: {
     phone: '+33661088444',
     phoneDisplay: '06 61 08 84 44',
     phoneInternational: '+33 6 61 08 84 44',
-    // [À FOURNIR PAR JONATHAN : email pro sur domaine jonathanoliveira.fr — voir _brief/questions-ouvertes.md §3.3]
+    // [À FOURNIR PAR JONATHAN : email pro sur domaine studiojonathanoliveira.fr — voir _brief/questions-ouvertes.md §3.3]
     email: 'contact.jonathanbiodesign@gmail.com',
   },
 

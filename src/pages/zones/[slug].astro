@@ -22,7 +22,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Section from '@/components/astro/Section.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
 import { SITE } from '@/lib/site-config';
-import { ZONES, ZONE_SLUGS } from '@/data/zones-content';
+import { ZONES, ZONE_SLUGS, type ZoneContent } from '@/data/zones-content';
+import { fetch } from '@/lib/sanity';
+import { locationSlugsQuery, locationBySlugQuery } from '@/lib/queries';
 import {
   jsonLdGraph,
   organization,
@@ -33,12 +35,18 @@ import {
   service,
 } from '@/lib/schema-org';
 
-export function getStaticPaths() {
-  return ZONE_SLUGS.map((slug) => ({ params: { slug } }));
+// Slugs depuis Sanity si peuplé, sinon les zones statiques (migration lossless).
+export async function getStaticPaths() {
+  const slugs = await fetch<string[]>(locationSlugsQuery, {}, []);
+  const list = slugs.length > 0 ? slugs : [...ZONE_SLUGS];
+  return list.map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
-const zone = ZONES.find((z) => z.slug === slug);
+// Sanity (forme normalisée = ZoneContent) sinon fallback statique.
+const zone =
+  (await fetch<ZoneContent | null>(locationBySlugQuery, { slug }, null)) ??
+  ZONES.find((z) => z.slug === slug);
 if (!zone) throw new Error(`Zone introuvable : ${slug}`);
 
 const typologiesIndex = Object.fromEntries(SITE.typologies.map((t) => [t.slug, t]));

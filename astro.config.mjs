@@ -14,7 +14,7 @@ import vercel from '@astrojs/vercel';
 // par défaut, seules les Actions endpoints s'exécutent en SSR. Aucun impact
 // SEO/perf sur le reste du site.
 export default defineConfig({
-  site: process.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr',
+  site: process.env.PUBLIC_SITE_URL ?? 'https://www.studiojonathanoliveira.fr',
   trailingSlash: 'never',
   output: 'static',
   adapter: vercel(),

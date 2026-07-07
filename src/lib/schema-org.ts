@@ -14,6 +14,7 @@
  */
 
 import { SITE } from './site-config';
+import { siteSettings } from './site-settings';
 
 type Thing = Record<string, unknown>;
 
@@ -185,15 +186,19 @@ export function organization(): Thing {
   return {
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
-    name: SITE.name,
+    name: siteSettings.name,
     alternateName: ALTERNATE_NAMES,
     url: SITE_URL,
     founder: { '@id': PERSON_ID },
-    foundingDate: String(SITE.foundedYear),
+    foundingDate: String(siteSettings.foundedYear),
     logo: `${SITE_URL}/brand/wordmark-moss.png`,
-    description: SITE.tagline,
+    description: siteSettings.tagline,
     knowsAbout: KEYWORDS_METIER,
-    sameAs: [SITE.social.instagram, SITE.social.linkedin, SITE.social.pinterest].filter(Boolean),
+    sameAs: [
+      siteSettings.social.instagram,
+      siteSettings.social.linkedin,
+      siteSettings.social.pinterest,
+    ].filter(Boolean),
   };
 }
 
@@ -201,14 +206,14 @@ export function person(): Thing {
   return {
     '@type': 'Person',
     '@id': PERSON_ID,
-    name: SITE.founderName,
+    name: siteSettings.founderName,
     jobTitle: 'Designer paysagiste · Architecte biophilique',
     description:
       'Designer paysagiste fondateur du Studio J Oliveira. Conception de jardins, aménagement végétal d’intérieur et design biophilique en Nouvelle-Aquitaine.',
     knowsAbout: KEYWORDS_METIER,
     worksFor: { '@id': ORGANIZATION_ID },
     url: `${SITE_URL}/studio`,
-    sameAs: [SITE.social.instagram].filter(Boolean),
+    sameAs: [siteSettings.social.instagram].filter(Boolean),
   };
 }
 
@@ -220,38 +225,38 @@ export function localBusiness(opts: { areaServed?: string[] } = {}): Thing {
     // (catégorie métier) + Organization (entité globale).
     '@type': ['ProfessionalService', 'LocalBusiness'],
     '@id': LOCAL_BUSINESS_ID,
-    name: SITE.name,
+    name: siteSettings.name,
     alternateName: ALTERNATE_NAMES,
-    description: SITE.tagline,
+    description: siteSettings.tagline,
     slogan: 'Designer végétal · Studio de design biophilique',
     knowsAbout: KEYWORDS_METIER,
     serviceType: SERVICE_TYPES,
     priceRange: '€€€',
     url: SITE_URL,
-    telephone: SITE.contact.phoneInternational,
-    email: SITE.contact.email,
+    telephone: siteSettings.contact.phoneInternational,
+    email: siteSettings.contact.email,
     image: `${SITE_URL}/brand/wordmark-moss.png`,
     founder: { '@id': PERSON_ID },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: SITE.address.street,
-      postalCode: SITE.address.postalCode,
-      addressLocality: SITE.address.city,
-      addressRegion: SITE.address.region,
-      addressCountry: SITE.address.countryCode,
+      streetAddress: siteSettings.address.street,
+      postalCode: siteSettings.address.postalCode,
+      addressLocality: siteSettings.address.city,
+      addressRegion: siteSettings.address.region,
+      addressCountry: siteSettings.address.countryCode,
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: SITE.address.latitude,
-      longitude: SITE.address.longitude,
+      latitude: siteSettings.address.latitude,
+      longitude: siteSettings.address.longitude,
     },
     areaServed: areaServed.map((city) => ({ '@type': 'City', name: city })),
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: SITE.hours.open,
-        closes: SITE.hours.close,
+        opens: siteSettings.hours.open,
+        closes: siteSettings.hours.close,
       },
     ],
   };
@@ -262,8 +267,8 @@ export function website(): Thing {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: SITE.name,
-    description: SITE.tagline,
+    name: siteSettings.name,
+    description: siteSettings.tagline,
     publisher: { '@id': ORGANIZATION_ID },
     inLanguage: 'fr-FR',
     potentialAction: {
@@ -365,7 +370,7 @@ export function article(input: ArticleSeoInput): Thing {
 export function locationBusiness(input: LocationSeoInput): Thing {
   return {
     '@type': 'ProfessionalService',
-    name: `${SITE.name} — ${input.ville}`,
+    name: `${siteSettings.name} — ${input.ville}`,
     url: `${SITE_URL}/zones/${input.slug}`,
     parentOrganization: { '@id': ORGANIZATION_ID },
     description:

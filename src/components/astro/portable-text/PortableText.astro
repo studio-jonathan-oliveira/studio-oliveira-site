@@ -1,0 +1,74 @@
+---
+/*
+ * PortableText — point d'entrée du rendu Portable Text (Sanity → HTML).
+ *
+ * Rendu 100 % statique (aucun JS client). Le markup produit est volontairement
+ * sémantique et « nu » : le style vient du wrapper <Prose> qui cible p/h2/ul/…
+ *
+ * Regroupe les blocs de liste consécutifs de même type en <ul>/<ol> (Sanity les
+ * émet à plat, un bloc par item), puis dispatche chaque nœud vers son composant.
+ */
+import type { PtNode, PtBlock } from '@/lib/portable-text';
+import Block from './Block.astro';
+import Figure from './Figure.astro';
+import Gallery from './Gallery.astro';
+import VideoEmbed from './VideoEmbed.astro';
+
+interface Props {
+  value?: PtNode[] | null | undefined;
+}
+
+const { value } = Astro.props;
+const nodes = (value ?? []).filter(Boolean);
+
+type Group =
+  | { kind: 'list'; listItem: 'bullet' | 'number'; items: PtBlock[] }
+  | { kind: 'node'; node: PtNode };
+
+const groups: Group[] = [];
+for (const node of nodes) {
+  if (node._type === 'block' && (node as PtBlock).listItem) {
+    const block = node as PtBlock;
+    const last = groups.at(-1);
+    if (last?.kind === 'list' && last.listItem === block.listItem) {
+      last.items.push(block);
+    } else {
+      groups.push({ kind: 'list', listItem: block.listItem!, items: [block] });
+    }
+  } else {
+    groups.push({ kind: 'node', node });
+  }
+}
+---
+
+{
+  groups.map((group) =>
+    group.kind === 'list' ? (
+      group.listItem === 'number' ? (
+        <ol>
+          {group.items.map((item) => (
+            <li>
+              <Block block={item} inline />
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <ul>
+          {group.items.map((item) => (
+            <li>
+              <Block block={item} inline />
+            </li>
+          ))}
+        </ul>
+      )
+    ) : group.node._type === 'block' ? (
+      <Block block={group.node} />
+    ) : group.node._type === 'image' ? (
+      <Figure node={group.node} />
+    ) : group.node._type === 'figureGallery' ? (
+      <Gallery node={group.node} />
+    ) : group.node._type === 'videoEmbed' ? (
+      <VideoEmbed node={group.node} />
+    ) : null,
+  )
+}

@@ -113,6 +113,24 @@ async function seedTypologies() {
 }
 
 // ----------------------------------------------------------------------------
+// Auteur (Jonathan) — référencé par les futurs articles du journal.
+// Champs factuels uniquement (nom + rôle) : la bio et l'avatar sont laissés
+// à remplir par Jonathan dans le studio (règle « ne pas inventer de contenu »).
+// ----------------------------------------------------------------------------
+
+async function seedAuthor() {
+  const doc = {
+    _id: 'author.jonathan',
+    _type: 'author',
+    name: SITE.founderName,
+    slug: { _type: 'slug', current: 'jonathan-oliveira' },
+    role: 'Designer paysagiste',
+  };
+  await client.createOrReplace(doc);
+  console.log('✓ author.jonathan');
+}
+
+// ----------------------------------------------------------------------------
 // Services / verticales d'aménagement intérieur (5 docs)
 // ----------------------------------------------------------------------------
 
@@ -348,6 +366,8 @@ async function seedProjects() {
 async function main() {
   console.log(`Seeding Sanity dataset "${dataset}" (project ${projectId})...\n`);
   await seedSiteSettings();
+  console.log('');
+  await seedAuthor();
   console.log('');
   await seedTypologies();
   console.log('');

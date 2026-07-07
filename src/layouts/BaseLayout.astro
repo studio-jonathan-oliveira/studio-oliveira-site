@@ -80,7 +80,7 @@ const hasContactBar =
   Astro.url.pathname !== '/demarrer-un-projet' &&
   Astro.url.pathname !== '/demarrer-un-projet/';
 
-const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.jonathanoliveira.fr';
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://www.studiojonathanoliveira.fr';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
 // OG image : utilise PUBLIC_SITE_URL en priorité (prod), puis VERCEL_URL
 // (set automatiquement par Vercel en preview/dev deploys) pour exposer une

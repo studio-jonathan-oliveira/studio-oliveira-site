@@ -15,7 +15,7 @@
  * - SVG inline plutôt qu'icon-font (1 requête en moins, payload négligeable).
  */
 
-import { SITE } from '@/lib/site-config';
+import { siteSettings } from '@/lib/site-settings';
 
 const currentPath = Astro.url.pathname;
 const isFormPage =
@@ -29,9 +29,9 @@ const isFormPage =
   !isFormPage && (
     <nav class="contact-bar md:hidden" aria-label="Contact rapide" data-contact-bar>
       <a
-        href={`tel:${SITE.contact.phone}`}
+        href={`tel:${siteSettings.contact.phone}`}
         class="contact-bar__btn"
-        aria-label={`Appeler le ${SITE.contact.phoneDisplay}`}
+        aria-label={`Appeler le ${siteSettings.contact.phoneDisplay}`}
         data-cursor-skip
       >
         <svg
@@ -48,9 +48,9 @@ const isFormPage =
         <span>Appeler</span>
       </a>
       <a
-        href={`mailto:${SITE.contact.email}`}
+        href={`mailto:${siteSettings.contact.email}`}
         class="contact-bar__btn"
-        aria-label={`Écrire à ${SITE.contact.email}`}
+        aria-label={`Écrire à ${siteSettings.contact.email}`}
         data-cursor-skip
       >
         <svg

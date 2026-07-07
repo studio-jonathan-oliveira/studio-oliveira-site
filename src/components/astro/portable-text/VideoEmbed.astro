@@ -1,0 +1,47 @@
+---
+/*
+ * VideoEmbed — embed YouTube / Vimeo (bloc `videoEmbed`).
+ * Ratio 16:9 fluide, chargement paresseux. URL non reconnue → rien affiché.
+ */
+import type { PtVideoEmbed } from '@/lib/portable-text';
+import { toEmbedUrl } from '@/lib/portable-text';
+
+interface Props {
+  node: PtVideoEmbed;
+}
+
+const { node } = Astro.props;
+const embed = toEmbedUrl(node.url);
+---
+
+{
+  embed && (
+    <figure>
+      <div class="pt-video">
+        <iframe
+          src={embed}
+          title={node.caption ?? 'Vidéo'}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        />
+      </div>
+      {node.caption && <figcaption>{node.caption}</figcaption>}
+    </figure>
+  )
+}
+
+<style>
+  .pt-video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+  .pt-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

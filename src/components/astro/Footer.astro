@@ -12,7 +12,13 @@
  * NAP (Name / Address / Phone) conservé — critique SEO local / Google Business.
  * Les liens /zones et services détaillés ne sont plus dans le footer (trame) ;
  * ils restent accessibles via le menu principal.
+ *
+ * NAP sourcé depuis Sanity (siteSettings) avec fallback site-config → Jonathan
+ * édite ses coordonnées sans code. Valeurs alignées sur le NAP canonique du
+ * JSON-LD (cohérence exigée par le SEO local).
  */
+import { siteSettings } from '@/lib/site-settings';
+
 const currentPath = Astro.url.pathname;
 // Inversion DA finale 2026-06-16 (Jonathan) : UN SEUL footer sitewide —
 // BEIGE + texte/logo NOIR, sur TOUTES les pages (« comme la page Projets »),
@@ -53,11 +59,18 @@ const currentYear = new Date().getFullYear();
         <section aria-labelledby="footer-siege">
           <h2 id="footer-siege" class="site-footer__heading">Siège social Studio</h2>
           <address class="site-footer__address">
+            {
+              /* Adresse en graphie stylisée validée par Jonathan (« Rue », « BRIVE ») —
+                gardée en dur : elle diffère volontairement de la forme canonique du
+                JSON-LD (« Brive-la-Gaillarde »). Le tel/email restent éditables via Sanity. */
+            }
             <span>41 Rue Général Souham</span>
             <span>19100 BRIVE</span>
-            <a href="tel:+33661088444" class="site-footer__link">06 61 08 84 44</a>
-            <a href="mailto:contact.jonathanbiodesign@gmail.com" class="site-footer__link">
-              contact.jonathanbiodesign@gmail.com
+            <a href={`tel:${siteSettings.contact.phone}`} class="site-footer__link">
+              {siteSettings.contact.phoneDisplay}
+            </a>
+            <a href={`mailto:${siteSettings.contact.email}`} class="site-footer__link">
+              {siteSettings.contact.email}
             </a>
           </address>
         </section>
@@ -73,7 +86,8 @@ const currentYear = new Date().getFullYear();
           <a href="/confidentialite" class="site-footer__legal-link">Politique de confidentialité</a
           >
           <span aria-hidden="true">·</span>
-          © {currentYear} Studio J Oliveira
+          © {currentYear}
+          {siteSettings.name}
         </p>
       </div>
 

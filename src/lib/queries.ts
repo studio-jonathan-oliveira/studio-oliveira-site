@@ -22,15 +22,48 @@ const SEO_FRAGMENT = `{
   "ogImage": ogImage${IMAGE_FRAGMENT}
 }`;
 
+// Portable Text : spread brut + résolution des liens internes (type + slug +
+// section) pour que le renderer construise l'URL de destination. Les images et
+// blocs custom passent par le spread `...` (asset/_ref inclus, suffisant pour urlFor).
+const BLOCK_CONTENT = `[]{
+  ...,
+  markDefs[]{
+    ...,
+    _type == "internalLink" => {
+      "reference": {
+        "_type": @.reference->_type,
+        "slug": @.reference->slug.current,
+        "section": @.reference->section
+      }
+    }
+  }
+}`;
+
 // siteSettings (singleton) ---------------------------------------------------
 
+// Champs plats du schéma siteSettings re-projetés en objets imbriqués pour
+// coller à la forme de src/lib/site-config.ts (fusion défauts ⇄ Sanity).
 export const siteSettingsQuery = /* groq */ `
   *[_type == "siteSettings"][0]{
     siteName,
     tagline,
+    founderName,
+    foundedYear,
+    "contact": { phone, phoneDisplay, email },
+    "address": {
+      "street": addressStreet,
+      "postalCode": addressPostalCode,
+      "city": addressCity,
+      "region": addressRegion,
+      "country": addressCountry,
+      "countryCode": addressCountryCode,
+      "latitude": addressLatitude,
+      "longitude": addressLongitude
+    },
+    "hours": { "days": hoursDays, "open": hoursOpen, "close": hoursClose },
+    "social": { instagram, linkedin, pinterest },
+    "legal": { companyName, siret, legalForm, editorName },
     "logo": logo${IMAGE_FRAGMENT},
-    contact,
-    social,
     "defaultOgImage": defaultOgImage${IMAGE_FRAGMENT}
   }
 `;
@@ -63,10 +96,7 @@ export const typologyBySlugQuery = /* groq */ `
     prixEtude,
     exemple,
     shortDescription,
-    description[]{
-      ...,
-      markDefs[]{..., _type == "internalLink" => {"slug": @.reference->slug.current}}
-    },
+    description${BLOCK_CONTENT},
     complexity,
     livrablesInclus,
     faq,
@@ -81,6 +111,15 @@ export const typologyBySlugQuery = /* groq */ `
 
 export const typologySlugsQuery = /* groq */ `
   *[_type == "typology" && defined(slug.current)][].slug.current
+`;
+
+// Champs éditables des pages typologies bespoke (FAQ + galerie). Le reste de la
+// page (hero, specs, manifeste) reste en dur = DA verrouillée.
+export const typologyEditableBySlugQuery = /* groq */ `
+  *[_type == "typology" && slug.current == $slug][0]{
+    "faq": faq[]{question, answer},
+    "gallery": gallery[]${IMAGE_FRAGMENT}
+  }
 `;
 
 // Services — verticales d'aménagement intérieur (hôtellerie, resto, etc.) ---
@@ -101,7 +140,7 @@ export const serviceBySlugQuery = /* groq */ `
     title,
     "slug": slug.current,
     shortDescription,
-    content[]{...},
+    content${BLOCK_CONTENT},
     faq,
     "coverImage": coverImage${IMAGE_FRAGMENT},
     "gallery": gallery[]${IMAGE_FRAGMENT},
@@ -171,9 +210,9 @@ export const projectBySlugQuery = /* groq */ `
     scrollFramesSlug,
     scrollFramesCount,
     "twinmotionVideo": twinmotionVideo.asset->url,
-    description[]{...},
-    challenge[]{...},
-    solution[]{...},
+    description${BLOCK_CONTENT},
+    challenge${BLOCK_CONTENT},
+    solution${BLOCK_CONTENT},
     outcomeStats[],
     ...${SEO_FRAGMENT}
   }
@@ -211,7 +250,7 @@ export const articleBySlugQuery = /* groq */ `
     publishedAt,
     readingTime,
     tags,
-    content[]{...},
+    content${BLOCK_CONTENT},
     "coverImage": coverImage${IMAGE_FRAGMENT},
     "author": author->{
       name, "slug": slug.current, bio, "avatar": avatar${IMAGE_FRAGMENT}
@@ -229,20 +268,50 @@ export const articleSlugsQuery = /* groq */ `
 
 // Zones (pages locales) ------------------------------------------------------
 
+// Projeté pour matcher la forme de `ZoneContent` (src/data/zones-content.ts),
+// qui sert de fallback. climat plat → objet, seo → metaTitle/metaDescription,
+// typologiesDominantes : référence typology résolue en slug.
 export const locationBySlugQuery = /* groq */ `
   *[_type == "location" && slug.current == $slug][0]{
-    _id,
-    ville,
     "slug": slug.current,
+    ville,
+    villeSimple,
     region,
+    departement,
+    codeDepartement,
     role,
-    intro,
-    climat,
+    h1,
+    introLead,
+    introLong,
+    "metaTitle": seo.seoTitle,
+    "metaDescription": seo.seoDescription,
+    "climat": { "type": climatType, "description": climatDescription },
+    caracteristiquesPaysageres,
     essences,
-    content[]{...},
-    faq,
-    "coverImage": coverImage${IMAGE_FRAGMENT},
-    ...${SEO_FRAGMENT}
+    communesVoisines,
+    "typologiesDominantes": typologiesDominantes[]{
+      "slug": typology->slug.current,
+      raison
+    },
+    "faq": faq[]{ question, answer }
+  }
+`;
+
+export const locationSlugsQuery = /* groq */ `
+  *[_type == "location" && defined(slug.current)] | order(order asc)[].slug.current
+`;
+
+// Cartes de la page hub /zones (ordre explicite).
+export const locationsAllQuery = /* groq */ `
+  *[_type == "location"] | order(order asc) {
+    "slug": slug.current,
+    ville,
+    villeSimple,
+    region,
+    departement,
+    codeDepartement,
+    role,
+    introLead
   }
 `;
 

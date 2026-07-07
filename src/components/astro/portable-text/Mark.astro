@@ -1,0 +1,45 @@
+---
+/*
+ * Mark — rend un span en enveloppant récursivement ses marks (gras, italique,
+ * liens). Épluche un mark par appel puis se ré-invoque sur le reste, ce qui
+ * gère proprement l'imbrication (ex : un mot gras ET en lien).
+ */
+import type { PtSpan, PtMarkDef } from '@/lib/portable-text';
+import { internalHref } from '@/lib/portable-text';
+
+interface Props {
+  span: PtSpan;
+  marks: string[];
+  markDefs: PtMarkDef[];
+}
+
+const { span, marks, markDefs } = Astro.props;
+const [current, ...rest] = marks;
+const def = current ? markDefs.find((d) => d._key === current) : undefined;
+const internal = def?._type === 'internalLink' ? internalHref(def.reference) : null;
+---
+
+{
+  current == null ? (
+    <Fragment set:text={span.text} />
+  ) : current === 'strong' ? (
+    <strong>
+      <Astro.self span={span} marks={rest} markDefs={markDefs} />
+    </strong>
+  ) : current === 'em' ? (
+    <em>
+      <Astro.self span={span} marks={rest} markDefs={markDefs} />
+    </em>
+  ) : def?._type === 'link' && def.href ? (
+    <a href={def.href} {...(def.blank ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      <Astro.self span={span} marks={rest} markDefs={markDefs} />
+    </a>
+  ) : internal ? (
+    <a href={internal}>
+      <Astro.self span={span} marks={rest} markDefs={markDefs} />
+    </a>
+  ) : (
+    // Mark inconnu ou lien non résoluble : on ignore le wrapper, on garde le texte.
+    <Astro.self span={span} marks={rest} markDefs={markDefs} />
+  )
+}

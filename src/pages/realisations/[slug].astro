@@ -5,9 +5,12 @@ import Section from '@/components/astro/Section.astro';
 import Prose from '@/components/astro/Prose.astro';
 import MaskRevealHeading from '@/components/astro/MaskRevealHeading.astro';
 import CtaLink from '@/components/astro/CtaLink.astro';
+import PortableText from '@/components/astro/portable-text/PortableText.astro';
 import { Picture } from 'astro:assets';
-import { fetch } from '@/lib/sanity';
-import { projectSlugsQuery } from '@/lib/queries';
+import type { SanityImageSource } from '@sanity/image-url';
+import { fetch, urlFor } from '@/lib/sanity';
+import { projectSlugsQuery, projectBySlugQuery } from '@/lib/queries';
+import type { PtNode } from '@/lib/portable-text';
 import { mockProjects, type MockProject } from '@/data/mock-projects';
 import { cleanDraft, isDraft, isDraftProject, SHOW_DRAFTS } from '@/lib/drafts';
 import {
@@ -50,45 +53,76 @@ interface Props {
   slug: string;
 }
 
+type SanityRealisationImage = SanityImageSource & { alt?: string; caption?: string };
+
+interface SanityRealisation {
+  title: string;
+  slug: string;
+  year?: number;
+  location?: string;
+  client?: string;
+  surface?: string;
+  typology?: { title?: string; slug?: string };
+  coverImage?: SanityRealisationImage;
+  gallery?: SanityRealisationImage[];
+  description?: PtNode[];
+  outcomeStats?: { value: string; label: string }[];
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
 const { project, slug } = Astro.props;
 
-// TODO: quand project === null (Sanity path), fetcher le détail via projectBySlugQuery.
-// Pour l'instant, on redirige si non-trouvé en mock.
-if (!project) {
+// Chemin Sanity : pas de mock injecté → on fetch le détail réel (le TODO
+// historique). Chemin mock : fallback quand Sanity est vide (dev/preview).
+const sanityProject = project
+  ? null
+  : await fetch<SanityRealisation | null>(projectBySlugQuery, { slug }, null);
+
+if (!project && !sanityProject) {
   return Astro.redirect('/realisations', 301);
 }
+
+// Valeurs normalisées (mock OU Sanity) pour l'en-tête, le breadcrumb et le JSON-LD.
+const title = project?.title ?? sanityProject?.title ?? '';
+const typologyLabel = project?.typologyLabel ?? sanityProject?.typology?.title ?? '';
+const typologySlug = project?.typologySlug ?? sanityProject?.typology?.slug;
+const year = project?.year ?? sanityProject?.year;
+const location = project ? cleanDraft(project.location, '') : (sanityProject?.location ?? '');
+
+const draftPage = project ? isDraftProject(project) : false;
+const cleanSummary = project
+  ? cleanDraft(
+      project.summary,
+      `Projet ${typologyLabel} livré en ${year} par le Studio J Oliveira — Designer végétal et paysagiste à Brive-la-Gaillarde.`,
+    )
+  : (sanityProject?.seoDescription ??
+    `Réalisation ${typologyLabel}${year ? ` (${year})` : ''} par le Studio J Oliveira — Designer végétal et paysagiste à Brive-la-Gaillarde.`);
+const metaDescription = `${title} — ${cleanSummary}`.slice(0, 220);
 
 const breadcrumbItems = [
   { name: 'Accueil', item: '/' },
   { name: 'Réalisations', item: '/realisations' },
-  { name: project.title, item: `/realisations/${slug}` },
+  { name: title, item: `/realisations/${slug}` },
 ];
-
-const draftPage = isDraftProject(project);
-const cleanLocation = cleanDraft(project.location, '');
-const cleanSummary = cleanDraft(
-  project.summary,
-  `Projet ${project.typologyLabel} livré en ${project.year} par le Studio J Oliveira — Designer végétal et paysagiste à Brive-la-Gaillarde.`,
-);
-const metaDescription = `${project.title} — ${cleanSummary}`.slice(0, 220);
 
 const schema = jsonLdGraph([
   organization(),
   person(),
   localBusiness(),
   creativeWorkProject({
-    title: project.title,
-    slug: project.slug,
+    title,
+    slug,
     section: 'realisations',
-    year: project.year,
-    location: cleanLocation,
+    year,
+    location,
     description: cleanSummary,
   }),
   breadcrumbs(breadcrumbItems),
 ]);
 ---
 
-<BaseLayout title={project.title} description={metaDescription} noindex={draftPage}>
+<BaseLayout title={title} description={metaDescription} noindex={draftPage}>
   <Section variant="cream" space="compact" class="pt-32 pb-0 md:pt-40">
     <nav
       aria-label="Fil d'Ariane"
@@ -115,191 +149,334 @@ const schema = jsonLdGraph([
 
   <!-- Hero projet -->
   <Section variant="cream" space="compact" class="pt-0 pb-0">
-    <article>
-      <header class="mb-16 max-w-3xl">
-        <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
-          Réalisation · {project.typologyLabel} · {project.year}
-        </p>
-        <MaskRevealHeading
-          text={project.title}
-          as="h1"
-          class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
-        />
-        {
-          cleanLocation && (
-            <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic">
-              {cleanLocation}
+    {
+      project && (
+        <article>
+          <header class="mb-16 max-w-3xl">
+            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
+              Réalisation · {project.typologyLabel} · {project.year}
             </p>
-          )
-        }
-        {
-          !cleanLocation && SHOW_DRAFTS && (
-            <p class="mt-8 font-mono text-xs text-[color:var(--color-draft)]">
-              [DRAFT — Lieu à valider par Jonathan, masqué en prod]
-            </p>
-          )
-        }
-      </header>
+            <MaskRevealHeading
+              text={project.title}
+              as="h1"
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+            />
+            {location && (
+              <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic">
+                {location}
+              </p>
+            )}
+            {!location && SHOW_DRAFTS && (
+              <p class="mt-8 font-mono text-xs text-[color:var(--color-draft)]">
+                [DRAFT — Lieu à valider par Jonathan, masqué en prod]
+              </p>
+            )}
+          </header>
 
-      {
-        /* Image couverture full-width éditorial — pattern designbyad
-         (scroll_projet.mp4) : clip-reveal bas→haut + image-rise translate+scale. */
-      }
-      <figure class="mb-16 md:mb-24" data-img-reveal data-scroll-rise data-scroll-rise-amp="200">
-        <Picture
-          src={project.cover}
-          alt={project.title}
-          widths={[640, 960, 1280, 1600, 1920]}
-          sizes="100vw"
-          formats={['avif', 'webp']}
-          quality={85}
-          class="aspect-[16/10] w-full object-cover"
-          loading="eager"
-          data-reveal="image-rise"
-        />
-      </figure>
+          {/* Image couverture full-width éditorial — pattern designbyad
+         (scroll_projet.mp4) : clip-reveal bas→haut + image-rise translate+scale. */}
+          <figure
+            class="mb-16 md:mb-24"
+            data-img-reveal
+            data-scroll-rise
+            data-scroll-rise-amp="200"
+          >
+            <Picture
+              src={project.cover}
+              alt={project.title}
+              widths={[640, 960, 1280, 1600, 1920]}
+              sizes="100vw"
+              formats={['avif', 'webp']}
+              quality={85}
+              class="aspect-[16/10] w-full object-cover"
+              loading="eager"
+              data-reveal="image-rise"
+            />
+          </figure>
 
-      <!-- Description projet -->
-      <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
-        <aside class="md:sticky md:top-32 md:self-start">
-          <div class="border-t border-[var(--color-cream)]/20 pt-6">
-            <dl class="space-y-4 text-sm">
-              <div>
-                <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
-                >
-                  Lieu
-                </dt>
-                <dd class="mt-1">{cleanLocation || (SHOW_DRAFTS ? '[DRAFT]' : '—')}</dd>
+          {/* Description projet */}
+          <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+            <aside class="md:sticky md:top-32 md:self-start">
+              <div class="border-t border-[var(--color-cream)]/20 pt-6">
+                <dl class="space-y-4 text-sm">
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Lieu
+                    </dt>
+                    <dd class="mt-1">{location || (SHOW_DRAFTS ? '[DRAFT]' : '—')}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Année
+                    </dt>
+                    <dd class="mt-1">{project.year}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Typologie
+                    </dt>
+                    <dd class="mt-1">
+                      {project.typologySlug ? (
+                        <a
+                          href={`/architecture-paysagere/${project.typologySlug}`}
+                          class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
+                        >
+                          {project.typologyLabel}
+                        </a>
+                      ) : (
+                        project.typologyLabel
+                      )}
+                    </dd>
+                  </div>
+                </dl>
               </div>
-              <div>
-                <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
-                >
-                  Année
-                </dt>
-                <dd class="mt-1">{project.year}</dd>
-              </div>
-              <div>
-                <dt
-                  class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase"
-                >
-                  Typologie
-                </dt>
-                <dd class="mt-1">
-                  {
-                    project.typologySlug ? (
-                      <a
-                        href={`/architecture-paysagere/${project.typologySlug}`}
-                        class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
-                      >
-                        {project.typologyLabel}
-                      </a>
-                    ) : (
-                      project.typologyLabel
-                    )
-                  }
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </aside>
+            </aside>
 
-        <Prose size="lg">
-          {
-            isDraft(project.summary) ? (
-              SHOW_DRAFTS ? (
-                <p class="font-mono text-xs text-[color:var(--color-draft)]">{project.summary}</p>
+            <Prose size="lg">
+              {isDraft(project.summary) ? (
+                SHOW_DRAFTS ? (
+                  <p class="font-mono text-xs text-[color:var(--color-draft)]">{project.summary}</p>
+                ) : (
+                  <p class="text-[var(--color-cream)]/60 italic">
+                    Description en cours de rédaction. Pour découvrir ce projet en détail,{' '}
+                    <a
+                      href="/contact"
+                      class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
+                    >
+                      me contacter directement
+                    </a>
+                    .
+                  </p>
+                )
               ) : (
-                <p class="text-[var(--color-cream)]/60 italic">
-                  Description en cours de rédaction. Pour découvrir ce projet en détail,{' '}
-                  <a
-                    href="/contact"
-                    class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
-                  >
-                    me contacter directement
-                  </a>
-                  .
-                </p>
-              )
-            ) : (
-              <p>{project.summary}</p>
-            )
-          }
-        </Prose>
-      </div>
+                <p>{project.summary}</p>
+              )}
+            </Prose>
+          </div>
 
-      {
-        /* Galerie quinconce 2 colonnes — vraie alternance verticale (col droite
+          {/* Galerie quinconce 2 colonnes — vraie alternance verticale (col droite
            décalée d'une demi-image), gap fin entre images, reveal cinématique
            poussé (clip-reveal bas→haut + image-rise scale 1.12→1 + parallax fort).
-           Mobile : single column, pas de décalage. */
-      }
-      {
-        project.gallery.length > 0 && (
-          <div class="gallery-quinconce mt-24 md:mt-32" data-realisations-gallery>
-            <div class="gallery-col gallery-col-left">
-              {project.gallery
-                .filter((_, i) => i % 2 === 0)
-                .map((img, i) => (
-                  <figure
-                    class="gallery-figure"
-                    data-clip-reveal="top"
-                    data-scroll-rise
-                    data-scroll-rise-amp={String(120 + (i % 2) * 40)}
-                  >
-                    <Picture
-                      src={img.src}
-                      alt={img.alt}
-                      widths={[480, 720, 960, 1280]}
-                      sizes="(min-width: 768px) 49vw, 100vw"
-                      formats={['avif', 'webp']}
-                      quality={85}
-                      class="gallery-img aspect-[3/4] w-full object-cover"
-                      loading="lazy"
-                      data-reveal="image-rise"
-                    />
-                    {img.caption && (
-                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
-                        {img.caption}
-                      </figcaption>
-                    )}
-                  </figure>
-                ))}
+           Mobile : single column, pas de décalage. */}
+          {project.gallery.length > 0 && (
+            <div class="gallery-quinconce mt-24 md:mt-32" data-realisations-gallery>
+              <div class="gallery-col gallery-col-left">
+                {project.gallery
+                  .filter((_, i) => i % 2 === 0)
+                  .map((img, i) => (
+                    <figure
+                      class="gallery-figure"
+                      data-clip-reveal="top"
+                      data-scroll-rise
+                      data-scroll-rise-amp={String(120 + (i % 2) * 40)}
+                    >
+                      <Picture
+                        src={img.src}
+                        alt={img.alt}
+                        widths={[480, 720, 960, 1280]}
+                        sizes="(min-width: 768px) 49vw, 100vw"
+                        formats={['avif', 'webp']}
+                        quality={85}
+                        class="gallery-img aspect-[3/4] w-full object-cover"
+                        loading="lazy"
+                        data-reveal="image-rise"
+                      />
+                      {img.caption && (
+                        <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
+                          {img.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+              </div>
+              <div class="gallery-col gallery-col-right">
+                {project.gallery
+                  .filter((_, i) => i % 2 === 1)
+                  .map((img, i) => (
+                    <figure
+                      class="gallery-figure"
+                      data-clip-reveal="top"
+                      data-scroll-rise
+                      data-scroll-rise-amp={String(140 + (i % 2) * 40)}
+                    >
+                      <Picture
+                        src={img.src}
+                        alt={img.alt}
+                        widths={[480, 720, 960, 1280]}
+                        sizes="(min-width: 768px) 49vw, 100vw"
+                        formats={['avif', 'webp']}
+                        quality={85}
+                        class="gallery-img aspect-[3/4] w-full object-cover"
+                        loading="lazy"
+                        data-reveal="image-rise"
+                      />
+                      {img.caption && (
+                        <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
+                          {img.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+              </div>
             </div>
-            <div class="gallery-col gallery-col-right">
-              {project.gallery
-                .filter((_, i) => i % 2 === 1)
-                .map((img, i) => (
-                  <figure
-                    class="gallery-figure"
-                    data-clip-reveal="top"
-                    data-scroll-rise
-                    data-scroll-rise-amp={String(140 + (i % 2) * 40)}
-                  >
-                    <Picture
-                      src={img.src}
-                      alt={img.alt}
-                      widths={[480, 720, 960, 1280]}
-                      sizes="(min-width: 768px) 49vw, 100vw"
-                      formats={['avif', 'webp']}
-                      quality={85}
-                      class="gallery-img aspect-[3/4] w-full object-cover"
-                      loading="lazy"
-                      data-reveal="image-rise"
-                    />
-                    {img.caption && (
-                      <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
-                        {img.caption}
-                      </figcaption>
-                    )}
-                  </figure>
-                ))}
-            </div>
+          )}
+        </article>
+      )
+    }
+
+    {
+      sanityProject && (
+        <article>
+          <header class="mb-16 max-w-3xl">
+            <p class="font-mono text-xs tracking-[0.22em] text-[var(--color-cream)]/55 uppercase">
+              Réalisation{typologyLabel && ` · ${typologyLabel}`}
+              {year && ` · ${year}`}
+            </p>
+            <MaskRevealHeading
+              text={sanityProject.title}
+              as="h1"
+              class="mt-6 font-[family-name:var(--font-heading)] text-[length:var(--text-5xl)] leading-[1.02] tracking-tight"
+            />
+            {location && (
+              <p class="mt-8 font-[family-name:var(--font-heading)] text-[length:var(--text-2xl)] text-[var(--color-cream)]/60 italic">
+                {location}
+              </p>
+            )}
+          </header>
+
+          {sanityProject.coverImage && (
+            <figure
+              class="mb-16 md:mb-24"
+              data-img-reveal
+              data-scroll-rise
+              data-scroll-rise-amp="200"
+            >
+              <img
+                src={urlFor(sanityProject.coverImage).width(1600).auto('format').url()}
+                srcset={`${urlFor(sanityProject.coverImage).width(960).auto('format').url()} 960w, ${urlFor(sanityProject.coverImage).width(1600).auto('format').url()} 1600w, ${urlFor(sanityProject.coverImage).width(1920).auto('format').url()} 1920w`}
+                sizes="100vw"
+                alt={sanityProject.coverImage.alt ?? sanityProject.title}
+                class="aspect-[16/10] w-full object-cover"
+                loading="eager"
+                decoding="async"
+                data-reveal="image-rise"
+              />
+            </figure>
+          )}
+
+          <div class="grid gap-16 md:grid-cols-[1fr_2fr] md:gap-20">
+            <aside class="md:sticky md:top-32 md:self-start">
+              <div class="border-t border-[var(--color-cream)]/20 pt-6">
+                <dl class="space-y-4 text-sm">
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Lieu
+                    </dt>
+                    <dd class="mt-1">{location || '—'}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Année
+                    </dt>
+                    <dd class="mt-1">{year ?? '—'}</dd>
+                  </div>
+                  {sanityProject.surface && (
+                    <div>
+                      <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                        Surface
+                      </dt>
+                      <dd class="mt-1">{sanityProject.surface}</dd>
+                    </div>
+                  )}
+                  <div>
+                    <dt class="font-mono text-[10px] tracking-[0.22em] text-[var(--color-cream)]/50 uppercase">
+                      Typologie
+                    </dt>
+                    <dd class="mt-1">
+                      {typologySlug ? (
+                        <a
+                          href={`/architecture-paysagere/${typologySlug}`}
+                          class="border-b border-[var(--color-cream)]/30 hover:border-[var(--color-cream)]"
+                        >
+                          {typologyLabel}
+                        </a>
+                      ) : (
+                        typologyLabel || '—'
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </aside>
+
+            <Prose size="lg">
+              <PortableText value={sanityProject.description} />
+            </Prose>
           </div>
-        )
-      }
-    </article>
+
+          {sanityProject.gallery && sanityProject.gallery.length > 0 && (
+            <div class="gallery-quinconce mt-24 md:mt-32" data-realisations-gallery>
+              <div class="gallery-col gallery-col-left">
+                {sanityProject.gallery
+                  .filter((_, i) => i % 2 === 0)
+                  .map((img, i) => (
+                    <figure
+                      class="gallery-figure"
+                      data-clip-reveal="top"
+                      data-scroll-rise
+                      data-scroll-rise-amp={String(120 + (i % 2) * 40)}
+                    >
+                      <img
+                        src={urlFor(img).width(960).auto('format').url()}
+                        srcset={`${urlFor(img).width(480).auto('format').url()} 480w, ${urlFor(img).width(960).auto('format').url()} 960w, ${urlFor(img).width(1280).auto('format').url()} 1280w`}
+                        sizes="(min-width: 768px) 49vw, 100vw"
+                        alt={img.alt ?? ''}
+                        class="gallery-img aspect-[3/4] w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        data-reveal="image-rise"
+                      />
+                      {img.caption && (
+                        <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
+                          {img.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+              </div>
+              <div class="gallery-col gallery-col-right">
+                {sanityProject.gallery
+                  .filter((_, i) => i % 2 === 1)
+                  .map((img, i) => (
+                    <figure
+                      class="gallery-figure"
+                      data-clip-reveal="top"
+                      data-scroll-rise
+                      data-scroll-rise-amp={String(140 + (i % 2) * 40)}
+                    >
+                      <img
+                        src={urlFor(img).width(960).auto('format').url()}
+                        srcset={`${urlFor(img).width(480).auto('format').url()} 480w, ${urlFor(img).width(960).auto('format').url()} 960w, ${urlFor(img).width(1280).auto('format').url()} 1280w`}
+                        sizes="(min-width: 768px) 49vw, 100vw"
+                        alt={img.alt ?? ''}
+                        class="gallery-img aspect-[3/4] w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        data-reveal="image-rise"
+                      />
+                      {img.caption && (
+                        <figcaption class="mt-3 font-mono text-[11px] tracking-[0.18em] text-[var(--color-cream)]/60 uppercase">
+                          {img.caption}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+              </div>
+            </div>
+          )}
+        </article>
+      )
+    }
   </Section>
 
   <!-- Navigation inter-projets (placeholder) -->
