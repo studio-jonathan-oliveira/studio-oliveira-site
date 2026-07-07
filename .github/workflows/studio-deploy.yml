@@ -1,0 +1,50 @@
+name: Sanity Studio deploy (manuel)
+
+# Déploie le Studio Sanity (sanity/) sur https://studio-oliveira.sanity.studio
+# depuis l'infra GitHub (réseau ouvert), l'environnement Claude Code étant bloqué.
+# Déclenché à la main depuis l'onglet Actions.
+#
+# Secrets requis (repo → Settings → Secrets and variables → Actions) :
+#   - PUBLIC_SANITY_PROJECT_ID : l'ID du projet Sanity (déjà présent)
+#   - SANITY_DEPLOY_TOKEN      : un token Sanity avec rôle « Deploy Studio »
+#                               (temporaire, à révoquer après)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Taper 'deploy' pour confirmer"
+        required: true
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: studio-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event.inputs.confirm == 'deploy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install des dépendances du Studio (package isolé sanity/)
+        run: pnpm -C sanity install
+
+      - name: Deploy du Studio
+        run: pnpm -C sanity deploy
+        env:
+          SANITY_STUDIO_PROJECT_ID: ${{ secrets.PUBLIC_SANITY_PROJECT_ID }}
+          SANITY_STUDIO_DATASET: production
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
