@@ -20,7 +20,7 @@
     "studio:install": "pnpm -C sanity install",
     "studio:dev": "pnpm -C sanity dev",
     "studio:build": "pnpm -C sanity build",
-    "studio:deploy": "pnpm -C sanity deploy",
+    "studio:deploy": "pnpm -C sanity run deploy",
     "sanity:seed": "node --import tsx --import ./scripts/register-asset-stub.mjs scripts/sanity-seed.ts",
     "og:default": "tsx scripts/generate-og-default.ts",
     "og:pages": "tsx scripts/generate-og-pages.ts",
