@@ -142,11 +142,14 @@ export const SITE = {
     pinterest: '',
   },
 
-  // Mentions légales — [À FOURNIR PAR JONATHAN : SIRET, forme juridique, éditeur responsable]
+  // Mentions légales — SIRET + forme juridique confirmés via INPI (2026-07-21).
   legal: {
     companyName: 'Studio J Oliveira',
-    siret: '', // [À FOURNIR]
-    legalForm: '', // [À FOURNIR]
+    // Siège actif : l'établissement 908 598 881 00021 est fermé.
+    siret: '908 598 881 00039',
+    // « Micro-entreprise » est un régime fiscal, pas une forme juridique :
+    // la mention légale exacte au registre reste « Entreprise individuelle ».
+    legalForm: 'Entreprise individuelle',
     editorName: 'Jonathan Oliveira',
     hosting: {
       name: 'Vercel Inc.',

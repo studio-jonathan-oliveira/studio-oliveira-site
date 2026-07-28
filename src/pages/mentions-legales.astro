@@ -28,14 +28,15 @@ import { SITE } from '@/lib/site-config';
       <h2>Éditeur du site</h2>
       <p>
         <strong>{SITE.legal.companyName}</strong><br />
+        {SITE.legal.legalForm} — {SITE.legal.editorName}<br />
         {SITE.address.street}<br />
         {SITE.address.postalCode}
         {SITE.address.city}, {SITE.address.country}
       </p>
       <p>
         Directeur de la publication : {SITE.legal.editorName}<br />
-        SIRET : [À FOURNIR PAR JONATHAN]<br />
-        Forme juridique : [À FOURNIR PAR JONATHAN]<br />
+        SIRET : {SITE.legal.siret}<br />
+        Forme juridique : {SITE.legal.legalForm}<br />
         Contact : <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
       </p>
 
