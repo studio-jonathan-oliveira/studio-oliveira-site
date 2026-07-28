@@ -134,12 +134,16 @@ Liste exhaustive des contenus marqués `[À FOURNIR PAR JONATHAN : …]` dans le
 **Contexte** : ancrage géographique + authenticité lieu physique
 **Deadline suggérée** : Phase 2-3.
 
-### MENTIONS-LEGALES
+### MENTIONS-LEGALES — ✅ COMPLÉTÉ 2026-07-28
 
 **Type** : texte long légal
 **Emplacement** : `/mentions-legales`
 **Contexte** : SIRET, représentant légal, hébergeur Vercel, propriété intellectuelle.
-**Deadline suggérée** : avant Phase 7.
+**Statut** : ✅ SIRET `908 598 881 00039` (siège actif) + forme juridique « Entreprise
+individuelle » confirmés via INPI et par Jonathan (mail du 2026-07-21). Section Crédits
+nettoyée (décision Morgan) : aucune photo de tiers à créditer, pas de crédit
+conception/développement. Reste à traiter séparément : n° TVA intracommunautaire à
+ajouter **uniquement** si Jonathan sort de la franchise en base.
 
 ### POLITIQUE-CONFIDENTIALITE
 
