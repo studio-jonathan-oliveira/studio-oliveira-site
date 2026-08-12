@@ -69,17 +69,17 @@ pnpm studio:deploy   # déploie le studio sur sanity.studio (URL personnalisée)
 
 Cf. `.env.example` pour le template complet. Variables critiques pour la prod :
 
-| Variable                    | Usage                                                                       |
-| --------------------------- | --------------------------------------------------------------------------- |
-| `PUBLIC_SITE_URL`           | URL canonique (sitemap, OG, schema). Ex : `https://www.jonathanoliveira.fr` |
-| `PUBLIC_SANITY_PROJECT_ID`  | ID projet Sanity                                                            |
-| `PUBLIC_SANITY_DATASET`     | `production`                                                                |
-| `SANITY_API_TOKEN`          | Token read-only build (Sanity → Settings → API)                             |
-| `RESEND_API_KEY`            | Resend (envoi email formulaire contact)                                     |
-| `RESEND_FROM_EMAIL`         | Adresse `from:` (DKIM/SPF validés sur le domaine)                           |
-| `RESEND_TO_EMAIL`           | Boîte de réception Jonathan                                                 |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile (anti-spam form, public)                               |
-| `TURNSTILE_SECRET_KEY`      | Cloudflare Turnstile (server-side validation)                               |
+| Variable                    | Usage                                                                             |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| `PUBLIC_SITE_URL`           | URL canonique (sitemap, OG, schema). Ex : `https://www.studiojonathanoliveira.fr` |
+| `PUBLIC_SANITY_PROJECT_ID`  | ID projet Sanity                                                                  |
+| `PUBLIC_SANITY_DATASET`     | `production`                                                                      |
+| `SANITY_API_TOKEN`          | Token read-only build (Sanity → Settings → API)                                   |
+| `RESEND_API_KEY`            | Resend (envoi email formulaire contact)                                           |
+| `RESEND_FROM_EMAIL`         | Adresse `from:` (DKIM/SPF validés sur le domaine)                                 |
+| `RESEND_TO_EMAIL`           | Boîte de réception Jonathan                                                       |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile (anti-spam form, public)                                     |
+| `TURNSTILE_SECRET_KEY`      | Cloudflare Turnstile (server-side validation)                                     |
 
 ---
 

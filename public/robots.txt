@@ -75,4 +75,4 @@ User-agent: Diffbot
 Allow: /
 
 # Sitemap principal
-Sitemap: https://www.jonathanoliveira.fr/sitemap-index.xml
+Sitemap: https://www.studiojonathanoliveira.fr/sitemap-index.xml

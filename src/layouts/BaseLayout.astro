@@ -118,6 +118,26 @@ const fullTitle = titleContainsSiteName ? title : `${title} — ${siteName}`;
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
+    {
+      /* Verification de propriete des outils webmaster. Valeurs fournies par
+        Google Search Console et Bing Webmaster Tools, injectees via variables
+        d'environnement Vercel — jamais en dur dans le depot. Absentes en
+        local, la balise n'est simplement pas rendue. */
+    }
+    {
+      import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
+        <meta
+          name="google-site-verification"
+          content={import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION}
+        />
+      )
+    }
+    {
+      import.meta.env.PUBLIC_BING_SITE_VERIFICATION && (
+        <meta name="msvalidate.01" content={import.meta.env.PUBLIC_BING_SITE_VERIFICATION} />
+      )
+    }
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
 

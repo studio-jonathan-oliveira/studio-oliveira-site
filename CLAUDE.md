@@ -130,6 +130,20 @@ Cette règle s'applique à **tout contenu éditorial** : phrases de hero, descri
   - `build:` build system
   - `ci:` CI/CD
 - **Lefthook pre-commit** : Prettier + ESLint + `astro check` — ne pas skip (`--no-verify` interdit sauf demande explicite Morgan).
+- **Identité git obligatoire, en local sur ce dépôt.** La machine n'a aucune
+  identité git globale : sans configuration locale, git fabrique une adresse à
+  partir du nom d'hôte (`morganmargerit@macbook-pro-de-morgan.home`). GitHub ne
+  peut la rattacher à aucun compte, et **Vercel bloque alors le déploiement** de
+  la pull request. Vérifier avant de commiter :
+
+  ```bash
+  git config --local user.name   # morganmargerit19
+  git config --local user.email  # morgan.margerit19@gmail.com
+  ```
+
+  Si le déploiement est déjà bloqué, corriger l'identité puis créer un nouveau
+  commit — c'est ce que recommande Vercel, et ça évite de réécrire l'historique
+  d'une branche déjà poussée.
 
 ---
 

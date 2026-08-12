@@ -46,7 +46,7 @@ export const SITE = {
   zones: [
     {
       slug: 'brive-la-gaillarde',
-      ville: 'Brive‑la‑Gaillarde',
+      ville: 'Brive-la-Gaillarde',
       region: 'Corrèze',
       role: 'Siège social',
     },
@@ -140,6 +140,12 @@ export const SITE = {
     instagram: 'https://www.instagram.com/studio_joliveira',
     linkedin: '',
     pinterest: '',
+    // URL courte de la fiche Google Business Profile (bouton « Partager » de
+    // la fiche). Alimente `sameAs` des schemas Organization et LocalBusiness :
+    // c'est ce qui relie explicitement le site a la fiche pour les moteurs et
+    // les moteurs de reponse IA. Laisser vide tant que l'URL n'est pas connue,
+    // la valeur est filtree automatiquement.
+    googleBusiness: '',
   },
 
   // Mentions légales — SIRET + forme juridique confirmés via INPI (2026-07-21).

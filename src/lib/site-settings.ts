@@ -36,6 +36,7 @@ interface RawSiteSettings {
     instagram?: string | null;
     linkedin?: string | null;
     pinterest?: string | null;
+    googleBusiness?: string | null;
   } | null;
   legal?: {
     companyName?: string | null;
@@ -62,7 +63,7 @@ export interface ResolvedSiteSettings {
     longitude: number;
   };
   hours: { days: string; open: string; close: string };
-  social: { instagram: string; linkedin: string; pinterest: string };
+  social: { instagram: string; linkedin: string; pinterest: string; googleBusiness: string };
   legal: {
     companyName: string;
     siret: string;
@@ -115,6 +116,9 @@ function resolve(raw: RawSiteSettings | null): ResolvedSiteSettings {
       instagram: str(raw?.social?.instagram, SITE.social.instagram),
       linkedin: str(raw?.social?.linkedin, SITE.social.linkedin),
       pinterest: str(raw?.social?.pinterest, SITE.social.pinterest),
+      // Pas expose dans le schema Sanity : la valeur vient toujours de
+      // site-config.ts. Le fallback suffit, inutile d'etendre la requete GROQ.
+      googleBusiness: str(raw?.social?.googleBusiness, SITE.social.googleBusiness),
     },
     legal: {
       companyName: str(raw?.legal?.companyName, SITE.legal.companyName),

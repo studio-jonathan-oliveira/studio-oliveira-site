@@ -103,6 +103,14 @@ export const KEYWORDS_METIER = [
   'Studio de paysage',
   'Cabinet de paysagisme',
   'Bureau d’études paysage',
+  // Famille « conception paysagère » — presente dans les pages typologies
+  // mais absente du vocabulaire declare et des pages de zones, alors que
+  // c'est une requete d'entree directe sur l'offre du studio.
+  'Conception paysagère',
+  'Conception de jardin',
+  'Architecture paysagère',
+  'Maîtrise d’œuvre paysagère',
+  'Étude paysagère',
   // Spécialités
   'Design biophilique',
   'Architecture biophilique',
@@ -198,6 +206,7 @@ export function organization(): Thing {
       siteSettings.social.instagram,
       siteSettings.social.linkedin,
       siteSettings.social.pinterest,
+      siteSettings.social.googleBusiness,
     ].filter(Boolean),
   };
 }
