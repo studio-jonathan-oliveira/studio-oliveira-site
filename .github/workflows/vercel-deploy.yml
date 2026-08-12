@@ -1,0 +1,75 @@
+# Déclenche un déploiement Vercel via Deploy Hook.
+#
+# Pourquoi ce workflow existe
+# ---------------------------
+# Le projet Vercel appartient à l'équipe OLIVEIRA. Un contributeur qui n'en est
+# pas membre voit ses déploiements refusés — Vercel contrôle l'auteur du commit,
+# y compris sur la branche de production. Résultat : du code fusionné dans `main`
+# qui ne part jamais en ligne, sans erreur visible côté GitHub.
+#
+# Un Deploy Hook contourne proprement ce contrôle : l'URL secrète appartient au
+# projet Vercel, pas à un utilisateur. Aucun identifiant partagé, aucun
+# abonnement Pro nécessaire.
+#
+# Mise en place — une seule fois
+# ------------------------------
+# 1. Jonathan (propriétaire) : Vercel → le projet → Settings → Git →
+#    Deploy Hooks → Create Hook. Nom « github-main », branche « main ».
+#    Il obtient une URL de la forme :
+#      https://api.vercel.com/v1/integrations/deploy/prj_xxx/yyy
+# 2. Cette URL est un secret : elle permet de déclencher un déploiement.
+#    Elle ne doit jamais être committée.
+#    GitHub → Settings → Secrets and variables → Actions → New repository secret
+#      Nom   : VERCEL_DEPLOY_HOOK_URL
+#      Valeur: l'URL fournie par Vercel
+#
+# Ensuite, tout push sur `main` déploie automatiquement. Le workflow peut aussi
+# être lancé à la main depuis l'onglet Actions (« Run workflow »).
+
+name: Déploiement Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un seul déploiement à la fois : si plusieurs commits arrivent coup sur coup,
+# seul le dernier part, les précédents sont annulés.
+concurrency:
+  group: vercel-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier que le secret est configuré
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::Le secret VERCEL_DEPLOY_HOOK_URL n'est pas configuré."
+            echo "Voir la procédure en tête de .github/workflows/vercel-deploy.yml"
+            exit 1
+          fi
+
+      - name: Déclencher le déploiement
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          # -sS : silencieux mais affiche les erreurs. --fail-with-body : sortie
+          # non nulle sur code HTTP >= 400, tout en montrant la reponse de
+          # l'API, qui explique pourquoi le hook a ete refuse.
+          code=$(curl -sS --fail-with-body -X POST "$HOOK" \
+                   -o /tmp/reponse.json -w '%{http_code}') || {
+            echo "::error::Vercel a refusé le déclenchement (HTTP $code)"
+            cat /tmp/reponse.json
+            exit 1
+          }
+          echo "Déploiement déclenché (HTTP $code)"
+          cat /tmp/reponse.json
+
+      - name: Rappel
+        run: |
+          echo "Le déploiement est lancé côté Vercel et se poursuit en arrière-plan."
+          echo "Suivre son avancement dans l'onglet Deployments du projet Vercel."
