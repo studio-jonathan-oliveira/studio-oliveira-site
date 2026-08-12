@@ -198,6 +198,7 @@ export function organization(): Thing {
       siteSettings.social.instagram,
       siteSettings.social.linkedin,
       siteSettings.social.pinterest,
+      siteSettings.social.googleBusiness,
     ].filter(Boolean),
   };
 }
