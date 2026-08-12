@@ -1,30 +1,28 @@
-# Déclenche un déploiement Vercel via Deploy Hook.
+# Déploiement Vercel en production, authentifié par jeton.
 #
-# Pourquoi ce workflow existe
-# ---------------------------
-# Le projet Vercel appartient à l'équipe OLIVEIRA. Un contributeur qui n'en est
-# pas membre voit ses déploiements refusés — Vercel contrôle l'auteur du commit,
-# y compris sur la branche de production. Résultat : du code fusionné dans `main`
-# qui ne part jamais en ligne, sans erreur visible côté GitHub.
+# Pourquoi cette méthode
+# ----------------------
+# Le projet appartient à l'équipe OLIVEIRA. Vercel refuse tout déploiement dont
+# l'auteur du dernier commit n'est pas membre de l'équipe — et ce contrôle
+# s'applique aussi bien à un push qu'à un Deploy Hook. Constaté le 12/08/2026 :
+# le hook renvoie bien HTTP 201, puis le build est refusé.
 #
-# Un Deploy Hook contourne proprement ce contrôle : l'URL secrète appartient au
-# projet Vercel, pas à un utilisateur. Aucun identifiant partagé, aucun
-# abonnement Pro nécessaire.
+# Ici, le site est construit dans GitHub Actions puis téléversé déjà compilé
+# (`--prebuilt`). Aucun commit n'est soumis à Vercel, donc **aucun contrôle
+# d'appartenance ne s'applique**. L'authentification se fait par le jeton, qui
+# appartient à Jonathan.
 #
-# Mise en place — une seule fois
-# ------------------------------
-# 1. Jonathan (propriétaire) : Vercel → le projet → Settings → Git →
-#    Deploy Hooks → Create Hook. Nom « github-main », branche « main ».
-#    Il obtient une URL de la forme :
-#      https://api.vercel.com/v1/integrations/deploy/prj_xxx/yyy
-# 2. Cette URL est un secret : elle permet de déclencher un déploiement.
-#    Elle ne doit jamais être committée.
-#    GitHub → Settings → Secrets and variables → Actions → New repository secret
-#      Nom   : VERCEL_DEPLOY_HOOK_URL
-#      Valeur: l'URL fournie par Vercel
+# Secrets et variables à configurer — une seule fois
+# --------------------------------------------------
+#   VERCEL_TOKEN    (secret)   Vercel > Account Settings > Tokens, scope OLIVEIRA
+#   VERCEL_ORG_ID   (secret)   Vercel > Team Settings > General > "Team ID"
+#                              (commence par « team_»)
 #
-# Ensuite, tout push sur `main` déploie automatiquement. Le workflow peut aussi
-# être lancé à la main depuis l'onglet Actions (« Run workflow »).
+# L'identifiant du projet est public et figure déjà dans l'URL du Deploy Hook,
+# il est donc écrit en clair ci-dessous.
+#
+# Le Deploy Hook reste utile pour **Sanity** : une publication de contenu ne
+# passe par aucun commit, donc aucun contrôle d'auteur.
 
 name: Déploiement Vercel
 
@@ -33,43 +31,69 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Un seul déploiement à la fois : si plusieurs commits arrivent coup sur coup,
-# seul le dernier part, les précédents sont annulés.
 concurrency:
   group: vercel-deploy
   cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: prj_U8Cr4rcu6qYTAWgMbTq8PpHPt8bj
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Vérifier que le secret est configuré
-        env:
-          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+      - name: Vérifier que les secrets sont configurés
         run: |
-          if [ -z "$HOOK" ]; then
-            echo "::error::Le secret VERCEL_DEPLOY_HOOK_URL n'est pas configuré."
+          missing=""
+          [ -z "${{ secrets.VERCEL_TOKEN }}" ] && missing="$missing VERCEL_TOKEN"
+          [ -z "${{ secrets.VERCEL_ORG_ID }}" ] && missing="$missing VERCEL_ORG_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::Secret(s) manquant(s) :$missing"
             echo "Voir la procédure en tête de .github/workflows/vercel-deploy.yml"
             exit 1
           fi
 
-      - name: Déclencher le déploiement
-        env:
-          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
-        run: |
-          # -sS : silencieux mais affiche les erreurs. --fail-with-body : sortie
-          # non nulle sur code HTTP >= 400, tout en montrant la reponse de
-          # l'API, qui explique pourquoi le hook a ete refuse.
-          code=$(curl -sS --fail-with-body -X POST "$HOOK" \
-                   -o /tmp/reponse.json -w '%{http_code}') || {
-            echo "::error::Vercel a refusé le déclenchement (HTTP $code)"
-            cat /tmp/reponse.json
-            exit 1
-          }
-          echo "Déploiement déclenché (HTTP $code)"
-          cat /tmp/reponse.json
+      - uses: actions/checkout@v4
 
-      - name: Rappel
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Installer la CLI Vercel
+        run: pnpm add -g vercel@latest
+
+      # Récupère la configuration et les variables d'environnement du projet,
+      # pour que le build local soit identique à celui que ferait Vercel.
+      - name: Récupérer la configuration du projet
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Construire le site
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Déployer en production
         run: |
-          echo "Le déploiement est lancé côté Vercel et se poursuit en arrière-plan."
-          echo "Suivre son avancement dans l'onglet Deployments du projet Vercel."
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "Déployé : $url"
+          echo "### Déploiement en production" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url" >> "$GITHUB_STEP_SUMMARY"
+
+      # Témoin de bon déploiement : le sitemap annoncé dans robots.txt. C'était
+      # précisément le bug d'origine — il pointait vers l'ancien domaine Wix,
+      # qui ne résout plus.
+      - name: Vérifier la mise en ligne
+        run: |
+          for i in $(seq 1 10); do
+            sleep 15
+            if curl -sS --max-time 20 https://www.studiojonathanoliveira.fr/robots.txt \
+                 | grep -qi "^Sitemap: https://www.studiojonathanoliveira.fr"; then
+              echo "En ligne, sitemap correct."
+              exit 0
+            fi
+          done
+          echo "::warning::Déploiement effectué mais le sitemap attendu n'est pas encore servi (cache CDN ?)."
