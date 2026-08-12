@@ -46,7 +46,7 @@ export const SITE = {
   zones: [
     {
       slug: 'brive-la-gaillarde',
-      ville: 'Brive‑la‑Gaillarde',
+      ville: 'Brive-la-Gaillarde',
       region: 'Corrèze',
       role: 'Siège social',
     },

@@ -53,5 +53,5 @@ jobs:
         # Pas d'env vars Resend/Turnstile : l'action endpoint utilise des
         # fallbacks runtime, le build SSG passe sans.
         env:
-          PUBLIC_SITE_URL: https://www.jonathanoliveira.fr
+          PUBLIC_SITE_URL: https://www.studiojonathanoliveira.fr
         run: pnpm build

@@ -12,7 +12,7 @@ Le studio se positionne comme **paysagiste-concepteur** (designer paysagiste, de
 - Siège : 41 rue Général Souham, 19100 Brive-la-Gaillarde, France
 - Téléphone : +33 6 61 08 84 44
 - Email : contact.jonathanbiodesign@gmail.com
-- Site : https://www.jonathanoliveira.fr
+- Site : https://www.studiojonathanoliveira.fr
 - Instagram : https://www.instagram.com/studio_joliveira
 
 ## Zones d'intervention
@@ -39,21 +39,20 @@ Le studio se positionne comme **paysagiste-concepteur** (designer paysagiste, de
 
 ## Pages principales
 
-- [Accueil](https://www.jonathanoliveira.fr/) : positionnement, typologies, méthode, manifeste
-- [Le studio](https://www.jonathanoliveira.fr/studio) : ADN biophilique, parcours Jonathan Oliveira
-- [Architecture paysagère](https://www.jonathanoliveira.fr/architecture-paysagere) : hub des 4 typologies de jardin
-- [Aménagement végétal d'intérieur](https://www.jonathanoliveira.fr/amenagement-vegetal-interieur) : hub des 5 verticales pro
-- [Réalisations](https://www.jonathanoliveira.fr/realisations) : projets livrés (photos contextuelles)
-- [Conceptions](https://www.jonathanoliveira.fr/conceptions) : études en rendu photoréaliste Twinmotion
-- [Journal](https://www.jonathanoliveira.fr/journal) : articles longs sur biophilie, végétal, méthode
-- [Démarrer un projet](https://www.jonathanoliveira.fr/demarrer-un-projet) : parcours commercial
-- [Contact](https://www.jonathanoliveira.fr/contact) : formulaire et coordonnées
+- [Accueil](https://www.studiojonathanoliveira.fr/) : positionnement, typologies, méthode, manifeste
+- [Le studio](https://www.studiojonathanoliveira.fr/studio) : ADN biophilique, parcours Jonathan Oliveira
+- [Projets](https://www.studiojonathanoliveira.fr/projets) : hub portefeuille, présentation des 4 typologies de jardin
+- [Réalisations](https://www.studiojonathanoliveira.fr/realisations) : projets livrés (photos contextuelles)
+- [Conceptions](https://www.studiojonathanoliveira.fr/conceptions) : études en rendu photoréaliste Twinmotion
+- [Journal](https://www.studiojonathanoliveira.fr/journal) : articles longs sur biophilie, végétal, méthode
+- [Démarrer un projet](https://www.studiojonathanoliveira.fr/demarrer-un-projet) : parcours commercial
+- [Contact](https://www.studiojonathanoliveira.fr/contact) : formulaire et coordonnées
 
 ## Zones d'intervention détaillées
 
-- [Paysagiste designer à Brive-la-Gaillarde](https://www.jonathanoliveira.fr/zones/brive-la-gaillarde) — Corrèze, climat tempéré, palette mixte
-- [Paysagiste designer à Bordeaux](https://www.jonathanoliveira.fr/zones/bordeaux) — Gironde, climat océanique méditerranéen, palette sèche
-- [Paysagiste designer à Limoges](https://www.jonathanoliveira.fr/zones/limoges) — Haute-Vienne, climat continental tempéré, palette acidophile
+- [Paysagiste designer à Brive-la-Gaillarde](https://www.studiojonathanoliveira.fr/zones/brive-la-gaillarde) — Corrèze, climat tempéré, palette mixte
+- [Paysagiste designer à Bordeaux](https://www.studiojonathanoliveira.fr/zones/bordeaux) — Gironde, climat océanique méditerranéen, palette sèche
+- [Paysagiste designer à Limoges](https://www.studiojonathanoliveira.fr/zones/limoges) — Haute-Vienne, climat continental tempéré, palette acidophile
 
 ## Vocabulaire et synonymes (pour requêtes utilisateur)
 
