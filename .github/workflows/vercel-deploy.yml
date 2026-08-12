@@ -15,8 +15,12 @@
 # Secrets et variables à configurer — une seule fois
 # --------------------------------------------------
 #   VERCEL_TOKEN    (secret)   Vercel > Account Settings > Tokens, scope OLIVEIRA
-#   VERCEL_ORG_ID   (secret)   Vercel > Team Settings > General > "Team ID"
-#                              (commence par « team_»)
+#
+# C'est le seul secret a fournir. L'identifiant d'equipe (VERCEL_ORG_ID) est
+# resolu automatiquement au moment du deploiement : le job interroge l'API
+# Vercel avec le jeton, parcourt les equipes accessibles et retient celle qui
+# possede reellement ce projet. Evite d'avoir a le chercher dans l'interface,
+# et evite surtout de se tromper d'equipe.
 #
 # L'identifiant du projet est public et figure déjà dans l'URL du Deploy Hook,
 # il est donc écrit en clair ci-dessous.
@@ -36,23 +40,44 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: prj_U8Cr4rcu6qYTAWgMbTq8PpHPt8bj
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Vérifier que les secrets sont configurés
+      - name: Vérifier que le jeton est configuré
         run: |
-          missing=""
-          [ -z "${{ secrets.VERCEL_TOKEN }}" ] && missing="$missing VERCEL_TOKEN"
-          [ -z "${{ secrets.VERCEL_ORG_ID }}" ] && missing="$missing VERCEL_ORG_ID"
-          if [ -n "$missing" ]; then
-            echo "::error::Secret(s) manquant(s) :$missing"
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "::error::Secret VERCEL_TOKEN manquant."
             echo "Voir la procédure en tête de .github/workflows/vercel-deploy.yml"
             exit 1
           fi
+
+      - name: Résoudre l'identifiant de l'équipe propriétaire du projet
+        env:
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          teams=$(curl -sS --fail-with-body \
+                    -H "Authorization: Bearer $TOKEN" \
+                    https://api.vercel.com/v2/teams | jq -r '.teams[].id')
+          if [ -z "$teams" ]; then
+            echo "::error::Le jeton ne donne acces a aucune equipe. Verifier sa portee."
+            exit 1
+          fi
+          for t in $teams; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' \
+                     -H "Authorization: Bearer $TOKEN" \
+                     "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$t")
+            if [ "$code" = "200" ]; then
+              echo "Equipe proprietaire trouvee : $t"
+              echo "VERCEL_ORG_ID=$t" >> "$GITHUB_ENV"
+              exit 0
+            fi
+          done
+          echo "::error::Aucune equipe accessible par ce jeton ne possede le projet $VERCEL_PROJECT_ID."
+          exit 1
 
       - uses: actions/checkout@v4
 
