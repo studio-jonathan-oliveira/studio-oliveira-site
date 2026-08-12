@@ -18,3 +18,10 @@ public/og/
 
 # Mémoire et brouillons
 _brief/client-assets/
+
+# Validation des outils webmaster (Search Console, Bing)
+# Contenu impose par le moteur, doit rester identique octet pour octet.
+# Malgre l'extension .html, ce sont des fichiers texte d'une seule ligne que
+# Prettier reecrirait en HTML — ce qui invaliderait la verification.
+public/google*.html
+public/BingSiteAuth.xml
